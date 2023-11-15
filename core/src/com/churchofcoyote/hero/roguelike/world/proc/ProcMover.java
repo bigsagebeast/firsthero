@@ -24,6 +24,11 @@ public class ProcMover extends ProcEntity {
         setDelay(1000);
     }
 
+    @Override
+    public Boolean preDoPickup(Entity target) { return false; }
+    @Override
+    public void postDoPickup(Entity target) {}
+
     public boolean isPeacefulToPlayer(Player p) {
         return false;//peaceful;
     }

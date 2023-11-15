@@ -72,7 +72,6 @@ public class PopupModule extends Module {
             displayingPopup = false;
         }
         if (!this.displayingPopup && orders.size() > 0) {
-            System.out.println("Handling order, size " + orders.size());
             PopupOrder order = orders.get(0);
             orders.remove(0);
             handleOrder(order);
@@ -95,7 +94,6 @@ public class PopupModule extends Module {
         public PopupOrder(String text, float time) {
             this.text = text;
             this.time = time;
-            System.out.println("Nameless");
         }
         public PopupOrder(String text, float time, Entity entity, float shrinkTime)
         {
@@ -103,7 +101,6 @@ public class PopupModule extends Module {
             this.time = time;
             this.entity = entity;
             this.shrinkTime = shrinkTime;
-            System.out.println(entity.name);
         }
         String text;
         float time;

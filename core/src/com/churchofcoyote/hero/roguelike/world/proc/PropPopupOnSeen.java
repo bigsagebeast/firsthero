@@ -13,11 +13,6 @@ public class PropPopupOnSeen extends ProcEntity {
         this.text = text;
     }
 
-    @Override
-    public boolean receivePlayerLos() {
-        return true;
-    }
-
     public void actPlayerLos() {
         if (active) {
             GameLoop.popupModule.createPopup(text, 3f, entity, 0.75f);

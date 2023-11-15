@@ -6,4 +6,11 @@ public class ProcItem extends ProcEntity {
     public ProcItem(Entity e) {
         super(e);
     }
+
+    @Override
+    public Boolean preBePickedUp(Entity actor) { return true; }
+
+    @Override
+    public void postBePickedUp(Entity actor) {}
+
 }

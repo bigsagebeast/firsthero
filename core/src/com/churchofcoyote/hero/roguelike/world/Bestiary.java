@@ -8,6 +8,7 @@ import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMonster;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcPlayer;
 import com.churchofcoyote.hero.roguelike.world.proc.PropPopupOnSeen;
 
 public class Bestiary {
@@ -64,7 +65,10 @@ public class Bestiary {
 		e.maxDivinePoints = p.divinePoints;
 		e.glyph = p.glyph;
 		e.stats = p.stats;
-		if (p.isMonster) {
+		if (key.equals("player")) {
+			e.addProc(new ProcPlayer(e));
+		}
+		else if (p.isMonster) {
 			e.addProc(new ProcMonster(e));
 			//e.addProc(new PropPopupOnSeen(e, "It's a monster!"));
 		} else {

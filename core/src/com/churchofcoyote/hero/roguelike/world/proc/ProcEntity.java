@@ -24,10 +24,15 @@ public class ProcEntity {
         return false;
     }
 
-    public void act() {
+    public void act() { }
 
-    }
 
-    public boolean receivePlayerLos() { return false; }
+    // return true if pickup is allowed, false if it's aborted, null if no opinion
+    public Boolean preBePickedUp(Entity actor) { return null; }
+    public void postBePickedUp(Entity actor) {}
+
+    public Boolean preDoPickup(Entity target) { return null; }
+    public void postDoPickup(Entity target) {}
+
     public void actPlayerLos() {}
 }

@@ -6,6 +6,8 @@ import com.churchofcoyote.hero.roguelike.world.proc.ProcEntity;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.Point;
 
+import java.util.List;
+
 public class Game {
 	// current level
 	private static Level level;
@@ -13,18 +15,22 @@ public class Game {
 	private static RoguelikeModule module;
 	public static Dungeon dungeon = new Dungeon();
 	public static Bestiary bestiary = new Bestiary();
+	public static Itempedia itempedia = new Itempedia();
 	public static long time = 0;
 	
 	public Game(RoguelikeModule module) {
 		//level = new Level(60, 60);
 		player = new Player();
 		Entity pc = bestiary.create("player", null);
+		Entity pitchfork = itempedia.create("pitchfork", null);
 		player.entity = pc;
 		Game.module = module;
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
-		changeLevel(dungeon.getLevel("start"), new Point(30, 30));
+		changeLevel(dungeon.getLevel("start"), new Point(31, 46));
+		level.addEntity(pitchfork);
+		pitchfork.pos = new Point(35, 43);
 		level = dungeon.getLevel("start");
 	}
 	
@@ -90,7 +96,52 @@ public class Game {
 			lowestProc.act();
 		}
 	}
-	
+
+	public boolean pickup(Entity actor, Entity target) {
+		boolean canBePickedUp = false;
+		for (ProcEntity pe : target.procs) {
+			Boolean attempt = pe.preBePickedUp(actor);
+			if (attempt == null) {
+				continue;
+			} else if (attempt == true) {
+				canBePickedUp = true;
+			} else {
+				return false;
+			}
+		}
+
+		if (!canBePickedUp) {
+			return false;
+		}
+
+		boolean canDoPickup = false;
+		for (ProcEntity pe : actor.procs) {
+			Boolean attempt = pe.preDoPickup(target);
+			if (attempt == null) {
+				continue;
+			} else if (attempt == true) {
+				canDoPickup = true;
+			} else {
+				return false;
+			}
+		}
+
+		if (!canDoPickup) {
+			return false;
+		}
+
+		level.removeEntity(target);
+		actor.inventory.add(target);
+
+		for (ProcEntity pe : actor.procs) {
+			pe.postDoPickup(target);
+		}
+		for (ProcEntity pe : target.procs) {
+			pe.postBePickedUp(actor);
+		}
+		return true;
+	}
+
 	public void cmdMoveLeft() {
 		cmdMoveBy(-1, 0);
 	}
@@ -138,6 +189,17 @@ public class Game {
 			announce("You can't go down here.");
 		} else {
 			changeLevel(Game.dungeon.getLevel(transition.destination), transition.arrival);
+		}
+	}
+
+	public void cmdPickUp() {
+		List<Entity> itemsHere = level.getItemsOnTile(player.entity.pos);
+		for (Entity e : itemsHere) {
+			if (pickup(player.entity, e)) {
+				announce("You pick up the " + e.name + ".");
+			} else {
+				announce("You can't pick up the " + e.name + ".");
+			}
 		}
 	}
 	
@@ -207,7 +269,11 @@ public class Game {
 	
 	private static void movePlayer(int tx, int ty) {
 		player.entity.pos = new Point(tx, ty);
-		
+
+		for (Entity e : level.getItemsOnTile(player.entity.pos)) {
+			announce("There is a " + e.name + " here.");
+		}
+
 		//announce("Now standing at " + tx + ", " + ty + ".");
 	}
 	

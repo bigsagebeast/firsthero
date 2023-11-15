@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.roguelike.game.Player;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.ai.Strategy;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcEntity;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.Point;
 
@@ -20,6 +21,7 @@ public class Entity {
     public Strategy strategy;
 
     public List<ProcEntity> procs = new ArrayList<>();
+    public List<Entity> inventory = new ArrayList<>();
 
     // schedule for removal?
     public boolean dead;
@@ -47,11 +49,24 @@ public class Entity {
 
     public ProcMover getMover() {
         for (ProcEntity pe : procs) {
-           if (pe instanceof ProcMover) {
-               return (ProcMover)pe;
-           }
+            if (pe instanceof ProcMover) {
+                return (ProcMover)pe;
+            }
         }
         return null;
+    }
+
+    public ProcItem getItem() {
+        for (ProcEntity pe : procs) {
+            if (pe instanceof ProcItem) {
+                return (ProcItem)pe;
+            }
+        }
+        return null;
+    }
+
+    public void receiveItem(Entity e) {
+        inventory.add(e);
     }
 
 }

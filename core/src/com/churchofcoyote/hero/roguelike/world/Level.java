@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.roguelike.world;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Visibility;
@@ -63,6 +64,20 @@ public class Level {
 	public List<Entity> getEntities() {
 		return entities;
 	}
+
+	public List<Entity> getNonMovers() {
+		return entities.stream().filter(e -> e.getMover() == null).collect(Collectors.toList());
+	}
+
+	public List<Entity> getMovers() {
+		return entities.stream().filter(e -> e.getMover() != null).collect(Collectors.toList());
+	}
+
+	public List<Entity> getItemsOnTile(Point p) {
+		//return entities.stream().filter(e -> e.pos == p && e.getItem() != null).collect(Collectors.toList());
+		return entities.stream().filter(e -> e.pos.x == p.x && e.pos.y == p.y && e.getItem() != null).collect(Collectors.toList());
+	}
+
 	public List<ProcEntity> getProcEntities() {
 		List<ProcEntity> procEntities = new ArrayList<ProcEntity>();
 		for (Entity e : entities) {

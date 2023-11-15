@@ -118,8 +118,22 @@ public class RoguelikeModule extends Module {
 				}
 			}
 		}
-		
-		for (Entity c : level.getEntities()) {
+
+		for (Entity c : level.getNonMovers()) {
+			int wx = c.pos.x - mainWindow.getCameraX();
+			int wy = c.pos.y - mainWindow.getCameraY();
+			if (wx < 0 || wx >= mainWindow.getWidth() || wy < 0 || wy >= mainWindow.getWidth()) {
+				continue;
+			}
+			if (level.cell(c.pos.x, c.pos.y).visible()) {
+				mainGrid.put(c.glyph, wx + mainWindowOffsetX, wy + mainWindowOffsetY);
+				for (ProcEntity pe : c.procs) {
+					pe.actPlayerLos();
+				}
+			}
+		}
+
+		for (Entity c : level.getMovers()) {
 			int wx = c.pos.x - mainWindow.getCameraX();
 			int wy = c.pos.y - mainWindow.getCameraY();
 			if (wx < 0 || wx >= mainWindow.getWidth() || wy < 0 || wy >= mainWindow.getWidth()) {
@@ -158,36 +172,39 @@ public class RoguelikeModule extends Module {
 	public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
 		if (!shift && !ctrl && !alt) {
 			switch (keycode) {
-			case Keys.A:
-				announceWindow.addLine("Adding an announcement line.");
-				break;
-			case Keys.LEFT:
-				game.cmdMoveLeft();
-				break;
-			case Keys.RIGHT:
-				game.cmdMoveRight();
-				break;
-			case Keys.UP:
-				game.cmdMoveUp();
-				break;
-			case Keys.DOWN:
-				game.cmdMoveDown();
-				break;
-			case Keys.HOME:
-				game.cmdMoveUpLeft();
-				break;
-			case Keys.END:
-				game.cmdMoveDownLeft();
-				break;
-			case Keys.PAGE_UP:
-				game.cmdMoveUpRight();
-				break;
-			case Keys.PAGE_DOWN:
-				game.cmdMoveDownRight();
-				break;
-			case Keys.UNKNOWN:
-				game.cmdWait();
-				break;
+				case Keys.A:
+					announceWindow.addLine("Adding an announcement line.");
+					break;
+				case Keys.LEFT:
+					game.cmdMoveLeft();
+					break;
+				case Keys.RIGHT:
+					game.cmdMoveRight();
+					break;
+				case Keys.UP:
+					game.cmdMoveUp();
+					break;
+				case Keys.DOWN:
+					game.cmdMoveDown();
+					break;
+				case Keys.HOME:
+					game.cmdMoveUpLeft();
+					break;
+				case Keys.END:
+					game.cmdMoveDownLeft();
+					break;
+				case Keys.PAGE_UP:
+					game.cmdMoveUpRight();
+					break;
+				case Keys.PAGE_DOWN:
+					game.cmdMoveDownRight();
+					break;
+				case Keys.COMMA:
+					game.cmdPickUp();
+					break;
+				case Keys.UNKNOWN:
+					game.cmdWait();
+					break;
 			}
 		}
 		if (shift) {
