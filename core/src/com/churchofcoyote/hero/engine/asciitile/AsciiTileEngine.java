@@ -122,4 +122,11 @@ public class AsciiTileEngine implements GameLogic {
 		g.batch().draw(texRegion, 0, 0, g.WIDTH, g.HEIGHT);
 	}
 
+	public static float getTilePixelX(int x, int y) {
+		return (x + 1.3f) * RoguelikeModule.FONT_SIZE;
+	}
+
+	public static float getTilePixelY(int x, int y) {
+		return Graphics.HEIGHT - ((y + 1.6f) * RoguelikeModule.FONT_SIZE);
+	}
 }

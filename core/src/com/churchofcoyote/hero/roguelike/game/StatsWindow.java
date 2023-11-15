@@ -2,7 +2,7 @@ package com.churchofcoyote.hero.roguelike.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.module.RoguelikeModule;
-import com.churchofcoyote.hero.roguelike.world.Creature;
+import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.StringFormat;
 
@@ -26,7 +26,7 @@ public class StatsWindow {
 		return parent;
 	}
 
-	public void update(Creature c) {
+	public void update(Entity c) {
 		rows[0].text = StringFormat.format("HP: %3d/%3d", c.hitPoints, c.maxHitPoints);
 		if (c.hitPoints > (c.maxHitPoints / 2)) {
 			rows[0].color = Color.WHITE;

@@ -2,16 +2,11 @@ package com.churchofcoyote.hero.roguelike.world.ai;
 
 import java.util.List;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import com.churchofcoyote.hero.roguelike.world.Creature;
-
 public abstract class Strategy {
 
 	protected Strategy parent;
 	protected List<Strategy> children;
-	protected Creature creature;
-	
+
 	protected String lastPurpose = "";
 	protected Tactic currentTactic;
 

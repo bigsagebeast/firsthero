@@ -1,11 +1,11 @@
 package com.churchofcoyote.hero.roguelike.game;
 
-import com.churchofcoyote.hero.roguelike.world.Creature;
+import com.churchofcoyote.hero.roguelike.world.Entity;
 
 public class Player {
-	public Creature creature;
+	public Entity entity;
 	
-	public boolean isCreature(Creature c) {
-		return creature == c;
+	public boolean isEntity(Entity e) {
+		return entity == e;
 	}
 }

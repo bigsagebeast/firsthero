@@ -1,7 +1,9 @@
 package com.churchofcoyote.hero.text.effect;
 
 import com.badlogic.gdx.graphics.Color;
+import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
+import com.churchofcoyote.hero.HeroGame;
 import com.churchofcoyote.hero.text.TextEffect;
 
 public class TextEffectFadeOut extends TextEffect {
@@ -11,8 +13,8 @@ public class TextEffectFadeOut extends TextEffect {
 	private Color currentColor;
 	
 	public TextEffectFadeOut(float from, float to) {
-		this.from = from;
-		this.to = to;
+		this.from = HeroGame.getSeconds() + from;
+		this.to = HeroGame.getSeconds() + to;
 	}
 	
 	@Override

@@ -15,7 +15,15 @@ public class HeroGame extends ApplicationAdapter {
 	long startTimeMillis;
 	float tickRate = 30;
 	long tick = 0;
-	
+
+	private static HeroGame instance;
+
+	public static float getSeconds() {
+		long curMillis = System.currentTimeMillis();
+		float seconds = (curMillis - instance.startTimeMillis) / 1000f;
+		return seconds;
+	}
+
 	private static Map<String, Long> timer;
 	
 	static {
@@ -26,6 +34,7 @@ public class HeroGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		instance = this;
 		loop = new GameLoop();
 		startTimeMillis = System.currentTimeMillis();
 		g = new Graphics();
@@ -37,9 +46,7 @@ public class HeroGame extends ApplicationAdapter {
 	
 	@Override
 	public void render () {
-
-		long curMillis = System.currentTimeMillis();
-		float seconds = (curMillis - startTimeMillis) / 1000f;
+		float seconds = getSeconds();
 		long desiredTick = (long)(seconds * tickRate);
 		while (tick < desiredTick) {
 			tick++;

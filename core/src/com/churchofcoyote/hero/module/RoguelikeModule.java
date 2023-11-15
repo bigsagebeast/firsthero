@@ -12,9 +12,10 @@ import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.EquipmentWindow;
 import com.churchofcoyote.hero.roguelike.game.MainWindow;
 import com.churchofcoyote.hero.roguelike.game.StatsWindow;
-import com.churchofcoyote.hero.roguelike.world.Creature;
+import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcEntity;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Point;
 
@@ -41,7 +42,7 @@ public class RoguelikeModule extends Module {
 	@Override
 	public void start() {
 		super.start();
-		
+
 		game = new Game(this);
 		mainWindow = new MainWindow();
 		announceWindow = new AnnounceWindow();
@@ -52,7 +53,7 @@ public class RoguelikeModule extends Module {
 		
 		TextBlock borderBlock = new TextBlock("", FONT_SIZE, 0, 0, new Color(0, 0, 0, 0));
 		
-		textEngine.addBlock(new TextBlock("##############################################################################################################",
+		uiEngine.addBlock(new TextBlock("##############################################################################################################",
 				FONT_SIZE, 0, 0, Color.GRAY));
 		borderBlock.addChild(new TextBlock("##############################################################################################################",
 				FONT_SIZE, 0, 61, Color.GRAY));
@@ -66,7 +67,7 @@ public class RoguelikeModule extends Module {
 			}
 		}
 		borderBlock.compile();
-		textEngine.addBlock(borderBlock);
+		uiEngine.addBlock(borderBlock);
 		/*
 		TextBlock block = new TextBlock("##############################################################################################################",
 				FONT_SIZE, 0, 0, Color.GRAY);
@@ -76,13 +77,15 @@ public class RoguelikeModule extends Module {
 		
 		
 		announceWindow.addLine("Announcements:");
-		statsWindow.update(Game.getPlayerCreature());
-		equipWindow.update(Game.getPlayerCreature());
+		statsWindow.update(Game.getPlayerEntity());
+		equipWindow.update(Game.getPlayerEntity());
 		Game.getLevel().updateVis();
 
-		textEngine.addBlock(announceWindow.getTextBlockParent());
-		textEngine.addBlock(statsWindow.getTextBlockParent());
-		textEngine.addBlock(equipWindow.getTextBlockParent());
+		uiEngine.addBlock(announceWindow.getTextBlockParent());
+		uiEngine.addBlock(statsWindow.getTextBlockParent());
+		uiEngine.addBlock(equipWindow.getTextBlockParent());
+
+		//GameLoop.popupModule.createPopup("Pick up your weapon", 5f, Game.getPlayerEntity(), 0.75f);
 	}
 	
 	
@@ -116,7 +119,7 @@ public class RoguelikeModule extends Module {
 			}
 		}
 		
-		for (Creature c : level.getCreatures()) {
+		for (Entity c : level.getEntities()) {
 			int wx = c.pos.x - mainWindow.getCameraX();
 			int wy = c.pos.y - mainWindow.getCameraY();
 			if (wx < 0 || wx >= mainWindow.getWidth() || wy < 0 || wy >= mainWindow.getWidth()) {
@@ -124,14 +127,17 @@ public class RoguelikeModule extends Module {
 			}
 			if (level.cell(c.pos.x, c.pos.y).visible()) {
 				mainGrid.put(c.glyph, wx + mainWindowOffsetX, wy + mainWindowOffsetY);
+				for (ProcEntity pe : c.procs) {
+					pe.actPlayerLos();
+				}
 			}
 		}
 	}
 	
 	public void redraw() {
 		dirty = true;
-		statsWindow.update(Game.getPlayerCreature());
-		equipWindow.update(Game.getPlayerCreature());
+		statsWindow.update(Game.getPlayerEntity());
+		equipWindow.update(Game.getPlayerEntity());
 		Game.getLevel().updateVis();
 	}
 	
@@ -187,11 +193,11 @@ public class RoguelikeModule extends Module {
 		if (shift) {
 			switch (keycode) {
 			case Keys.P:
-				game.getPlayerCreature().pos = new Point(59, 58);
+				game.getPlayerEntity().pos = new Point(59, 58);
 				game.cmdMoveDown();
 				break;
 			case Keys.O:
-				game.getPlayerCreature().pos = new Point(1, 2);
+				game.getPlayerEntity().pos = new Point(1, 2);
 				game.cmdMoveUp();
 				break;
 			case Keys.PERIOD:

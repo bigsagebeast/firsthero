@@ -9,32 +9,38 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.churchofcoyote.hero.engine.asciitile.AsciiTileEngine;
+import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
-import com.churchofcoyote.hero.module.IntroModule;
-import com.churchofcoyote.hero.module.Module;
-import com.churchofcoyote.hero.module.RoguelikeModule;
-import com.churchofcoyote.hero.module.TitleScreenModule;
+import com.churchofcoyote.hero.module.*;
+
+import javax.print.Doc;
 
 public class GameLoop implements GameLogic, InputProcessor {
 
+	TextEngine uiEngine = new TextEngine();
 	TextEngine textEngine = new TextEngine();
+	EffectEngine effectEngine = new EffectEngine();
 	AsciiTileEngine asciiTileEngine = new AsciiTileEngine();
 	ShapeRenderer shapeBatch = new ShapeRenderer();
 	
 	public static final IntroModule introModule = new IntroModule();
 	public static final TitleScreenModule titleModule = new TitleScreenModule();
 	public static final RoguelikeModule roguelikeModule = new RoguelikeModule();
+	public static final PopupModule popupModule = new PopupModule();
+	public static final DialogueBoxModule dialogueBoxModule = new DialogueBoxModule();
 	private List<Module> allModules = new ArrayList<Module>();
 	
 	public GameLoop() {
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.setVSync(false);
-		Module.setEngines(textEngine, asciiTileEngine);
+		Module.setEngines(textEngine, uiEngine, effectEngine, asciiTileEngine);
 		allModules = new ArrayList<Module>();
+		allModules.add(popupModule);
+		allModules.add(dialogueBoxModule);
 		allModules.add(introModule);
 		allModules.add(titleModule);
 		allModules.add(roguelikeModule);
-		
+
 		//roguelikeModule.start();
 		introModule.start();
 		//titleModule.start();
@@ -50,8 +56,10 @@ public class GameLoop implements GameLogic, InputProcessor {
 			}
 		}
 		asciiTileEngine.update(state);
+		effectEngine.update(state);
 		textEngine.update(state);
-		
+		uiEngine.update(state);
+
 		/*
 		if (state.getSeconds() >= 46f && introModule.isRunning()) {
 			introModule.end();
@@ -68,11 +76,15 @@ public class GameLoop implements GameLogic, InputProcessor {
 
 	    g.startBatch();
 	    asciiTileEngine.render(g, gState);
-	    long start = System.currentTimeMillis();
+		uiEngine.render(g, gState);
+		g.endBatch();
+		effectEngine.render(g, gState);
+		g.startBatch();
+		long start = System.currentTimeMillis();
 	    textEngine.render(g, gState);
 	    HeroGame.updateTimer("te", System.currentTimeMillis() - start);
 	    g.endBatch();
-	    
+
 	    
 		
 	    /*

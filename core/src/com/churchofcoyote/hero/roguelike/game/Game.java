@@ -1,16 +1,9 @@
 package com.churchofcoyote.hero.roguelike.game;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.churchofcoyote.hero.module.RoguelikeModule;
-import com.churchofcoyote.hero.roguelike.world.Bestiary;
-import com.churchofcoyote.hero.roguelike.world.Creature;
-import com.churchofcoyote.hero.roguelike.world.Dungeon;
-import com.churchofcoyote.hero.roguelike.world.Level;
-import com.churchofcoyote.hero.roguelike.world.LevelTransition;
-import com.churchofcoyote.hero.roguelike.world.Terrain;
+import com.churchofcoyote.hero.roguelike.world.*;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcEntity;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.Point;
 
 public class Game {
@@ -20,12 +13,13 @@ public class Game {
 	private static RoguelikeModule module;
 	public static Dungeon dungeon = new Dungeon();
 	public static Bestiary bestiary = new Bestiary();
+	public static long time = 0;
 	
 	public Game(RoguelikeModule module) {
 		//level = new Level(60, 60);
 		player = new Player();
-		Creature pc = bestiary.create("player", null);
-		player.creature = pc;
+		Entity pc = bestiary.create("player", null);
+		player.entity = pc;
 		Game.module = module;
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
@@ -36,11 +30,19 @@ public class Game {
 	
 	public void changeLevel(Level nextLevel, Point playerPos) {
 		if (level != null) {
-			level.removeCreature(player.creature);
+			for (ProcEntity pe : level.getProcEntities()) {
+				if (pe.hasAction()) {
+					pe.nextAction = pe.nextAction - Game.time;
+				}
+			}
+			level.removeEntity(player.entity);
 		}
+
 		level = nextLevel;
-		level.addCreature(player.creature);
-		player.creature.pos = playerPos;
+		Game.time = 0;
+		level.addEntity(player.entity);
+		player.entity.pos = playerPos;
+
 	}
 	
 	public static Level getLevel() {
@@ -51,35 +53,41 @@ public class Game {
 		return player;
 	}
 	
-	public static Creature getPlayerCreature() {
-		for (Creature c : level.getCreatures()) {
-			if (player.isCreature(c)) {
+	public static Entity getPlayerEntity() {
+		for (Entity c : level.getEntities()) {
+			if (player.isEntity(c)) {
 				return c;
 			}
 		}
 		return null;
 	}
 	
-	public static void feelMsg(Creature creature, String message) {
-		if (player.isCreature(creature)) {
+	public static void feelMsg(Entity entity, String message) {
+		if (player.isEntity(entity)) {
 			//emitMessage(message);
 		}
 	}
 	
 	public void turn() {
-		int delayReduction = player.creature.delay;
-		for (Creature c : level.getCreatures()) {
-			c.delay -= delayReduction;
-		}
 		while (true) {
 			module.redraw();
-			List<Creature> initiativeOrder = new ArrayList<Creature>(level.getCreatures()); 
-			Collections.sort(initiativeOrder, new InitiativeOrderComparator());
-			Creature actor = initiativeOrder.get(0);
-			if (player.isCreature(actor)) {
+
+			long lowestTurn = -1;
+			long secondLowestTurn = -1;
+			ProcEntity lowestProc = null;
+			for (ProcEntity pe : level.getProcEntities()) {
+				if (pe.nextAction != -1 && (lowestTurn == -1 || pe.nextAction < lowestTurn)) {
+					lowestTurn = pe.nextAction;
+					lowestProc = pe;
+				} else if (pe.nextAction != -1 && (secondLowestTurn == -1 || pe.nextAction < secondLowestTurn)) {
+					secondLowestTurn = pe.nextAction;
+				}
+			}
+			time = lowestTurn;
+			if (lowestProc == getPlayerEntity().getMover()) {
 				break;
 			}
-			actor.npcAct();
+			lowestProc.act();
 		}
 	}
 	
@@ -116,7 +124,7 @@ public class Game {
 	}
 	
 	public void cmdStairsUp() {
-		LevelTransition transition = level.findTransition("up", player.creature.pos);
+		LevelTransition transition = level.findTransition("up", player.entity.pos);
 		if (transition == null) {
 			announce("You can't go up here.");
 		} else {
@@ -125,7 +133,7 @@ public class Game {
 	}
 	
 	public void cmdStairsDown() {
-		LevelTransition transition = level.findTransition("down", player.creature.pos);
+		LevelTransition transition = level.findTransition("down", player.entity.pos);
 		if (transition == null) {
 			announce("You can't go down here.");
 		} else {
@@ -134,25 +142,26 @@ public class Game {
 	}
 	
 	public void cmdWait() {
-		player.creature.tookTurn(1000);
+		player.entity.getMover().setDelay(1000);
 	}
 	
 	public static void cmdMoveBy(int dx, int dy) {
-		int tx = player.creature.pos.x + dx;
-		int ty = player.creature.pos.y + dy;
-		
-		Creature targetCreature = level.creatureAt(tx, ty);
+		int tx = player.entity.pos.x + dx;
+		int ty = player.entity.pos.y + dy;
+
+		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {
-			if (targetCreature.isPeacefulToPlayer(player)) {
+			ProcMover targetMover = targetCreature.getMover();
+			if (targetMover.isPeacefulToPlayer(player)) {
 				announce("Moved into a " +
-						(targetCreature.isPeacefulToPlayer(player) ? "peaceful" : "hostile") +
+						(targetMover.isPeacefulToPlayer(player) ? "peaceful" : "hostile") +
 						" creature (" + targetCreature.getVisibleName(player) + ").");
 			} else {
-				CombatLogic.swing(player.creature, targetCreature);
-				player.creature.tookTurn(1000);
+				CombatLogic.swing(player.entity, targetCreature);
+				player.entity.getMover().setDelay(1000);
 				// happen every tick?
 				if (targetCreature.dead) {
-					level.removeCreature(targetCreature);
+					level.removeEntity(targetCreature);
 				}
 			}
 			return;
@@ -160,7 +169,7 @@ public class Game {
 		
 		if (level.cell(tx, ty).terrain.isPassable()) {
 			//announce("Walked one square.");
-			player.creature.tookTurn(1000);
+			player.entity.getMover().setDelay(1000);
 			movePlayer(tx, ty);
 		} else {
 			if (level.cell(tx, ty).terrain == Terrain.BLANK) {
@@ -171,49 +180,49 @@ public class Game {
 		}
 	}
 	
-	public static void npcMoveBy(Creature c, int dx, int dy) {
-		int tx = c.pos.x + dx;
-		int ty = c.pos.y + dy;
+	public static void npcMoveBy(Entity e, ProcMover pm, int dx, int dy) {
+		int tx = e.pos.x + dx;
+		int ty = e.pos.y + dy;
 		
-		c.tookTurn(1000);
+		pm.setDelay(1000);
 		
-		Creature targetCreature = level.creatureAt(tx, ty);
-		if (targetCreature != null && player.isCreature(targetCreature)) {
-			if (targetCreature.isPeacefulToPlayer(player)) {
+		Entity targetCreature = level.moverAt(tx, ty);
+		if (targetCreature != null) {
+			if (targetCreature.getMover().isPeacefulToPlayer(player)) {
 				announce("Was moved into by a " +
-						(targetCreature.isPeacefulToPlayer(player) ? "peaceful" : "hostile") +
-						" creature (" + c.getVisibleName(player) + ").");
+						(targetCreature.getMover().isPeacefulToPlayer(player) ? "peaceful" : "hostile") +
+						" creature (" + e.getVisibleName(player) + ").");
 			} else {
-				CombatLogic.swing(c, targetCreature);
+				CombatLogic.swing(e, targetCreature);
 				
 				// check if player is dead
 			}
 			return;
 		} else {
-			if (Game.canMove(c, dx, dy)) {
-				moveNpc(c, tx, ty);
+			if (Game.canMove(e, dx, dy)) {
+				moveNpc(e, tx, ty);
 			}
 		}
 	}
 	
 	private static void movePlayer(int tx, int ty) {
-		player.creature.pos = new Point(tx, ty);
+		player.entity.pos = new Point(tx, ty);
 		
 		//announce("Now standing at " + tx + ", " + ty + ".");
 	}
 	
-	private static void moveNpc(Creature c, int tx, int ty) {
-		c.pos = new Point(tx, ty);
+	private static void moveNpc(Entity e, int tx, int ty) {
+		e.pos = new Point(tx, ty);
 	}
 	
-	public static boolean canMove(Creature c, int dx, int dy) {
-		int tx = c.pos.x + dx;
-		int ty = c.pos.y + dy;
-		return canMoveTo(c, tx, ty);
+	public static boolean canMove(Entity e, int dx, int dy) {
+		int tx = e.pos.x + dx;
+		int ty = e.pos.y + dy;
+		return canMoveTo(e, tx, ty);
 	}
 	
-	public static boolean canMoveTo(Creature c, int tx, int ty) {
-		if (level.creatureAt(tx, ty) != null) {
+	public static boolean canMoveTo(Entity e, int tx, int ty) {
+		if (level.moverAt(tx, ty) != null) {
 			return false;
 		}
 		if (!level.cell(tx, ty).terrain.isPassable()) {

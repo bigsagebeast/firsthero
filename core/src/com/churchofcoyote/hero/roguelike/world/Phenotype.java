@@ -11,4 +11,5 @@ public class Phenotype {
 	public Glyph glyph;
 	public boolean peaceful;
 	public Rank stats;
+	public boolean isMonster;
 }

@@ -101,9 +101,9 @@ public class Dungeon {
 			if (creatureSplit.length > 3) {
 				name = creatureSplit[3].replace("_", " ");
 			}
-			Creature c = Game.bestiary.create(phenotype, name);
+			Entity c = Game.bestiary.create(phenotype, name);
 			c.pos = new Point(x, y);
-			level.addCreature(c);
+			level.addEntity(c);
 		}
 		
 		String transitionHeader = input.readLine();

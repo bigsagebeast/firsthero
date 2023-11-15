@@ -1,14 +1,13 @@
 package com.churchofcoyote.hero.roguelike.game;
 
 import com.churchofcoyote.hero.roguelike.chart.DamageChart;
-import com.churchofcoyote.hero.roguelike.world.Creature;
-import com.churchofcoyote.hero.roguelike.world.Level;
+import com.churchofcoyote.hero.roguelike.world.Entity;
 
 public class CombatLogic {
 
-	public static void swing(Creature actor, Creature target) {
+	public static void swing(Entity actor, Entity target) {
 		
-		Visibility vis = Game.getLevel().checkVis(Game.getPlayer().creature, actor, target);
+		Visibility vis = Game.getLevel().checkVis(Game.getPlayer().entity, actor, target);
 		
 		// auto-hit
 		boolean hit = true;
@@ -49,7 +48,7 @@ public class CombatLogic {
 		}
 	}
 	
-	public static void hurt(Creature target, int damage) {
+	public static void hurt(Entity target, int damage) {
 		if (damage < 1) {
 			throw new IllegalArgumentException("Less than 1 damage dealt");
 		}

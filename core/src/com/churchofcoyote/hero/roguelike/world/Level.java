@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Visibility;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcEntity;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 
 public class Level {
 	private long width, height;
-	private List<Creature> creatures;
+	private List<Entity> entities;
 	private LevelCell[][] cell;
 	private LevelCell[] allCells;
 	private List<LevelTransition> transitions;
@@ -17,7 +18,7 @@ public class Level {
 	public Level(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.creatures = new ArrayList<Creature>();
+		this.entities = new ArrayList<Entity>();
 
 		allCells = new LevelCell[width * height];
 		cell = new LevelCell[width][];
@@ -59,14 +60,26 @@ public class Level {
 	public boolean contains(int x, int y) {
 		return (x >= 0 && y >= 0 && x < width && y < height);
 	}
-	public List<Creature> getCreatures() {
-		return creatures;
+	public List<Entity> getEntities() {
+		return entities;
 	}
-	public void addCreature(Creature creature) {
-		creatures.add(creature);
+	public List<ProcEntity> getProcEntities() {
+		List<ProcEntity> procEntities = new ArrayList<ProcEntity>();
+		for (Entity e : entities) {
+			procEntities.addAll(e.procs);
+		}
+		return procEntities;
 	}
-	public void removeCreature(Creature creature) {
-		creatures.remove(creature);
+	public void addEntity(Entity entity) {
+		entities.add(entity);
+		for (ProcEntity pe : entity.procs) {
+			if (pe.hasAction() && pe.nextAction < 0) {
+				pe.setDelay(0);
+			}
+		}
+	}
+	public void removeEntity(Entity creature) {
+		entities.remove(creature);
 	}
 	public LevelCell cell(int x, int y) {
 		if (x < 0 || y < 0 || x >= width | y >= height) {
@@ -78,16 +91,16 @@ public class Level {
 		return cell(p.x, p.y);
 	}
 	
-	public Creature creatureAt(int x, int y) {
-		for (Creature c : creatures) {
-			if (c.pos.x == x && c.pos.y == y) {
-				return c;
+	public Entity moverAt(int x, int y) {
+		for (Entity e : entities) {
+			if (e.getMover() != null && e.pos.x == x && e.pos.y == y) {
+				return e;
 			}
 		}
 		return null;
 	}
 	
-	public Visibility checkVis(Creature player, Creature actor, Creature target) {
+	public Visibility checkVis(Entity player, Entity actor, Entity target) {
 		if (player == actor) {
 			return Visibility.ACTOR;
 		} else if (player == target) {
@@ -99,7 +112,7 @@ public class Level {
 	}
 	
 	public void updateVis() {
-		Creature pc = Game.getPlayerCreature();
+		Entity pc = Game.getPlayerEntity();
 		for (LevelCell cell : allCells) {
 			cell.light = 0f;
 		}

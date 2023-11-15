@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
-import com.churchofcoyote.hero.roguelike.world.Creature;
+import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.Level;
 
 public class AStar {
@@ -13,7 +13,7 @@ public class AStar {
 	private static PriorityQueue<AStarData> queue = new PriorityQueue<AStarData>();
 	private static AStar instance = new AStar();
 
-	public static List<Point> path(Level level, Creature c, Point origin, Point destination) {
+	public static List<Point> path(Level level, Entity e, Point origin, Point destination) {
 		level.clearTemp();
 		queue.clear();
 
@@ -36,7 +36,7 @@ public class AStar {
 				
 				if (level.contains(newloc) && (newloc.equals(destination) || level.cell(newloc).terrain.isPassable())) {
 					float moveCost = dir.isDiagonal() ? 1.0001f : 1.0f;
-					if (!Game.canMoveTo(c, newloc.x, newloc.y)) {
+					if (!Game.canMoveTo(e, newloc.x, newloc.y)) {
 						moveCost += 10;
 					}
 					check(level, instance.new AStarData(newloc, next.cost + moveCost, next.location));

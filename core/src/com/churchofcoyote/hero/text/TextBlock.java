@@ -334,4 +334,17 @@ public class TextBlock implements GameLogic {
 		wantLocked = true;
 		isLocked = false;
 	}
+
+	public float getPixelX() {
+		return x * fontSize;
+	}
+	public float getPixelY() {
+		return Graphics.HEIGHT - ((y + 1) * fontSize);
+	}
+	public float getPixelWidth() {
+		return text.length() * fontSize;
+	}
+	public float getPixelHeight() {
+		return fontSize;
+	}
 }
