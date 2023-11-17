@@ -9,6 +9,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.churchofcoyote.hero.engine.asciitile.AsciiTileEngine;
+import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
 import com.churchofcoyote.hero.module.*;
@@ -21,6 +22,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	TextEngine textEngine = new TextEngine();
 	EffectEngine effectEngine = new EffectEngine();
 	AsciiTileEngine asciiTileEngine = new AsciiTileEngine();
+	GlyphEngine glyphEngine = new GlyphEngine();
 	ShapeRenderer shapeBatch = new ShapeRenderer();
 	
 	public static final IntroModule introModule = new IntroModule();
@@ -41,12 +43,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		allModules.add(titleModule);
 		allModules.add(roguelikeModule);
 
-		//roguelikeModule.start();
 		introModule.start();
-		//titleModule.start();
-		
-		
-		
 	}
 	
 	public void update(GameState state) {
@@ -59,13 +56,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		effectEngine.update(state);
 		textEngine.update(state);
 		uiEngine.update(state);
-
-		/*
-		if (state.getSeconds() >= 46f && introModule.isRunning()) {
-			introModule.end();
-			titleModule.start();
-		}
-		*/
+		glyphEngine.update(state);
 	}
 	
 	public void render(Graphics g, GraphicsState gState) {
@@ -83,6 +74,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		long start = System.currentTimeMillis();
 	    textEngine.render(g, gState);
 	    HeroGame.updateTimer("te", System.currentTimeMillis() - start);
+		glyphEngine.render(g, gState);
 	    g.endBatch();
 	}
 	
