@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Visibility;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcEntity;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 
@@ -78,8 +78,8 @@ public class Level {
 		return entities.stream().filter(e -> e.pos.x == p.x && e.pos.y == p.y && e.getItem() != null).collect(Collectors.toList());
 	}
 
-	public List<ProcEntity> getProcEntities() {
-		List<ProcEntity> procEntities = new ArrayList<ProcEntity>();
+	public List<Proc> getProcEntities() {
+		List<Proc> procEntities = new ArrayList<Proc>();
 		for (Entity e : entities) {
 			procEntities.addAll(e.procs);
 		}
@@ -87,9 +87,9 @@ public class Level {
 	}
 	public void addEntity(Entity entity) {
 		entities.add(entity);
-		for (ProcEntity pe : entity.procs) {
-			if (pe.hasAction() && pe.nextAction < 0) {
-				pe.setDelay(0);
+		for (Proc p : entity.procs) {
+			if (p.hasAction() && p.nextAction < 0) {
+				p.setDelay(0);
 			}
 		}
 	}

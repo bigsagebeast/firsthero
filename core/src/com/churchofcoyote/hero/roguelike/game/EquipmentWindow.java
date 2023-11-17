@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.roguelike.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.module.RoguelikeModule;
+import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.StringFormat;
@@ -27,6 +28,7 @@ public class EquipmentWindow {
 	}
 
 	public void update(Entity c) {
+		/*
 		rows[0].text = StringFormat.format("Head:  %.16s", "Light helmet");
 		rows[1].text = StringFormat.format("Torso: %.16s", "Leather armor");
 		rows[2].text = StringFormat.format("Legs:  %.16s", "Greaves");
@@ -37,5 +39,16 @@ public class EquipmentWindow {
 		rows[7].text = StringFormat.format("LHand: %.16s", "Iron shield");
 		rows[8].text = StringFormat.format("Range: %.16s", "Shortbow");
 		rows[9].text = StringFormat.format("Ammo:  %.16s", "15 wooden arrows");
+		 */
+
+		int row = 0;
+		for (BodyPart bp : c.body.bodyPlan.getParts())
+		{
+			Entity equipped = c.body.equipment.get(bp);
+			rows[row].text = StringFormat.format("%-8s: %-16s", bp.getAbbrev(),
+					equipped != null ? equipped.name : "None");
+			row++;
+		}
+		parent.compile();
 	}
 }

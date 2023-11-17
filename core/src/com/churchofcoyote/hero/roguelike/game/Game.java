@@ -1,8 +1,10 @@
 package com.churchofcoyote.hero.roguelike.game;
 
+import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.world.*;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcEntity;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcEquippable;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.Point;
 
@@ -12,19 +14,24 @@ public class Game {
 	// current level
 	private static Level level;
 	private static Player player;
-	private static RoguelikeModule module;
+	public static RoguelikeModule roguelikeModule;
 	public static Dungeon dungeon = new Dungeon();
 	public static Bestiary bestiary = new Bestiary();
 	public static Itempedia itempedia = new Itempedia();
 	public static long time = 0;
 	
 	public Game(RoguelikeModule module) {
+		try {
+			BodyPlanpedia.initialize();
+		} catch (SetupException e) {
+			throw new RuntimeException(e);
+		}
 		//level = new Level(60, 60);
 		player = new Player();
 		Entity pc = bestiary.create("player", null);
 		Entity pitchfork = itempedia.create("pitchfork", null);
 		player.entity = pc;
-		Game.module = module;
+		Game.roguelikeModule = module;
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
@@ -36,9 +43,9 @@ public class Game {
 	
 	public void changeLevel(Level nextLevel, Point playerPos) {
 		if (level != null) {
-			for (ProcEntity pe : level.getProcEntities()) {
-				if (pe.hasAction()) {
-					pe.nextAction = pe.nextAction - Game.time;
+			for (Proc p : level.getProcEntities()) {
+				if (p.hasAction()) {
+					p.nextAction = p.nextAction - Game.time;
 				}
 			}
 			level.removeEntity(player.entity);
@@ -76,17 +83,17 @@ public class Game {
 	
 	public void turn() {
 		while (true) {
-			module.redraw();
+			roguelikeModule.redraw();
 
 			long lowestTurn = -1;
 			long secondLowestTurn = -1;
-			ProcEntity lowestProc = null;
-			for (ProcEntity pe : level.getProcEntities()) {
-				if (pe.nextAction != -1 && (lowestTurn == -1 || pe.nextAction < lowestTurn)) {
-					lowestTurn = pe.nextAction;
-					lowestProc = pe;
-				} else if (pe.nextAction != -1 && (secondLowestTurn == -1 || pe.nextAction < secondLowestTurn)) {
-					secondLowestTurn = pe.nextAction;
+			Proc lowestProc = null;
+			for (Proc p : level.getProcEntities()) {
+				if (p.nextAction != -1 && (lowestTurn == -1 || p.nextAction < lowestTurn)) {
+					lowestTurn = p.nextAction;
+					lowestProc = p;
+				} else if (p.nextAction != -1 && (secondLowestTurn == -1 || p.nextAction < secondLowestTurn)) {
+					secondLowestTurn = p.nextAction;
 				}
 			}
 			time = lowestTurn;
@@ -99,8 +106,8 @@ public class Game {
 
 	public boolean pickup(Entity actor, Entity target) {
 		boolean canBePickedUp = false;
-		for (ProcEntity pe : target.procs) {
-			Boolean attempt = pe.preBePickedUp(actor);
+		for (Proc p : target.procs) {
+			Boolean attempt = p.preBePickedUp(actor);
 			if (attempt == null) {
 				continue;
 			} else if (attempt == true) {
@@ -115,8 +122,8 @@ public class Game {
 		}
 
 		boolean canDoPickup = false;
-		for (ProcEntity pe : actor.procs) {
-			Boolean attempt = pe.preDoPickup(target);
+		for (Proc p : actor.procs) {
+			Boolean attempt = p.preDoPickup(target);
 			if (attempt == null) {
 				continue;
 			} else if (attempt == true) {
@@ -130,14 +137,16 @@ public class Game {
 			return false;
 		}
 
+		announce("You pick up the " + target.name);
+
 		level.removeEntity(target);
 		actor.inventory.add(target);
 
-		for (ProcEntity pe : actor.procs) {
-			pe.postDoPickup(target);
+		for (Proc p : actor.procs) {
+			p.postDoPickup(target);
 		}
-		for (ProcEntity pe : target.procs) {
-			pe.postBePickedUp(actor);
+		for (Proc p : target.procs) {
+			p.postBePickedUp(actor);
 		}
 		return true;
 	}
@@ -195,18 +204,29 @@ public class Game {
 	public void cmdPickUp() {
 		List<Entity> itemsHere = level.getItemsOnTile(player.entity.pos);
 		for (Entity e : itemsHere) {
-			if (pickup(player.entity, e)) {
-				announce("You pick up the " + e.name + ".");
-			} else {
+			// TODO move this announce into pickup
+			if (!pickup(player.entity, e)) {
 				announce("You can't pick up the " + e.name + ".");
 			}
 		}
 	}
-	
+
 	public void cmdWait() {
 		player.entity.getMover().setDelay(1000);
 	}
-	
+
+	public void cmdWield() {
+		for (Entity e : player.entity.inventory) {
+			ProcEquippable equippable = e.getEquippable();
+			if (equippable == null)
+				continue;
+			if (equippable.equipmentFor == BodyPart.ANY_HAND) {
+				player.entity.equip(e, BodyPart.PRIMARY_HAND);
+			}
+		}
+		player.entity.getMover().setDelay(1000);
+	}
+
 	public static void cmdMoveBy(int dx, int dy) {
 		int tx = player.entity.pos.x + dx;
 		int ty = player.entity.pos.y + dy;
@@ -270,8 +290,11 @@ public class Game {
 	private static void movePlayer(int tx, int ty) {
 		player.entity.pos = new Point(tx, ty);
 
-		for (Entity e : level.getItemsOnTile(player.entity.pos)) {
-			announce("There is a " + e.name + " here.");
+		for (Entity item : level.getItemsOnTile(player.entity.pos)) {
+			announce("There is a " + item.name + " here.");
+			for (Proc p : item.procs) {
+				p.postBeSteppedOn(player.entity);
+			}
 		}
 
 		//announce("Now standing at " + tx + ", " + ty + ".");
@@ -279,6 +302,11 @@ public class Game {
 	
 	private static void moveNpc(Entity e, int tx, int ty) {
 		e.pos = new Point(tx, ty);
+		for (Entity item : level.getItemsOnTile(e.pos)) {
+			for (Proc p : item.procs) {
+				p.postBeSteppedOn(e);
+			}
+		}
 	}
 	
 	public static boolean canMove(Entity e, int dx, int dy) {
@@ -301,7 +329,7 @@ public class Game {
 		if (s == null) {
 			return;
 		}
-		module.announce(s);
+		roguelikeModule.announce(s);
 	}
 	
 	public static void announceVis(Visibility vis, String actor, String target, String visible, String audible) {

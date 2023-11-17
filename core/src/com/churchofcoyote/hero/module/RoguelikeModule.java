@@ -15,7 +15,7 @@ import com.churchofcoyote.hero.roguelike.game.StatsWindow;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcEntity;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Point;
 
@@ -127,8 +127,8 @@ public class RoguelikeModule extends Module {
 			}
 			if (level.cell(c.pos.x, c.pos.y).visible()) {
 				mainGrid.put(c.glyph, wx + mainWindowOffsetX, wy + mainWindowOffsetY);
-				for (ProcEntity pe : c.procs) {
-					pe.actPlayerLos();
+				for (Proc p : c.procs) {
+					p.actPlayerLos();
 				}
 			}
 		}
@@ -141,8 +141,8 @@ public class RoguelikeModule extends Module {
 			}
 			if (level.cell(c.pos.x, c.pos.y).visible()) {
 				mainGrid.put(c.glyph, wx + mainWindowOffsetX, wy + mainWindowOffsetY);
-				for (ProcEntity pe : c.procs) {
-					pe.actPlayerLos();
+				for (Proc p : c.procs) {
+					p.actPlayerLos();
 				}
 			}
 		}
@@ -205,6 +205,9 @@ public class RoguelikeModule extends Module {
 				case Keys.UNKNOWN:
 					game.cmdWait();
 					break;
+				case Keys.W:
+					game.cmdWield();
+					break;
 			}
 		}
 		if (shift) {
@@ -231,9 +234,11 @@ public class RoguelikeModule extends Module {
 
 	@Override
 	public boolean keyTyped(char key, boolean ctrl, boolean alt) {
-		
-		
 		return true;
+	}
+
+	public void updateEquipmentWindow() {
+		equipWindow.update(Game.getPlayerEntity());
 	}
 	
 }

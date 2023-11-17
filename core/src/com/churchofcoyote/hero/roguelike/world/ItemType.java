@@ -9,5 +9,6 @@ import java.util.function.Consumer;
 public class ItemType {
     public String name;
     public Glyph glyph;
+    public BodyPart equipmentFor;
     Set<Consumer<Entity>> setup = new HashSet<>();
 }

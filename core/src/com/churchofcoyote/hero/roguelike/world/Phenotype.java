@@ -12,4 +12,5 @@ public class Phenotype {
 	public boolean peaceful;
 	public Rank stats;
 	public boolean isMonster;
+	public String bodyPlan;
 }

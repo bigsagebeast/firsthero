@@ -36,13 +36,13 @@ public class PopupModule extends Module {
 
         background1 = new GfxRectFilled(Color.BLACK,
                 popupBlock.getPixelX() - margin,
-                popupBlock.getPixelY() - margin,
+                popupBlock.getPixelY() - margin + 7f,
                 popupBlock.getPixelWidth() + 2f*margin,
                 popupBlock.getPixelHeight() + 2f*margin);
         effectEngine.addGfx(background1);
         background2 = new GfxRectBorder(Color.WHITE,
                 popupBlock.getPixelX() - margin,
-                popupBlock.getPixelY() - margin,
+                popupBlock.getPixelY() - margin + 7f,
                 popupBlock.getPixelWidth() + 2f*margin,
                 popupBlock.getPixelHeight() + 2f*margin);
         effectEngine.addGfx(background2);

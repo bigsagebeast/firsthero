@@ -1,10 +1,9 @@
 package com.churchofcoyote.hero.roguelike.world.proc;
 
-import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.roguelike.game.Player;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
-public class ProcMover extends ProcEntity {
+public class ProcMover extends Proc {
 
     public ProcMover(Entity e) {
         super(e);

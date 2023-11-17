@@ -25,6 +25,7 @@ public class Bestiary {
 		pc.glyph = new Glyph('@', Color.WHITE);
 		pc.stats = Rank.B_PLUS;
 		pc.isMonster = false;
+		pc.bodyPlan = "humanoid";
 
 		Glyph glyphHuman = new Glyph('U', Color.LIGHT_GRAY);
 		
@@ -34,6 +35,7 @@ public class Bestiary {
 		goblin.hitPoints = 16;
 		goblin.stats = Rank.C_MINUS;
 		goblin.isMonster = true;
+		goblin.bodyPlan = "humanoid";
 		
 		farmer.name="Farmer";
 		farmer.glyph = glyphHuman;
@@ -41,7 +43,8 @@ public class Bestiary {
 		farmer.hitPoints = 10;
 		farmer.stats = Rank.D;
 		farmer.isMonster = false;
-		
+		farmer.bodyPlan = "humanoid";
+
 		map.put("player", pc);
 		map.put("goblin", goblin);
 		map.put("farmer", farmer);
@@ -65,6 +68,7 @@ public class Bestiary {
 		e.maxDivinePoints = p.divinePoints;
 		e.glyph = p.glyph;
 		e.stats = p.stats;
+		e.body = new Body(p.bodyPlan);
 		if (key.equals("player")) {
 			e.addProc(new ProcPlayer(e));
 		}

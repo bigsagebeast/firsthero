@@ -13,11 +13,9 @@ public class Fov {
 	* field of view, whereas a value equal to or above 1 means that cell is
 	* in the field of view.
 	*
-	* @param resistanceMap the grid of cells to calculate on where 0 is transparent and 1 is opaque
 	* @param startx the horizontal component of the starting location
 	* @param starty the vertical component of the starting location
 	* @param radius the maximum distance to draw the FOV
-	* @param radiusStrategy provides a means to calculate the radius as desired
 	* @return the computed light grid
 	*/
 	public static void calculateFOV(Level level, int startx, int starty, float radius) {
@@ -90,6 +88,6 @@ public class Fov {
 	}
 	
 	private static float radius(int dx, int dy) {
-		return (dx + dy);
+		return (float)Math.sqrt(dx * dx + dy * dy) - 0.5f;
 	}
 }

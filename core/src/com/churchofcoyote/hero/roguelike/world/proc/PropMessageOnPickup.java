@@ -1,20 +1,23 @@
 package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.churchofcoyote.hero.GameLoop;
+import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
-public class PropPopupOnSeen extends Proc {
+public class PropMessageOnPickup extends Proc {
 
     private String text;
 
-    public PropPopupOnSeen(Entity e, String text) {
+    public PropMessageOnPickup(Entity e, String text) {
         super(e);
         this.text = text;
     }
 
-    public void actPlayerLos() {
+    @Override
+    public void postBePickedUp(Entity actor) {
         if (active) {
-            GameLoop.popupModule.createPopup(text, 3f, entity, 0.75f);
+            // TODO only for player?
+            Game.announce(text);
         }
         active = false;
     }

@@ -84,23 +84,6 @@ public class GameLoop implements GameLogic, InputProcessor {
 	    textEngine.render(g, gState);
 	    HeroGame.updateTimer("te", System.currentTimeMillis() - start);
 	    g.endBatch();
-
-	    
-		
-	    /*
-	    g.startBatch();
-		g.font().setColor(Color.BLUE);
-		g.font().getData().setScale(1.0f);
-		g.font().draw(g.batch(), "Test", 20f, 20f);
-		g.batch().end();
-		g.batch().begin();
-		g.batch().setShader(g.fontShader());
-		g.font().setColor(Color.WHITE);
-		g.font().getData().setScale(0.5f);
-		g.font().draw(g.batch(), "Test2", 20f, 150f);
-		g.batch().setShader(null);
-		g.batch().end();
-		*/
 	}
 	
 	@Override

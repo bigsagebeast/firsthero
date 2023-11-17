@@ -1,15 +1,16 @@
 package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
-public class ProcEntity {
+public class Proc {
 
     public Entity entity;
     public long nextAction = -1;
     public boolean active;
 
-    public ProcEntity(Entity e) {
+    public Proc(Entity e) {
         entity = e;
         active = true;
     }
@@ -33,6 +34,18 @@ public class ProcEntity {
 
     public Boolean preDoPickup(Entity target) { return null; }
     public void postDoPickup(Entity target) {}
+
+    public Boolean preBeEquipped(BodyPart bp, Entity actor) { return null; }
+    public void postBeEquipped(BodyPart bp, Entity actor) {}
+    public Boolean preBeUnequipped(BodyPart bp, Entity actor) { return null; }
+    public void postBeUnequipped(BodyPart bp, Entity actor) {}
+
+    public Boolean preDoEquip(BodyPart bp, Entity target) { return null; }
+    public void postDoEquip(BodyPart bp, Entity target) {}
+    public Boolean preDoUnequip(BodyPart bp, Entity target) { return null; }
+    public void postDoUnequip(BodyPart bp, Entity target) {}
+
+    public void postBeSteppedOn(Entity actor) { }
 
     public void actPlayerLos() {}
 }
