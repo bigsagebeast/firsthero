@@ -1,4 +1,26 @@
-1 3
-0 0 terrain:grass
-0 1 wall:n
-0 2 wall:nsew
+1 25
+0 0 terrain.grass
+0 1 wall.stone:x
+0 2 wall.stone:n
+0 3 wall.stone:w
+0 4 wall.stone:nw
+0 5 wall.stone:e
+0 6 wall.stone:ne
+0 7 wall.stone:we
+0 8 wall.stone:nwe
+0 9 wall.stone:s
+0 10 wall.stone:ns
+0 11 wall.stone:ws
+0 12 wall.stone:nws
+0 13 wall.stone:es
+0 14 wall.stone:nes
+0 15 wall.stone:wes
+0 16 wall.stone:nwes
+0 17 creature.humanoid
+0 18 terrain.tree
+0 19 terrain.mountain
+0 20 terrain.downstair
+0 21 terrain.upstair
+0 22 terrain.dot
+0 23 terrain.floor
+0 24 item.pitchfork

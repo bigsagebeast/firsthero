@@ -37,6 +37,7 @@ public class GlyphFile {
                 int row = Integer.valueOf(entry[0]);
                 int column = Integer.valueOf(entry[1]);
                 String name = entry[2];
+
                 glyphName[row][column] = name;
 
                 entryLine = reader.readLine();

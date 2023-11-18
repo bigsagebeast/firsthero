@@ -2,6 +2,8 @@ package com.churchofcoyote.hero.roguelike.world;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.engine.asciitile.Glyph;
+import com.churchofcoyote.hero.glyphtile.Palette;
+import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 
 import java.util.HashMap;
@@ -15,6 +17,8 @@ public class Itempedia {
         ItemType pitchfork = new ItemType();
         pitchfork.name = "pitchfork";
         pitchfork.glyph = new Glyph('/', Color.LIGHT_GRAY);
+        pitchfork.glyphName = "item.pitchfork";
+        pitchfork.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
         pitchfork.equipmentFor = BodyPart.ANY_HAND;
         pitchfork.setup.add((e) -> {e.addProc(new PropPopupOnSeen(e, "Pick up your weapon"));});
         pitchfork.setup.add((e) -> {e.addProc(new PropMessageOnStepOn(e, "Press 'comma' to pick it up."));});
@@ -32,6 +36,8 @@ public class Itempedia {
             e.name = t.name;
         }
         e.glyph = t.glyph;
+        e.glyphName = t.glyphName;
+        e.palette = t.palette;
 
         for (Consumer<Entity> consumer : t.setup) {
             consumer.accept(e);

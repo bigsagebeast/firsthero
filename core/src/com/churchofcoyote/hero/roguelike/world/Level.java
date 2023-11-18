@@ -10,7 +10,7 @@ import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 
 public class Level {
-	private long width, height;
+	private int width, height;
 	private List<Entity> entities;
 	private LevelCell[][] cell;
 	private LevelCell[] allCells;
@@ -49,10 +49,10 @@ public class Level {
 		return null;
 	}
 	
-	public long getWidth() {
+	public int getWidth() {
 		return width;
 	}
-	public long getHeight() {
+	public int getHeight() {
 		return height;
 	}
 	public boolean contains(Point p) {
@@ -73,9 +73,17 @@ public class Level {
 		return entities.stream().filter(e -> e.getMover() != null).collect(Collectors.toList());
 	}
 
+	public List<Entity> getEntitiesOnTile(Point p) {
+		return entities.stream().filter(e -> e.pos.x == p.x && e.pos.y == p.y).collect(Collectors.toList());
+	}
+
 	public List<Entity> getItemsOnTile(Point p) {
-		//return entities.stream().filter(e -> e.pos == p && e.getItem() != null).collect(Collectors.toList());
+		// TODO exclude entities that are also movers?
 		return entities.stream().filter(e -> e.pos.x == p.x && e.pos.y == p.y && e.getItem() != null).collect(Collectors.toList());
+	}
+
+	public List<Entity> getMoversOnTile(Point p) {
+		return entities.stream().filter(e -> e.pos.x == p.x && e.pos.y == p.y && e.getMover() != null).collect(Collectors.toList());
 	}
 
 	public List<Proc> getProcEntities() {
@@ -142,5 +150,9 @@ public class Level {
 		for (LevelCell cell : allCells) {
 			cell.temp = null;
 		}
+	}
+
+	public Boolean withinBounds(int x, int y) {
+		return (x >= 0 && x < width && y >= 0 && y < height);
 	}
 }

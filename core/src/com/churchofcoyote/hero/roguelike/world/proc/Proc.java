@@ -48,4 +48,6 @@ public class Proc {
     public void postBeSteppedOn(Entity actor) { }
 
     public void actPlayerLos() {}
+
+    public void beDestroyed() {}
 }

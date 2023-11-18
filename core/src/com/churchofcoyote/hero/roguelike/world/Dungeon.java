@@ -65,9 +65,7 @@ public class Dungeon {
 			Terrain mapTo = Terrain.map.get(terrainName);
 			terrainMap.put(mapFrom, mapTo);
 		}
-		terrainMap.put(">", Terrain.map.get("downstair"));
-		terrainMap.put("<", Terrain.map.get("upstair"));
-		
+
 		String mapHeader = input.readLine();
 		String[] mapSplit = mapHeader.split(" ");
 		if (mapSplit.length != 3 || !mapSplit[0].equals("MAP")) {

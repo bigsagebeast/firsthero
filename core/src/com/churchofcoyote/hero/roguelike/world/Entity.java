@@ -1,6 +1,8 @@
 package com.churchofcoyote.hero.roguelike.world;
 
+import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.engine.asciitile.Glyph;
+import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Player;
 import com.churchofcoyote.hero.roguelike.game.Rank;
@@ -26,8 +28,8 @@ public class Entity {
     public List<Entity> inventory = new ArrayList<>();
     public Body body;
 
-    // schedule for removal?
-    public boolean dead;
+    public boolean dead = false;
+    public boolean destroyed = false;
 
     // combat stats
     public int hitPoints;
@@ -38,6 +40,8 @@ public class Entity {
     public int maxDivinePoints;
 
     public Phenotype phenotype;
+    public String glyphName;
+    public PaletteEntry palette;
 
     public Rank stats = Rank.C;
 
@@ -207,4 +211,14 @@ public class Entity {
         inventory.add(e);
     }
 
+    // TODO call this whenever things die or permanently leave the world
+    // TODO maybe this needs a preDestroy instead?
+    // TODO check that something isn't destroyed whenever interacting with it - throw error if it is
+    public void destroy() {
+        for (Proc p : procs) {
+            p.beDestroyed();
+        }
+        GameLoop.glyphEngine.destroyEntity(this);
+        destroyed = true;
+    }
 }

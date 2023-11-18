@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.engine.asciitile.Glyph;
+import com.churchofcoyote.hero.glyphtile.Palette;
+import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMonster;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
@@ -26,6 +28,8 @@ public class Bestiary {
 		pc.stats = Rank.B_PLUS;
 		pc.isMonster = false;
 		pc.bodyPlan = "humanoid";
+		pc.glyphName = "creature.humanoid";
+		pc.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_YELLOW, Palette.COLOR_YELLOW);
 
 		Glyph glyphHuman = new Glyph('U', Color.LIGHT_GRAY);
 		
@@ -36,7 +40,9 @@ public class Bestiary {
 		goblin.stats = Rank.C_MINUS;
 		goblin.isMonster = true;
 		goblin.bodyPlan = "humanoid";
-		
+		goblin.glyphName = "creature.humanoid";
+		goblin.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_BROWN);
+
 		farmer.name="Farmer";
 		farmer.glyph = glyphHuman;
 		farmer.peaceful = true;
@@ -44,6 +50,8 @@ public class Bestiary {
 		farmer.stats = Rank.D;
 		farmer.isMonster = false;
 		farmer.bodyPlan = "humanoid";
+		farmer.glyphName = "creature.humanoid";
+		farmer.paletteEntry = new PaletteEntry(Palette.COLOR_YELLOW, Palette.COLOR_TAN, Palette.COLOR_BROWN);
 
 		map.put("player", pc);
 		map.put("goblin", goblin);
@@ -69,6 +77,8 @@ public class Bestiary {
 		e.glyph = p.glyph;
 		e.stats = p.stats;
 		e.body = new Body(p.bodyPlan);
+		e.glyphName = p.glyphName;
+		e.palette = p.paletteEntry;
 		if (key.equals("player")) {
 			e.addProc(new ProcPlayer(e));
 		}

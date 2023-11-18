@@ -22,7 +22,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	TextEngine textEngine = new TextEngine();
 	EffectEngine effectEngine = new EffectEngine();
 	AsciiTileEngine asciiTileEngine = new AsciiTileEngine();
-	GlyphEngine glyphEngine = new GlyphEngine();
+	public static final GlyphEngine glyphEngine = new GlyphEngine();
 	ShapeRenderer shapeBatch = new ShapeRenderer();
 	
 	public static final IntroModule introModule = new IntroModule();
@@ -31,7 +31,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final PopupModule popupModule = new PopupModule();
 	public static final DialogueBoxModule dialogueBoxModule = new DialogueBoxModule();
 	private List<Module> allModules = new ArrayList<Module>();
-	
+
 	public GameLoop() {
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.setVSync(false);
@@ -52,7 +52,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 				m.update(state);
 			}
 		}
-		asciiTileEngine.update(state);
+		//asciiTileEngine.update(state);
 		effectEngine.update(state);
 		textEngine.update(state);
 		uiEngine.update(state);
@@ -66,7 +66,8 @@ public class GameLoop implements GameLogic, InputProcessor {
 	    shapeBatch.end();
 
 	    g.startBatch();
-	    asciiTileEngine.render(g, gState);
+	    //asciiTileEngine.render(g, gState);
+		glyphEngine.render(g, gState);
 		uiEngine.render(g, gState);
 		g.endBatch();
 		effectEngine.render(g, gState);
@@ -74,7 +75,6 @@ public class GameLoop implements GameLogic, InputProcessor {
 		long start = System.currentTimeMillis();
 	    textEngine.render(g, gState);
 	    HeroGame.updateTimer("te", System.currentTimeMillis() - start);
-		glyphEngine.render(g, gState);
 	    g.endBatch();
 	}
 	

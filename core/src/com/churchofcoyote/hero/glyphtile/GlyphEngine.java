@@ -2,22 +2,56 @@ package com.churchofcoyote.hero.glyphtile;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.churchofcoyote.hero.GameLogic;
-import com.churchofcoyote.hero.GameState;
-import com.churchofcoyote.hero.Graphics;
-import com.churchofcoyote.hero.GraphicsState;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.churchofcoyote.hero.*;
+import com.churchofcoyote.hero.module.RoguelikeModule;
+import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.Level;
+import com.churchofcoyote.hero.roguelike.world.Terrain;
+import com.churchofcoyote.hero.util.Point;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GlyphEngine implements GameLogic {
     public static int GLYPH_WIDTH = 16;
     public static int GLYPH_HEIGHT = 24;
+
+    static final int SCREEN_TILE_WIDTH = 45;
+    static final int SCREEN_TILE_HEIGHT = 31;
+
+    static final int RENDER_OFFSET_X = 8;
+    static final int RENDER_OFFSET_Y = 16;
+
+    // TODO convert to pos?
+    int offsetX = 0;
+    int offsetY = 0;
+
+    private GlyphGrid grid;
+
+    private FrameBuffer buffer;
+    private TextureRegion texRegion;
+    private TerrainGlyph terrainGlyph;
+    private EntityGlyph entityGlyph;
+    private Level level;
 
     public GlyphEngine() {
         GlyphIndex.initialize();
         Palette.initialize();
 
         loadGlyphFile("tiles/terrain.gly");
+    }
+
+    public void initializeLevel(Level level) {
+        // TODO caching?
+        this.level = level;
+        grid = new GlyphGrid(level.getWidth(), level.getHeight());
+
+        // should be initialized by now, since it's static
+        terrainGlyph = new TerrainGlyph(Terrain.map);
+        entityGlyph = new EntityGlyph();
     }
 
     private void loadGlyphFile(String filename) {
@@ -29,6 +63,15 @@ public class GlyphEngine implements GameLogic {
         for (int row = 0; row < file.rows; row++) {
             for (int column = 0; column < file.columns; column++) {
                 if (file.glyphName[row][column] != null) {
+                    String[] nameSplit = file.glyphName[row][column].split(":");
+                    String blockJoinStr = (nameSplit.length > 1) ? nameSplit[1] : "";
+
+                    int blockJoin = BlockJoin.calculate(
+                            blockJoinStr.contains("n"),
+                            blockJoinStr.contains("w"),
+                            blockJoinStr.contains("e"),
+                            blockJoinStr.contains("s"));
+
                     TextureRegion glyphRegion = new TextureRegion(file.texture,
                             column * GLYPH_WIDTH, row * GLYPH_HEIGHT);
 
@@ -38,20 +81,134 @@ public class GlyphEngine implements GameLogic {
                             0, 0, GLYPH_WIDTH, GLYPH_HEIGHT);
 
                     BaseGlyph baseGlyph = new BaseGlyph(pixmap);
-                    GlyphIndex.add(file.glyphName[row][column], baseGlyph);
+
+                    GlyphIndex.add(nameSplit[0], baseGlyph, blockJoin);
                 }
             }
         }
     }
 
+    private boolean isDirty() {
+        return true;
+    }
+
+    private void compile() {
+        long start = System.currentTimeMillis();
+        if (isDirty()) {
+            for (int x = offsetX - (SCREEN_TILE_WIDTH / 2); x <= offsetX + (SCREEN_TILE_WIDTH / 2); x++) {
+                for (int y = offsetY - (SCREEN_TILE_HEIGHT / 2); y <= offsetY + (SCREEN_TILE_HEIGHT / 2); y++) {
+                    // could these ever be different?
+                    if (grid.withinBounds(x, y) && level.withinBounds(x, y)) {
+                        grid.clearBackground(x, y);
+
+                        Terrain t = level.cell(x, y).terrain;
+                        GlyphTile[] blockGlyphs = terrainGlyph.getGlyphTile(t);
+                        GlyphTile terrainGlyph = blockGlyphs[0];
+
+                        List<GlyphTile> itemTiles = new ArrayList<>();
+                        for (Entity item : level.getItemsOnTile(new Point(x, y))) {
+                            GlyphTile itemTile = entityGlyph.getGlyph(item);
+                            itemTiles.add(itemTile);
+                        }
+
+                        GlyphTile moverTile = null;
+                        Entity e = level.getEntitiesOnTile(new Point(x, y)).stream().findAny().orElse(null);
+                        if (e != null) {
+                            moverTile = entityGlyph.getGlyph(e);
+                        }
+
+                        if (moverTile != null) {
+                            grid.put(moverTile, x, y);
+                            for (GlyphTile itemTile : itemTiles) {
+                                grid.addBackground(itemTile, x, y);
+                            }
+                        }
+                        else if (itemTiles.size() > 0) {
+                            grid.put(itemTiles.get(0), x, y);
+                            for (int i=1; i<itemTiles.size(); i++) {
+                                grid.addBackground(itemTiles.get(i), x, y);
+                            }
+                        } else {
+                            grid.put(terrainGlyph, x, y);
+                        }
+                    }
+                }
+            }
+        }
+        HeroGame.updateTimer("gCom", System.currentTimeMillis() - start);
+    }
+
     @Override
     public void update(GameState state) {
-
+        if (Game.getPlayerEntity() == null) {
+            return;
+        }
+        if (offsetX != Game.getPlayerEntity().pos.x) System.out.println("Updated");
+        offsetX = Game.getPlayerEntity().pos.x;
+        offsetY = Game.getPlayerEntity().pos.y;
     }
 
     @Override
     public void render(Graphics g, GraphicsState gState) {
-        GlyphTile grass = GlyphIndex.get("wall:n").create(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT);
-        g.batch().draw(grass.texture, 20, 20);
+        if (level == null) {
+            return;
+        }
+        if (offsetX != Game.getPlayerEntity().pos.x) {
+            System.out.println("off");
+        }
+        if (buffer == null || isDirty()) {
+            compile();
+            long start = System.currentTimeMillis();
+            if (buffer != null) {
+                buffer.dispose();
+            }
+            buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Graphics.WIDTH, Graphics.HEIGHT, false);
+            texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Graphics.WIDTH, Graphics.HEIGHT);
+
+            g.endBatch();
+            buffer.begin();
+            g.startBatch();
+
+            for (int x = 0; x < SCREEN_TILE_WIDTH; x++) {
+                for (int y = 0; y < SCREEN_TILE_HEIGHT; y++) {
+                    if (grid.withinBounds(x + offsetX - SCREEN_TILE_WIDTH/2, y + offsetY - SCREEN_TILE_HEIGHT/2)) {
+                        // TODO background
+                        GlyphTile glyph = grid.get(x + offsetX - SCREEN_TILE_WIDTH/2, y + offsetY - SCREEN_TILE_HEIGHT/2);
+                        if (glyph != null) {
+                            g.batch().draw(glyph.texture, RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH, RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT);
+                        }
+                    }
+                    // TODO else?
+                }
+            }
+
+            g.endBatch();
+            buffer.end();
+            g.startBatch();
+            HeroGame.updateTimer("gDrw", System.currentTimeMillis() - start);
+        }
+        g.batch().draw(texRegion, 0, 0, g.WIDTH, g.HEIGHT);
+
     }
+
+    public void destroyEntity(Entity e) {
+        entityGlyph.forget(e);
+    }
+
+    public float getTilePixelX(int x, int y) {
+        return (x - leftTile() + 0.5f) * GLYPH_WIDTH + RENDER_OFFSET_X;
+    }
+
+    public float getTilePixelY(int x, int y) {
+        return (y - topTile() + 0.5f) * GLYPH_HEIGHT + RENDER_OFFSET_Y;
+    }
+
+    private int leftTile() {
+        return offsetX - SCREEN_TILE_WIDTH/2;
+    }
+
+    private int topTile() {
+        return offsetY - SCREEN_TILE_HEIGHT/2;
+    }
+
 }

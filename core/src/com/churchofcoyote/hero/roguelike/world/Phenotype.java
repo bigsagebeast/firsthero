@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.roguelike.world;
 
 import com.churchofcoyote.hero.engine.asciitile.Glyph;
+import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 
 public class Phenotype {
@@ -13,4 +14,6 @@ public class Phenotype {
 	public Rank stats;
 	public boolean isMonster;
 	public String bodyPlan;
+	public String glyphName;
+	public PaletteEntry paletteEntry;
 }

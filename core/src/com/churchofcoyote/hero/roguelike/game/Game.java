@@ -1,5 +1,6 @@
 package com.churchofcoyote.hero.roguelike.game;
 
+import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.world.*;
@@ -56,6 +57,7 @@ public class Game {
 		level.addEntity(player.entity);
 		player.entity.pos = playerPos;
 
+		GameLoop.glyphEngine.initializeLevel(level);
 	}
 	
 	public static Level getLevel() {
@@ -67,6 +69,9 @@ public class Game {
 	}
 	
 	public static Entity getPlayerEntity() {
+		if (level == null) {
+			return null;
+		}
 		for (Entity c : level.getEntities()) {
 			if (player.isEntity(c)) {
 				return c;
@@ -244,6 +249,7 @@ public class Game {
 				// happen every tick?
 				if (targetCreature.dead) {
 					level.removeEntity(targetCreature);
+					targetCreature.destroy();
 				}
 			}
 			return;
