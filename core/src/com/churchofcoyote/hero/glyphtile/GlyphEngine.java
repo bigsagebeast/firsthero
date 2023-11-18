@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.glyphtile;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -37,6 +38,8 @@ public class GlyphEngine implements GameLogic {
     private EntityGlyph entityGlyph;
     private Level level;
 
+    private Boolean dirty = true;
+
     public GlyphEngine() {
         GlyphIndex.initialize();
         Palette.initialize();
@@ -72,9 +75,6 @@ public class GlyphEngine implements GameLogic {
                             blockJoinStr.contains("e"),
                             blockJoinStr.contains("s"));
 
-                    TextureRegion glyphRegion = new TextureRegion(file.texture,
-                            column * GLYPH_WIDTH, row * GLYPH_HEIGHT);
-
                     Pixmap pixmap = new Pixmap(GLYPH_WIDTH, GLYPH_HEIGHT, data.getFormat());
                     pixmap.drawPixmap(sheetPixmap,
                             column * GLYPH_WIDTH, row * GLYPH_HEIGHT, GLYPH_WIDTH, GLYPH_HEIGHT,
@@ -92,6 +92,20 @@ public class GlyphEngine implements GameLogic {
         return true;
     }
 
+    public void dirty() {
+        this.dirty = true;
+    }
+
+    boolean matchesBlockType(int x, int y, String blockType) {
+        if (x < 0 || x >= level.getWidth() || y < 0 || y >= level.getHeight()) {
+            return true;
+        }
+        if (level.cell(x, y).terrain.getBlockCategory() == null) {
+            return false;
+        }
+        return level.cell(x, y).terrain.getBlockCategory().equals(blockType);
+    }
+
     private void compile() {
         long start = System.currentTimeMillis();
         if (isDirty()) {
@@ -101,9 +115,24 @@ public class GlyphEngine implements GameLogic {
                     if (grid.withinBounds(x, y) && level.withinBounds(x, y)) {
                         grid.clearBackground(x, y);
 
+                        if (!level.cell(x, y).explored) {
+                            grid.put(GlyphTile.BLANK, x, y);
+                            continue;
+                        }
+
                         Terrain t = level.cell(x, y).terrain;
                         GlyphTile[] blockGlyphs = terrainGlyph.getGlyphTile(t);
-                        GlyphTile terrainGlyph = blockGlyphs[0];
+                        String blockCategory = t.getBlockCategory();
+                        int blockDirection = 0;
+                        if (t.getBlockCategory() != null) {
+                            blockDirection = BlockJoin.calculate(
+                                    matchesBlockType(x, y-1, blockCategory),
+                                    matchesBlockType(x-1, y, blockCategory),
+                                    matchesBlockType(x+1, y, blockCategory),
+                                    matchesBlockType(x, y+1, blockCategory)
+                            );
+                        }
+                        GlyphTile terrainGlyph = blockGlyphs[blockDirection];
 
                         List<GlyphTile> itemTiles = new ArrayList<>();
                         for (Entity item : level.getItemsOnTile(new Point(x, y))) {
@@ -112,18 +141,18 @@ public class GlyphEngine implements GameLogic {
                         }
 
                         GlyphTile moverTile = null;
-                        Entity e = level.getEntitiesOnTile(new Point(x, y)).stream().findAny().orElse(null);
+                        Entity e = level.getMoversOnTile(new Point(x, y)).stream().findAny().orElse(null);
                         if (e != null) {
                             moverTile = entityGlyph.getGlyph(e);
                         }
 
-                        if (moverTile != null) {
+                        if (moverTile != null && level.cell(x, y).visible()) {
                             grid.put(moverTile, x, y);
                             for (GlyphTile itemTile : itemTiles) {
                                 grid.addBackground(itemTile, x, y);
                             }
                         }
-                        else if (itemTiles.size() > 0) {
+                        else if (itemTiles.size() > 0 && level.cell(x, y).visible()) {
                             grid.put(itemTiles.get(0), x, y);
                             for (int i=1; i<itemTiles.size(); i++) {
                                 grid.addBackground(itemTiles.get(i), x, y);
@@ -134,6 +163,7 @@ public class GlyphEngine implements GameLogic {
                     }
                 }
             }
+            dirty = false;
         }
         HeroGame.updateTimer("gCom", System.currentTimeMillis() - start);
     }
@@ -143,7 +173,6 @@ public class GlyphEngine implements GameLogic {
         if (Game.getPlayerEntity() == null) {
             return;
         }
-        if (offsetX != Game.getPlayerEntity().pos.x) System.out.println("Updated");
         offsetX = Game.getPlayerEntity().pos.x;
         offsetY = Game.getPlayerEntity().pos.y;
     }
@@ -152,9 +181,6 @@ public class GlyphEngine implements GameLogic {
     public void render(Graphics g, GraphicsState gState) {
         if (level == null) {
             return;
-        }
-        if (offsetX != Game.getPlayerEntity().pos.x) {
-            System.out.println("off");
         }
         if (buffer == null || isDirty()) {
             compile();
@@ -175,7 +201,8 @@ public class GlyphEngine implements GameLogic {
                         // TODO background
                         GlyphTile glyph = grid.get(x + offsetX - SCREEN_TILE_WIDTH/2, y + offsetY - SCREEN_TILE_HEIGHT/2);
                         if (glyph != null) {
-                            g.batch().draw(glyph.texture, RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH, RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT);
+                            Texture drawTexture = level.cell(x + offsetX - SCREEN_TILE_WIDTH/2, y + offsetY - SCREEN_TILE_HEIGHT/2).visible() ? glyph.texture : glyph.grayTexture;
+                            g.batch().draw(drawTexture, RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH, RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT);
                         }
                     }
                     // TODO else?

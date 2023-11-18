@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.module;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
@@ -159,7 +160,6 @@ public class RoguelikeModule extends Module {
 	public void update(GameState state) {
 		process();
 		//asciiTileEngine.update(state);
-
 	}
 
 	@Override
@@ -170,6 +170,7 @@ public class RoguelikeModule extends Module {
 
 	@Override
 	public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
+		GameLoop.glyphEngine.dirty();
 		if (!shift && !ctrl && !alt) {
 			switch (keycode) {
 				case Keys.A:

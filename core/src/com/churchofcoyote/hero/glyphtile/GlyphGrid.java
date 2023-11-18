@@ -17,18 +17,13 @@ public class GlyphGrid {
 		return (x >= 0 && x < width && y >= 0 && y < height);
 	}
 
-	/*
-	public GlyphGrid() {
-		this(60, 60);
-	}
-	 */
-
 	public GlyphGrid(int width, int height) {
 		this.width = width;
 		this.height = height;
 		initialize();
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	private void initialize() {
 		glyph = new GlyphTile[height][];
 		glyphBackground = new ArrayList[height][];

@@ -38,7 +38,7 @@ public class Terrain {
 		map.put("grass", new Terrain("..,,`'", Color.FOREST, "grass", true, "terrain.grass", new PaletteEntry(Palette.COLOR_LIGHTGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_CHARTREUSE, Palette.COLOR_TRANSPARENT), null));
 		map.put("wall", new Terrain("#", Color.LIGHT_GRAY, "a wall", false, "wall.stone", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), "wall"));
 		map.put("floor", new Terrain("_", Color.BROWN, "wood floor", true, "terrain.floor", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null));
-		map.put("mountain", new Terrain("^^#", Color.LIGHT_GRAY, "the mountainside", false, "terrain.mountain", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_FORESTGREEN, Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT), "wall"));
+		map.put("mountain", new Terrain("^^#", Color.LIGHT_GRAY, "the mountainside", false, "terrain.mountain", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_FORESTGREEN, Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT), null));
 		
 		map.put("upstair", new Terrain("<", Color.WHITE, "stairs leading up", true, "terrain.upstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null));
 		map.put("downstair", new Terrain(">", Color.WHITE, "stairs leading down", true, "terrain.downstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null));

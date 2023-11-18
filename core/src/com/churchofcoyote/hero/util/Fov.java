@@ -25,7 +25,8 @@ public class Fov {
 	    Fov.radius = radius;
 	    
 	    level.cell(startx, starty).light = 10f;
-	    
+		level.cell(startx, starty).explored = true;
+
 	    for (Compass d : Compass.diagonals()) {
 	        castLight(1, 1.0f, 0.0f, 0, d.getX(), d.getY(), 0);
 	        castLight(1, 1.0f, 0.0f, d.getX(), 0, 0, d.getY());

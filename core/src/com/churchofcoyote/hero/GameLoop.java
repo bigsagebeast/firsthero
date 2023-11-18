@@ -1,7 +1,6 @@
 package com.churchofcoyote.hero;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,11 +12,11 @@ import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
 import com.churchofcoyote.hero.module.*;
+import com.churchofcoyote.hero.util.QueuedKeypress;
 
 import javax.print.Doc;
 
 public class GameLoop implements GameLogic, InputProcessor {
-
 	TextEngine uiEngine = new TextEngine();
 	TextEngine textEngine = new TextEngine();
 	EffectEngine effectEngine = new EffectEngine();
@@ -31,6 +30,8 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final PopupModule popupModule = new PopupModule();
 	public static final DialogueBoxModule dialogueBoxModule = new DialogueBoxModule();
 	private List<Module> allModules = new ArrayList<Module>();
+	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
+	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
 
 	public GameLoop() {
 		//Gdx.graphics.setContinuousRendering(false);
@@ -45,13 +46,33 @@ public class GameLoop implements GameLogic, InputProcessor {
 
 		introModule.start();
 	}
-	
+
 	public void update(GameState state) {
 		for (Module m : allModules) {
 			if (m.isRunning()) {
 				m.update(state);
 			}
 		}
+		for (QueuedKeypress q : queuedKeyTyped) {
+			for (Module m : allModules) {
+				if (m.isRunning()) {
+					if (m.keyTyped((char) q.keycode, q.ctrl, q.alt)) {
+						break;
+					}
+				}
+			}
+		}
+		queuedKeyTyped.clear();
+		for (QueuedKeypress q : queuedKeyDown) {
+			for (Module m : allModules) {
+				if (m.isRunning()) {
+					if (m.keyDown(q.keycode, q.shift, q.ctrl, q.alt)) {
+						break;
+					}
+				}
+			}
+		}
+		queuedKeyDown.clear();
 		//asciiTileEngine.update(state);
 		effectEngine.update(state);
 		textEngine.update(state);
@@ -84,18 +105,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
 		boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
 		boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
-/*		if (keycode == Input.Keys.LEFT ||
-			keycode == Input.Keys.RIGHT ||
-			keycode == Input.Keys.UP ||
-			keycode == Input.Keys.DOWN)*/ {
-			for (Module m : allModules) {
-				if (m.isRunning()) {
-					if (m.keyDown(keycode, shift, ctrl, alt)) {
-						return true;
-					}
-				}
-			}
-		}
+		queuedKeyDown.add(new QueuedKeypress(keycode, shift, ctrl, alt));
 		return false;
 	}
 
@@ -110,13 +120,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
 		boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
 		boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
-		for (Module m : allModules) {
-			if (m.isRunning()) {
-				if (m.keyTyped(character, ctrl, alt)) {
-					return true;
-				}
-			}
-		}
+		queuedKeyTyped.add(new QueuedKeypress((int)character, shift, ctrl, alt));
 		return false;
 	}
 

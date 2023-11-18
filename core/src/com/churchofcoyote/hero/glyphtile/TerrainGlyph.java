@@ -10,16 +10,17 @@ public class TerrainGlyph {
 
     public TerrainGlyph(Map<String, Terrain> terrainMap) {
         for (Terrain t : terrainMap.values()) {
-            BaseGlyph b = GlyphIndex.get(t.getGlyphName());
             GlyphTile[] blockJoins;
             if (t.getBlockCategory() == null)
             {
                 blockJoins = new GlyphTile[1];
+                BaseGlyph b = GlyphIndex.get(t.getGlyphName());
                 blockJoins[0] = b.create(t.getPaletteEntry());
             } else {
                 blockJoins = new GlyphTile[BlockJoin.SIZE];
                 for (int i=0; i<BlockJoin.SIZE; i++) {
-                    blockJoins[0] = b.create(t.getPaletteEntry());
+                    BaseGlyph b = GlyphIndex.get(t.getGlyphName(), i);
+                    blockJoins[i] = b.create(t.getPaletteEntry());
                 }
             }
             map.put(t, blockJoins);
