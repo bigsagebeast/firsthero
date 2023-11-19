@@ -28,19 +28,6 @@ public class EquipmentWindow {
 	}
 
 	public void update(Entity c) {
-		/*
-		rows[0].text = StringFormat.format("Head:  %.16s", "Light helmet");
-		rows[1].text = StringFormat.format("Torso: %.16s", "Leather armor");
-		rows[2].text = StringFormat.format("Legs:  %.16s", "Greaves");
-		rows[3].text = StringFormat.format("Arms:  %.16s", "Gloves");
-		rows[4].text = StringFormat.format("Feet:  %.16s", "Leather boots");
-		rows[5].text = "";
-		rows[6].text = StringFormat.format("RHand: %.16s", "Iron short sword");
-		rows[7].text = StringFormat.format("LHand: %.16s", "Iron shield");
-		rows[8].text = StringFormat.format("Range: %.16s", "Shortbow");
-		rows[9].text = StringFormat.format("Ammo:  %.16s", "15 wooden arrows");
-		 */
-
 		int row = 0;
 		for (BodyPart bp : c.body.bodyPlan.getParts())
 		{

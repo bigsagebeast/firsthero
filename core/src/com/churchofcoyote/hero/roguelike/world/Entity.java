@@ -43,6 +43,8 @@ public class Entity {
     public String glyphName;
     public PaletteEntry palette;
 
+    public ItemType itemType;
+
     public Rank stats = Rank.C;
 
     public void addProc(Proc proc)
@@ -105,7 +107,7 @@ public class Entity {
                 }
             }
             for (Proc p : alreadyEquipped.procs) {
-                Boolean val = p.preBeUnequipped(bp, this) == false;
+                Boolean val = p.preBeUnequipped(bp, this);
                 if (val != null && !val) {
                     if (this == Game.getPlayerEntity()) {
                         // TODO should be handled by other proc
@@ -126,6 +128,10 @@ public class Entity {
             }
             for (Proc p : alreadyEquipped.procs) {
                 p.postBeUnequipped(bp, this);
+            }
+            if (this == Game.getPlayerEntity())
+            {
+                Game.roguelikeModule.updateEquipmentWindow();
             }
         }
 
@@ -166,7 +172,12 @@ public class Entity {
             p.postBeEquipped(bp, this);
         }
         body.equipment.put(bp, e);
-        inventory.remove(alreadyEquipped);
+        inventory.remove(e);
+        if (this == Game.getPlayerEntity())
+        {
+            Game.roguelikeModule.updateEquipmentWindow();
+        }
+        getMover().setDelay(1000);
         return true;
     }
 

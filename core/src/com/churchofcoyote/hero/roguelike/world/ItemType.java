@@ -13,5 +13,6 @@ public class ItemType {
     public BodyPart equipmentFor;
     public String glyphName;
     public PaletteEntry palette;
+    public ItemCategory category;
     Set<Consumer<Entity>> setup = new HashSet<>();
 }

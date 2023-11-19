@@ -10,6 +10,7 @@ import com.churchofcoyote.hero.gfx.GfxRectFilled;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class DialogueBoxModule extends Module {
@@ -19,9 +20,10 @@ public class DialogueBoxModule extends Module {
     private float margin = 10f;
 
     private DialogueBox dialogueBox;
-    Consumer<Integer> handler;
+    Consumer<Object> handler;
 
-    public void openDialogueBox(DialogueBox dialogueBox, Consumer<Integer> handler) {
+
+    public void openDialogueBox(DialogueBox dialogueBox, Consumer<Object> handler) {
 
         background1 = new GfxRectFilled(Color.BLACK,
                 dialogueBox.getX() - margin,
@@ -48,8 +50,9 @@ public class DialogueBoxModule extends Module {
             background1.active = false;
             background2.active = false;
             this.end();
-            handler.accept(dialogueBox.getFinalValue());
+            Object finalValue = dialogueBox.getFinalValue();
             dialogueBox = null;
+            handler.accept(finalValue);
         } else {
             dialogueBox.update(textEngine);
         }

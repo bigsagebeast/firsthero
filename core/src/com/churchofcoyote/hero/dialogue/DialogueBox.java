@@ -30,13 +30,13 @@ public class DialogueBox {
     private String footerText = "";
     private int lineOffset = 0;
     private int selection = -1;
-    private int finalValue = -1;
+    private Object finalValue = null;
 
     private TextBlock title;
     private TextBlock footer;
     private TextBlock lineParent;
     private List<DialogueLine> lines = new ArrayList<>();
-
+    private List<Object> mapping = new ArrayList<>();
 
     public DialogueBox() {
     }
@@ -82,10 +82,11 @@ public class DialogueBox {
         lines.add(line);
     }
 
-    public void addItem(String text, int value) {
+    public void addItem(String text, Object value) {
         DialogueLine line = new DialogueLine();
         line.text = "  " + text;
-        line.value = value;
+        line.value = mapping.size();
+        mapping.add(value);
         lines.add(line);
     }
 
@@ -153,7 +154,7 @@ public class DialogueBox {
         return closed;
     }
 
-    public int getFinalValue() {
+    public Object getFinalValue() {
         return finalValue;
     }
 
@@ -165,7 +166,11 @@ public class DialogueBox {
         } else if (keycode == Input.Keys.DOWN) {
             selectNext();
         } else if (keycode == Input.Keys.ENTER) {
-            finalValue = lines.get(selection).value;
+            if (selection >= 0) {
+                finalValue = mapping.get(lines.get(selection).value);
+            } else {
+                finalValue = null;
+            }
             close();
         }
 

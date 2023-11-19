@@ -19,11 +19,33 @@ public class Itempedia {
         pitchfork.glyph = new Glyph('/', Color.LIGHT_GRAY);
         pitchfork.glyphName = "item.pitchfork";
         pitchfork.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
-        pitchfork.equipmentFor = BodyPart.ANY_HAND;
+        pitchfork.equipmentFor = BodyPart.TWO_HAND;
+        pitchfork.category = ItemCategory.CATEGORY_TWO_HANDED_WEAPONS;
         pitchfork.setup.add((e) -> {e.addProc(new PropPopupOnSeen(e, "Pick up your weapon"));});
         pitchfork.setup.add((e) -> {e.addProc(new PropMessageOnStepOn(e, "Press 'comma' to pick it up."));});
         pitchfork.setup.add((e) -> {e.addProc(new PropMessageOnPickup(e, "Press 'w' to wield it."));});
         map.put("pitchfork", pitchfork);
+
+        ItemType shortsword = new ItemType();
+        shortsword.name = "short sword";
+        shortsword.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
+        shortsword.equipmentFor = BodyPart.ANY_HAND;
+        shortsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
+        map.put("shortsword", shortsword);
+
+        ItemType longsword = new ItemType();
+        longsword.name = "longsword";
+        longsword.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
+        longsword.equipmentFor = BodyPart.ANY_HAND;
+        longsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
+        map.put("longsword", longsword);
+
+        ItemType buckler = new ItemType();
+        buckler.name = "buckler";
+        buckler.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
+        buckler.equipmentFor = BodyPart.ANY_HAND;
+        buckler.category = ItemCategory.CATEGORY_SHIELDS;
+        map.put("buckler", buckler);
     }
 
     public Entity create(String key, String name) {
@@ -38,6 +60,7 @@ public class Itempedia {
         e.glyph = t.glyph;
         e.glyphName = t.glyphName;
         e.palette = t.palette;
+        e.itemType = t;
 
         for (Consumer<Entity> consumer : t.setup) {
             consumer.accept(e);

@@ -21,6 +21,8 @@ public class Game {
 	public static Bestiary bestiary = new Bestiary();
 	public static Itempedia itempedia = new Itempedia();
 	public static long time = 0;
+
+	private Inventory inventory = new Inventory();
 	
 	public Game(RoguelikeModule module) {
 		try {
@@ -32,7 +34,13 @@ public class Game {
 		player = new Player();
 		Entity pc = bestiary.create("player", null);
 		Entity pitchfork = itempedia.create("pitchfork", null);
+		Entity shortsword = itempedia.create("shortsword", null);
+		Entity longsword = itempedia.create("longsword", null);
+		Entity buckler = itempedia.create("buckler", null);
 		player.entity = pc;
+		player.entity.inventory.add(shortsword);
+		player.entity.inventory.add(longsword);
+		player.entity.inventory.add(buckler);
 		Game.roguelikeModule = module;
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
@@ -222,34 +230,32 @@ public class Game {
 	}
 
 	public void cmdWield() {
+		inventory.doWield();
+/*
+		Entity chosen = null;
 		for (Entity e : player.entity.inventory) {
 			ProcEquippable equippable = e.getEquippable();
 			if (equippable == null)
 				continue;
 			if (equippable.equipmentFor == BodyPart.ANY_HAND) {
-				player.entity.equip(e, BodyPart.PRIMARY_HAND);
+				chosen = e;
+				break;
+			} else if (equippable.equipmentFor == BodyPart.TWO_HAND) {
+				// special handling here
+				chosen = e;
+				break;
 			}
 		}
+		if (chosen != null) {
+			player.entity.equip(chosen, BodyPart.PRIMARY_HAND);
+		}
 		player.entity.getMover().setDelay(1000);
+
+ */
 	}
 
 	public void cmdInventory() {
-		DialogueBox box = new DialogueBox()
-				.withFooterClosable()
-				.withMargins(60, 60);
-		box.addHeader("*** Weapons ***");
-		box.addItem("Longsword", 0);
-		box.addItem("Short sword", 1);
-		box.addItem("Dagger", 2);
-		box.addHeader("*** Armor ***");
-		box.addItem("Chain mail", 3);
-		box.addItem("Leather armor", 4);
-		box.addItem("Helmet", 5);
-		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryResponse);
-	}
-
-	public void handleInventoryResponse(int value) {
-		System.out.println("responded with option " + value);
+		inventory.openInventory();
 	}
 
 	public static void cmdMoveBy(int dx, int dy) {
