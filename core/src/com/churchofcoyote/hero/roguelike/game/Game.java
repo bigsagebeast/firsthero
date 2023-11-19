@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.roguelike.game;
 
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.SetupException;
+import com.churchofcoyote.hero.dialogue.DialogueBox;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
@@ -230,6 +231,25 @@ public class Game {
 			}
 		}
 		player.entity.getMover().setDelay(1000);
+	}
+
+	public void cmdInventory() {
+		DialogueBox box = new DialogueBox()
+				.withFooterClosable()
+				.withMargins(60, 60);
+		box.addHeader("*** Weapons ***");
+		box.addItem("Longsword", 0);
+		box.addItem("Short sword", 1);
+		box.addItem("Dagger", 2);
+		box.addHeader("*** Armor ***");
+		box.addItem("Chain mail", 3);
+		box.addItem("Leather armor", 4);
+		box.addItem("Helmet", 5);
+		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryResponse);
+	}
+
+	public void handleInventoryResponse(int value) {
+		System.out.println("responded with option " + value);
 	}
 
 	public static void cmdMoveBy(int dx, int dy) {

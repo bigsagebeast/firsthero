@@ -8,7 +8,6 @@ import java.util.Set;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.churchofcoyote.hero.GameLogic;
@@ -30,6 +29,8 @@ public class TextBlock implements GameLogic {
 	public float x;
 	public float y;
 	public Color color;
+	public float pixelOffsetX;
+	public float pixelOffsetY;
 	
 	// tickStart: What tick to display the first letter in this block.
 	// used during tick
@@ -56,10 +57,13 @@ public class TextBlock implements GameLogic {
 	
 	
 	public TextBlock(String text, Float fontSize,
-			Float x, Float y, Color color,
-			Float secondStart, Float secondsPerLetter,
-			TextEffectJitter jitter, TextEffectSwap swap,
-			TextEffectGranularity granularity) {
+					 Float x, Float y, float pixelOffsetX, float pixelOffsetY,
+					 Color color,
+					 Float secondStart, Float secondsPerLetter,
+					 TextEffectJitter jitter, TextEffectSwap swap,
+					 TextEffectGranularity granularity) {
+		this.pixelOffsetX = pixelOffsetX;
+		this.pixelOffsetY = pixelOffsetY;
 		switch (granularity) {
 			case BLOCK:
 				this.text = text;
@@ -87,7 +91,7 @@ public class TextBlock implements GameLogic {
 					}
 					TextBlock letterBlock = new TextBlock(
 							words[i], fontSize,
-							x + letters, y, color,
+							x + letters, y, pixelOffsetX, pixelOffsetY, color,
 							secondStart + (secondsPerLetter * letters), 0.1f,
 							jitter == null ? null : new TextEffectJitter(jitter),
 							null, TextEffectGranularity.BLOCK);
@@ -99,7 +103,7 @@ public class TextBlock implements GameLogic {
 				for (int i=0; i<text.length(); i++) {
 					TextBlock letterBlock = new TextBlock(
 							text.substring(i, i+1), fontSize,
-							x + i, y, color,
+							x + i, y, pixelOffsetX, pixelOffsetY, color,
 							secondStart + (secondsPerLetter * i), 0.1f,
 							jitter == null ? null : new TextEffectJitter(jitter),
 							null, TextEffectGranularity.BLOCK);
@@ -108,28 +112,50 @@ public class TextBlock implements GameLogic {
 				break;
 		}
 	}
-	
+
 	public TextBlock(String text, int fontSize,
-			int x, int y, Color color) {
-		this(text, (float)fontSize, (float)x, (float)y, color, -1f, -1f,
+					 int x, int y, Color color) {
+		this(text, (float)fontSize, (float)x, (float)y, 0f, 0f, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);
 	}
-	
+
 	public TextBlock(String text, int fontSize,
-			int x, int y, Color color,
-			Float secondStart, Float secondsPerLetter) {
-		this(text, (float)fontSize, (float)x, (float)y, color, secondStart, secondsPerLetter,
+					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color) {
+		this(text, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);
 	}
-	
+
+	public TextBlock(String text, int fontSize,
+					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color,
+					 Float secondStart, Float secondsPerLetter) {
+		this(text, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, secondStart, secondsPerLetter,
+				null, null, TextEffectGranularity.BLOCK);
+	}
+
+	public TextBlock(String text, int fontSize,
+					 int x, int y, Color color,
+					 Float secondStart, Float secondsPerLetter) {
+		this(text, (float)fontSize, (float)x, (float)y, 0f, 0f, color, secondStart, secondsPerLetter,
+				null, null, TextEffectGranularity.BLOCK);
+	}
+
+
 	public TextBlock(String text, Float fontSize,
-			Float x, Float y, Color color,
-			Float secondStart, Float secondsPerLetter,
-			TextEffectJitter jitter, TextEffectSwap swap) {
-		this(text, fontSize, x, y, color, secondStart, secondsPerLetter,
+					 Float x, Float y, float pixelOffsetX, float pixelOffsetY, Color color,
+					 Float secondStart, Float secondsPerLetter,
+					 TextEffectJitter jitter, TextEffectSwap swap) {
+		this(text, fontSize, x, y, pixelOffsetX, pixelOffsetY, color, secondStart, secondsPerLetter,
 				jitter, swap, TextEffectGranularity.BLOCK);
 	}
-	
+
+	public TextBlock(String text, Float fontSize,
+					 Float x, Float y, Color color,
+					 Float secondStart, Float secondsPerLetter,
+					 TextEffectJitter jitter, TextEffectSwap swap) {
+		this(text, fontSize, x, y, 0f, 0f, color, secondStart, secondsPerLetter,
+				jitter, swap, TextEffectGranularity.BLOCK);
+	}
+
 	public void close() {
 		closed = true;
 	}
@@ -175,10 +201,10 @@ public class TextBlock implements GameLogic {
 
 	@Override
 	public void render(Graphics g, GraphicsState gState) {
-		render(g, gState, 0f, 0f);
+		render(g, gState, 0f, 0f, 0f, 0f);
 	}
 	
-	public void render(Graphics g, GraphicsState gState, float offsetX, float offsetY) {
+	public void render(Graphics g, GraphicsState gState, float offsetX, float offsetY, float pixelOffsetX, float pixelOffsetY) {
 		if (!isLocked) {
 			if (wantLocked) {
 				if (buffer != null) {
@@ -204,10 +230,10 @@ public class TextBlock implements GameLogic {
 				}
 			}
 			if (alternate != null) {
-				alternate.render(g, gState, x + offsetX, y + offsetY);
+				alternate.render(g, gState, x + offsetX, y + offsetY, pixelOffsetX + this.pixelOffsetX, pixelOffsetY + this.pixelOffsetY);
 			} else {
 				for (TextBlock child : children) {
-					child.render(g, gState, x + offsetX, y + offsetY);
+					child.render(g, gState, x + offsetX, y + offsetY, pixelOffsetX + this.pixelOffsetX, pixelOffsetY + this.pixelOffsetY);
 				}
 				if (secondStart == null || secondStart < 0) {
 					if (text != null) {
@@ -215,7 +241,7 @@ public class TextBlock implements GameLogic {
 					}
 				}
 				for (int i=0; i<lettersSoFar; i++) {
-					drawLetter(g, gState, text.substring(i, i+1), x + i + offsetX, y + offsetY);
+					drawLetter(g, gState, text.substring(i, i+1), x + i + offsetX + (pixelOffsetX / fontSize), y + offsetY + (pixelOffsetY / fontSize));
 				}
 			}
 			if (wantLocked) {
@@ -239,7 +265,7 @@ public class TextBlock implements GameLogic {
 		for (TextEffect effect : effects) {
 			blendedColor.mul(effect.getFade());
 		}
-		g.write(letter, x, y, fontSize, blendedColor);
+		g.write(letter, x, y, fontSize, pixelOffsetX, pixelOffsetY, blendedColor);
 	}
 	
 	
@@ -336,10 +362,10 @@ public class TextBlock implements GameLogic {
 	}
 
 	public float getPixelX() {
-		return x * fontSize;
+		return pixelOffsetX + x * fontSize;
 	}
 	public float getPixelY() {
-		return Graphics.HEIGHT - ((y + 1) * fontSize);
+		return pixelOffsetY + y * fontSize;
 	}
 	public float getPixelWidth() {
 		return text.length() * fontSize;

@@ -45,7 +45,7 @@ public class EffectEngine implements GameLogic {
             if (gfx instanceof GfxRectFilled) {
                 GfxRectFilled gfxRectFilled = (GfxRectFilled)gfx;
                 shapeBatch.setColor(gfxRectFilled.color);
-                shapeBatch.rect(gfxRectFilled.x, gfxRectFilled.y, gfxRectFilled.width, gfxRectFilled.height);
+                shapeBatch.rect(gfxRectFilled.x, Graphics.HEIGHT - gfxRectFilled.y - gfxRectFilled.height, gfxRectFilled.width, gfxRectFilled.height);
             }
         }
         shapeBatch.end();
@@ -55,7 +55,7 @@ public class EffectEngine implements GameLogic {
             if (gfx instanceof GfxRectBorder) {
                 GfxRectBorder gfxRectBorder = (GfxRectBorder)gfx;
                 shapeBatch.setColor(gfxRectBorder.color);
-                shapeBatch.rect(gfxRectBorder.x, gfxRectBorder.y, gfxRectBorder.width, gfxRectBorder.height);
+                shapeBatch.rect(gfxRectBorder.x, Graphics.HEIGHT - gfxRectBorder.y - gfxRectBorder.height, gfxRectBorder.width, gfxRectBorder.height);
             }
         }
         for (Gfx gfx : gfxList) {

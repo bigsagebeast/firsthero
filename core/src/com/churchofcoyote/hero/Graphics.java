@@ -68,13 +68,11 @@ public class Graphics {
 		batchInProgress = false;
 	}
 	
-	public void write(String text, float x, float y, float fontSize, Color color) {
+	public void write(String text, float x, float y, float fontSize, float offsetX, float offsetY, Color color) {
 		font.setColor(color);
 		font.getData().setScale(1.1f * fontSize / defaultFontSize);
 		//font.getData().setScale(1f * fontSize / defaultFontSize);
-		font.draw(batch(), text, 0 + x * fontSize, HEIGHT - (0 + y * fontSize));
-		font.draw(batch(), text, 0 + x * fontSize, HEIGHT - (0 + y * fontSize));
-
+		font.draw(batch(), text, offsetX + x * fontSize, HEIGHT - (offsetY + y * fontSize));
 	}
 	
 	public BitmapFont font() {

@@ -68,11 +68,11 @@ public class TitleScreenModule extends Module {
 		*/
 		
 		textEngine.addBlock(new TextBlock("THE",
-				48f, 5f, 2f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
+				48f, 5f, 2f, 0f, 0f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
 		textEngine.addBlock(new TextBlock("FIRST",
-				48f, 7f, 3.5f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
+				48f, 7f, 3.5f, 0f, 0f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
 		textEngine.addBlock(new TextBlock("HERO",
-				48f, 9f, 5f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
+				48f, 9f, 5f, 0f, 0f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
 
 		textEngine.addBlock(new TextBlock("@", 332f, 2.5f, 0.4f, Color.DARK_GRAY, 0f, 0f, null, null));
 
