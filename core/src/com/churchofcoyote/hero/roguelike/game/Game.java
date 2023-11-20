@@ -231,27 +231,6 @@ public class Game {
 
 	public void cmdWield() {
 		inventory.doWield();
-/*
-		Entity chosen = null;
-		for (Entity e : player.entity.inventory) {
-			ProcEquippable equippable = e.getEquippable();
-			if (equippable == null)
-				continue;
-			if (equippable.equipmentFor == BodyPart.ANY_HAND) {
-				chosen = e;
-				break;
-			} else if (equippable.equipmentFor == BodyPart.TWO_HAND) {
-				// special handling here
-				chosen = e;
-				break;
-			}
-		}
-		if (chosen != null) {
-			player.entity.equip(chosen, BodyPart.PRIMARY_HAND);
-		}
-		player.entity.getMover().setDelay(1000);
-
- */
 	}
 
 	public void cmdInventory() {

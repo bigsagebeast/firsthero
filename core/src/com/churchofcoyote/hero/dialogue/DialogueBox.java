@@ -69,6 +69,11 @@ public class DialogueBox {
         return this;
     }
 
+    public DialogueBox withFooterClosableAndSelectable() {
+        footerText = "Press arrow keys to move, ENTER to select, SPACE to close";
+        return this;
+    }
+
     public void addHeader(String text) {
         if (lines.size() > 0) {
             DialogueLine spacer = new DialogueLine();

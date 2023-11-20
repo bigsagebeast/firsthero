@@ -16,5 +16,9 @@ public class GlyphTile {
     {
         this.texture = texture;
         this.grayTexture = grayTexture;
+
+        //texture.getTextureData().prepare();
+        //Pixmap p = texture.getTextureData().consumePixmap();
+        //System.out.println(String.format("%08x", p.getPixel(8, 1)));
     }
 }

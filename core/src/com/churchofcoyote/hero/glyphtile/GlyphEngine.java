@@ -21,7 +21,7 @@ public class GlyphEngine implements GameLogic {
     public static int GLYPH_HEIGHT = 24;
 
     static final int SCREEN_TILE_WIDTH = 45;
-    static final int SCREEN_TILE_HEIGHT = 31;
+    static final int SCREEN_TILE_HEIGHT = 29;
 
     static final int RENDER_OFFSET_X = 8;
     static final int RENDER_OFFSET_Y = 16;

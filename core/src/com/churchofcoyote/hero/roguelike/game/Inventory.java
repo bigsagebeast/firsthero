@@ -21,20 +21,37 @@ public class Inventory {
 
         HashMap<BodyPart, Entity> equipment = Game.getPlayerEntity().body.equipment;
         DialogueBox box = new DialogueBox()
-                .withFooterClosable()
+                .withFooterClosableAndSelectable()
                 .withMargins(60, 60);
 
         for (BodyPart bp : Game.getPlayerEntity().body.bodyPlan.getParts()) {
-            box.addItem(bp.getName(), bp);
+            String equipmentName;
+            if (equipment.get(bp) != null) {
+                equipmentName = equipment.get(bp).name;
+            } else {
+                // TODO: I don't like this test, it seems like the wielder should have an "is 2h" flag
+                if (bp == BodyPart.OFF_HAND && equipment.get(BodyPart.PRIMARY_HAND) != null &&
+                    equipment.get(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND)
+                {
+                    equipmentName = "(2-handed)";
+                } else {
+                    equipmentName = "empty";
+                }
+            }
+            box.addItem(String.format("%-16s: %-16s", bp.getName(), equipmentName), bp);
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleWieldResponse);
     }
 
-    public void handleWieldResponse(Object chosenBodyPart) {
-        BodyPart bp = (BodyPart)chosenBodyPart;
+    public void handleWieldResponse(Object response) {
+        if (response == null)
+        {
+            return;
+        }
+        BodyPart bp = (BodyPart)response;
         this.chosenBodyPart = bp;
         List<BodyPart> equippable = new ArrayList<>();
-        if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.PRIMARY_HAND) {
+        if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND) {
             equippable.add(BodyPart.ANY_HAND);
             equippable.add(BodyPart.TWO_HAND);
         }
@@ -45,18 +62,24 @@ public class Inventory {
         //HashMap<Integer, Entity> mapping = new HashMap<>();
         //int mappingIndex = 0;
 
+        boolean addedAnything = false;
         List<Entity> inventory = Game.getPlayerEntity().inventory;
         DialogueBox box = new DialogueBox()
-                .withFooterClosable()
+                .withFooterClosableAndSelectable()
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
-            List<Entity> ents = inventory.stream().filter(e -> e.itemType.category == cat).collect(Collectors.toList());
+            List<Entity> ents = inventory.stream().filter(e -> e.itemType.category == cat &&
+                    (bodyParts.contains(BodyPart.PRIMARY_HAND) || bodyParts.contains(e.getEquippable().equipmentFor))).collect(Collectors.toList());
             if (ents.size() > 0) {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
                 box.addItem(ent.name, ent);
+                addedAnything = true;
             }
+        }
+        if (!addedAnything) {
+            box.addHeader("No inventory available.");
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryToEquipResponse);
     }

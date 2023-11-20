@@ -14,6 +14,7 @@ import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Entity {
@@ -58,6 +59,13 @@ public class Entity {
 
     public boolean equip(Entity e, BodyPart bp)
     {
+        ProcEquippable pe = e.getEquippable();
+
+        // wielding a 2h in the offhand? no, it's stored in the primary hand
+        if (pe.equipmentFor == BodyPart.TWO_HAND && bp == BodyPart.OFF_HAND) {
+            bp = BodyPart.PRIMARY_HAND;
+        }
+
         // TODO error messages?
         if (!inventory.contains(e)) {
             if (this == Game.getPlayerEntity()) {
@@ -65,7 +73,7 @@ public class Entity {
             }
             return false;
         }
-        ProcEquippable pe = e.getEquippable();
+
         if (pe == null) {
             if (this == Game.getPlayerEntity()) {
                 Game.announce("That's not equippable in any slot.");
@@ -74,7 +82,8 @@ public class Entity {
         }
 
         if (pe.equipmentFor != bp &&
-                !(pe.equipmentFor == BodyPart.ANY_HAND && (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND))) {
+                !(pe.equipmentFor == BodyPart.ANY_HAND && (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND)) &&
+                !(pe.equipmentFor == BodyPart.TWO_HAND && bp == BodyPart.PRIMARY_HAND)) {
             if (this == Game.getPlayerEntity()) {
                 Game.announce("That's not equippable in that slot.");
             }
@@ -94,10 +103,22 @@ public class Entity {
         }
 
         // unequip the previously equipped item
-        Entity alreadyEquipped = body.equipment.get(bp);
-        if (alreadyEquipped != null) {
+        HashMap<BodyPart, Entity> allToUnequip = new HashMap<>();
+        if (body.equipment.get(bp) != null) {
+            allToUnequip.put(bp, body.equipment.get(bp));
+        }
+        if (pe.equipmentFor == BodyPart.TWO_HAND && body.equipment.get(BodyPart.OFF_HAND) != null) {
+            allToUnequip.put(BodyPart.OFF_HAND, body.equipment.get(BodyPart.OFF_HAND));
+        }
+        if (bp == BodyPart.OFF_HAND &&
+                body.equipment.get(BodyPart.PRIMARY_HAND) != null &&
+                body.equipment.get(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND) {
+            allToUnequip.put(BodyPart.PRIMARY_HAND, body.equipment.get(BodyPart.PRIMARY_HAND));
+        }
+        for (BodyPart alreadyEquippedBodyPart : allToUnequip.keySet()) {
+            Entity alreadyEquipped = allToUnequip.get(alreadyEquippedBodyPart);
             for (Proc p : this.procs) {
-                Boolean val = p.preDoUnequip(bp, alreadyEquipped);
+                Boolean val = p.preDoUnequip(alreadyEquippedBodyPart, alreadyEquipped);
                 if (val != null && !val) {
                     if (this == Game.getPlayerEntity()) {
                         // TODO should be handled by other proc
@@ -107,7 +128,7 @@ public class Entity {
                 }
             }
             for (Proc p : alreadyEquipped.procs) {
-                Boolean val = p.preBeUnequipped(bp, this);
+                Boolean val = p.preBeUnequipped(alreadyEquippedBodyPart, this);
                 if (val != null && !val) {
                     if (this == Game.getPlayerEntity()) {
                         // TODO should be handled by other proc
@@ -121,13 +142,13 @@ public class Entity {
                 // TODO announce with vis
                 Game.announce("You unequip the " + alreadyEquipped.name + ".");
             }
-            body.equipment.put(bp, null);
+            body.equipment.put(alreadyEquippedBodyPart, null);
             inventory.add(alreadyEquipped);
             for (Proc p : this.procs) {
-                p.postDoUnequip(bp, alreadyEquipped);
+                p.postDoUnequip(alreadyEquippedBodyPart, alreadyEquipped);
             }
             for (Proc p : alreadyEquipped.procs) {
-                p.postBeUnequipped(bp, this);
+                p.postBeUnequipped(alreadyEquippedBodyPart, this);
             }
             if (this == Game.getPlayerEntity())
             {

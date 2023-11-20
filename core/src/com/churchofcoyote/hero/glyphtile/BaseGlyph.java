@@ -16,26 +16,27 @@ public class BaseGlyph {
         for (int x=0; x<GlyphEngine.GLYPH_WIDTH; x++) {
             for (int y=0; y<GlyphEngine.GLYPH_HEIGHT; y++) {
                 if (pixmap.getPixel(x, y) == Palette.getColor(Palette.SOURCE_PRIMARY)) {
-                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, Palette.getColor(paletteEntry.primary));
-                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, grayscale(Palette.getColor(paletteEntry.primary)));
+                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, Palette.getColor(paletteEntry.primary));
+                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, grayscale(Palette.getColor(paletteEntry.primary)));
                 }
                 else if (pixmap.getPixel(x, y) == Palette.getColor(Palette.SOURCE_SECONDARY)) {
-                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, Palette.getColor(paletteEntry.secondary));
-                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, grayscale(Palette.getColor(paletteEntry.secondary)));
+                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, Palette.getColor(paletteEntry.secondary));
+                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, grayscale(Palette.getColor(paletteEntry.secondary)));
                 }
                 else if (pixmap.getPixel(x, y) == Palette.getColor(Palette.SOURCE_TERTIARY)) {
-                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, Palette.getColor(paletteEntry.tertiary));
-                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, grayscale(Palette.getColor(paletteEntry.tertiary)));
+                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, Palette.getColor(paletteEntry.tertiary));
+                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, grayscale(Palette.getColor(paletteEntry.tertiary)));
                 }
                 else if (pixmap.getPixel(x, y) == Palette.getColor(Palette.SOURCE_BACKGROUND)) {
-                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, Palette.getColor(paletteEntry.background));
-                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, grayscale(Palette.getColor(paletteEntry.background)));
+                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, Palette.getColor(paletteEntry.background));
+                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, grayscale(Palette.getColor(paletteEntry.background)));
                 } else {
-                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, 0xffaaaaff);
-                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y, 0xffaaaaff);
+                    destination.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, 0xffaaaaff);
+                    destinationGray.drawPixel(x, GlyphEngine.GLYPH_HEIGHT - y - 1, 0xffaaaaff);
                 }
             }
         }
+
         return new GlyphTile(new Texture(destination), new Texture(destinationGray));
     }
 

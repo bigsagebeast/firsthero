@@ -139,7 +139,7 @@ public class Level {
 		for (LevelCell cell : allCells) {
 			cell.light = 0f;
 		}
-		Fov.calculateFOV(this, pc.pos.x, pc.pos.y, 10f);
+		Fov.calculateFOV(this, pc.pos.x, pc.pos.y, 15f);
 	}
 	
 	public boolean isOpaque(int x, int y) {
