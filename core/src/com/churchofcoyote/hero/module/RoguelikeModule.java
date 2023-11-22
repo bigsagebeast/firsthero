@@ -7,6 +7,10 @@ import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
 import com.churchofcoyote.hero.engine.asciitile.AsciiGrid;
+import com.churchofcoyote.hero.glyphtile.EntityGlyph;
+import com.churchofcoyote.hero.glyphtile.GlyphIndex;
+import com.churchofcoyote.hero.glyphtile.Palette;
+import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.AnnounceWindow;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.EquipmentWindow;
@@ -28,7 +32,7 @@ public class RoguelikeModule extends Module {
 	int mainWindowOffsetX = 1;
 	int mainWindowOffsetY = 1;
 	
-	public static final int FONT_SIZE = 12;
+	public static final int FONT_SIZE = 16;
 	
 	public Game game;
 	
@@ -56,7 +60,7 @@ public class RoguelikeModule extends Module {
 		//mainGrid = asciiTileEngine.getLayer(0);
 		
 		TextBlock borderBlock = new TextBlock("", FONT_SIZE, 0, 0, new Color(0, 0, 0, 0));
-		
+
 		uiEngine.addBlock(new TextBlock("##############################################################################################################",
 				FONT_SIZE, 0, 0, Color.GRAY));
 		borderBlock.addChild(new TextBlock("##############################################################################################################",
@@ -72,6 +76,9 @@ public class RoguelikeModule extends Module {
 		}
 		borderBlock.compile();
 		uiEngine.addBlock(borderBlock);
+
+		//uiEngine.addBlock(new TextBlock(EntityGlyph.getGlyph(Game.getPlayerEntity()), 20f, 20f, 20f, 0, 0, null, null));
+		//uiEngine.addBlock(new TextBlock(GlyphIndex.get("player.farmer").create(new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_WHITE)), 40f, 0f, 0f, 20, 20, null, null));
 
 		announceWindow.addLine("Announcements:");
 		//statsWindow.update(Game.getPlayerEntity());

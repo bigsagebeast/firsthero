@@ -23,10 +23,12 @@ public class Graphics {
 
 	SpriteBatch currentSpriteBatch;
 	boolean batchInProgress = false;
-	
-	public static final int WIDTH = (12 * 110);
-	public static final int HEIGHT = (12 * 62);
-	
+
+//	public static final int WIDTH = (12 * 110);
+//	public static final int HEIGHT = (12 * 62);
+	public static final int WIDTH = 1920;
+	public static final int HEIGHT = 1200;
+
 	public Graphics() {
 		cam = new OrthographicCamera(WIDTH, HEIGHT);
 		viewport = new FitViewport(WIDTH, HEIGHT, cam);

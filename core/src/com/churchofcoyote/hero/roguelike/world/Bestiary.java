@@ -27,7 +27,7 @@ public class Bestiary {
 		pc.isMonster = false;
 		pc.bodyPlan = "humanoid";
 		pc.glyphName = "player.farmer";
-		pc.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_YELLOW);
+		pc.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_YELLOW);
 
 		Glyph glyphHuman = new Glyph('U', Color.LIGHT_GRAY);
 		

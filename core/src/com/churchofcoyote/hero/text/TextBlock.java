@@ -8,12 +8,16 @@ import java.util.Set;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.churchofcoyote.hero.GameLogic;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
+import com.churchofcoyote.hero.engine.asciitile.Glyph;
+import com.churchofcoyote.hero.glyphtile.GlyphEngine;
+import com.churchofcoyote.hero.glyphtile.GlyphTile;
 import com.churchofcoyote.hero.text.effect.TextEffectFadeOut;
 import com.churchofcoyote.hero.text.effect.TextEffectGranularity;
 import com.churchofcoyote.hero.text.effect.TextEffectJitter;
@@ -47,6 +51,7 @@ public class TextBlock implements GameLogic {
 	
 	private Float fontSize;
 	public String text;
+	public GlyphTile glyph;
 	
 	// locked = only render once
 	private boolean wantLocked = false;
@@ -54,7 +59,17 @@ public class TextBlock implements GameLogic {
 	private FrameBuffer buffer;
 	private TextureRegion texRegion;
 	
-	
+	public TextBlock(GlyphTile glyph, Float fontsize, Float x, Float y, float pixelOffsetX, float pixelOffsetY,
+		TextEffectJitter jitter, TextEffectSwap swap) {
+		this.glyph = glyph;
+		this.fontSize = fontsize;
+		this.x = x;
+		this.y = y;
+		this.pixelOffsetX = pixelOffsetX;
+		this.pixelOffsetY = pixelOffsetY;
+		this.jitter = jitter;
+		this.swap = swap;
+	}
 	
 	public TextBlock(String text, Float fontSize,
 					 Float x, Float y, float pixelOffsetX, float pixelOffsetY,
@@ -240,8 +255,12 @@ public class TextBlock implements GameLogic {
 						lettersSoFar = text.length();
 					}
 				}
-				for (int i=0; i<lettersSoFar; i++) {
-					drawLetter(g, gState, text.substring(i, i+1), x + i + offsetX + (pixelOffsetX / fontSize), y + offsetY + (pixelOffsetY / fontSize));
+				if (text != null) {
+					for (int i = 0; i < lettersSoFar; i++) {
+						drawLetter(g, gState, text.substring(i, i + 1), x + i + offsetX + (pixelOffsetX / fontSize), y + offsetY + (pixelOffsetY / fontSize));
+					}
+				} else if (glyph != null) {
+					drawGlyph(g, gState, glyph, x + offsetX + (pixelOffsetX / fontSize), y + offsetY + (pixelOffsetY / fontSize));
 				}
 			}
 			if (wantLocked) {
@@ -259,7 +278,12 @@ public class TextBlock implements GameLogic {
 	public void addChild(TextBlock child) {
 		children.add(child);
 	}
-	
+
+	private void drawGlyph(Graphics g, GraphicsState gState, GlyphTile glyph, float x, float y) {
+		g.batch().draw(glyph.texture, (x * fontSize) + pixelOffsetX, Graphics.HEIGHT - (((y + 1) * fontSize) + pixelOffsetY),
+				fontSize, fontSize * GlyphEngine.GLYPH_HEIGHT / GlyphEngine.GLYPH_WIDTH, 0, 0, GlyphEngine.GLYPH_WIDTH, GlyphEngine.GLYPH_HEIGHT, false, true);
+	}
+
 	private void drawLetter(Graphics g, GraphicsState gState, String letter, float x, float y) {
 		Color blendedColor = new Color(color);
 		for (TextEffect effect : effects) {

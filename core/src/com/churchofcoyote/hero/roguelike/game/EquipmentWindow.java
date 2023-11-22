@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.roguelike.game;
 
 import com.badlogic.gdx.graphics.Color;
+import com.churchofcoyote.hero.glyphtile.EntityGlyph;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
@@ -13,12 +14,15 @@ public class EquipmentWindow {
 	TextBlock parent;
 
 	private TextBlock[] rows = new TextBlock[windowHeight];
+	private TextBlock[] glyphs = new TextBlock[windowHeight];
 	
 	public EquipmentWindow() {
 		parent = new TextBlock("", RoguelikeModule.FONT_SIZE, 79, 22, Color.WHITE);
 		for (int i=0; i<windowHeight; i++) {
 			rows[i] = new TextBlock("", RoguelikeModule.FONT_SIZE, 0, i, Color.WHITE);
+			glyphs[i] = new TextBlock(null, RoguelikeModule.FONT_SIZE, 8, i, Color.WHITE);
 			parent.addChild(rows[i]);
+			parent.addChild(glyphs[i]);
 		}
 		parent.compile();
 	}
@@ -35,6 +39,7 @@ public class EquipmentWindow {
 			String equipmentString;
 			if (equipped != null)
 			{
+				glyphs[row].glyph = EntityGlyph.getGlyph(equipped);
 				equipmentString = equipped.name;
 			}
 			else if (bp == BodyPart.OFF_HAND && c.body.equipment.get(BodyPart.PRIMARY_HAND) != null &&
