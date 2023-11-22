@@ -38,6 +38,16 @@ public class Level {
 		
 		transitions = new ArrayList<LevelTransition>();
 	}
+
+	public void reinitialize() {
+		allCells = new LevelCell[width * height];
+		for (int x=0; x<width; x++) {
+			for (int y=0; y<height; y++) {
+				cell[x][y].explored = false;
+				allCells[(x*height) + y] = cell[x][y];
+			}
+		}
+	}
 	
 	public void addTransition(LevelTransition transition) {
 		transitions.add(transition);
@@ -140,10 +150,10 @@ public class Level {
 	}
 	
 	public void updateVis() {
-		Entity pc = Game.getPlayerEntity();
 		for (LevelCell cell : allCells) {
 			cell.light = 0f;
 		}
+		Entity pc = Game.getPlayerEntity();
 		Fov.calculateFOV(this, pc.pos.x, pc.pos.y, 15f);
 	}
 	

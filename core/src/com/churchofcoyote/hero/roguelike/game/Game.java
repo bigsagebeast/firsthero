@@ -21,6 +21,7 @@ public class Game {
 	public static Bestiary bestiary = new Bestiary();
 	public static Itempedia itempedia = new Itempedia();
 	public static long time = 0;
+	private static long lastTurnProc = 0;
 	public static Random random = new Random();
 
 	private Inventory inventory = new Inventory();
@@ -127,6 +128,13 @@ public class Game {
 				break;
 			}
 			lowestProc.act();
+
+			while (lastTurnProc + 1000 < time) {
+				lastTurnProc += 1000;
+				for (Proc p : level.getProcEntities()) {
+					p.turnPassed();
+				}
+			}
 		}
 	}
 

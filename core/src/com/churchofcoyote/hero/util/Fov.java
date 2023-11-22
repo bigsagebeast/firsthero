@@ -89,7 +89,7 @@ public class Fov {
 	private static float radius(int dx, int dy) {
 		return (float)Math.sqrt(dx * dx + dy * dy) - 0.5f;
 	}
-
+/*
 	// TODO only check valid diagonal
 	public static boolean canSee(Level level, Point from, Point to, int distance, float minLight) {
 		Fov.level = level;
@@ -148,10 +148,10 @@ public class Fov {
 		}
 		return false;
 	}
+*/
 
-	/*
 	// TODO this is broken when seeing around corners at long angles
-	public static boolean canSee (Point from, Point to, int distance, float minLight) {
+	public static boolean canSee (Level level, Point from, Point to, int distance, float minLight) {
 
 		int delta_x, delta_y, move_x, move_y, error;
 
@@ -235,5 +235,5 @@ public class Fov {
 		return true;
 	}
 
-	 */
+
 }

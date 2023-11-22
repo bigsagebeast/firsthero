@@ -9,12 +9,13 @@ import com.churchofcoyote.hero.roguelike.world.ai.Tactic;
 import java.util.List;
 
 public class ProcMonster extends ProcMover {
-    public ProcMonster(Entity e) {
+    public Tactic tactic;
+    public ProcMonster(Entity e, Tactic tactic) {
         super(e);
+        this.tactic = tactic;
     }
 
     public void act() {
-        Tactic tactic = new ChaseAndMeleeTactic();
         tactic.execute(entity, this);
         setDelay(1000);
     }

@@ -40,6 +40,9 @@ public class Entity {
     public int maxSpellPoints;
     public int maxDivinePoints;
 
+    public int healingDelay = 3;
+    public int healingRate = 1;
+
     public Phenotype phenotype;
     public String glyphName;
     public PaletteEntry palette;
@@ -48,6 +51,10 @@ public class Entity {
 
     public Rank stats = Rank.C;
 
+    public String toString() {
+        return name + " " + pos;
+    }
+
     public void addProc(Proc proc)
     {
         procs.add(proc);
@@ -55,6 +62,10 @@ public class Entity {
 
     public String getVisibleName(Player p) {
         return name;
+    }
+
+    public void heal(int amount) {
+        hitPoints = Math.min(hitPoints + amount, maxHitPoints);
     }
 
     public boolean equip(Entity e, BodyPart bp)

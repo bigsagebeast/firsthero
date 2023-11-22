@@ -8,10 +8,8 @@ import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Rank;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcMonster;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcPlayer;
-import com.churchofcoyote.hero.roguelike.world.proc.PropPopupOnSeen;
+import com.churchofcoyote.hero.roguelike.world.ai.ChaseAndMeleeTactic;
+import com.churchofcoyote.hero.roguelike.world.proc.*;
 
 public class Bestiary {
 	public Map<String, Phenotype> map = new HashMap<String, Phenotype>();
@@ -83,12 +81,13 @@ public class Bestiary {
 			e.addProc(new ProcPlayer(e));
 		}
 		else if (p.isMonster) {
-			e.addProc(new ProcMonster(e));
+			e.addProc(new ProcMonster(e, new ChaseAndMeleeTactic()));
 			//e.addProc(new PropPopupOnSeen(e, "It's a monster!"));
 		} else {
 			e.addProc(new ProcMover(e));
 			//e.addProc(new PropPopupOnSeen(e, "It's a creature!"));
 		}
+		e.addProc(new ProcTimedEffects(e));
 		return e;
 	}
 	

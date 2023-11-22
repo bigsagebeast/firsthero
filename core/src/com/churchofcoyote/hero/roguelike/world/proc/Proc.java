@@ -29,6 +29,8 @@ public class Proc {
 
     public void act() { }
 
+    // activates every 1000
+    public void turnPassed() { }
 
     // return true if pickup is allowed, false if it's aborted, null if no opinion
     public Boolean preBePickedUp(Entity actor) { return null; }

@@ -1,6 +1,9 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.glyphtile.Palette;
+import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.Bestiary;
+import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.LevelCell;
@@ -114,9 +117,21 @@ public class Brogue {
 
         for (int i=0; i<level.getWidth(); i++) {
             for (int j=0; j<level.getHeight(); j++) {
-                level.cell(i, j).explored = true;
+                //level.cell(i, j).explored = true;
+                level.cell(i, j).temp = null;
             }
         }
+
+
+        for (int i=0; i<20; i++) {
+            Point pos = findRandomPassable();
+            //level.addEntity(Game.bestiary.create("goblin", null));
+            Entity e = Game.bestiary.create("goblin", null);
+            e.pos = pos;
+            level.addEntity(e);
+        }
+
+        level.reinitialize();
 
         return level;
     }
@@ -284,11 +299,11 @@ public class Brogue {
             }
             if (successes >= allowedTries)
             {
-                System.out.println("Last success on " + lastSuccess);
+                //System.out.println("Last success on " + lastSuccess);
                 return;
             }
         }
-        System.out.println("Gave up after " + successes + ", last success on " + lastSuccess);
+        //System.out.println("Gave up after " + successes + ", last success on " + lastSuccess);
     }
 
     private Point findRandomPassable() {
