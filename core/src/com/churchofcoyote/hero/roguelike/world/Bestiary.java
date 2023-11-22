@@ -26,8 +26,8 @@ public class Bestiary {
 		pc.stats = Rank.B_PLUS;
 		pc.isMonster = false;
 		pc.bodyPlan = "humanoid";
-		pc.glyphName = "creature.humanoid";
-		pc.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_YELLOW, Palette.COLOR_YELLOW);
+		pc.glyphName = "player.farmer";
+		pc.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_YELLOW);
 
 		Glyph glyphHuman = new Glyph('U', Color.LIGHT_GRAY);
 		
@@ -38,8 +38,8 @@ public class Bestiary {
 		goblin.stats = Rank.C_MINUS;
 		goblin.isMonster = true;
 		goblin.bodyPlan = "humanoid";
-		goblin.glyphName = "creature.humanoid";
-		goblin.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_BROWN);
+		goblin.glyphName = "humanoid.goblin";
+		goblin.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
 
 		farmer.name="Farmer";
 		farmer.glyph = glyphHuman;

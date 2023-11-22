@@ -44,6 +44,7 @@ public class GlyphEngine implements GameLogic {
         Palette.initialize();
 
         loadGlyphFile("tiles/terrain.gly");
+        loadGlyphFile("tiles/humanoid.gly");
     }
 
     public void initializeLevel(Level level) {
