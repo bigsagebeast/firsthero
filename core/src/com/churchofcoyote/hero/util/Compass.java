@@ -1,6 +1,8 @@
 package com.churchofcoyote.hero.util;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public enum Compass {
 	NORTH(0, -1),
@@ -20,11 +22,15 @@ public enum Compass {
 		this.y = y;
 		diagonal = (x != 0 && y != 0);
 	}
-	private static final Iterable<Compass> points =
+	private static final List<Compass> points =
 			Arrays.asList(new Compass[] {NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST});
-	private static final Iterable<Compass> diagonals =
+	private static final List<Compass> diagonals =
 			Arrays.asList(new Compass[] {NORTH_EAST, SOUTH_EAST, SOUTH_WEST, NORTH_WEST});
-	
+	public static final List<Compass> orthogonal =
+			Arrays.asList(new Compass[] {NORTH, EAST, SOUTH, WEST});
+
+	private static Random random = new Random();
+
 	public int getX() {
 		return x;
 	}
@@ -49,12 +55,36 @@ public enum Compass {
 		}
 		return OTHER;
 	}
+
+	public static List<Compass> neighbors(Compass c) {
+		if (c == NORTH) return Arrays.asList(new Compass[] {NORTH_WEST, NORTH_EAST});
+		if (c == NORTH_EAST) return Arrays.asList(new Compass[] {NORTH, EAST});
+		if (c == EAST) return Arrays.asList(new Compass[] {NORTH_EAST, SOUTH_EAST});
+		if (c == SOUTH_EAST) return Arrays.asList(new Compass[] {EAST, SOUTH});
+		if (c == SOUTH) return Arrays.asList(new Compass[] {SOUTH_EAST, SOUTH_WEST});
+		if (c == SOUTH_WEST) return Arrays.asList(new Compass[] {SOUTH, WEST});
+		if (c == WEST) return Arrays.asList(new Compass[] {SOUTH_WEST, NORTH_WEST});
+		/*if (c == NORTH_WEST)*/ return Arrays.asList(new Compass[] {WEST, NORTH});
+	}
 	
-	public static Iterable<Compass> points() {
+	public static List<Compass> points() {
 		return points;
 	}
 	
-	public static Iterable<Compass> diagonals() {
+	public static List<Compass> diagonals() {
 		return diagonals;
+	}
+
+	public static boolean isOrthogonal(Compass dir) {
+		for (Compass oDir : orthogonal) {
+			if (dir == oDir) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static Compass randomDirection() {
+		return points.get(random.nextInt(8));
 	}
 }

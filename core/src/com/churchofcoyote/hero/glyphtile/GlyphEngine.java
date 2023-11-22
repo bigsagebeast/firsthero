@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.churchofcoyote.hero.*;
-import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.churchofcoyote.hero.roguelike.world.Level;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.util.Point;
 

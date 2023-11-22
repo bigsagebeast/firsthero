@@ -5,6 +5,9 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 
 public class ProcMover extends Proc {
 
+    public Entity target;
+
+
     public ProcMover(Entity e) {
         super(e);
     }

@@ -2,25 +2,26 @@ package com.churchofcoyote.hero.roguelike.game;
 
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.SetupException;
-import com.churchofcoyote.hero.dialogue.DialogueBox;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.world.*;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcEquippable;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.List;
+import java.util.Random;
 
 public class Game {
 	// current level
 	private static Level level;
 	private static Player player;
 	public static RoguelikeModule roguelikeModule;
-	public static Dungeon dungeon = new Dungeon();
+	public static DungeonGenerator dungeon = new DungeonGenerator();
 	public static Bestiary bestiary = new Bestiary();
 	public static Itempedia itempedia = new Itempedia();
 	public static long time = 0;
+	public static Random random = new Random();
 
 	private Inventory inventory = new Inventory();
 	
@@ -30,7 +31,10 @@ public class Game {
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
 		}
-		//level = new Level(60, 60);
+		Game.roguelikeModule = module;
+	}
+
+	public void startIntro() {
 		player = new Player();
 		Entity pc = bestiary.create("player", null);
 		Entity pitchfork = itempedia.create("pitchfork", null);
@@ -41,7 +45,6 @@ public class Game {
 		player.entity.inventory.add(shortsword);
 		player.entity.inventory.add(longsword);
 		player.entity.inventory.add(buckler);
-		Game.roguelikeModule = module;
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
@@ -50,7 +53,16 @@ public class Game {
 		pitchfork.pos = new Point(35, 43);
 		level = dungeon.getLevel("start");
 	}
-	
+
+	public void startCaves() {
+		player = new Player();
+		Entity pc = bestiary.create("player", null);
+		player.entity = pc;
+		dungeon.generateBrogue("dungeon1");
+		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
+		level = dungeon.getLevel("dungeon1");
+	}
+
 	public void changeLevel(Level nextLevel, Point playerPos) {
 		if (level != null) {
 			for (Proc p : level.getProcEntities()) {
@@ -97,7 +109,7 @@ public class Game {
 	
 	public void turn() {
 		while (true) {
-			roguelikeModule.redraw();
+			roguelikeModule.setDirty();
 
 			long lowestTurn = -1;
 			long secondLowestTurn = -1;
@@ -237,6 +249,8 @@ public class Game {
 		inventory.openInventory();
 	}
 
+	public void cmdRegenerate() { startCaves(); }
+
 	public static void cmdMoveBy(int dx, int dy) {
 		int tx = player.entity.pos.x + dx;
 		int ty = player.entity.pos.y + dy;
@@ -280,6 +294,17 @@ public class Game {
 		pm.setDelay(1000);
 		
 		Entity targetCreature = level.moverAt(tx, ty);
+
+		if (Game.canMove(e, dx, dy)) {
+			moveNpc(e, tx, ty);
+		}
+	}
+
+	public static void npcAttack(Entity e, ProcMover pm, int dx, int dy) {
+		int tx = e.pos.x + dx;
+		int ty = e.pos.y + dy;
+
+		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {
 			if (targetCreature.getMover().isPeacefulToPlayer(player)) {
 				announce("Was moved into by a " +
@@ -287,14 +312,10 @@ public class Game {
 						" creature (" + e.getVisibleName(player) + ").");
 			} else {
 				CombatLogic.swing(e, targetCreature);
-				
+
 				// check if player is dead
 			}
 			return;
-		} else {
-			if (Game.canMove(e, dx, dy)) {
-				moveNpc(e, tx, ty);
-			}
 		}
 	}
 	

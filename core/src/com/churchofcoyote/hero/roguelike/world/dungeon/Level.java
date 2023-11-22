@@ -1,10 +1,13 @@
-package com.churchofcoyote.hero.roguelike.world;
+package com.churchofcoyote.hero.roguelike.world.dungeon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Visibility;
+import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.LevelTransition;
+import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
@@ -110,10 +113,12 @@ public class Level {
 		}
 		return cell[x][y];
 	}
+
 	public LevelCell cell(Point p) {
 		return cell(p.x, p.y);
 	}
-	
+	public void putCell(int x, int y, LevelCell putCell) { cell[x][y] = putCell; }
+
 	public Entity moverAt(int x, int y) {
 		for (Entity e : entities) {
 			if (e.getMover() != null && e.pos.x == x && e.pos.y == y) {
@@ -155,4 +160,16 @@ public class Level {
 	public Boolean withinBounds(int x, int y) {
 		return (x >= 0 && x < width && y >= 0 && y < height);
 	}
+
+	public Point findOpenTile() {
+		for (int i=0; i<width; i++) {
+			for (int j=0; j<height; j++) {
+				if (cell[i][j].terrain.isPassable()) {
+					return new Point(i, j);
+				}
+			}
+		}
+		throw new RuntimeException("Failed to find any open tile in the level");
+	}
+
 }

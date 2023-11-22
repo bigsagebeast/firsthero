@@ -1,23 +1,29 @@
-package com.churchofcoyote.hero.util;
+package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
+
+import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
+import com.churchofcoyote.hero.util.Compass;
+import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import com.churchofcoyote.hero.roguelike.game.Game;
-import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
-
-public class AStar {
+public class AStarBrogue {
 
 	private static PriorityQueue<AStarData> queue = new PriorityQueue<AStarData>();
-	private static AStar instance = new AStar();
+	private static AStarBrogue instance = new AStarBrogue();
 
-	public static List<Point> path(Level level, Entity e, Point origin, Point destination) {
-		level.clearTemp();
+	public static List<Point> path(Brogue.Grid grid, Point origin, Point destination, boolean pathThroughWalls) {
 		queue.clear();
+		for (int i=0; i<grid.width; i++) {
+			for (int j=0; j<grid.height; j++) {
+				grid.cell[i][j].astar = null;
+			}
+		}
 
-		check(level, instance.new AStarData(origin, 0, null));
+		check(grid, instance.new AStarData(origin, 0, null));
 		List<Point> retval = new ArrayList<Point>();
 
 		while (!queue.isEmpty()) {
@@ -26,31 +32,38 @@ public class AStar {
 				AStarData last = next;
 				while (last.from != null) {
 					retval.add(0, last.location);
-					last = (AStarData) level.cell(last.from).temp;
+					last = (AStarData) grid.cell[last.from.x][last.from.y].astar;
 				}
 				break;
 			}
 
-			for (Compass dir : Compass.points()) {
+			//for (Compass dir : Compass.points) {
+			for (Compass dir : Compass.orthogonal) {
 				Point newloc = dir.from(next.location);
-				
-				if (level.contains(newloc) && (newloc.equals(destination) || level.cell(newloc).terrain.isPassable())) {
-					float moveCost = dir.isDiagonal() ? 1.0001f : 1.0f;
-					if (!Game.canMoveTo(e, newloc.x, newloc.y)) {
-						moveCost += 10;
+				float moveCost = 0f;
+				if (grid.contains(newloc) && (grid.cell(newloc).terrain.isPassable())) {
+					moveCost = 1.0f;
+				}
+				else if (grid.contains(newloc) && Compass.isOrthogonal(dir) && pathThroughWalls) {
+					if (grid.cell(newloc).temp == Boolean.TRUE) {
+						moveCost = 10.0f;
+					} else if (!grid.cell(newloc).terrain.isPassable()) {
+						moveCost = 10.0f;
 					}
-					check(level, instance.new AStarData(newloc, next.cost + moveCost, next.location));
+				}
+				if (moveCost > 0f) {
+					check(grid, instance.new AStarData(newloc, next.cost + moveCost, next.location));
 				}
 			}
 		}
 		return retval;
 	}
 
-	private static void check(Level level, AStarData next) {
-		AStarData existing = (AStarData)level.cell(next.location).temp;
+	private static void check(Brogue.Grid grid, AStarData next) {
+		AStarData existing = (AStarData)grid.cell(next.location).astar;
 		if (existing == null) {
 			queue.add(next);
-			level.cell(next.location).temp = next;
+			grid.cell(next.location).astar = next;
 			return;
 		}
 		if (existing.cost <= next.cost) {
@@ -58,7 +71,7 @@ public class AStar {
 		}
 		queue.remove(existing);
 		queue.add(next);
-		level.cell(next.location).temp = next;
+		grid.cell(next.location).astar = next;
 	}
 
 	public class AStarData implements Comparable<AStarData> {

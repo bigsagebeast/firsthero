@@ -4,6 +4,8 @@ import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
+import java.util.List;
+
 public class Proc {
 
     public Entity entity;
@@ -48,6 +50,9 @@ public class Proc {
     public void postBeSteppedOn(Entity actor) { }
 
     public void actPlayerLos() {}
+
+    public Boolean wantsMoverLos() { return null; }
+    public void handleMoverLos(List<ProcMover> movers) {}
 
     public void beDestroyed() {}
 }

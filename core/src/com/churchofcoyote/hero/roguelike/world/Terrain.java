@@ -27,7 +27,7 @@ public class Terrain {
 
 	public static Map<String, Terrain> map;
 	
-	public static Terrain BLANK = new Terrain(Glyph.BLANK, "Empty.", false);
+	public static Terrain BLANK = new Terrain("#", Color.GRAY, "Empty.", false, "terrain.dot", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
 	
 	static {
 		// TODO: Load / initialize from...somewhere
@@ -55,13 +55,9 @@ public class Terrain {
 	}
 
 	public Terrain(String symbols, Color color, String description, boolean passable, String glyphName, PaletteEntry paletteEntry, String blockCategory) {
-		this(symbols, color, description, passable);
 		this.paletteEntry = paletteEntry;
 		this.blockCategory = blockCategory;
 		this.glyphName = glyphName;
-	}
-
-	public Terrain(String symbols, Color color, String description, boolean passable) {
 		glyphs = new ArrayList<Glyph>();
 		for (int i=0; i<symbols.length(); i++) {
 			glyphs.add(new Glyph(symbols.charAt(i), color));
@@ -69,20 +65,11 @@ public class Terrain {
 		this.description = description;
 		this.passable = passable;
 	}
-	
-	public Terrain(List<Glyph> glyphs, String description, boolean passable) {
-		this.glyphs = glyphs;
-		this.description = description;
-		this.passable = passable;
+
+	public static Terrain get(String key) {
+		return map.get(key);
 	}
-	
-	public Terrain(Glyph glyph, String description, boolean passable) {
-		this.glyphs = new ArrayList<Glyph>();
-		glyphs.add(glyph);
-		this.description = description;
-		this.passable = passable;
-	}
-	
+
 	public Glyph getGlyphForTile(int x, int y, int extra) {
 		if (glyphs.size() == 1) {
 			return glyphs.get(0);

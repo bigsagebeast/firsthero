@@ -1,20 +1,18 @@
 package com.churchofcoyote.hero.roguelike.world;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
+import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Brogue;
 import com.churchofcoyote.hero.util.Point;
 
-public class Dungeon {
+public class DungeonGenerator {
 	public Map<String, Level> levels = new HashMap<String, Level>();
 	
 	public Level getLevel(String key) {
@@ -22,8 +20,8 @@ public class Dungeon {
 	}
 	
 	
-	public void generateCavern(String key, int width, int height) {
-		Level level = new Level(width, height);
+	public void generateBrogue(String key) {
+		Level level = new Brogue().generate();
 		
 		
 		

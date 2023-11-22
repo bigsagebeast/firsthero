@@ -7,18 +7,21 @@ import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
 import com.churchofcoyote.hero.engine.asciitile.AsciiGrid;
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.roguelike.game.AnnounceWindow;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.EquipmentWindow;
 import com.churchofcoyote.hero.roguelike.game.MainWindow;
 import com.churchofcoyote.hero.roguelike.game.StatsWindow;
 import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.churchofcoyote.hero.roguelike.world.Level;
-import com.churchofcoyote.hero.roguelike.world.Terrain;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.text.TextBlock;
+import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class RoguelikeModule extends Module {
 
@@ -27,7 +30,7 @@ public class RoguelikeModule extends Module {
 	
 	public static final int FONT_SIZE = 12;
 	
-	Game game;
+	public Game game;
 	
 	MainWindow mainWindow;
 	AnnounceWindow announceWindow;
@@ -49,8 +52,8 @@ public class RoguelikeModule extends Module {
 		announceWindow = new AnnounceWindow();
 		statsWindow = new StatsWindow();
 		equipWindow = new EquipmentWindow();
-		asciiTileEngine.addLayer(110, 62);
-		mainGrid = asciiTileEngine.getLayer(0);
+		//asciiTileEngine.addLayer(110, 62);
+		//mainGrid = asciiTileEngine.getLayer(0);
 		
 		TextBlock borderBlock = new TextBlock("", FONT_SIZE, 0, 0, new Color(0, 0, 0, 0));
 		
@@ -69,18 +72,11 @@ public class RoguelikeModule extends Module {
 		}
 		borderBlock.compile();
 		uiEngine.addBlock(borderBlock);
-		/*
-		TextBlock block = new TextBlock("##############################################################################################################",
-				FONT_SIZE, 0, 0, Color.GRAY);
-				*/
-		//block.lock();
-		//textEngine.addBlock(block);
-		
-		
+
 		announceWindow.addLine("Announcements:");
-		statsWindow.update(Game.getPlayerEntity());
-		equipWindow.update(Game.getPlayerEntity());
-		Game.getLevel().updateVis();
+		//statsWindow.update(Game.getPlayerEntity());
+		//equipWindow.update(Game.getPlayerEntity());
+		//Game.getLevel().updateVis();
 
 		uiEngine.addBlock(announceWindow.getTextBlockParent());
 		uiEngine.addBlock(statsWindow.getTextBlockParent());
@@ -98,67 +94,75 @@ public class RoguelikeModule extends Module {
 	
 	private void process() {
 		// main window
-		if (!dirty) {
-			return;
-		}
-		dirty = false;
 		Level level = game.getLevel();
-		for (int x=0; x<mainWindow.getWidth(); x++) {
-			int ix = x + mainWindow.getCameraX();
-			for (int y=0; y<mainWindow.getHeight(); y++) {
-				int iy = y + mainWindow.getCameraY();
-				if (level.cell(ix, iy).explored) {
-					Terrain t = level.cell(ix, iy).terrain;
-					Glyph tGlyph = t.getGlyphForTile(ix, iy, 0);
-					if (!level.cell(ix, iy).visible()) {
-						tGlyph = tGlyph.getShadow();
+
+		for (Entity e : level.getNonMovers()) {
+			int wx = e.pos.x - mainWindow.getCameraX();
+			int wy = e.pos.y - mainWindow.getCameraY();
+			if (wx < 0 || wx >= mainWindow.getWidth() || wy < 0 || wy >= mainWindow.getWidth()) {
+				continue;
+			}
+			if (level.cell(e.pos.x, e.pos.y).visible()) {
+				for (Proc p : e.procs) {
+					p.actPlayerLos();
+				}
+			}
+		}
+
+		for (Entity e : level.getMovers()) {
+			int wx = e.pos.x - mainWindow.getCameraX();
+			int wy = e.pos.y - mainWindow.getCameraY();
+			if (wx < 0 || wx >= mainWindow.getWidth() || wy < 0 || wy >= mainWindow.getWidth()) {
+				continue;
+			}
+			if (level.cell(e.pos.x, e.pos.y).visible()) {
+				for (Proc p : e.procs) {
+					p.actPlayerLos();
+				}
+			}
+
+			HashSet<Proc> moverLosProcs = new HashSet<>();
+			for (Proc p : e.procs) {
+				if (p.wantsMoverLos() == Boolean.TRUE) {
+					moverLosProcs.add(p);
+				}
+			}
+			ArrayList<ProcMover> visibleMovers = new ArrayList<>();
+			if (!moverLosProcs.isEmpty()) {
+				for (Entity target : level.getMovers()) {
+					if (e == target)
+						continue;
+					if (Fov.canSee(level, e.pos, target.pos, 15, 0)) {
+						//System.out.println("Can   see: " + e.name + ", " + target.name);
+						visibleMovers.add(target.getMover());
+					} else {
+						//System.out.println("Can't see: " + e.name + ", " + target.name);
 					}
-					mainGrid.put(tGlyph, x + mainWindowOffsetX, y + mainWindowOffsetY);
-				} else {
-					mainGrid.put(Glyph.BLANK, x + mainWindowOffsetX, y + mainWindowOffsetY);
 				}
 			}
-		}
-
-		for (Entity c : level.getNonMovers()) {
-			int wx = c.pos.x - mainWindow.getCameraX();
-			int wy = c.pos.y - mainWindow.getCameraY();
-			if (wx < 0 || wx >= mainWindow.getWidth() || wy < 0 || wy >= mainWindow.getWidth()) {
-				continue;
-			}
-			if (level.cell(c.pos.x, c.pos.y).visible()) {
-				mainGrid.put(c.glyph, wx + mainWindowOffsetX, wy + mainWindowOffsetY);
-				for (Proc p : c.procs) {
-					p.actPlayerLos();
-				}
-			}
-		}
-
-		for (Entity c : level.getMovers()) {
-			int wx = c.pos.x - mainWindow.getCameraX();
-			int wy = c.pos.y - mainWindow.getCameraY();
-			if (wx < 0 || wx >= mainWindow.getWidth() || wy < 0 || wy >= mainWindow.getWidth()) {
-				continue;
-			}
-			if (level.cell(c.pos.x, c.pos.y).visible()) {
-				mainGrid.put(c.glyph, wx + mainWindowOffsetX, wy + mainWindowOffsetY);
-				for (Proc p : c.procs) {
-					p.actPlayerLos();
-				}
+			for (Proc p : moverLosProcs) {
+				p.handleMoverLos(visibleMovers);
 			}
 		}
 	}
 	
 	public void redraw() {
-		dirty = true;
 		statsWindow.update(Game.getPlayerEntity());
 		equipWindow.update(Game.getPlayerEntity());
 		Game.getLevel().updateVis();
 	}
+
+	public void setDirty() {
+		dirty = true;
+	}
 	
 	@Override
 	public void update(GameState state) {
-		process();
+		if (dirty) {
+			redraw();
+			process();
+			dirty = false;
+		}
 		//asciiTileEngine.update(state);
 	}
 
@@ -216,13 +220,8 @@ public class RoguelikeModule extends Module {
 		}
 		if (shift) {
 			switch (keycode) {
-			case Keys.P:
-				game.getPlayerEntity().pos = new Point(59, 58);
-				game.cmdMoveDown();
-				break;
-			case Keys.O:
-				game.getPlayerEntity().pos = new Point(1, 2);
-				game.cmdMoveUp();
+			case Keys.R:
+				game.cmdRegenerate();
 				break;
 			case Keys.PERIOD:
 				game.cmdStairsDown();

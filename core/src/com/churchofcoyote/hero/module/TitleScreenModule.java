@@ -78,7 +78,7 @@ public class TitleScreenModule extends Module {
 
 		textEngine.addBlock(new TextBlock("Music credit: Archons of Light - Nils Ingvarsson", 14, 0, 52, Color.GRAY, -1f, -1f));
 		
-		options[0] = new TextBlock("  Continue", 14, 18, 29, Color.GRAY, 0f, 0f);
+		options[0] = new TextBlock("  Continue", 14, 18, 29, Color.WHITE, 0f, 0f);
 		options[1] = new TextBlock("> New Game", 14, 18, 30, Color.YELLOW, 0f, 0f);
 		options[2] = new TextBlock("  Settings", 14, 18, 31, Color.WHITE, 0f, 0f);
 		options[3] = new TextBlock("  Watch Intro", 14, 18, 32, Color.WHITE, 0f, 0f);
@@ -126,18 +126,25 @@ public class TitleScreenModule extends Module {
 		case Keys.ENTER:
 		case Keys.SPACE:
 			switch (selectedOption) {
-			case 1:
-				IntroModule.musicResource.stop();
-				end();
-				GameLoop.roguelikeModule.start();
-				break;
-			case 3:
-				IntroModule.musicResource.stop();
-				end();
-				GameLoop.introModule.start();
-				break;
-			case 4:
-				Gdx.app.exit();
+				case 0:
+					IntroModule.musicResource.stop();
+					end();
+					GameLoop.roguelikeModule.start();
+					GameLoop.roguelikeModule.game.startCaves();
+					break;
+				case 1:
+					IntroModule.musicResource.stop();
+					end();
+					GameLoop.roguelikeModule.start();
+					GameLoop.roguelikeModule.game.startIntro();
+					break;
+				case 3:
+					IntroModule.musicResource.stop();
+					end();
+					GameLoop.introModule.start();
+					break;
+				case 4:
+					Gdx.app.exit();
 			}
 			break;
 		}

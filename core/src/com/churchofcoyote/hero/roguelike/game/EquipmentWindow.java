@@ -32,8 +32,21 @@ public class EquipmentWindow {
 		for (BodyPart bp : c.body.bodyPlan.getParts())
 		{
 			Entity equipped = c.body.equipment.get(bp);
-			rows[row].text = StringFormat.format("%-8s: %-16s", bp.getAbbrev(),
-					equipped != null ? equipped.name : "None");
+			String equipmentString;
+			if (equipped != null)
+			{
+				equipmentString = equipped.name;
+			}
+			else if (bp == BodyPart.OFF_HAND && c.body.equipment.get(BodyPart.PRIMARY_HAND) != null &&
+					c.body.equipment.get(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND)
+			{
+				// TODO should involve an 'is 2h' flag on the player
+				equipmentString = "(2-handed)";
+			} else {
+				equipmentString = "empty";
+			}
+			rows[row].text = StringFormat.format("%-7s: %-16s", bp.getAbbrev(), equipmentString);
+
 			row++;
 		}
 		parent.compile();
