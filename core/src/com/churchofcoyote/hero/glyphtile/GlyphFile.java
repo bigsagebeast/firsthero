@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.glyphtile;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.churchofcoyote.hero.SetupException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -13,7 +14,7 @@ public class GlyphFile {
     public String[][] glyphName;
     public Texture texture;
 
-    public GlyphFile(String filename) {
+    public GlyphFile(String filename) throws SetupException {
         BufferedReader reader;
         try {
             reader = new BufferedReader(new InputStreamReader(Gdx.files.internal(filename).read()));
@@ -38,6 +39,10 @@ public class GlyphFile {
                 int column = Integer.valueOf(entry[1]);
                 String name = entry[2];
 
+                if (row >= glyphName.length || column >= glyphName[row].length) {
+                    throw new SetupException("Glyph file " + filename + " has glyphs outside the header's range: " +
+                            name + " (row " + row + ", column " + column + ") outside of range " + rows + ", " + columns);
+                }
                 glyphName[row][column] = name;
 
                 entryLine = reader.readLine();

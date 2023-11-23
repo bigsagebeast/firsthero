@@ -1,4 +1,4 @@
-1 25
+1 26
 0 0 terrain.grass
 0 1 wall.stone:x
 0 2 wall.stone:n
@@ -23,4 +23,5 @@
 0 21 terrain.upstair
 0 22 terrain.dot
 0 23 terrain.floor
-0 24 item.pitchfork
+0 24 terrain.door_closed
+0 25 terrain.door_open

@@ -3,17 +3,19 @@ package com.churchofcoyote.hero.dialogue;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.Graphics;
+import com.churchofcoyote.hero.glyphtile.GlyphTile;
 import com.churchofcoyote.hero.logic.TextEngine;
 import com.churchofcoyote.hero.text.TextBlock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DialogueBox {
 
-    public static final int FONT_SIZE = 14;
+    public static final int FONT_SIZE = 32;
     public static final int FOOTER_OFFSET_FROM_LEFT = 0;
-    public static final int FOOTER_OFFSET_FROM_BOTTOM = 4;
+    public static final int FOOTER_OFFSET_FROM_BOTTOM = 16;
     public static final int TITLE_OFFSET_FROM_TOP = 0;
     public static final int FIRST_ROW_FROM_TOP = FONT_SIZE + TITLE_OFFSET_FROM_TOP;
     public static final int BOTTOM_POSSIBLE_ROW = FONT_SIZE + FOOTER_OFFSET_FROM_BOTTOM;
@@ -65,12 +67,12 @@ public class DialogueBox {
     }
 
     public DialogueBox withFooterClosable() {
-        footerText = "Press SPACE to close";
+        footerText = "SPACE to close";
         return this;
     }
 
     public DialogueBox withFooterClosableAndSelectable() {
-        footerText = "Press arrow keys to move, ENTER to select, SPACE to close";
+        footerText = "Arrow keys to move, ENTER to select, SPACE to close";
         return this;
     }
 
@@ -82,7 +84,7 @@ public class DialogueBox {
             lines.add(spacer);
         }
         DialogueLine line = new DialogueLine();
-        line.text = "  " + text;
+        line.text = text;
         line.value = -1;
         lines.add(line);
     }
@@ -91,6 +93,15 @@ public class DialogueBox {
         DialogueLine line = new DialogueLine();
         line.text = "  " + text;
         line.value = mapping.size();
+        mapping.add(value);
+        lines.add(line);
+    }
+
+    public void addItem(String text, GlyphTile glyph, Object value) {
+        DialogueLine line = new DialogueLine();
+        line.text = "  ` " + text;
+        line.value = mapping.size();
+        line.glyphs = new GlyphTile[] {glyph};
         mapping.add(value);
         lines.add(line);
     }
@@ -113,7 +124,7 @@ public class DialogueBox {
         for (int i=0; i<lines.size(); i++) {
             DialogueLine line = lines.get(i);
             line.textBlock = new TextBlock(line.text, FONT_SIZE, 0, i,
-                    0, 0, Color.WHITE);
+                    0, 0, Color.WHITE, line.glyphs);
             lineParent.addChild(line.textBlock);
         }
 

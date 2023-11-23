@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.roguelike.game;
 
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.dialogue.DialogueBox;
+import com.churchofcoyote.hero.glyphtile.EntityGlyph;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.ItemCategory;
@@ -71,10 +72,10 @@ public class Inventory {
             List<Entity> ents = inventory.stream().filter(e -> e.itemType.category == cat &&
                     (bodyParts.contains(BodyPart.PRIMARY_HAND) || bodyParts.contains(e.getEquippable().equipmentFor))).collect(Collectors.toList());
             if (ents.size() > 0) {
-                box.addHeader("*** " + cat.getName() + " ***");
+                box.addHeader(cat.getName());
             }
             for (Entity ent : ents) {
-                box.addItem(ent.name, ent);
+                box.addItem(ent.name, EntityGlyph.getGlyph(ent), ent);
                 addedAnything = true;
             }
         }

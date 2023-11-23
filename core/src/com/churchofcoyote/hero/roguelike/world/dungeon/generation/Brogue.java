@@ -27,10 +27,12 @@ public class Brogue {
 
     private Terrain wall;
     private Terrain floor;
+    private Terrain doorway;
 
     public Brogue() {
         wall = Terrain.get("wall");
         floor = Terrain.get("dirt");
+        doorway = Terrain.get("doorway");
     }
 
     public Level generate() {
@@ -72,7 +74,7 @@ public class Brogue {
                 if (p == null) continue;
                 //System.out.println("Found on attempt " + i + "! " + x + ", " + y + ": grid size " + room.width + ", " + room.height);
                 pasteGrid(room, x, y);
-                levelGrid.cell[p.x][p.y].terrain = Terrain.get("floor");
+                levelGrid.cell[p.x][p.y].terrain = doorway;
                 success = true;
                 break;
             }
@@ -95,7 +97,7 @@ public class Brogue {
                             }
                         }
                         if (!redundant) {
-                            levelGrid.cell[i][j].terrain = Terrain.get("floor");
+                            levelGrid.cell[i][j].terrain = doorway;
                         } else {
                             levelGrid.cell[i][j].terrain = floor;
                         }
@@ -252,7 +254,7 @@ public class Brogue {
             if (grid.cell[currentX + 1][currentY].terrain == wall) { grid.cell[currentX + 1][currentY].temp = Boolean.FALSE; }
             if (grid.cell[currentX][currentY + 1].terrain == wall) { grid.cell[currentX][currentY + 1].temp = Boolean.FALSE; }
         }
-        grid.cell[start.x][start.y].terrain = Terrain.get("floor");
+        grid.cell[start.x][start.y].terrain = doorway;
         int finalX = start.x + ((hallwayLength-1) * dir.getX());
         int finalY = start.y + ((hallwayLength-1) * dir.getY());
 

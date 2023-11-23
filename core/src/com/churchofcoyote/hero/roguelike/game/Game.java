@@ -29,6 +29,7 @@ public class Game {
 	public Game(RoguelikeModule module) {
 		try {
 			BodyPlanpedia.initialize();
+
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
 		}
@@ -37,15 +38,17 @@ public class Game {
 
 	public void startIntro() {
 		player = new Player();
-		Entity pc = bestiary.create("player", null);
-		Entity pitchfork = itempedia.create("pitchfork", null);
-		Entity shortsword = itempedia.create("shortsword", null);
-		Entity longsword = itempedia.create("longsword", null);
-		Entity buckler = itempedia.create("buckler", null);
+		Entity pc = bestiary.create("player");
+		Entity pitchfork = itempedia.create("pitchfork");
+		Entity shortsword = itempedia.create("shortsword");
+		Entity longsword = itempedia.create("longsword");
+		Entity dagger = itempedia.create("dagger");
+		Entity buckler = itempedia.create("buckler");
 		player.entity = pc;
 		player.entity.inventory.add(shortsword);
 		player.entity.inventory.add(longsword);
 		player.entity.inventory.add(buckler);
+		player.entity.inventory.add(dagger);
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
@@ -57,7 +60,9 @@ public class Game {
 
 	public void startCaves() {
 		player = new Player();
-		Entity pc = bestiary.create("player", null);
+		Entity pc = bestiary.create("player");
+		Entity shortsword = itempedia.create("shortsword");
+		pc.equip(shortsword, BodyPart.PRIMARY_HAND);
 		player.entity = pc;
 		dungeon.generateBrogue("dungeon1");
 		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());

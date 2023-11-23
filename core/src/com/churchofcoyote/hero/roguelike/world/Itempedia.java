@@ -17,7 +17,7 @@ public class Itempedia {
         ItemType pitchfork = new ItemType();
         pitchfork.name = "pitchfork";
         pitchfork.glyph = new Glyph('/', Color.LIGHT_GRAY);
-        pitchfork.glyphName = "item.pitchfork";
+        pitchfork.glyphName = "weapon.pitchfork";
         pitchfork.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
         pitchfork.equipmentFor = BodyPart.TWO_HAND;
         pitchfork.category = ItemCategory.CATEGORY_TWO_HANDED_WEAPONS;
@@ -28,24 +28,39 @@ public class Itempedia {
 
         ItemType shortsword = new ItemType();
         shortsword.name = "short sword";
-        shortsword.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
+        shortsword.glyphName = "weapon.shortsword";
+        shortsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         shortsword.equipmentFor = BodyPart.ANY_HAND;
         shortsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
         map.put("shortsword", shortsword);
 
         ItemType longsword = new ItemType();
         longsword.name = "longsword";
-        longsword.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
+        longsword.glyphName = "weapon.longsword";
+        longsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         longsword.equipmentFor = BodyPart.ANY_HAND;
         longsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
         map.put("longsword", longsword);
 
+        ItemType dagger = new ItemType();
+        dagger.name = "dagger";
+        dagger.glyphName = "weapon.dagger";
+        dagger.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
+        dagger.equipmentFor = BodyPart.ANY_HAND;
+        dagger.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
+        map.put("dagger", dagger);
+
         ItemType buckler = new ItemType();
         buckler.name = "buckler";
-        buckler.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
+        buckler.glyphName = "armor.buckler";
+        buckler.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_GRAY, Palette.COLOR_WHITE);
         buckler.equipmentFor = BodyPart.ANY_HAND;
         buckler.category = ItemCategory.CATEGORY_SHIELDS;
         map.put("buckler", buckler);
+    }
+
+    public Entity create(String key) {
+        return create(key, null);
     }
 
     public Entity create(String key, String name) {

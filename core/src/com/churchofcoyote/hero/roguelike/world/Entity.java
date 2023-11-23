@@ -79,10 +79,13 @@ public class Entity {
 
         // TODO error messages?
         if (!inventory.contains(e)) {
+            inventory.add(e);
+            /*
             if (this == Game.getPlayerEntity()) {
                 Game.announce("That's not in your inventory.");
             }
             return false;
+             */
         }
 
         if (pe == null) {

@@ -58,7 +58,9 @@ public class TextBlock implements GameLogic {
 	private boolean isLocked = false;
 	private FrameBuffer buffer;
 	private TextureRegion texRegion;
-	
+
+
+
 	public TextBlock(GlyphTile glyph, Float fontsize, Float x, Float y, float pixelOffsetX, float pixelOffsetY,
 		TextEffectJitter jitter, TextEffectSwap swap) {
 		this.glyph = glyph;
@@ -70,7 +72,8 @@ public class TextBlock implements GameLogic {
 		this.jitter = jitter;
 		this.swap = swap;
 	}
-	
+
+
 	public TextBlock(String text, Float fontSize,
 					 Float x, Float y, float pixelOffsetX, float pixelOffsetY,
 					 Color color,
@@ -138,6 +141,27 @@ public class TextBlock implements GameLogic {
 					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color) {
 		this(text, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);
+	}
+
+	public TextBlock(String text, int fontSize,
+					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color, GlyphTile[] glyphs) {
+		this(text, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
+				null, null, TextEffectGranularity.BLOCK);
+		char[] chars = text.toCharArray();
+		int glyphIndex = 0;
+		for (int i=0; i<chars.length; i++) {
+			if (chars[i] == '`') {
+				if (glyphIndex > glyphs.length) {
+					throw new RuntimeException("Glyphs in string (" + (glyphIndex + 1) + ") exceeded glyphs provided (" + glyphs.length + ")");
+				}
+				TextBlock glyphBlock = new TextBlock(glyphs[glyphIndex], (float)fontSize, (float)i, 0f, 0f, 0f, null, null);
+				addChild(glyphBlock);
+				glyphIndex++;
+			}
+		}
+		if (glyphIndex > 0) {
+			this.text = this.text.replace('`', ' ');
+		}
 	}
 
 	public TextBlock(String text, int fontSize,

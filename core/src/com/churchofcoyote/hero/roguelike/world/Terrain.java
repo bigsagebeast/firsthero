@@ -8,7 +8,6 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.engine.asciitile.Glyph;
-import com.churchofcoyote.hero.glyphtile.GlyphTile;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 
@@ -27,56 +26,35 @@ public class Terrain {
 
 	public static Map<String, Terrain> map;
 	
-	public static Terrain BLANK = new Terrain("#", Color.GRAY, "Empty.", false, "terrain.dot", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
+	public static Terrain BLANK = new Terrain("Empty.", false, "terrain.dot", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
 	
 	static {
 		// TODO: Load / initialize from...somewhere
 		map = new HashMap<String, Terrain>();
 
-		map.put("tree", new Terrain("T", Color.GREEN, "a tree", false, "terrain.tree", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_DARKGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_TRANSPARENT), null));
-		map.put("dirt", new Terrain("..,,", Color.FIREBRICK, "dirt", true, "terrain.dot", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null));
-		map.put("grass", new Terrain("..,,`'", Color.FOREST, "grass", true, "terrain.grass", new PaletteEntry(Palette.COLOR_LIGHTGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_CHARTREUSE, Palette.COLOR_TRANSPARENT), null));
-		map.put("wall", new Terrain("#", Color.LIGHT_GRAY, "a wall", false, "wall.stone", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_TAN, Palette.COLOR_TRANSPARENT), "wall"));
-		map.put("floor", new Terrain("_", Color.BROWN, "wood floor", true, "terrain.floor", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null));
-		map.put("mountain", new Terrain("^^#", Color.LIGHT_GRAY, "the mountainside", false, "terrain.mountain", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_FORESTGREEN, Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT), null));
+		map.put("tree", new Terrain("a tree", false, "terrain.tree", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_DARKGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_TRANSPARENT), null));
+		map.put("dirt", new Terrain("dirt", true, "terrain.dot", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null));
+		map.put("grass", new Terrain("grass", true, "terrain.grass", new PaletteEntry(Palette.COLOR_LIGHTGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_CHARTREUSE, Palette.COLOR_TRANSPARENT), null));
+		map.put("wall", new Terrain("a wall", false, "wall.stone", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_TAN, Palette.COLOR_TRANSPARENT), "wall"));
+		map.put("floor", new Terrain("wood floor", true, "terrain.floor", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null));
+		map.put("mountain", new Terrain("the mountainside", false, "terrain.mountain", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_FORESTGREEN, Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT), null));
 		
-		map.put("upstair", new Terrain("<", Color.WHITE, "stairs leading up", true, "terrain.upstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null));
-		map.put("downstair", new Terrain(">", Color.WHITE, "stairs leading down", true, "terrain.downstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null));
+		map.put("upstair", new Terrain("stairs leading up", true, "terrain.upstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null));
+		map.put("downstair", new Terrain("stairs leading down", true, "terrain.downstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null));
 
-
-		/*0 17 creature.humanoid
-0 18 terrain.tree
-0 19 terrain.mountain
-0 20 terrain.downstair
-0 21 terrain.upstair
-0 22 terrain.dot
-
-		 */
+		map.put("doorway", new Terrain("a doorway", true, "terrain.door_open", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT, Palette.COLOR_BROWN), null));
 	}
 
-	public Terrain(String symbols, Color color, String description, boolean passable, String glyphName, PaletteEntry paletteEntry, String blockCategory) {
+	public Terrain(String description, boolean passable, String glyphName, PaletteEntry paletteEntry, String blockCategory) {
 		this.paletteEntry = paletteEntry;
 		this.blockCategory = blockCategory;
 		this.glyphName = glyphName;
-		glyphs = new ArrayList<Glyph>();
-		for (int i=0; i<symbols.length(); i++) {
-			glyphs.add(new Glyph(symbols.charAt(i), color));
-		}
 		this.description = description;
 		this.passable = passable;
 	}
 
 	public static Terrain get(String key) {
 		return map.get(key);
-	}
-
-	public Glyph getGlyphForTile(int x, int y, int extra) {
-		if (glyphs.size() == 1) {
-			return glyphs.get(0);
-		}
-		
-		random.setSeed((x * big1 * big2) + (y * big1) + extra);
-		return glyphs.get(random.nextInt(glyphs.size()));
 	}
 
 	public String getGlyphName() {

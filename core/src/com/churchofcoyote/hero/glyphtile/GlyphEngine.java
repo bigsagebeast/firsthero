@@ -40,11 +40,15 @@ public class GlyphEngine implements GameLogic {
     private Boolean dirty = true;
 
     public GlyphEngine() {
+    }
+
+    public void initialize() throws SetupException{
         GlyphIndex.initialize();
         Palette.initialize();
 
         loadGlyphFile("tiles/terrain.gly");
         loadGlyphFile("tiles/humanoid.gly");
+        loadGlyphFile("tiles/items.gly");
     }
 
     public void initializeLevel(Level level) {
@@ -57,7 +61,7 @@ public class GlyphEngine implements GameLogic {
         entityGlyph = new EntityGlyph();
     }
 
-    private void loadGlyphFile(String filename) {
+    private void loadGlyphFile(String filename) throws SetupException {
         GlyphFile file = new GlyphFile(filename);
         TextureData data = file.texture.getTextureData();
         data.prepare();

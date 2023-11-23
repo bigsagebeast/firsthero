@@ -119,14 +119,18 @@ public class DungeonGenerator {
 			int toY = Integer.parseInt(transitionSplit[5]);
 			
 			if (transitionType.equals("up")) {
+				/*
 				if (level.cell(fromX, fromY).terrain.getGlyphForTile(fromX, fromY, 0).getSymbol() != '<') {
 					throw new RuntimeException("Invalid transition: no up-stair at " + fromX + ", " + fromY);
 				}
+				*/
 				level.addTransition(new LevelTransition("up", new Point(fromX, fromY), destination, new Point(toX, toY)));
 			} else if (transitionType.equals("down")) {
+				/*
 				if (level.cell(fromX, fromY).terrain.getGlyphForTile(fromX, fromY, 0).getSymbol() != '>') {
 					throw new RuntimeException("Invalid transition: no down-stair at " + fromX + ", " + fromY);
 				}
+				 */
 				level.addTransition(new LevelTransition("down", new Point(fromX, fromY), destination, new Point(toX, toY)));
 			} else {
 				throw new RuntimeException("Invalid transition type: " + transitionType);

@@ -17,6 +17,7 @@ import com.churchofcoyote.hero.util.QueuedKeypress;
 import javax.print.Doc;
 
 public class GameLoop implements GameLogic, InputProcessor {
+
 	TextEngine uiEngine = new TextEngine();
 	TextEngine textEngine = new TextEngine();
 	EffectEngine effectEngine = new EffectEngine();
@@ -34,6 +35,12 @@ public class GameLoop implements GameLogic, InputProcessor {
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
 
 	public GameLoop() {
+		try {
+			glyphEngine.initialize();
+		} catch (SetupException e) {
+			throw new RuntimeException(e);
+		}
+
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.setVSync(false);
 		Module.setEngines(textEngine, uiEngine, effectEngine, asciiTileEngine);

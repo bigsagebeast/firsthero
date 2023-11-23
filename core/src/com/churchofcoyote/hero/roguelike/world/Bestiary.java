@@ -55,7 +55,11 @@ public class Bestiary {
 		map.put("goblin", goblin);
 		map.put("farmer", farmer);
 	}
-	
+
+	public Entity create(String key) {
+		return create(key, null);
+	}
+
 	public Entity create(String key, String name) {
 		Entity e = new Entity();
 
