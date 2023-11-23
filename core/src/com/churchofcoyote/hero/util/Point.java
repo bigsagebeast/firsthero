@@ -28,6 +28,9 @@ public class Point {
 	public int hashCode() {
 		return x*101 + y;
 	}
-	
+
+	public float distance(Point other) {
+		return (float)Math.sqrt(((x - other.x) * (x - other.x)) + ((y - other.y) * (y - other.y)));
+	}
 	
 }

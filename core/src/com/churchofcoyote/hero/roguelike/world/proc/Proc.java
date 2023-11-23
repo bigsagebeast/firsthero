@@ -53,8 +53,27 @@ public class Proc {
 
     public void actPlayerLos() {}
 
+    // True iff any "True"
     public Boolean wantsMoverLos() { return null; }
     public void handleMoverLos(List<ProcMover> movers) {}
+
+    // True iff any "True"
+    public Boolean isObstructive() { return null; }
+    public Boolean isObstructiveToManipulators() { return null; }
+    public Boolean isObstructiveToVision() { return null; }
+
+        // False iff any "False"
+    public Boolean pathfindable(Entity actor) { return null; }
+
+    public Boolean preBeOpened(Entity actor) { return null; }
+    public void postBeOpened(Entity actor) { }
+    public Boolean preBeClosed(Entity actor) { return null; }
+    public void postBeClosed(Entity actor) { }
+
+    public Boolean preBeLocked(Entity actor) { return null; }
+    public void postBeLocked(Entity actor) { }
+    public Boolean preBeUnlocked(Entity actor) { return null; }
+    public void postBeUnlocked(Entity actor) { }
 
     public void beDestroyed() {}
 }

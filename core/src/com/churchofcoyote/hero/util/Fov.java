@@ -151,7 +151,7 @@ public class Fov {
 */
 
 	// TODO this is broken when seeing around corners at long angles
-	public static boolean canSee (Level level, Point from, Point to, int distance, float minLight) {
+	public static boolean canSee (Level level, Point from, Point to, float distance, float minLight) {
 
 		int delta_x, delta_y, move_x, move_y, error;
 

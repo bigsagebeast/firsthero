@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
+import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,13 @@ public class Itempedia {
     public Map<String, ItemType> map = new HashMap<String, ItemType>();
 
     public Itempedia() {
+        ItemType door = new ItemType();
+        door.name = "door";
+        door.glyphName = "terrain.door_closed";
+        door.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TAN, Palette.COLOR_BROWN);
+        door.setup.add((e) -> {e.addProc(new ProcDoor(e));});
+        map.put("door", door);
+
         ItemType pitchfork = new ItemType();
         pitchfork.name = "pitchfork";
         pitchfork.glyph = new Glyph('/', Color.LIGHT_GRAY);

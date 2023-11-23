@@ -41,7 +41,7 @@ public class ChaseAndMeleeTactic extends Tactic {
 			else {
 				if (Math.random() < 0.5) {
 					Compass direction = Compass.randomDirection();
-					if (Game.canMove(e, direction.getX(), direction.getY())) {
+					if (Game.canMoveTo(e, direction.getX(), direction.getY())) {
 						Game.npcMoveBy(e, pm, direction.getX(), direction.getY());
 					}
 				}

@@ -16,4 +16,5 @@ public class Phenotype {
 	public String bodyPlan;
 	public String glyphName;
 	public PaletteEntry paletteEntry;
+	public boolean isManipulator;
 }

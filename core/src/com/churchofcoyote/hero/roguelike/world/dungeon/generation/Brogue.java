@@ -7,6 +7,7 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.LevelCell;
+import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
@@ -131,6 +132,21 @@ public class Brogue {
             Entity e = Game.bestiary.create("goblin", null);
             e.pos = pos;
             level.addEntity(e);
+        }
+
+        for (int i=0; i<level.getWidth(); i++) {
+            for (int j=0; j<level.getHeight(); j++) {
+                if (level.cell(i, j).terrain == doorway) {
+                    Entity door = Game.itempedia.create("door");
+                    door.pos = new Point(i, j);
+                    level.addEntity(door);
+                    if (Game.random.nextInt(2) == 0) {
+                        ((ProcDoor)door.getProcByType(ProcDoor.class)).close();
+                    } else {
+                        ((ProcDoor)door.getProcByType(ProcDoor.class)).open();
+                    }
+                }
+            }
         }
 
         level.reinitialize();

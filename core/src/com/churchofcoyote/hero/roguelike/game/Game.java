@@ -7,6 +7,8 @@ import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
+import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
+import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.List;
@@ -129,7 +131,7 @@ public class Game {
 				}
 			}
 			time = lowestTurn;
-			if (lowestProc == getPlayerEntity().getMover()) {
+			if (lowestProc == player.entity.getMover()) {
 				break;
 			}
 			lowestProc.act();
@@ -264,6 +266,36 @@ public class Game {
 
 	public void cmdRegenerate() { startCaves(); }
 
+	public void cmdOpen() {
+		boolean somethingToHandle = false;
+		for (Compass dir : Compass.points()) {
+			Point targetPoint = dir.from(player.entity.pos);
+			for (Entity target : level.getEntitiesOnTile(targetPoint)) {
+				if (target.tryOpen(player.entity)) {
+					somethingToHandle = true;
+				}
+			}
+		}
+		if (!somethingToHandle) {
+			announce("There's nothing to open.");
+		}
+	}
+
+	public void cmdClose() {
+		boolean somethingToHandle = false;
+		for (Compass dir : Compass.points()) {
+			Point targetPoint = dir.from(player.entity.pos);
+			for (Entity target : level.getEntitiesOnTile(targetPoint)) {
+				if (target.tryClose(player.entity)) {
+					somethingToHandle = true;
+				}
+			}
+		}
+		if (!somethingToHandle) {
+			announce("There's nothing to close.");
+		}
+	}
+
 	public static void cmdMoveBy(int dx, int dy) {
 		int tx = player.entity.pos.x + dx;
 		int ty = player.entity.pos.y + dy;
@@ -286,45 +318,61 @@ public class Game {
 			}
 			return;
 		}
-		
-		if (level.cell(tx, ty).terrain.isPassable()) {
-			//announce("Walked one square.");
-			player.entity.getMover().setDelay(1000);
-			movePlayer(tx, ty);
-		} else {
+
+		if (!level.cell(tx, ty).terrain.isPassable()) {
 			if (level.cell(tx, ty).terrain == Terrain.BLANK) {
 				announce("You can't go that way.");
 			} else {
 				announce("You bump into " + level.cell(tx, ty).terrain.getDescription() + ".");
 			}
+			return;
 		}
+
+		for (Entity e : level.getEntitiesOnTile(new Point(tx, ty))) {
+			if (e.isObstructive()) {
+				announce("You bump into " + e.name + ".");
+				return;
+			}
+		}
+
+		//announce("Walked one square.");
+		player.entity.getMover().setDelay(1000);
+		movePlayer(tx, ty);
 	}
-	
-	public static void npcMoveBy(Entity e, ProcMover pm, int dx, int dy) {
-		int tx = e.pos.x + dx;
-		int ty = e.pos.y + dy;
+
+	public static void npcMoveBy(Entity actor, ProcMover pm, int dx, int dy) {
+		int tx = actor.pos.x + dx;
+		int ty = actor.pos.y + dy;
 		
 		pm.setDelay(1000);
 		
-		Entity targetCreature = level.moverAt(tx, ty);
+		//Entity targetCreature = level.moverAt(tx, ty);
 
-		if (Game.canMove(e, dx, dy)) {
-			moveNpc(e, tx, ty);
+		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
+			ProcDoor door = (ProcDoor)target.getProcByType(ProcDoor.class);
+			if (!door.isOpen) {
+				target.tryOpen(actor);
+				return;
+			}
+		}
+
+		if (Game.tryMoveTo(actor, tx, ty)) {
+			moveNpc(actor, tx, ty);
 		}
 	}
 
-	public static void npcAttack(Entity e, ProcMover pm, int dx, int dy) {
-		int tx = e.pos.x + dx;
-		int ty = e.pos.y + dy;
+	public static void npcAttack(Entity actor, ProcMover pm, int dx, int dy) {
+		int tx = actor.pos.x + dx;
+		int ty = actor.pos.y + dy;
 
 		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {
 			if (targetCreature.getMover().isPeacefulToPlayer(player)) {
 				announce("Was moved into by a " +
 						(targetCreature.getMover().isPeacefulToPlayer(player) ? "peaceful" : "hostile") +
-						" creature (" + e.getVisibleName(player) + ").");
+						" creature (" + actor.getVisibleName(player) + ").");
 			} else {
-				CombatLogic.swing(e, targetCreature);
+				CombatLogic.swing(actor, targetCreature);
 
 				// check if player is dead
 			}
@@ -345,31 +393,55 @@ public class Game {
 		//announce("Now standing at " + tx + ", " + ty + ".");
 	}
 	
-	private static void moveNpc(Entity e, int tx, int ty) {
-		e.pos = new Point(tx, ty);
-		for (Entity item : level.getItemsOnTile(e.pos)) {
+	private static void moveNpc(Entity actor, int tx, int ty) {
+		actor.pos = new Point(tx, ty);
+		for (Entity item : level.getItemsOnTile(actor.pos)) {
 			for (Proc p : item.procs) {
-				p.postBeSteppedOn(e);
+				p.postBeSteppedOn(actor);
 			}
 		}
 	}
 	
-	public static boolean canMove(Entity e, int dx, int dy) {
-		int tx = e.pos.x + dx;
-		int ty = e.pos.y + dy;
-		return canMoveTo(e, tx, ty);
-	}
-	
-	public static boolean canMoveTo(Entity e, int tx, int ty) {
+	public static boolean canMoveTo(Entity actor, int tx, int ty) {
 		if (level.moverAt(tx, ty) != null) {
 			return false;
 		}
 		if (!level.cell(tx, ty).terrain.isPassable()) {
 			return false;
 		}
+
+		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
+			if (target != player.entity && target.isManipulator) {
+				if (target.isObstructiveToManipulators()) {
+					return false;
+				}
+			}
+			else if (target.isObstructive()) {
+				return false;
+			}
+		}
+
 		return true;
 	}
-	
+
+	public static boolean tryMoveTo(Entity e, int tx, int ty) {
+		if (level.moverAt(tx, ty) != null) {
+			return false;
+		}
+		if (!level.cell(tx, ty).terrain.isPassable()) {
+			return false;
+		}
+
+		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
+			if (target.isObstructive()) {
+				announceVis(e, target, "You bump into " + target.name + ".", e.name + " bumps into you.", e.name + " bumps into " + target.name + ".", null);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public static void announce(String s) {
 		if (s == null) {
 			return;
@@ -393,6 +465,20 @@ public class Game {
 			return;
 		case NONE:
 			return;
+		}
+	}
+
+	public static void announceVis(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+		Entity playerEntity = player.entity;
+		if (playerEntity == actorEntity) {
+			announce(actor);
+		} else if (playerEntity == targetEntity) {
+			announce(target);
+		} else if ((actorEntity != null && playerEntity.canSee(actorEntity)) || (targetEntity != null && playerEntity.canSee(targetEntity))) {
+			// TODO this might be a problem if you can't see the other actor or target?
+			announce(visible);
+		} else if (actorEntity != null && playerEntity.canHear(actorEntity)){
+			announce(audible);
 		}
 	}
 }

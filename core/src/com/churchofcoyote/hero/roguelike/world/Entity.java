@@ -11,6 +11,7 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcEquippable;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
+import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class Entity {
     public String glyphName;
     public PaletteEntry palette;
 
+    public boolean isManipulator;
+
     public ItemType itemType;
 
     public Rank stats = Rank.C;
@@ -55,9 +58,19 @@ public class Entity {
         return name + " " + pos;
     }
 
+    float visionRange = 15;
+    float hearingRange = 30;
+
     public void addProc(Proc proc)
     {
         procs.add(proc);
+    }
+    public Proc getProcByType(Class klass) {
+        for (Proc p : procs) {
+            if (klass.isAssignableFrom(klass))
+                return p;
+        }
+        return null;
     }
 
     public String getVisibleName(Player p) {
@@ -66,6 +79,85 @@ public class Entity {
 
     public void heal(int amount) {
         hitPoints = Math.min(hitPoints + amount, maxHitPoints);
+    }
+
+    public boolean canSee(Entity target) {
+        return Fov.canSee(Game.getLevel(), pos, target.pos, visionRange, 0.01f);
+    }
+
+    public boolean canHear(Entity target) {
+        return pos.distance(target.pos) <= hearingRange;
+    }
+
+    public boolean isObstructive() {
+        for (Proc p : procs) {
+            if (p.isObstructive() == Boolean.TRUE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isObstructiveToManipulators() {
+        for (Proc p : procs) {
+            if (p.isObstructiveToManipulators() == Boolean.TRUE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isObstructiveToVision() {
+        for (Proc p : procs) {
+            if (p.isObstructiveToVision() == Boolean.TRUE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // returns 'true' if an attempt was made
+    public boolean tryOpen(Entity actor) {
+        boolean canOpen = false;
+        for (Proc p : procs) {
+            Boolean canOpenThisProc = p.preBeOpened(actor);
+            if (canOpenThisProc == Boolean.TRUE) {
+                canOpen = true;
+            } else if (canOpenThisProc == Boolean.FALSE) {
+                // we tried, this probably uses up a turn
+                // and more importantly, means we won't say "You can't open anything there."
+                return true;
+            }
+        }
+        if (canOpen) {
+            for (Proc p : procs) {
+                p.postBeOpened(actor);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // returns 'true' if an attempt was made
+    public boolean tryClose(Entity actor) {
+        boolean canClose = false;
+        for (Proc p : procs) {
+            Boolean canCloseThisProc = p.preBeClosed(actor);
+            if (canCloseThisProc == Boolean.TRUE) {
+                canClose = true;
+            } else if (canCloseThisProc == Boolean.FALSE) {
+                // we tried, this probably uses up a turn
+                // and more importantly, means we won't say "You can't open anything there."
+                return true;
+            }
+        }
+        if (canClose) {
+            for (Proc p : procs) {
+                p.postBeClosed(actor);
+            }
+            return true;
+        }
+        return false;
     }
 
     public boolean equip(Entity e, BodyPart bp)

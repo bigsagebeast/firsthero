@@ -158,7 +158,15 @@ public class Level {
 	}
 	
 	public boolean isOpaque(int x, int y) {
-		return !cell(x, y).terrain.isPassable();
+		if (!cell(x, y).terrain.isPassable()) {
+			return true;
+		}
+		for (Entity e : Game.getLevel().getEntitiesOnTile(new Point(x, y))) {
+			if (e.isObstructiveToVision()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void clearTemp() {

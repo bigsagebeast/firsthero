@@ -3,8 +3,6 @@ package com.churchofcoyote.hero.roguelike.world;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.graphics.Color;
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Rank;
@@ -15,6 +13,8 @@ public class Bestiary {
 	public Map<String, Phenotype> map = new HashMap<String, Phenotype>();
 	
 	public Bestiary() {
+		Phenotype door = new Phenotype();
+
 		Phenotype pc = new Phenotype();
 		Phenotype goblin = new Phenotype();
 		Phenotype farmer = new Phenotype();
@@ -22,33 +22,31 @@ public class Bestiary {
 		pc.name = "player";
 		pc.hitPoints = 50;
 		pc.spellPoints = 20;
-		pc.glyph = new Glyph('@', Color.WHITE);
 		pc.stats = Rank.B_PLUS;
 		pc.isMonster = false;
 		pc.bodyPlan = "humanoid";
 		pc.glyphName = "player.farmer";
+		pc.isManipulator = true;
 		pc.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_YELLOW);
 
-		Glyph glyphHuman = new Glyph('U', Color.LIGHT_GRAY);
-		
 		goblin.name="goblin";
-		goblin.glyph = new Glyph('g', Color.GRAY);
 		goblin.peaceful = false;
 		goblin.hitPoints = 16;
 		goblin.stats = Rank.C_MINUS;
 		goblin.isMonster = true;
 		goblin.bodyPlan = "humanoid";
 		goblin.glyphName = "humanoid.goblin";
+		goblin.isManipulator = true;
 		goblin.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
 
 		farmer.name="Farmer";
-		farmer.glyph = glyphHuman;
 		farmer.peaceful = true;
 		farmer.hitPoints = 10;
 		farmer.stats = Rank.D;
 		farmer.isMonster = false;
 		farmer.bodyPlan = "humanoid";
 		farmer.glyphName = "creature.humanoid";
+		farmer.isManipulator = true;
 		farmer.paletteEntry = new PaletteEntry(Palette.COLOR_YELLOW, Palette.COLOR_TAN, Palette.COLOR_BROWN);
 
 		map.put("player", pc);
@@ -81,6 +79,7 @@ public class Bestiary {
 		e.body = new Body(p.bodyPlan);
 		e.glyphName = p.glyphName;
 		e.palette = p.paletteEntry;
+		e.isManipulator = p.isManipulator;
 		if (key.equals("player")) {
 			e.addProc(new ProcPlayer(e));
 		}
