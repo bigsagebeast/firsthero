@@ -25,15 +25,22 @@ task dist(type: Jar) {
     }
 }
 
-dist.dependsOn classes
+task copyTask(type: Copy) {
+    file('build/bin').mkdirs()
+    from files(project.assetsDir)
+    into 'build/bin'
+}
 
+dist.dependsOn classes
+dist.dependsOn copyTask
+
+/*
 eclipse {
     project {
         name = appName + "-desktop"
         linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/core/assets'
     }
 }
-
 task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {
   doLast {
     def classpath = new XmlParser().parse(file(".classpath"))
@@ -44,3 +51,4 @@ task afterEclipseImport(description: "Post processing after project generation",
     printer.print(classpath)
   }
 }
+*/
