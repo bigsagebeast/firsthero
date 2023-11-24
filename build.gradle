@@ -40,7 +40,8 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-	compile "com.google.guava:guava:19.0"
+	    compile "com.google.guava:guava:19.0"
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     }
 }
 
@@ -52,6 +53,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile 'com.google.gwt:gwt-servlet:2.6.0'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     }
 }
 

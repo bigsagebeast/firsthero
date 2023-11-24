@@ -12,7 +12,7 @@ public class ProcTimedEffects extends Proc {
     @Override
     public void turnPassed() {
         if (entity.getMover() != null) {
-            if (++healingTimer > entity.healingDelay) {
+            if (++healingTimer >= entity.healingDelay) {
                 entity.heal(entity.healingRate);
                 healingTimer = 0;
             }
