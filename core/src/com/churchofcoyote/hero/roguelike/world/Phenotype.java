@@ -9,7 +9,7 @@ public class Phenotype {
 	public int hitPoints;
 	public int spellPoints;
 	public int divinePoints;
-	public Glyph glyph;
+	//public Glyph glyph;
 	public boolean peaceful;
 	public Rank stats;
 	public boolean isMonster;

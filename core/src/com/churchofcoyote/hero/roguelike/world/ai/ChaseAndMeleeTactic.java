@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.EntityTracker;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.AStar;
 import com.churchofcoyote.hero.util.Compass;
@@ -17,7 +18,7 @@ public class ChaseAndMeleeTactic extends Tactic {
 	public void execute(Entity e, ProcMover pm) {
 //		long start = System.currentTimeMillis();
 
-		if (pm.target == null) {
+		if (pm.targetEntityId == EntityTracker.NONE) {
 			if (lastSeen != null) {
 				List<Point> path = AStar.path(Game.getLevel(), e, e.pos, lastSeen);
 				if (path == null || path.size() == 0) {
@@ -47,8 +48,9 @@ public class ChaseAndMeleeTactic extends Tactic {
 				}
 			}
 		} else {
-			lastSeen = pm.target.pos;
-			List<Point> path = AStar.path(Game.getLevel(), e, e.pos, pm.target.pos);
+			Entity target = EntityTracker.get(pm.targetEntityId);
+			lastSeen = target.pos;
+			List<Point> path = AStar.path(Game.getLevel(), e, e.pos, target.pos);
 			if (path == null || path.size() == 0) {
 				pm.setDelay(1000);
 				return;
@@ -59,7 +61,7 @@ public class ChaseAndMeleeTactic extends Tactic {
 				pm.setDelay(1000);
 			} else {
 				Compass dir = Compass.to(e.pos, first);
-				if (pm.target.pos.equals(first)) {
+				if (target.pos.equals(first)) {
 					Game.npcAttack(e, pm, dir.getX(), dir.getY());
 				} else {
 					if (Game.random.nextInt(8) == 0) {

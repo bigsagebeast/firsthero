@@ -13,11 +13,15 @@ import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Entity {
 
     public int entityId;
@@ -27,11 +31,11 @@ public class Entity {
     }
 
     public String name;
-    public Glyph glyph;
+    //public Glyph glyph;
     public Point pos;
 
     public List<Proc> procs = new ArrayList<>();
-    public List<Entity> inventory = new ArrayList<>();
+    public Collection<Integer> inventoryIds = new ArrayList<>();
     public Body body;
 
     public boolean dead = false;
@@ -48,22 +52,26 @@ public class Entity {
     public int healingDelay = 3;
     public int healingRate = 1;
 
-    public Phenotype phenotype;
+    public String phenotypeName;
     public String glyphName;
     public PaletteEntry palette;
 
     public boolean isManipulator;
 
-    public ItemType itemType;
+    public String itemTypeName;
 
     public Rank stats = Rank.C;
+
+    float visionRange = 15;
+    float hearingRange = 30;
 
     public String toString() {
         return name + " " + pos;
     }
 
-    float visionRange = 15;
-    float hearingRange = 30;
+    public Collection<Entity> getInventoryEntities() {
+        return inventoryIds.stream().map(EntityTracker::get).collect(Collectors.toList());
+    }
 
     public void addProc(Proc proc)
     {
@@ -71,7 +79,7 @@ public class Entity {
     }
     public Proc getProcByType(Class klass) {
         for (Proc p : procs) {
-            if (klass.isAssignableFrom(klass))
+            if (klass.isAssignableFrom(p.getClass()))
                 return p;
         }
         return null;
@@ -174,8 +182,8 @@ public class Entity {
         }
 
         // TODO error messages?
-        if (!inventory.contains(e)) {
-            inventory.add(e);
+        if (!inventoryIds.contains(e.entityId)) {
+            inventoryIds.add(e.entityId);
             /*
             if (this == Game.getPlayerEntity()) {
                 Game.announce("That's not in your inventory.");
@@ -205,7 +213,7 @@ public class Entity {
             }
             return false;
         }
-        if (!body.bodyPlan.hasPart(bp)) {
+        if (!body.hasBodyPart(bp)) {
             if (this == Game.getPlayerEntity()) {
                 Game.announce("You don't have a " + bp.getName() + ".");
             }
@@ -214,16 +222,16 @@ public class Entity {
 
         // unequip the previously equipped item
         HashMap<BodyPart, Entity> allToUnequip = new HashMap<>();
-        if (body.equipment.get(bp) != null) {
-            allToUnequip.put(bp, body.equipment.get(bp));
+        if (body.getEquipment(bp) != null) {
+            allToUnequip.put(bp, body.getEquipment(bp));
         }
-        if (pe.equipmentFor == BodyPart.TWO_HAND && body.equipment.get(BodyPart.OFF_HAND) != null) {
-            allToUnequip.put(BodyPart.OFF_HAND, body.equipment.get(BodyPart.OFF_HAND));
+        if (pe.equipmentFor == BodyPart.TWO_HAND && body.getEquipment(BodyPart.OFF_HAND) != null) {
+            allToUnequip.put(BodyPart.OFF_HAND, body.getEquipment(BodyPart.OFF_HAND));
         }
         if (bp == BodyPart.OFF_HAND &&
-                body.equipment.get(BodyPart.PRIMARY_HAND) != null &&
-                body.equipment.get(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND) {
-            allToUnequip.put(BodyPart.PRIMARY_HAND, body.equipment.get(BodyPart.PRIMARY_HAND));
+                body.getEquipment(BodyPart.PRIMARY_HAND) != null &&
+                body.getEquipment(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND) {
+            allToUnequip.put(BodyPart.PRIMARY_HAND, body.getEquipment(BodyPart.PRIMARY_HAND));
         }
         for (BodyPart alreadyEquippedBodyPart : allToUnequip.keySet()) {
             Entity alreadyEquipped = allToUnequip.get(alreadyEquippedBodyPart);
@@ -252,8 +260,8 @@ public class Entity {
                 // TODO announce with vis
                 Game.announce("You unequip the " + alreadyEquipped.name + ".");
             }
-            body.equipment.put(alreadyEquippedBodyPart, null);
-            inventory.add(alreadyEquipped);
+            body.putEquipment(alreadyEquippedBodyPart, null);
+            inventoryIds.add(alreadyEquipped.entityId);
             for (Proc p : this.procs) {
                 p.postDoUnequip(alreadyEquippedBodyPart, alreadyEquipped);
             }
@@ -302,8 +310,8 @@ public class Entity {
         for (Proc p : e.procs) {
             p.postBeEquipped(bp, this);
         }
-        body.equipment.put(bp, e);
-        inventory.remove(e);
+        body.putEquipment(bp, e.entityId);
+        inventoryIds.remove(e.entityId);
         if (this == Game.getPlayerEntity())
         {
             Game.roguelikeModule.updateEquipmentWindow();
@@ -350,7 +358,7 @@ public class Entity {
     }
 
     public void receiveItem(Entity e) {
-        inventory.add(e);
+        inventoryIds.add(e.entityId);
     }
 
     // TODO call this whenever things die or permanently leave the world

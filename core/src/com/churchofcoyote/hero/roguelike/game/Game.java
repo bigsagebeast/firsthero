@@ -14,6 +14,11 @@ import com.churchofcoyote.hero.util.Point;
 import java.util.List;
 import java.util.Random;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 public class Game {
 	// current level
 	private static Level level;
@@ -42,15 +47,15 @@ public class Game {
 		player = new Player();
 		Entity pc = bestiary.create("player");
 		Entity pitchfork = itempedia.create("pitchfork");
-		Entity shortsword = itempedia.create("shortsword");
+		Entity shortsword = itempedia.create("short sword");
 		Entity longsword = itempedia.create("longsword");
 		Entity dagger = itempedia.create("dagger");
 		Entity buckler = itempedia.create("buckler");
 		player.entity = pc;
-		player.entity.inventory.add(shortsword);
-		player.entity.inventory.add(longsword);
-		player.entity.inventory.add(buckler);
-		player.entity.inventory.add(dagger);
+		player.entity.inventoryIds.add(shortsword.entityId);
+		player.entity.inventoryIds.add(longsword.entityId);
+		player.entity.inventoryIds.add(buckler.entityId);
+		player.entity.inventoryIds.add(dagger.entityId);
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
@@ -181,7 +186,7 @@ public class Game {
 		announce("You pick up the " + target.name);
 
 		level.removeEntity(target);
-		actor.inventory.add(target);
+		actor.inventoryIds.add(target.entityId);
 
 		for (Proc p : actor.procs) {
 			p.postDoPickup(target);
@@ -296,6 +301,28 @@ public class Game {
 		}
 	}
 
+	public static void cmdSave() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setVisibility(
+				objectMapper.getSerializationConfig().getDefaultVisibilityChecker()
+						.withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+						.withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+						.withIsGetterVisibility(JsonAutoDetect.Visibility.NONE)
+						.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+		);
+		for (Entity ent : level.getEntities()) {
+			try {
+				System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(ent));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	public static void cmdLoad() {
+
+	}
+
 	public static void cmdMoveBy(int dx, int dy) {
 		int tx = player.entity.pos.x + dx;
 		int ty = player.entity.pos.y + dy;
@@ -350,7 +377,7 @@ public class Game {
 
 		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
 			ProcDoor door = (ProcDoor)target.getProcByType(ProcDoor.class);
-			if (!door.isOpen) {
+			if (door != null && !door.isOpen) {
 				target.tryOpen(actor);
 				return;
 			}

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public class ItemType {
     public String name;
-    public Glyph glyph;
+    //public Glyph glyph;
     public BodyPart equipmentFor;
     public String glyphName;
     public PaletteEntry palette;

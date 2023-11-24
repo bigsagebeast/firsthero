@@ -233,15 +233,21 @@ public class RoguelikeModule extends Module {
 		}
 		if (shift) {
 			switch (keycode) {
-			case Keys.R:
-				game.cmdRegenerate();
-				break;
-			case Keys.PERIOD:
-				game.cmdStairsDown();
-				break;
-			case Keys.COMMA:
-				game.cmdStairsUp();
-				break;
+				case Keys.R:
+					game.cmdRegenerate();
+					break;
+				case Keys.S:
+					game.cmdSave();
+					break;
+				case Keys.L:
+					game.cmdLoad();
+					break;
+				case Keys.PERIOD:
+					game.cmdStairsDown();
+					break;
+				case Keys.COMMA:
+					game.cmdStairsUp();
+					break;
 			}
 		}
 		game.turn();

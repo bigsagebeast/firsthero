@@ -10,7 +10,7 @@ import com.churchofcoyote.hero.roguelike.world.ai.ChaseAndMeleeTactic;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 
 public class Bestiary {
-	public Map<String, Phenotype> map = new HashMap<String, Phenotype>();
+	private static Map<String, Phenotype> map = new HashMap<String, Phenotype>();
 	
 	public Bestiary() {
 		Phenotype door = new Phenotype();
@@ -62,7 +62,7 @@ public class Bestiary {
 		Entity e = EntityTracker.create();
 
 		Phenotype p = map.get(key);
-		e.phenotype = p;
+		e.phenotypeName = p.name;
 		if (name != null) {
 			e.name = name;
 		} else {
@@ -74,7 +74,7 @@ public class Bestiary {
 		e.maxSpellPoints = p.spellPoints;
 		e.divinePoints = p.divinePoints;
 		e.maxDivinePoints = p.divinePoints;
-		e.glyph = p.glyph;
+		//e.glyph = p.glyph;
 		e.stats = p.stats;
 		e.body = new Body(p.bodyPlan);
 		e.glyphName = p.glyphName;
@@ -93,5 +93,8 @@ public class Bestiary {
 		e.addProc(new ProcTimedEffects(e));
 		return e;
 	}
-	
+
+	public static Phenotype get(String name) {
+		return map.get(name);
+	}
 }

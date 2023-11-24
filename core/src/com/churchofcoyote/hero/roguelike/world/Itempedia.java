@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class Itempedia {
-    public Map<String, ItemType> map = new HashMap<String, ItemType>();
+
+    private static Map<String, ItemType> map = new HashMap<String, ItemType>();
 
     public Itempedia() {
         ItemType door = new ItemType();
@@ -24,7 +25,7 @@ public class Itempedia {
 
         ItemType pitchfork = new ItemType();
         pitchfork.name = "pitchfork";
-        pitchfork.glyph = new Glyph('/', Color.LIGHT_GRAY);
+        //pitchfork.glyph = new Glyph('/', Color.LIGHT_GRAY);
         pitchfork.glyphName = "weapon.pitchfork";
         pitchfork.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
         pitchfork.equipmentFor = BodyPart.TWO_HAND;
@@ -32,7 +33,7 @@ public class Itempedia {
         pitchfork.setup.add((e) -> {e.addProc(new PropPopupOnSeen(e, "Pick up your weapon"));});
         pitchfork.setup.add((e) -> {e.addProc(new PropMessageOnStepOn(e, "Press 'comma' to pick it up."));});
         pitchfork.setup.add((e) -> {e.addProc(new PropMessageOnPickup(e, "Press 'w' to wield it."));});
-        map.put("pitchfork", pitchfork);
+        map.put(pitchfork.name, pitchfork);
 
         ItemType shortsword = new ItemType();
         shortsword.name = "short sword";
@@ -40,7 +41,7 @@ public class Itempedia {
         shortsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         shortsword.equipmentFor = BodyPart.ANY_HAND;
         shortsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
-        map.put("shortsword", shortsword);
+        map.put(shortsword.name, shortsword);
 
         ItemType longsword = new ItemType();
         longsword.name = "longsword";
@@ -48,7 +49,7 @@ public class Itempedia {
         longsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         longsword.equipmentFor = BodyPart.ANY_HAND;
         longsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
-        map.put("longsword", longsword);
+        map.put(longsword.name, longsword);
 
         ItemType dagger = new ItemType();
         dagger.name = "dagger";
@@ -56,7 +57,7 @@ public class Itempedia {
         dagger.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         dagger.equipmentFor = BodyPart.ANY_HAND;
         dagger.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
-        map.put("dagger", dagger);
+        map.put(dagger.name, dagger);
 
         ItemType buckler = new ItemType();
         buckler.name = "buckler";
@@ -64,7 +65,7 @@ public class Itempedia {
         buckler.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_GRAY, Palette.COLOR_WHITE);
         buckler.equipmentFor = BodyPart.ANY_HAND;
         buckler.category = ItemCategory.CATEGORY_SHIELDS;
-        map.put("buckler", buckler);
+        map.put(buckler.name, buckler);
     }
 
     public Entity create(String key) {
@@ -80,10 +81,10 @@ public class Itempedia {
         } else {
             e.name = t.name;
         }
-        e.glyph = t.glyph;
+        //e.glyph = t.glyph;
         e.glyphName = t.glyphName;
         e.palette = t.palette;
-        e.itemType = t;
+        e.itemTypeName = t.name;
 
         for (Consumer<Entity> consumer : t.setup) {
             consumer.accept(e);
@@ -98,5 +99,9 @@ public class Itempedia {
         }
 
         return e;
+    }
+
+    public static ItemType get(String name) {
+        return map.get(name);
     }
 }

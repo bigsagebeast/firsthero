@@ -33,17 +33,17 @@ public class EquipmentWindow {
 
 	public void update(Entity c) {
 		int row = 0;
-		for (BodyPart bp : c.body.bodyPlan.getParts())
+		for (BodyPart bp : c.body.getParts())
 		{
-			Entity equipped = c.body.equipment.get(bp);
+			Entity equipped = c.body.getEquipment(bp);
 			String equipmentString;
 			if (equipped != null)
 			{
 				glyphs[row].glyph = EntityGlyph.getGlyph(equipped);
 				equipmentString = equipped.name;
 			}
-			else if (bp == BodyPart.OFF_HAND && c.body.equipment.get(BodyPart.PRIMARY_HAND) != null &&
-					c.body.equipment.get(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND)
+			else if (bp == BodyPart.OFF_HAND && c.body.getEquipment(BodyPart.PRIMARY_HAND) != null &&
+					c.body.getEquipment(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND)
 			{
 				// TODO should involve an 'is 2h' flag on the player
 				equipmentString = "(2-handed)";

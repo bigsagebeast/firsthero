@@ -3,36 +3,32 @@ package com.churchofcoyote.hero.roguelike.game;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.dialogue.DialogueBox;
 import com.churchofcoyote.hero.glyphtile.EntityGlyph;
-import com.churchofcoyote.hero.roguelike.world.BodyPart;
-import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.churchofcoyote.hero.roguelike.world.ItemCategory;
+import com.churchofcoyote.hero.roguelike.world.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Inventory {
 
-    private BodyPart chosenBodyPart;
+    private BodyPart chosenBodyPartForDialogue;
 
     public void doWield() {
-        HashMap<Integer, Entity> mapping = new HashMap<>();
-        int mappingIndex = 0;
 
-        HashMap<BodyPart, Entity> equipment = Game.getPlayerEntity().body.equipment;
+        Entity playerEntity = Game.getPlayerEntity();
         DialogueBox box = new DialogueBox()
                 .withFooterClosableAndSelectable()
                 .withMargins(60, 60);
 
-        for (BodyPart bp : Game.getPlayerEntity().body.bodyPlan.getParts()) {
+        for (BodyPart bp : Game.getPlayerEntity().body.getParts()) {
             String equipmentName;
-            if (equipment.get(bp) != null) {
-                equipmentName = equipment.get(bp).name;
+            if (playerEntity.body.getEquipment(bp) != null) {
+                equipmentName = playerEntity.body.getEquipment(bp).name;
             } else {
                 // TODO: I don't like this test, it seems like the wielder should have an "is 2h" flag
-                if (bp == BodyPart.OFF_HAND && equipment.get(BodyPart.PRIMARY_HAND) != null &&
-                    equipment.get(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND)
+                if (bp == BodyPart.OFF_HAND && playerEntity.body.getEquipment(BodyPart.PRIMARY_HAND) != null &&
+                        playerEntity.body.getEquipment(BodyPart.PRIMARY_HAND).getEquippable().equipmentFor == BodyPart.TWO_HAND)
                 {
                     equipmentName = "(2-handed)";
                 } else {
@@ -50,7 +46,7 @@ public class Inventory {
             return;
         }
         BodyPart bp = (BodyPart)response;
-        this.chosenBodyPart = bp;
+        this.chosenBodyPartForDialogue = bp;
         List<BodyPart> equippable = new ArrayList<>();
         if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND) {
             equippable.add(BodyPart.ANY_HAND);
@@ -60,16 +56,13 @@ public class Inventory {
     }
 
     public void openInventoryToEquip(List<BodyPart> bodyParts) {
-        //HashMap<Integer, Entity> mapping = new HashMap<>();
-        //int mappingIndex = 0;
-
         boolean addedAnything = false;
-        List<Entity> inventory = Game.getPlayerEntity().inventory;
+        Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosableAndSelectable()
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
-            List<Entity> ents = inventory.stream().filter(e -> e.itemType.category == cat &&
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeName).category == cat &&
                     (bodyParts.contains(BodyPart.PRIMARY_HAND) || bodyParts.contains(e.getEquippable().equipmentFor))).collect(Collectors.toList());
             if (ents.size() > 0) {
                 box.addHeader(cat.getName());
@@ -88,28 +81,23 @@ public class Inventory {
     public void handleInventoryToEquipResponse(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
-            Game.getPlayerEntity().equip(e, chosenBodyPart);
+            Game.getPlayerEntity().equip(e, chosenBodyPartForDialogue);
         }
     }
 
 
     public void openInventory() {
-        //HashMap<Integer, Entity> mapping = new HashMap<>();
-        //int mappingIndex = 0;
-
-        List<Entity> inventory = Game.getPlayerEntity().inventory;
+        Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
-            List<Entity> ents = inventory.stream().filter(e -> e.itemType.category == cat).collect(Collectors.toList());
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeName).category == cat).collect(Collectors.toList());
             if (ents.size() > 0) {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-//                mapping.put(mappingIndex, ent);
                 box.addItem(ent.name, ent);
-//                mappingIndex++;
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryResponse);

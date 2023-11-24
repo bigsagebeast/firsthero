@@ -2,7 +2,8 @@ package com.churchofcoyote.hero.roguelike.world;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 
 public class EntityTracker {
-    public static int lastCreated = 0;
+    public static final int NONE = -1;
+    public static int lastCreated = 1;
     public static IntObjectHashMap<Entity> entities = new IntObjectHashMap<>();
     public static Entity create() {
         // we may have loaded stuff in
@@ -15,6 +16,12 @@ public class EntityTracker {
     }
 
     public static Entity get(int id) {
+        if (id == 0) {
+            throw new RuntimeException("Tried to index uninitialized entityId");
+        }
+        if (id < 0) {
+            throw new RuntimeException("Didn't check that entityId was NONE");
+        }
         return entities.get(id);
     }
 }

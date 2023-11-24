@@ -3,12 +3,21 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.List;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@class"
+)
 public class Proc {
 
+    @JsonIgnore
     public Entity entity;
+
     public long nextAction = -1;
     public boolean active;
 
@@ -62,7 +71,7 @@ public class Proc {
     public Boolean isObstructiveToManipulators() { return null; }
     public Boolean isObstructiveToVision() { return null; }
 
-        // False iff any "False"
+    // False iff any "False"
     public Boolean pathfindable(Entity actor) { return null; }
 
     public Boolean preBeOpened(Entity actor) { return null; }

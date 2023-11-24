@@ -2,10 +2,11 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.churchofcoyote.hero.roguelike.game.Player;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.EntityTracker;
 
 public class ProcMover extends Proc {
 
-    public Entity target;
+    public int targetEntityId = EntityTracker.NONE;
 
 
     public ProcMover(Entity e) {

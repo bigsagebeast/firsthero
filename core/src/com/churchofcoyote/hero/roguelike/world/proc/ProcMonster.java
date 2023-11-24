@@ -25,10 +25,11 @@ public class ProcMonster extends ProcMover {
 
     @Override
     public void handleMoverLos(List<ProcMover> movers) {
-        target = null;
+        // TODO: This can't be right...
+        //targetEntityId = -1;
         for (ProcMover mover : movers) {
             if (mover.entity == Game.getPlayerEntity()) {
-                target = mover.entity;
+                targetEntityId = mover.entity.entityId;
             }
         }
     }
