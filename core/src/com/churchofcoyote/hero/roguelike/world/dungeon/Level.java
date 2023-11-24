@@ -1,7 +1,12 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon;
+import com.churchofcoyote.hero.roguelike.world.EntityTracker;
+import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Visibility;
@@ -13,16 +18,20 @@ import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 
 public class Level {
+	String name;
 	private int width, height;
-	private List<Entity> entities;
+	// list of entities on the floor
+	private Collection<Integer> entityIds = new HashSet<>();
+
 	private LevelCell[][] cell;
 	private LevelCell[] allCells;
 	private List<LevelTransition> transitions;
+	private int lastEntityId = 0;
 	
-	public Level(int width, int height) {
+	public Level(String name, int width, int height) {
+		this.name = name;
 		this.width = width;
 		this.height = height;
-		this.entities = new ArrayList<Entity>();
 
 		allCells = new LevelCell[width * height];
 		cell = new LevelCell[width][];
@@ -74,40 +83,47 @@ public class Level {
 	public boolean contains(int x, int y) {
 		return (x >= 0 && y >= 0 && x < width && y < height);
 	}
-	public List<Entity> getEntities() {
-		return entities;
+
+	public Stream<Entity> getEntityStream() {
+		return entityIds.stream().map(EntityTracker::get);
+	}
+
+	public Collection<Entity> getEntities() {
+		// this seems slow.
+		// TODO avoid all uses of this when we can.  Can we replace calls to this with lookups by cell position?
+		return getEntityStream().collect(Collectors.toList());
 	}
 
 	public List<Entity> getNonMovers() {
-		return entities.stream().filter(e -> e.getMover() == null).collect(Collectors.toList());
+		return getEntityStream().filter(e -> e.getMover() == null).collect(Collectors.toList());
 	}
 
 	public List<Entity> getMovers() {
-		return entities.stream().filter(e -> e.getMover() != null).collect(Collectors.toList());
+		return getEntityStream().filter(e -> e.getMover() != null).collect(Collectors.toList());
 	}
 
 	public List<Entity> getEntitiesOnTile(Point p) {
-		return entities.stream().filter(e -> e.pos.x == p.x && e.pos.y == p.y).collect(Collectors.toList());
+		return getEntityStream().filter(e -> e.pos.equals(p)).collect(Collectors.toList());
 	}
 
 	public List<Entity> getItemsOnTile(Point p) {
-		// TODO exclude entities that are also movers?
-		return entities.stream().filter(e -> e.pos.x == p.x && e.pos.y == p.y && e.getItem() != null).collect(Collectors.toList());
+		// TODO should we exclude entities that are also movers?
+		return getEntityStream().filter(e -> e.pos.equals(p) && e.getMover() == null).collect(Collectors.toList());
 	}
 
 	public List<Entity> getMoversOnTile(Point p) {
-		return entities.stream().filter(e -> e.pos.x == p.x && e.pos.y == p.y && e.getMover() != null).collect(Collectors.toList());
+		return getEntityStream().filter(e -> e.pos.equals(p) && e.getMover() != null).collect(Collectors.toList());
 	}
 
 	public List<Proc> getProcEntities() {
 		List<Proc> procEntities = new ArrayList<Proc>();
-		for (Entity e : entities) {
+		for (Entity e : getEntities()) {
 			procEntities.addAll(e.procs);
 		}
 		return procEntities;
 	}
 	public void addEntity(Entity entity) {
-		entities.add(entity);
+		entityIds.add(entity.entityId);
 		for (Proc p : entity.procs) {
 			if (p.hasAction() && p.nextAction < 0) {
 				p.setDelay(0);
@@ -115,7 +131,7 @@ public class Level {
 		}
 	}
 	public void removeEntity(Entity creature) {
-		entities.remove(creature);
+		entityIds.remove(creature.entityId);
 	}
 	public LevelCell cell(int x, int y) {
 		if (x < 0 || y < 0 || x >= width | y >= height) {
@@ -129,9 +145,10 @@ public class Level {
 	}
 	public void putCell(int x, int y, LevelCell putCell) { cell[x][y] = putCell; }
 
+	// TODO this assumes only one mover per tile, which probably isn't good.  Replace with moversAt?
 	public Entity moverAt(int x, int y) {
-		for (Entity e : entities) {
-			if (e.getMover() != null && e.pos.x == x && e.pos.y == y) {
+		for (Entity e : getMovers()) {
+			if (e.pos.x == x && e.pos.y == y) {
 				return e;
 			}
 		}

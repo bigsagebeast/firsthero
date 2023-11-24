@@ -4,21 +4,9 @@ import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PersistentLevel {
-    public byte[] persist(Level level) {
-        byte[] bytes = null;
+    public String persist(Level level) {
 
-
-
-        return bytes;
+        return null;
     }
 
-    private class Header {
-        public String name;
-        public int width;
-        public int height;
-
-        public byte[] persist(Level level) {
-            return null;
-        }
-    }
 }

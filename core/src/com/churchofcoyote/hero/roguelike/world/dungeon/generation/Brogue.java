@@ -37,7 +37,7 @@ public class Brogue {
     }
 
     public Level generate() {
-        level = new Level(60, 60);
+        level = new Level("dungeon", 60, 60);
         for (int i=0; i<40; i++) {
             for (int j=0; j<40; j++) {
                 level.cell(i, j).terrain = wall;

@@ -59,7 +59,7 @@ public class Bestiary {
 	}
 
 	public Entity create(String key, String name) {
-		Entity e = new Entity();
+		Entity e = EntityTracker.create();
 
 		Phenotype p = map.get(key);
 		e.phenotype = p;

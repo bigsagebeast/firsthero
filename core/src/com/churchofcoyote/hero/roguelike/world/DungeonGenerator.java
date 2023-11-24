@@ -39,7 +39,7 @@ public class DungeonGenerator {
 		try {
 			version = input.readLine();
 			if (version.equals("V1")) {
-				levels.put(key, generateFromDataV1(input));
+				levels.put(key, generateFromDataV1(key, input));
 				return;
 			}
 		} catch (IOException e) {
@@ -48,7 +48,7 @@ public class DungeonGenerator {
 		throw new RuntimeException("Unknown dungeon data version");
 	}
 	
-	public Level generateFromDataV1(BufferedReader input) throws IOException {
+	public Level generateFromDataV1(String name, BufferedReader input) throws IOException {
 		String terrainHeader = input.readLine();
 		String[] terrainSplit = terrainHeader.split(" ");
 		if (terrainSplit.length != 2 || !terrainSplit[0].equals("TERRAIN")) {
@@ -71,7 +71,7 @@ public class DungeonGenerator {
 		}
 		int width = Integer.parseInt(mapSplit[1]);
 		int height = Integer.parseInt(mapSplit[2]);
-		Level level = new Level(width, height);
+		Level level = new Level(name, width, height);
 
 		for (int y=0; y<height; y++) {
 			String row = input.readLine();
@@ -93,11 +93,11 @@ public class DungeonGenerator {
 			String phenotype = creatureSplit[0];
 			int x = Integer.parseInt(creatureSplit[1]);
 			int y = Integer.parseInt(creatureSplit[2]);
-			String name = null;
+			String creatureName = null;
 			if (creatureSplit.length > 3) {
-				name = creatureSplit[3].replace("_", " ");
+				creatureName = creatureSplit[3].replace("_", " ");
 			}
-			Entity c = Game.bestiary.create(phenotype, name);
+			Entity c = Game.bestiary.create(phenotype, creatureName);
 			c.pos = new Point(x, y);
 			level.addEntity(c);
 		}

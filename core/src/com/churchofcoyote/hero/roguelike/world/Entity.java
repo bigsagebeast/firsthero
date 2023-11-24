@@ -20,11 +20,15 @@ import java.util.List;
 
 public class Entity {
 
+    public int entityId;
+
+    public Entity(int entityId) {
+        this.entityId = entityId;
+    }
+
     public String name;
     public Glyph glyph;
     public Point pos;
-
-    public Strategy strategy;
 
     public List<Proc> procs = new ArrayList<>();
     public List<Entity> inventory = new ArrayList<>();
@@ -358,5 +362,9 @@ public class Entity {
         }
         GameLoop.glyphEngine.destroyEntity(this);
         destroyed = true;
+    }
+
+    public boolean isValid() {
+        return !destroyed;
     }
 }

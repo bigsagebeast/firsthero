@@ -72,7 +72,7 @@ public class Itempedia {
     }
 
     public Entity create(String key, String name) {
-        Entity e = new Entity();
+        Entity e = EntityTracker.create();
 
         ItemType t = map.get(key);
         if (name != null) {
