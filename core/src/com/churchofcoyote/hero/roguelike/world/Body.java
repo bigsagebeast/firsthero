@@ -1,15 +1,21 @@
 package com.churchofcoyote.hero.roguelike.world;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Body {
     //public BodyPlan bodyPlan;
 
     //private HashMap<BodyPart, Integer> equipment = new HashMap<>();
     private HashMap<String, Integer> equipment = new HashMap();
+
+    // deserialization
+    protected Body() {}
 
     public Body(String bodyPlanName) {
         if (bodyPlanName != null) {

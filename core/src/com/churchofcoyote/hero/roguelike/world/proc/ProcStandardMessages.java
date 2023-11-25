@@ -7,6 +7,7 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 
 public class ProcStandardMessages extends Proc {
 
+    protected ProcStandardMessages() {}
     public ProcStandardMessages(Entity e) {
         super(e);
     }

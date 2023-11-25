@@ -7,6 +7,7 @@ import java.util.List;
 
 public class ProcPlayer extends ProcMover {
 
+    protected ProcPlayer() {}
     public ProcPlayer(Entity e) {
         super(e);
     }

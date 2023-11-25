@@ -154,6 +154,9 @@ public class RoguelikeModule extends Module {
 	}
 	
 	public void redraw() {
+		if (Game.getPlayerEntity() == null) {
+			return;
+		}
 		statsWindow.update(Game.getPlayerEntity());
 		equipWindow.update(Game.getPlayerEntity());
 		Game.getLevel().updateVis();

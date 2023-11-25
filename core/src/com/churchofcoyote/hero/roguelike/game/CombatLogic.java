@@ -7,7 +7,7 @@ public class CombatLogic {
 
 	public static void swing(Entity actor, Entity target) {
 		
-		Visibility vis = Game.getLevel().checkVis(Game.getPlayer().entity, actor, target);
+		Visibility vis = Game.getLevel().checkVis(Game.getPlayerEntity(), actor, target);
 		
 		// auto-hit
 		boolean hit = true;

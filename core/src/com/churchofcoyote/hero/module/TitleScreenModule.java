@@ -130,13 +130,19 @@ public class TitleScreenModule extends Module {
 					IntroModule.musicResource.stop();
 					end();
 					GameLoop.roguelikeModule.start();
-					GameLoop.roguelikeModule.game.startCaves();
+					GameLoop.roguelikeModule.game.load();
 					break;
 				case 1:
 					IntroModule.musicResource.stop();
 					end();
 					GameLoop.roguelikeModule.start();
 					GameLoop.roguelikeModule.game.startIntro();
+					break;
+				case 2:
+					IntroModule.musicResource.stop();
+					end();
+					GameLoop.roguelikeModule.start();
+					GameLoop.roguelikeModule.game.startCaves();
 					break;
 				case 3:
 					IntroModule.musicResource.stop();

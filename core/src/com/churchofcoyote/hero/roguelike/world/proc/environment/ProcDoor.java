@@ -8,6 +8,7 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcDoor extends Proc {
+    protected ProcDoor() {}
     public ProcDoor(Entity e) {
         super(e);
         open();

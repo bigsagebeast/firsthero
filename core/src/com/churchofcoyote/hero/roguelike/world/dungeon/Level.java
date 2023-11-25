@@ -1,10 +1,8 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon;
 import com.churchofcoyote.hero.roguelike.world.EntityTracker;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,7 +17,7 @@ import com.churchofcoyote.hero.util.Point;
 
 public class Level {
 	String name;
-	private int width, height;
+	int width, height;
 	// list of entities on the floor
 	private Collection<Integer> entityIds = new HashSet<>();
 
@@ -46,6 +44,16 @@ public class Level {
 		}
 		
 		transitions = new ArrayList<LevelTransition>();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Iterable<LevelCell> getCellStream() {
+		// prevent returning something modifiable
+		// it's dumb
+		return Arrays.asList(allCells);
 	}
 
 	public void reinitialize() {

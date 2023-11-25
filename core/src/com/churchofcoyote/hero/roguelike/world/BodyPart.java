@@ -24,6 +24,8 @@ public class BodyPart {
     private String abbrev;
     private int index;
 
+    // TODO: This is for deserialization, but do we need to serialize these?
+    private BodyPart() {}
     private BodyPart(String name, String abbrev, int index) {
         if (bodyPartMap == null) {
             bodyPartMap = new HashMap<>();

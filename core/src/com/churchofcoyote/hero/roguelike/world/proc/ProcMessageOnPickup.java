@@ -4,11 +4,12 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
-public class PropMessageOnPickup extends Proc {
+public class ProcMessageOnPickup extends Proc {
 
     private String text;
 
-    public PropMessageOnPickup(Entity e, String text) {
+    protected ProcMessageOnPickup() {}
+    public ProcMessageOnPickup(Entity e, String text) {
         super(e);
         this.text = text;
     }

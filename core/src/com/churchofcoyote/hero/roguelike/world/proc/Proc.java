@@ -3,8 +3,8 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.churchofcoyote.hero.roguelike.world.EntityTracker;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.List;
 
@@ -13,17 +13,29 @@ import java.util.List;
         include = JsonTypeInfo.As.PROPERTY,
         property = "@class"
 )
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Proc {
 
     @JsonIgnore
     public Entity entity;
 
+    public int entityId;
+
     public long nextAction = -1;
     public boolean active;
 
+    // for deserialization
+    protected Proc() {}
     public Proc(Entity e) {
         entity = e;
         active = true;
+    }
+
+    // Custom logic before serialization
+    @JsonGetter("entityId")
+    public int getEntityIdForSerialization() {
+        entityId = entity.entityId;
+        return entityId;
     }
 
     public void setDelay(long delay) {

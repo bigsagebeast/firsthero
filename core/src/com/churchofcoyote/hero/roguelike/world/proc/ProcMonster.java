@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ProcMonster extends ProcMover {
     public Tactic tactic;
+    protected ProcMonster() {}
     public ProcMonster(Entity e, Tactic tactic) {
         super(e);
         this.tactic = tactic;

@@ -5,6 +5,8 @@ public class PaletteEntry {
     public int secondary;
     public int tertiary;
     public int background;
+    // deserialization
+    private PaletteEntry() {}
     public PaletteEntry(int primary, int secondary, int tertiary, int background) {
         this.primary = primary;
         this.secondary = secondary;

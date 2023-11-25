@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 
 public class ProcEquippable extends Proc {
     public BodyPart equipmentFor;
+    protected ProcEquippable() {}
     public ProcEquippable (Entity e, BodyPart equipmentFor) {
         super(e);
         this.equipmentFor = equipmentFor;

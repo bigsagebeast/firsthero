@@ -9,6 +9,7 @@ public class ProcMover extends Proc {
     public int targetEntityId = EntityTracker.NONE;
 
 
+    protected ProcMover() {}
     public ProcMover(Entity e) {
         super(e);
     }

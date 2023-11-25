@@ -3,11 +3,12 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
-public class PropMessageOnStepOn extends Proc {
+public class ProcMessageOnStepOn extends Proc {
 
     private String text;
 
-    public PropMessageOnStepOn(Entity e, String text) {
+    protected ProcMessageOnStepOn() {}
+    public ProcMessageOnStepOn(Entity e, String text) {
         super(e);
         this.text = text;
     }

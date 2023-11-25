@@ -13,18 +13,20 @@ import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Entity {
 
     public int entityId;
+
+    // for deserialization only
+    private Entity() {}
 
     public Entity(int entityId) {
         this.entityId = entityId;
@@ -71,6 +73,13 @@ public class Entity {
 
     public Collection<Entity> getInventoryEntities() {
         return inventoryIds.stream().map(EntityTracker::get).collect(Collectors.toList());
+    }
+
+    public Collection<Entity> getEquippedEntities() {
+        if (body == null) {
+            return Collections.emptyList();
+        }
+        return body.getParts().stream().map(body::getEquipment).filter(e -> e != null).collect(Collectors.toList());
     }
 
     public void addProc(Proc proc)

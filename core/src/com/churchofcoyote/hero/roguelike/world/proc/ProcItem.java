@@ -3,6 +3,7 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
 public class ProcItem extends Proc {
+    protected ProcItem() {}
     public ProcItem(Entity e) {
         super(e);
     }

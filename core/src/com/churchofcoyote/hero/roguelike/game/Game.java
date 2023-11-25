@@ -3,6 +3,9 @@ package com.churchofcoyote.hero.roguelike.game;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.module.RoguelikeModule;
+import com.churchofcoyote.hero.persistence.Persistence;
+import com.churchofcoyote.hero.persistence.PersistentLevel;
+import com.churchofcoyote.hero.persistence.PersistentProfile;
 import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
@@ -22,13 +25,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class Game {
 	// current level
 	private static Level level;
-	private static Player player;
+	private static Player player = new Player();
 	public static RoguelikeModule roguelikeModule;
 	public static DungeonGenerator dungeon = new DungeonGenerator();
 	public static Bestiary bestiary = new Bestiary();
 	public static Itempedia itempedia = new Itempedia();
 	public static long time = 0;
-	private static long lastTurnProc = 0;
+	public static long lastTurnProc = 0;
 	public static Random random = new Random();
 
 	private Inventory inventory = new Inventory();
@@ -44,18 +47,17 @@ public class Game {
 	}
 
 	public void startIntro() {
-		player = new Player();
 		Entity pc = bestiary.create("player");
 		Entity pitchfork = itempedia.create("pitchfork");
 		Entity shortsword = itempedia.create("short sword");
 		Entity longsword = itempedia.create("longsword");
 		Entity dagger = itempedia.create("dagger");
 		Entity buckler = itempedia.create("buckler");
-		player.entity = pc;
-		player.entity.inventoryIds.add(shortsword.entityId);
-		player.entity.inventoryIds.add(longsword.entityId);
-		player.entity.inventoryIds.add(buckler.entityId);
-		player.entity.inventoryIds.add(dagger.entityId);
+		player.setEntityId(pc.entityId);
+		player.getEntity().inventoryIds.add(shortsword.entityId);
+		player.getEntity().inventoryIds.add(longsword.entityId);
+		player.getEntity().inventoryIds.add(buckler.entityId);
+		player.getEntity().inventoryIds.add(dagger.entityId);
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
@@ -66,11 +68,10 @@ public class Game {
 	}
 
 	public void startCaves() {
-		player = new Player();
 		Entity pc = bestiary.create("player");
-		Entity shortsword = itempedia.create("shortsword");
+		Entity shortsword = itempedia.create("short sword");
 		pc.equip(shortsword, BodyPart.PRIMARY_HAND);
-		player.entity = pc;
+		player.setEntityId(pc.entityId);
 		dungeon.generateBrogue("dungeon1");
 		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
 		level = dungeon.getLevel("dungeon1");
@@ -83,15 +84,28 @@ public class Game {
 					p.nextAction = p.nextAction - Game.time;
 				}
 			}
-			level.removeEntity(player.entity);
+			level.removeEntity(player.getEntity());
 		}
 
 		level = nextLevel;
 		Game.time = 0;
-		level.addEntity(player.entity);
-		player.entity.pos = playerPos;
+		level.addEntity(player.getEntity());
+		player.getEntity().pos = playerPos;
 
 		GameLoop.glyphEngine.initializeLevel(level);
+	}
+
+	public void changeLevel(Level nextLevel) {
+		level = nextLevel;
+		GameLoop.glyphEngine.initializeLevel(level);
+	}
+
+	// TODO should specify a profile name or slot or something
+	public void load() {
+		PersistentProfile profile = Persistence.loadProfile();
+		profile.load();
+		Level loadedlevel = Persistence.loadLevel(profile.levelName);
+		changeLevel(loadedlevel);
 	}
 	
 	public static Level getLevel() {
@@ -101,7 +115,8 @@ public class Game {
 	public static Player getPlayer() {
 		return player;
 	}
-	
+
+	// TODO this should be cached...
 	public static Entity getPlayerEntity() {
 		if (level == null) {
 			return null;
@@ -113,7 +128,7 @@ public class Game {
 		}
 		return null;
 	}
-	
+
 	public static void feelMsg(Entity entity, String message) {
 		if (player.isEntity(entity)) {
 			//emitMessage(message);
@@ -136,7 +151,7 @@ public class Game {
 				}
 			}
 			time = lowestTurn;
-			if (lowestProc == player.entity.getMover()) {
+			if (lowestProc == player.getEntity().getMover()) {
 				break;
 			}
 			lowestProc.act();
@@ -230,7 +245,7 @@ public class Game {
 	}
 	
 	public void cmdStairsUp() {
-		LevelTransition transition = level.findTransition("up", player.entity.pos);
+		LevelTransition transition = level.findTransition("up", player.getEntity().pos);
 		if (transition == null) {
 			announce("You can't go up here.");
 		} else {
@@ -239,7 +254,7 @@ public class Game {
 	}
 	
 	public void cmdStairsDown() {
-		LevelTransition transition = level.findTransition("down", player.entity.pos);
+		LevelTransition transition = level.findTransition("down", player.getEntity().pos);
 		if (transition == null) {
 			announce("You can't go down here.");
 		} else {
@@ -248,17 +263,17 @@ public class Game {
 	}
 
 	public void cmdPickUp() {
-		List<Entity> itemsHere = level.getItemsOnTile(player.entity.pos);
+		List<Entity> itemsHere = level.getItemsOnTile(player.getEntity().pos);
 		for (Entity e : itemsHere) {
 			// TODO move this announce into pickup
-			if (!pickup(player.entity, e)) {
+			if (!pickup(player.getEntity(), e)) {
 				announce("You can't pick up the " + e.name + ".");
 			}
 		}
 	}
 
 	public void cmdWait() {
-		player.entity.getMover().setDelay(1000);
+		player.getEntity().getMover().setDelay(1000);
 	}
 
 	public void cmdWield() {
@@ -274,9 +289,9 @@ public class Game {
 	public void cmdOpen() {
 		boolean somethingToHandle = false;
 		for (Compass dir : Compass.points()) {
-			Point targetPoint = dir.from(player.entity.pos);
+			Point targetPoint = dir.from(player.getEntity().pos);
 			for (Entity target : level.getEntitiesOnTile(targetPoint)) {
-				if (target.tryOpen(player.entity)) {
+				if (target.tryOpen(player.getEntity())) {
 					somethingToHandle = true;
 				}
 			}
@@ -289,9 +304,9 @@ public class Game {
 	public void cmdClose() {
 		boolean somethingToHandle = false;
 		for (Compass dir : Compass.points()) {
-			Point targetPoint = dir.from(player.entity.pos);
+			Point targetPoint = dir.from(player.getEntity().pos);
 			for (Entity target : level.getEntitiesOnTile(targetPoint)) {
-				if (target.tryClose(player.entity)) {
+				if (target.tryClose(player.getEntity())) {
 					somethingToHandle = true;
 				}
 			}
@@ -302,21 +317,8 @@ public class Game {
 	}
 
 	public static void cmdSave() {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setVisibility(
-				objectMapper.getSerializationConfig().getDefaultVisibilityChecker()
-						.withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-						.withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-						.withIsGetterVisibility(JsonAutoDetect.Visibility.NONE)
-						.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-		);
-		for (Entity ent : level.getEntities()) {
-			try {
-				System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(ent));
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
+		Persistence.saveLevel(level);
+		Persistence.saveProfile();
 	}
 
 	public static void cmdLoad() {
@@ -324,8 +326,8 @@ public class Game {
 	}
 
 	public static void cmdMoveBy(int dx, int dy) {
-		int tx = player.entity.pos.x + dx;
-		int ty = player.entity.pos.y + dy;
+		int tx = player.getEntity().pos.x + dx;
+		int ty = player.getEntity().pos.y + dy;
 
 		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {
@@ -335,8 +337,8 @@ public class Game {
 						(targetMover.isPeacefulToPlayer(player) ? "peaceful" : "hostile") +
 						" creature (" + targetCreature.getVisibleName(player) + ").");
 			} else {
-				CombatLogic.swing(player.entity, targetCreature);
-				player.entity.getMover().setDelay(1000);
+				CombatLogic.swing(player.getEntity(), targetCreature);
+				player.getEntity().getMover().setDelay(1000);
 				// happen every tick?
 				if (targetCreature.dead) {
 					level.removeEntity(targetCreature);
@@ -363,7 +365,7 @@ public class Game {
 		}
 
 		//announce("Walked one square.");
-		player.entity.getMover().setDelay(1000);
+		player.getEntity().getMover().setDelay(1000);
 		movePlayer(tx, ty);
 	}
 
@@ -408,12 +410,12 @@ public class Game {
 	}
 	
 	private static void movePlayer(int tx, int ty) {
-		player.entity.pos = new Point(tx, ty);
+		player.getEntity().pos = new Point(tx, ty);
 
-		for (Entity item : level.getItemsOnTile(player.entity.pos)) {
+		for (Entity item : level.getItemsOnTile(player.getEntity().pos)) {
 			announce("There is a " + item.name + " here.");
 			for (Proc p : item.procs) {
-				p.postBeSteppedOn(player.entity);
+				p.postBeSteppedOn(player.getEntity());
 			}
 		}
 
@@ -438,7 +440,7 @@ public class Game {
 		}
 
 		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
-			if (target != player.entity && target.isManipulator) {
+			if (target != player.getEntity() && target.isManipulator) {
 				if (target.isObstructiveToManipulators()) {
 					return false;
 				}
@@ -496,7 +498,7 @@ public class Game {
 	}
 
 	public static void announceVis(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
-		Entity playerEntity = player.entity;
+		Entity playerEntity = player.getEntity();
 		if (playerEntity == actorEntity) {
 			announce(actor);
 		} else if (playerEntity == targetEntity) {

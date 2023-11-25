@@ -1,7 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world;
 
-import com.badlogic.gdx.graphics.Color;
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
@@ -30,9 +28,9 @@ public class Itempedia {
         pitchfork.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
         pitchfork.equipmentFor = BodyPart.TWO_HAND;
         pitchfork.category = ItemCategory.CATEGORY_TWO_HANDED_WEAPONS;
-        pitchfork.setup.add((e) -> {e.addProc(new PropPopupOnSeen(e, "Pick up your weapon"));});
-        pitchfork.setup.add((e) -> {e.addProc(new PropMessageOnStepOn(e, "Press 'comma' to pick it up."));});
-        pitchfork.setup.add((e) -> {e.addProc(new PropMessageOnPickup(e, "Press 'w' to wield it."));});
+        pitchfork.setup.add((e) -> {e.addProc(new ProcPopupOnSeen(e, "Pick up your weapon"));});
+        pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnStepOn(e, "Press 'comma' to pick it up."));});
+        pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnPickup(e, "Press 'w' to wield it."));});
         map.put(pitchfork.name, pitchfork);
 
         ItemType shortsword = new ItemType();

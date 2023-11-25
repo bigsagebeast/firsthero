@@ -17,6 +17,7 @@ public class Terrain {
 	private static final long big2 = 10000;
 
 	private List<Glyph> glyphs;
+	private String name;
 	private String description;
 	private boolean passable;
 
@@ -26,26 +27,31 @@ public class Terrain {
 
 	public static Map<String, Terrain> map;
 	
-	public static Terrain BLANK = new Terrain("Empty.", false, "terrain.dot", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
+	public static Terrain BLANK = new Terrain("empty", "Empty.", false, "terrain.dot", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
 	
 	static {
 		// TODO: Load / initialize from...somewhere
 		map = new HashMap<String, Terrain>();
 
-		map.put("tree", new Terrain("a tree", false, "terrain.tree", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_DARKGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_TRANSPARENT), null));
-		map.put("dirt", new Terrain("dirt", true, "terrain.dot", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null));
-		map.put("grass", new Terrain("grass", true, "terrain.grass", new PaletteEntry(Palette.COLOR_LIGHTGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_CHARTREUSE, Palette.COLOR_TRANSPARENT), null));
-		map.put("wall", new Terrain("a wall", false, "wall.stone", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_TAN, Palette.COLOR_TRANSPARENT), "wall"));
-		map.put("floor", new Terrain("wood floor", true, "terrain.floor", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null));
-		map.put("mountain", new Terrain("the mountainside", false, "terrain.mountain", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_FORESTGREEN, Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT), null));
-		
-		map.put("upstair", new Terrain("stairs leading up", true, "terrain.upstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null));
-		map.put("downstair", new Terrain("stairs leading down", true, "terrain.downstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null));
+		addTerrain("tree", "a tree", false, "terrain.tree", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_DARKGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_TRANSPARENT), null);
+		addTerrain("dirt", "dirt", true, "terrain.dot", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
+		addTerrain("grass", "grass", true, "terrain.grass", new PaletteEntry(Palette.COLOR_LIGHTGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_CHARTREUSE, Palette.COLOR_TRANSPARENT), null);
+		addTerrain("wall", "a wall", false, "wall.stone", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_TAN, Palette.COLOR_TRANSPARENT), "wall");
+		addTerrain("floor", "wood floor", true, "terrain.floor", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
+		addTerrain("mountain", "the mountainside", false, "terrain.mountain", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_FORESTGREEN, Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT), null);
 
-		map.put("doorway", new Terrain("a doorway", true, "terrain.door_open", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT, Palette.COLOR_BROWN), null));
+		addTerrain("upstair", "stairs leading up", true, "terrain.upstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null);
+		addTerrain("downstair", "stairs leading down", true, "terrain.downstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null);
+
+		addTerrain("doorway", "a doorway", true, "terrain.door_open", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT, Palette.COLOR_BROWN), null);
 	}
 
-	public Terrain(String description, boolean passable, String glyphName, PaletteEntry paletteEntry, String blockCategory) {
+	public static void addTerrain(String name, String description, boolean passable, String glyphName, PaletteEntry paletteEntry, String blockCategory) {
+		map.put(name, new Terrain(name, description, passable, glyphName, paletteEntry, blockCategory));
+	}
+
+	public Terrain(String name, String description, boolean passable, String glyphName, PaletteEntry paletteEntry, String blockCategory) {
+		this.name = name;
 		this.paletteEntry = paletteEntry;
 		this.blockCategory = blockCategory;
 		this.glyphName = glyphName;
@@ -55,6 +61,10 @@ public class Terrain {
 
 	public static Terrain get(String key) {
 		return map.get(key);
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getGlyphName() {
