@@ -155,9 +155,13 @@ public class GameLoop implements GameLogic, InputProcessor {
 		return false;
 	}
 
-	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public boolean scrolled(float x, float y) {
+		return false;
+	}
+
+	public boolean touchCancelled(int a,int b,int c,int d) { return false; }
 }

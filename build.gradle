@@ -17,7 +17,8 @@ allprojects {
     version = '1.0'
     ext {
         appName = "hero"
-        gdxVersion = '1.9.2'
+        lwjglVersion = '3.2.3'
+        gdxVersion = '1.12.1'
         roboVMVersion = '1.12.0'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
@@ -37,7 +38,11 @@ project(":desktop") {
 
     dependencies {
         compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "org.lwjgl:lwjgl:$lwjglVersion"
+        compile "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+        compile "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+        compile "org.lwjgl:lwjgl-platform:3.0.0:natives-windows"
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.google.guava:guava:19.0"
@@ -52,6 +57,10 @@ project(":core") {
 
 
     dependencies {
+        compile "org.lwjgl:lwjgl:$lwjglVersion"
+        compile "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+        compile "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+        compile "org.lwjgl:lwjgl-platform:3.0.0:natives-windows"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile 'com.google.gwt:gwt-servlet:2.6.0'
