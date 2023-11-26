@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.HeroGame;
-import com.churchofcoyote.hero.engine.asciitile.AsciiTileEngine;
-import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
 public class GfxMovingCircle extends Gfx {

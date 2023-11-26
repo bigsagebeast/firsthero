@@ -1,7 +1,5 @@
 package com.churchofcoyote.hero.glyphtile;
 
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
-
 import java.util.ArrayList;
 
 public class GlyphGrid {

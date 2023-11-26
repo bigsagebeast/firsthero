@@ -1,7 +1,6 @@
 package com.churchofcoyote.hero.module;
 
 import com.churchofcoyote.hero.GameLogic;
-import com.churchofcoyote.hero.engine.asciitile.AsciiTileEngine;
 import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
 
@@ -10,13 +9,11 @@ public abstract class Module implements GameLogic {
 	protected static TextEngine textEngine;
 	protected static TextEngine uiEngine;
 	protected static EffectEngine effectEngine;
-	protected static AsciiTileEngine asciiTileEngine;
-	
-	public static void setEngines(TextEngine textEngine, TextEngine uiEngine, EffectEngine effectEngine, AsciiTileEngine asciiTileEngine) {
+
+	public static void setEngines(TextEngine textEngine, TextEngine uiEngine, EffectEngine effectEngine) {
 		Module.textEngine = textEngine;
 		Module.uiEngine = uiEngine;
 		Module.effectEngine = effectEngine;
-		Module.asciiTileEngine = asciiTileEngine;
 	}
 	
 	private boolean running = false;

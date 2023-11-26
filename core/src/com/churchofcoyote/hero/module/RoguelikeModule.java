@@ -6,11 +6,6 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
-import com.churchofcoyote.hero.engine.asciitile.AsciiGrid;
-import com.churchofcoyote.hero.glyphtile.EntityGlyph;
-import com.churchofcoyote.hero.glyphtile.GlyphIndex;
-import com.churchofcoyote.hero.glyphtile.Palette;
-import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.AnnounceWindow;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.EquipmentWindow;
@@ -41,8 +36,6 @@ public class RoguelikeModule extends Module {
 	StatsWindow statsWindow;
 	EquipmentWindow equipWindow;
 	
-	AsciiGrid mainGrid;
-	
 	private boolean dirty = true;
 	
 	public static TextBlock topBorder = null;
@@ -56,9 +49,7 @@ public class RoguelikeModule extends Module {
 		announceWindow = new AnnounceWindow();
 		statsWindow = new StatsWindow();
 		equipWindow = new EquipmentWindow();
-		//asciiTileEngine.addLayer(110, 62);
-		//mainGrid = asciiTileEngine.getLayer(0);
-		
+
 		TextBlock borderBlock = new TextBlock("", FONT_SIZE, 0, 0, new Color(0, 0, 0, 0));
 
 		uiEngine.addBlock(new TextBlock("##############################################################################################################",
@@ -173,12 +164,10 @@ public class RoguelikeModule extends Module {
 			process();
 			dirty = false;
 		}
-		//asciiTileEngine.update(state);
 	}
 
 	@Override
 	public void render(Graphics g, GraphicsState gState) {
-		//asciiTileEngine.render(g, gState);
 
 	}
 
@@ -191,33 +180,43 @@ public class RoguelikeModule extends Module {
 					announceWindow.addLine("Adding an announcement line.");
 					break;
 				case Keys.LEFT:
+				case Keys.NUMPAD_4:
 					game.cmdMoveLeft();
 					break;
 				case Keys.RIGHT:
+				case Keys.NUMPAD_6:
 					game.cmdMoveRight();
 					break;
 				case Keys.UP:
+				case Keys.NUMPAD_8:
 					game.cmdMoveUp();
 					break;
 				case Keys.DOWN:
+				case Keys.NUMPAD_2:
 					game.cmdMoveDown();
 					break;
 				case Keys.HOME:
+				case Keys.NUMPAD_7:
 					game.cmdMoveUpLeft();
 					break;
 				case Keys.END:
+				case Keys.NUMPAD_1:
 					game.cmdMoveDownLeft();
 					break;
 				case Keys.PAGE_UP:
+				case Keys.NUMPAD_9:
 					game.cmdMoveUpRight();
 					break;
 				case Keys.PAGE_DOWN:
+				case Keys.NUMPAD_3:
 					game.cmdMoveDownRight();
 					break;
 				case Keys.COMMA:
 					game.cmdPickUp();
 					break;
 				case Keys.UNKNOWN:
+				case Keys.NUMPAD_5:
+				case Keys.PERIOD:
 					game.cmdWait();
 					break;
 				case Keys.W:

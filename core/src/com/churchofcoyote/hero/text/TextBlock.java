@@ -15,7 +15,6 @@ import com.churchofcoyote.hero.GameLogic;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.glyphtile.GlyphTile;
 import com.churchofcoyote.hero.text.effect.TextEffectFadeOut;

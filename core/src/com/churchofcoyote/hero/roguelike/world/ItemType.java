@@ -1,6 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world;
 
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 
 import java.util.HashSet;

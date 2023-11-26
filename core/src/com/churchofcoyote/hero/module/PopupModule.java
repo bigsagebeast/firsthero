@@ -2,11 +2,9 @@ package com.churchofcoyote.hero.module;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.*;
-import com.churchofcoyote.hero.engine.asciitile.AsciiTileEngine;
 import com.churchofcoyote.hero.gfx.GfxMovingCircle;
 import com.churchofcoyote.hero.gfx.GfxRectBorder;
 import com.churchofcoyote.hero.gfx.GfxRectFilled;
-import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
 

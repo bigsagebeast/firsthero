@@ -1,13 +1,9 @@
 package com.churchofcoyote.hero.roguelike.world;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.badlogic.gdx.graphics.Color;
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 
@@ -16,7 +12,6 @@ public class Terrain {
 	private static final long big1 = 10000;
 	private static final long big2 = 10000;
 
-	private List<Glyph> glyphs;
 	private String name;
 	private String description;
 	private boolean passable;

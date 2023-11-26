@@ -7,7 +7,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.churchofcoyote.hero.engine.asciitile.AsciiTileEngine;
 import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
@@ -21,7 +20,6 @@ public class GameLoop implements GameLogic, InputProcessor {
 	TextEngine uiEngine = new TextEngine();
 	TextEngine textEngine = new TextEngine();
 	EffectEngine effectEngine = new EffectEngine();
-	AsciiTileEngine asciiTileEngine = new AsciiTileEngine();
 	public static final GlyphEngine glyphEngine = new GlyphEngine();
 	ShapeRenderer shapeBatch = new ShapeRenderer();
 	
@@ -43,7 +41,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.setVSync(false);
-		Module.setEngines(textEngine, uiEngine, effectEngine, asciiTileEngine);
+		Module.setEngines(textEngine, uiEngine, effectEngine);
 		allModules = new ArrayList<Module>();
 		allModules.add(popupModule);
 		allModules.add(dialogueBoxModule);
@@ -80,7 +78,6 @@ public class GameLoop implements GameLogic, InputProcessor {
 			}
 		}
 		queuedKeyDown.clear();
-		//asciiTileEngine.update(state);
 		effectEngine.update(state);
 		textEngine.update(state);
 		uiEngine.update(state);
@@ -94,7 +91,6 @@ public class GameLoop implements GameLogic, InputProcessor {
 	    shapeBatch.end();
 
 	    g.startBatch();
-	    //asciiTileEngine.render(g, gState);
 		glyphEngine.render(g, gState);
 		uiEngine.render(g, gState);
 		g.endBatch();

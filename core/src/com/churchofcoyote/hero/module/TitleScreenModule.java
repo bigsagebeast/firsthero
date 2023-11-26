@@ -115,44 +115,46 @@ public class TitleScreenModule extends Module {
 	@Override
 	public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
 		switch (keycode) {
-		case Keys.UP:
-			selectedOption = (selectedOption + 4) % 5;
-			updateOptions();
-			break;
-		case Keys.DOWN:
-			selectedOption = (selectedOption + 1) % 5;
-			updateOptions();
-			break;
-		case Keys.ENTER:
-		case Keys.SPACE:
-			switch (selectedOption) {
-				case 0:
-					IntroModule.musicResource.stop();
-					end();
-					GameLoop.roguelikeModule.start();
-					GameLoop.roguelikeModule.game.load();
-					break;
-				case 1:
-					IntroModule.musicResource.stop();
-					end();
-					GameLoop.roguelikeModule.start();
-					GameLoop.roguelikeModule.game.startIntro();
-					break;
-				case 2:
-					IntroModule.musicResource.stop();
-					end();
-					GameLoop.roguelikeModule.start();
-					GameLoop.roguelikeModule.game.startCaves();
-					break;
-				case 3:
-					IntroModule.musicResource.stop();
-					end();
-					GameLoop.introModule.start();
-					break;
-				case 4:
-					Gdx.app.exit();
-			}
-			break;
+			case Keys.UP:
+			case Keys.NUMPAD_8:
+				selectedOption = (selectedOption + 4) % 5;
+				updateOptions();
+				break;
+			case Keys.DOWN:
+				case Keys.NUMPAD_2:
+				selectedOption = (selectedOption + 1) % 5;
+				updateOptions();
+				break;
+			case Keys.ENTER:
+			case Keys.SPACE:
+				switch (selectedOption) {
+					case 0:
+						IntroModule.musicResource.stop();
+						end();
+						GameLoop.roguelikeModule.start();
+						GameLoop.roguelikeModule.game.load();
+						break;
+					case 1:
+						IntroModule.musicResource.stop();
+						end();
+						GameLoop.roguelikeModule.start();
+						GameLoop.roguelikeModule.game.startIntro();
+						break;
+					case 2:
+						IntroModule.musicResource.stop();
+						end();
+						GameLoop.roguelikeModule.start();
+						GameLoop.roguelikeModule.game.startCaves();
+						break;
+					case 3:
+						IntroModule.musicResource.stop();
+						end();
+						GameLoop.introModule.start();
+						break;
+					case 4:
+						Gdx.app.exit();
+				}
+				break;
 		}
 		return true;
 	}

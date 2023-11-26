@@ -1,12 +1,10 @@
 package com.churchofcoyote.hero.roguelike.world;
 
 import com.churchofcoyote.hero.GameLoop;
-import com.churchofcoyote.hero.engine.asciitile.Glyph;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Player;
 import com.churchofcoyote.hero.roguelike.game.Rank;
-import com.churchofcoyote.hero.roguelike.world.ai.Strategy;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcEquippable;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
