@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.churchofcoyote.hero.*;
+import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
+import com.churchofcoyote.hero.ui.UIManager;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
@@ -114,9 +116,18 @@ public class GlyphEngine implements GameLogic {
 
     private void compile() {
         long start = System.currentTimeMillis();
+
+        Point size = WindowEngine.getSize("mainWindow");
+        float tileWidth = GLYPH_WIDTH * zoom;
+        float tileHeight = GLYPH_HEIGHT * zoom;
+        //int widthInTiles = (int)((size.x / 2 - 1) / tileWidth);
+        //int heightInTiles = (int)((size.y / 2 - 1) / tileHeight);
+        int widthInTiles = (int)((size.x / 2 - 1) / tileWidth);
+        int heightInTiles = (int)((size.y / 2 - 1) / tileHeight);
+
         if (isDirty()) {
-            for (int x = offsetX - (SCREEN_TILE_WIDTH / 2); x <= offsetX + (SCREEN_TILE_WIDTH / 2); x++) {
-                for (int y = offsetY - (SCREEN_TILE_HEIGHT / 2); y <= offsetY + (SCREEN_TILE_HEIGHT / 2); y++) {
+            for (int x = offsetX - widthInTiles; x <= offsetX + widthInTiles; x++) {
+                for (int y = offsetY - heightInTiles; y <= offsetY + heightInTiles; y++) {
                     // could these ever be different?
                     if (grid.withinBounds(x, y) && level.withinBounds(x, y)) {
                         grid.clearBackground(x, y);
@@ -179,8 +190,8 @@ public class GlyphEngine implements GameLogic {
         if (Game.getPlayerEntity() == null) {
             return;
         }
-        offsetX = Game.getPlayerEntity().pos.x;
-        offsetY = Game.getPlayerEntity().pos.y;
+        offsetX = Game.getPlayerEntity().pos.x + 1;
+        offsetY = Game.getPlayerEntity().pos.y + 1;
     }
 
     @Override
@@ -188,6 +199,16 @@ public class GlyphEngine implements GameLogic {
         if (level == null) {
             return;
         }
+        Point size = WindowEngine.getSize("mainWindow");
+        float tileWidth = GLYPH_WIDTH * zoom;
+        float tileHeight = GLYPH_HEIGHT * zoom;
+        int widthInTiles = (int)((size.x - 0) / (tileWidth * 2)) * 2;
+        int heightInTiles = (int)((size.y - 0) / (tileHeight * 2)) * 2;
+        int widthInPixels = (int)(widthInTiles * tileWidth);
+        int heightInPixels = (int)(heightInTiles * tileHeight);
+        int marginX = (size.x - widthInPixels) / 2;
+        int marginY = (size.y - heightInPixels) / 2;
+
         if (buffer == null || isDirty()) {
             compile();
             long start = System.currentTimeMillis();
@@ -195,34 +216,39 @@ public class GlyphEngine implements GameLogic {
                 buffer.dispose();
             }
             buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Graphics.width, Graphics.height, false);
-            texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Graphics.width, Graphics.height);
+            texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, size.x, size.y);
 
             g.endBatch();
             buffer.begin();
             g.startBatch();
 
-            for (int x = 0; x < SCREEN_TILE_WIDTH / zoom; x++) {
-                for (int y = 0; y < SCREEN_TILE_HEIGHT / zoom; y++) {
-                    if (grid.withinBounds((int)(x + offsetX - (SCREEN_TILE_WIDTH/2) / zoom), (int)(y + offsetY - (SCREEN_TILE_HEIGHT/2) / zoom))) {
+            for (int x = -2; x < widthInTiles+2; x++) {
+                for (int y = -2; y < heightInTiles+2; y++) {
+                    int tileX = x + offsetX - widthInTiles;
+                    int tileY = y + offsetY - heightInTiles;
+                    if (grid.withinBounds((int)(x + offsetX - widthInTiles/2), (int)(y + offsetY - heightInTiles/2))) {
                         // TODO background
-                        GlyphTile glyph = grid.get((int)(x + offsetX - (SCREEN_TILE_WIDTH/2)/zoom), (int)(y + offsetY - (SCREEN_TILE_HEIGHT/2)/zoom));
+                        GlyphTile glyph = grid.get((int)(x + offsetX - widthInTiles/2), (int)(y + offsetY - heightInTiles/2));
                         if (glyph != null) {
-                            Texture drawTexture = level.cell((int)(x + offsetX - (SCREEN_TILE_WIDTH/2)/zoom), (int)(y + offsetY - (SCREEN_TILE_HEIGHT/2)/zoom)).visible() ? glyph.texture : glyph.grayTexture;
-                            //g.batch().draw(drawTexture, RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH * zoom, RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT * zoom);
-                            g.batch().draw(drawTexture, RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH * zoom, RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT * zoom,
+                            Texture drawTexture = level.cell((int)(x + offsetX - widthInTiles/2), (int)(y + offsetY - heightInTiles/2)).visible() ? glyph.texture : glyph.grayTexture;
+                            g.batch().draw(drawTexture,
+                                    RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH * zoom + marginX,
+                                    RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT * zoom + marginY,
                                     GlyphEngine.GLYPH_WIDTH * zoom, GlyphEngine.GLYPH_HEIGHT * zoom);
                         }
                     }
                     // TODO else?
                 }
             }
-
             g.endBatch();
             buffer.end();
             g.startBatch();
             HeroGame.updateTimer("gDrw", System.currentTimeMillis() - start);
         }
-        g.batch().draw(texRegion, 0, 0, g.width, g.height);
+        FrameBuffer fb = WindowEngine.get(UIManager.NAME_MAIN_WINDOW);
+        fb.begin();
+        g.batch().draw(texRegion, 0, 0, size.x, size.y);
+        fb.end();
     }
 
     public void destroyEntity(Entity e) {

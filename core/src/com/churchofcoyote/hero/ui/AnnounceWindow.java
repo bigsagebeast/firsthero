@@ -22,7 +22,7 @@ public class AnnounceWindow {
 		windowWidth = 46;
 		windowHeight = 20;
 		paraWidth = 44;
-		parent = new TextBlock("", "announcements", RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
+		parent = new TextBlock("", UIManager.NAME_ANNOUNCEMENTS, RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
 	}
 	
 	public TextBlock getTextBlockParent() {
@@ -34,7 +34,7 @@ public class AnnounceWindow {
 	}
 
 	public void addLine(String line) {
-		WindowEngine.setDirty("announcements");
+		WindowEngine.setDirty(UIManager.NAME_ANNOUNCEMENTS);
 		if (line.isEmpty()) {
 			return;
 		}

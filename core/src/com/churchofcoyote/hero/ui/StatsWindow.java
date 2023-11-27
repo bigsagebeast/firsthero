@@ -15,7 +15,7 @@ public class StatsWindow {
 	private TextBlock[] rows = new TextBlock[windowHeight];
 	
 	public StatsWindow() {
-		parent = new TextBlock("", "stats", RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
+		parent = new TextBlock("", UIManager.NAME_STATS, RoguelikeModule.FONT_SIZE, 0, 0, 0, 5, Color.WHITE);
 		for (int i=0; i<windowHeight; i++) {
 			rows[i] = new TextBlock("", null, RoguelikeModule.FONT_SIZE, 0, i, Color.WHITE);
 			parent.addChild(rows[i]);
@@ -28,7 +28,7 @@ public class StatsWindow {
 	}
 
 	public void update(Entity c) {
-		WindowEngine.setDirty("stats");
+		WindowEngine.setDirty(UIManager.NAME_STATS);
 		rows[0].text = StringFormat.format("HP: %3d/%3d", c.hitPoints, c.maxHitPoints);
 		if (c.hitPoints > (c.maxHitPoints / 2)) {
 			rows[0].color = Color.WHITE;

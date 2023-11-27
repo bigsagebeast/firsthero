@@ -18,7 +18,7 @@ public class EquipmentWindow {
 	private TextBlock[] glyphs = new TextBlock[windowHeight];
 	
 	public EquipmentWindow() {
-		parent = new TextBlock("", "equipment", RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
+		parent = new TextBlock("", UIManager.NAME_EQUIPMENT, RoguelikeModule.FONT_SIZE, 0, 0, 0, 5, Color.WHITE);
 		for (int i=0; i<windowHeight; i++) {
 			rows[i] = new TextBlock("", null, RoguelikeModule.FONT_SIZE, 0, i, Color.WHITE);
 			glyphs[i] = new TextBlock(null, null, RoguelikeModule.FONT_SIZE, 8, i, Color.WHITE);
@@ -33,7 +33,7 @@ public class EquipmentWindow {
 	}
 
 	public void update(Entity c) {
-		WindowEngine.setDirty("equipment");
+		WindowEngine.setDirty(UIManager.NAME_EQUIPMENT);
 		int row = 0;
 		for (BodyPart bp : c.body.getParts())
 		{

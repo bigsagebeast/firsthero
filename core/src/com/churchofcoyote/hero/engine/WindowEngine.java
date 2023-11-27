@@ -37,6 +37,13 @@ public class WindowEngine {
         return frameBuffers.get(key);
     }
 
+    public static Point getSize(String key) {
+        if (!frameBuffers.containsKey(key)) {
+            throw new RuntimeException("Tried to access uninitialized framebuffer " + key);
+        }
+        return size.get(key);
+    }
+
     public static boolean isDirty(String key) {
         return isDirty.get(key);
     }
