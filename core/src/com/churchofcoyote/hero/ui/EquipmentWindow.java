@@ -1,6 +1,7 @@
-package com.churchofcoyote.hero.roguelike.game;
+package com.churchofcoyote.hero.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.glyphtile.EntityGlyph;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
@@ -17,10 +18,10 @@ public class EquipmentWindow {
 	private TextBlock[] glyphs = new TextBlock[windowHeight];
 	
 	public EquipmentWindow() {
-		parent = new TextBlock("", RoguelikeModule.FONT_SIZE, 79, 22, Color.WHITE);
+		parent = new TextBlock("", "equipment", RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
 		for (int i=0; i<windowHeight; i++) {
-			rows[i] = new TextBlock("", RoguelikeModule.FONT_SIZE, 0, i, Color.WHITE);
-			glyphs[i] = new TextBlock(null, RoguelikeModule.FONT_SIZE, 8, i, Color.WHITE);
+			rows[i] = new TextBlock("", null, RoguelikeModule.FONT_SIZE, 0, i, Color.WHITE);
+			glyphs[i] = new TextBlock(null, null, RoguelikeModule.FONT_SIZE, 8, i, Color.WHITE);
 			parent.addChild(rows[i]);
 			parent.addChild(glyphs[i]);
 		}
@@ -32,6 +33,7 @@ public class EquipmentWindow {
 	}
 
 	public void update(Entity c) {
+		WindowEngine.setDirty("equipment");
 		int row = 0;
 		for (BodyPart bp : c.body.getParts())
 		{

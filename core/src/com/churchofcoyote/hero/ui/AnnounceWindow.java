@@ -1,9 +1,10 @@
-package com.churchofcoyote.hero.roguelike.game;
+package com.churchofcoyote.hero.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
+import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.text.TextBlock;
 
@@ -21,15 +22,19 @@ public class AnnounceWindow {
 		windowWidth = 46;
 		windowHeight = 20;
 		paraWidth = 44;
-		parent = new TextBlock("", RoguelikeModule.FONT_SIZE, 62, 1, Color.WHITE);
-		
+		parent = new TextBlock("", "announcements", RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
 	}
 	
 	public TextBlock getTextBlockParent() {
 		return parent;
 	}
-	
+
+	public void update() {
+		parent.compile();
+	}
+
 	public void addLine(String line) {
+		WindowEngine.setDirty("announcements");
 		if (line.isEmpty()) {
 			return;
 		}
@@ -83,8 +88,8 @@ public class AnnounceWindow {
 		
 		lines.add(thisLine);
 		
-		TextBlock lineBlock = new TextBlock("", RoguelikeModule.FONT_SIZE, 0, windowHeight-1, Color.WHITE);
-		TextBlock partialBlock = new TextBlock(thisLine, RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
+		TextBlock lineBlock = new TextBlock("", null, RoguelikeModule.FONT_SIZE, 0, windowHeight-1, Color.WHITE);
+		TextBlock partialBlock = new TextBlock(thisLine, null, RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
 		lineBlock.addChild(partialBlock);
 		
 		for (TextBlock block : lineBlocks) {

@@ -67,7 +67,13 @@ public class TextEngine implements GameLogic {
 		activeBlocks.add(block5);
 		*/
 	}
-	
+
+	public void recompile() {
+		for (TextBlock block : activeBlocks) {
+			block.compile();
+		}
+	}
+
 	public void addBlock(TextBlock block) {
 		activeBlocks.add(block);
 	}

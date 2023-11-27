@@ -8,13 +8,13 @@ import java.util.Set;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.churchofcoyote.hero.GameLogic;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
+import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.glyphtile.GlyphTile;
 import com.churchofcoyote.hero.text.effect.TextEffectFadeOut;
@@ -51,7 +51,9 @@ public class TextBlock implements GameLogic {
 	private Float fontSize;
 	public String text;
 	public GlyphTile glyph;
-	
+
+	private String frameBufferKey;
+
 	// locked = only render once
 	private boolean wantLocked = false;
 	private boolean isLocked = false;
@@ -60,9 +62,10 @@ public class TextBlock implements GameLogic {
 
 
 
-	public TextBlock(GlyphTile glyph, Float fontsize, Float x, Float y, float pixelOffsetX, float pixelOffsetY,
+	public TextBlock(GlyphTile glyph, String frameBufferKey, Float fontsize, Float x, Float y, float pixelOffsetX, float pixelOffsetY,
 		TextEffectJitter jitter, TextEffectSwap swap) {
 		this.glyph = glyph;
+		this.frameBufferKey = frameBufferKey;
 		this.fontSize = fontsize;
 		this.x = x;
 		this.y = y;
@@ -73,12 +76,13 @@ public class TextBlock implements GameLogic {
 	}
 
 
-	public TextBlock(String text, Float fontSize,
+	public TextBlock(String text, String frameBufferKey, Float fontSize,
 					 Float x, Float y, float pixelOffsetX, float pixelOffsetY,
 					 Color color,
 					 Float secondStart, Float secondsPerLetter,
 					 TextEffectJitter jitter, TextEffectSwap swap,
 					 TextEffectGranularity granularity) {
+		this.frameBufferKey = frameBufferKey;
 		this.pixelOffsetX = pixelOffsetX;
 		this.pixelOffsetY = pixelOffsetY;
 		switch (granularity) {
@@ -107,7 +111,7 @@ public class TextBlock implements GameLogic {
 						words[i] = " " + words[i];
 					}
 					TextBlock letterBlock = new TextBlock(
-							words[i], fontSize,
+							words[i], frameBufferKey, fontSize,
 							x + letters, y, pixelOffsetX, pixelOffsetY, color,
 							secondStart + (secondsPerLetter * letters), 0.1f,
 							jitter == null ? null : new TextEffectJitter(jitter),
@@ -119,7 +123,7 @@ public class TextBlock implements GameLogic {
 			case LETTER:
 				for (int i=0; i<text.length(); i++) {
 					TextBlock letterBlock = new TextBlock(
-							text.substring(i, i+1), fontSize,
+							text.substring(i, i+1), frameBufferKey, fontSize,
 							x + i, y, pixelOffsetX, pixelOffsetY, color,
 							secondStart + (secondsPerLetter * i), 0.1f,
 							jitter == null ? null : new TextEffectJitter(jitter),
@@ -130,21 +134,21 @@ public class TextBlock implements GameLogic {
 		}
 	}
 
-	public TextBlock(String text, int fontSize,
+	public TextBlock(String text, String frameBufferKey, int fontSize,
 					 int x, int y, Color color) {
-		this(text, (float)fontSize, (float)x, (float)y, 0f, 0f, color, -1f, -1f,
+		this(text, frameBufferKey, (float)fontSize, (float)x, (float)y, 0f, 0f, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);
 	}
 
-	public TextBlock(String text, int fontSize,
+	public TextBlock(String text, String frameBufferKey, int fontSize,
 					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color) {
-		this(text, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
+		this(text, frameBufferKey, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);
 	}
 
-	public TextBlock(String text, int fontSize,
+	public TextBlock(String text, String frameBufferKey, int fontSize,
 					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color, GlyphTile[] glyphs) {
-		this(text, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
+		this(text, frameBufferKey, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);
 		char[] chars = text.toCharArray();
 		int glyphIndex = 0;
@@ -153,7 +157,7 @@ public class TextBlock implements GameLogic {
 				if (glyphIndex > glyphs.length) {
 					throw new RuntimeException("Glyphs in string (" + (glyphIndex + 1) + ") exceeded glyphs provided (" + glyphs.length + ")");
 				}
-				TextBlock glyphBlock = new TextBlock(glyphs[glyphIndex], (float)fontSize, (float)i, 0f, 0f, 0f, null, null);
+				TextBlock glyphBlock = new TextBlock(glyphs[glyphIndex], frameBufferKey, (float)fontSize, (float)i, 0f, 0f, 0f, null, null);
 				addChild(glyphBlock);
 				glyphIndex++;
 			}
@@ -163,34 +167,34 @@ public class TextBlock implements GameLogic {
 		}
 	}
 
-	public TextBlock(String text, int fontSize,
+	public TextBlock(String text, String frameBufferKey, int fontSize,
 					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color,
 					 Float secondStart, Float secondsPerLetter) {
-		this(text, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, secondStart, secondsPerLetter,
+		this(text, frameBufferKey, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, secondStart, secondsPerLetter,
 				null, null, TextEffectGranularity.BLOCK);
 	}
 
-	public TextBlock(String text, int fontSize,
+	public TextBlock(String text, String frameBufferKey, int fontSize,
 					 int x, int y, Color color,
 					 Float secondStart, Float secondsPerLetter) {
-		this(text, (float)fontSize, (float)x, (float)y, 0f, 0f, color, secondStart, secondsPerLetter,
+		this(text, frameBufferKey, (float)fontSize, (float)x, (float)y, 0f, 0f, color, secondStart, secondsPerLetter,
 				null, null, TextEffectGranularity.BLOCK);
 	}
 
 
-	public TextBlock(String text, Float fontSize,
+	public TextBlock(String text, String frameBufferKey, Float fontSize,
 					 Float x, Float y, float pixelOffsetX, float pixelOffsetY, Color color,
 					 Float secondStart, Float secondsPerLetter,
 					 TextEffectJitter jitter, TextEffectSwap swap) {
-		this(text, fontSize, x, y, pixelOffsetX, pixelOffsetY, color, secondStart, secondsPerLetter,
+		this(text, frameBufferKey, fontSize, x, y, pixelOffsetX, pixelOffsetY, color, secondStart, secondsPerLetter,
 				jitter, swap, TextEffectGranularity.BLOCK);
 	}
 
-	public TextBlock(String text, Float fontSize,
+	public TextBlock(String text, String frameBufferKey, Float fontSize,
 					 Float x, Float y, Color color,
 					 Float secondStart, Float secondsPerLetter,
 					 TextEffectJitter jitter, TextEffectSwap swap) {
-		this(text, fontSize, x, y, 0f, 0f, color, secondStart, secondsPerLetter,
+		this(text, frameBufferKey, fontSize, x, y, 0f, 0f, color, secondStart, secondsPerLetter,
 				jitter, swap, TextEffectGranularity.BLOCK);
 	}
 
@@ -243,17 +247,20 @@ public class TextBlock implements GameLogic {
 	}
 	
 	public void render(Graphics g, GraphicsState gState, float offsetX, float offsetY, float pixelOffsetX, float pixelOffsetY) {
+		if (frameBufferKey != null && !WindowEngine.isDirty(frameBufferKey)) {
+			return;
+		}
 		if (!isLocked) {
 			if (wantLocked) {
 				if (buffer != null) {
 					buffer.dispose();
 				}
 				g.endBatch();
-				buffer = new FrameBuffer(Format.RGBA8888, Graphics.WIDTH, Graphics.HEIGHT, false);
-				texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Graphics.WIDTH, Graphics.HEIGHT);
-				texRegion.flip(false, true);
+				buffer = new FrameBuffer(Format.RGBA8888, Graphics.width, Graphics.height, false);
+				texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Graphics.width, Graphics.height);
+				//texRegion.flip(false, true);
 				
-				
+
 				g.startBatch();
 				buffer.begin();
 			}
@@ -294,7 +301,18 @@ public class TextBlock implements GameLogic {
 			}
 		}
 		if (isLocked) {
-			g.batch().draw(texRegion, 0, 0, g.WIDTH, g.HEIGHT);
+			if (frameBufferKey != null) {
+				g.endBatch();
+				FrameBuffer buffer = WindowEngine.get(frameBufferKey);
+				buffer.begin();
+				g.startBatch();
+				g.batch().draw(texRegion, 0, 0, g.width, g.height);
+				g.endBatch();
+				buffer.end();
+				g.startBatch();
+			} else {
+				g.batch().draw(texRegion, 0, 0, g.width, g.height);
+			}
 		}
 	}
 	
@@ -303,7 +321,7 @@ public class TextBlock implements GameLogic {
 	}
 
 	private void drawGlyph(Graphics g, GraphicsState gState, GlyphTile glyph, float x, float y) {
-		g.batch().draw(glyph.texture, (x * fontSize) + pixelOffsetX, Graphics.HEIGHT - (((y + 1) * fontSize) + pixelOffsetY),
+		g.batch().draw(glyph.texture, (x * fontSize) + pixelOffsetX, Graphics.height - (((y + 1) * fontSize) + pixelOffsetY),
 				fontSize, fontSize * GlyphEngine.GLYPH_HEIGHT / GlyphEngine.GLYPH_WIDTH, 0, 0, GlyphEngine.GLYPH_WIDTH, GlyphEngine.GLYPH_HEIGHT, false, true);
 	}
 
@@ -345,19 +363,19 @@ public class TextBlock implements GameLogic {
 				int which = random.nextInt(5);
 				switch (which) {
 				case 0:
-					childSwap.addAlternate(new TextBlock("#", fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("#", frameBufferKey, fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
 					break;
 				case 1:
-					childSwap.addAlternate(new TextBlock("$", fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("$", frameBufferKey, fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
 					break;
 				case 2:
-					childSwap.addAlternate(new TextBlock("@", fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("@", frameBufferKey, fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
 					break;
 				case 3:
-					childSwap.addAlternate(new TextBlock("&", fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("&", frameBufferKey, fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
 					break;
 				case 4:
-					childSwap.addAlternate(new TextBlock("~", fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("~", frameBufferKey, fontSize, (float)0, 0f, Color.RED, secondStart, secondsPerLetter, null, null));
 					break;
 				}
 			}
@@ -366,37 +384,37 @@ public class TextBlock implements GameLogic {
 				int which = random.nextInt(5);
 				switch (which) {
 				case 0:
-					childSwap.addAlternate(new TextBlock("*", fontSize, (float)0, -1f, Color.ORANGE, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("*", frameBufferKey, fontSize, (float)0, -1f, Color.ORANGE, secondStart, secondsPerLetter, null, null));
 					break;
 				case 1:
-					childSwap.addAlternate(new TextBlock("*", fontSize, (float)0, -1f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("*", frameBufferKey, fontSize, (float)0, -1f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
 					break;
 				case 2:
-					childSwap.addAlternate(new TextBlock("~", fontSize, (float)0, -1f, Color.ORANGE, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("~", frameBufferKey, fontSize, (float)0, -1f, Color.ORANGE, secondStart, secondsPerLetter, null, null));
 					break;
 				case 3:
-					childSwap.addAlternate(new TextBlock("@", fontSize, (float)0, -1f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("@", frameBufferKey, fontSize, (float)0, -1f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
 					break;
 				case 4:
-					childSwap.addAlternate(new TextBlock("*", fontSize, (float)0, 0f, Color.ORANGE, secondStart, secondsPerLetter, null, null));
+					childSwap.addAlternate(new TextBlock("*", frameBufferKey, fontSize, (float)0, 0f, Color.ORANGE, secondStart, secondsPerLetter, null, null));
 					break;
 				}
 			}
-			childSwap.addAlternate(new TextBlock("*", fontSize, (float)0, -1f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
+			childSwap.addAlternate(new TextBlock("*", frameBufferKey, fontSize, (float)0, -1f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
 			switch (random.nextInt(3)) {
 			case 0:
-				childSwap.addAlternate(new TextBlock(".", fontSize, (float)0, -2f, Color.WHITE, secondStart, secondsPerLetter, null, null));
+				childSwap.addAlternate(new TextBlock(".", frameBufferKey, fontSize, (float)0, -2f, Color.WHITE, secondStart, secondsPerLetter, null, null));
 				break;
 			case 1:
-				childSwap.addAlternate(new TextBlock("*", fontSize, (float)0, -2f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
-				childSwap.addAlternate(new TextBlock(".", fontSize, (float)0, -3f, Color.WHITE, secondStart, secondsPerLetter, null, null));
+				childSwap.addAlternate(new TextBlock("*", frameBufferKey, fontSize, (float)0, -2f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
+				childSwap.addAlternate(new TextBlock(".", frameBufferKey, fontSize, (float)0, -3f, Color.WHITE, secondStart, secondsPerLetter, null, null));
 				break;
 			case 2:
-				childSwap.addAlternate(new TextBlock(".", fontSize, (float)0, -2f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
-				childSwap.addAlternate(new TextBlock("'", fontSize, (float)0, -2f, Color.WHITE, secondStart, secondsPerLetter, null, null));
+				childSwap.addAlternate(new TextBlock(".", frameBufferKey, fontSize, (float)0, -2f, Color.YELLOW, secondStart, secondsPerLetter, null, null));
+				childSwap.addAlternate(new TextBlock("'", frameBufferKey, fontSize, (float)0, -2f, Color.WHITE, secondStart, secondsPerLetter, null, null));
 				break;
 			}
-			TextBlock child = new TextBlock(text.substring(i, i+1), fontSize, (float)i, 0f, color, secondStart + (i * secondsPerLetter), 0f, null, childSwap);
+			TextBlock child = new TextBlock(text.substring(i, i+1), frameBufferKey, fontSize, (float)i, 0f, color, secondStart + (i * secondsPerLetter), 0f, null, childSwap);
 			children.add(child);
 		}
 		text = "";

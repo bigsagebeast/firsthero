@@ -8,10 +8,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 
 public class Graphics {
 	OrthographicCamera cam;
@@ -26,19 +24,24 @@ public class Graphics {
 
 //	public static final int WIDTH = (12 * 110);
 //	public static final int HEIGHT = (12 * 62);
-	public static final int WIDTH = 1920;
-	public static final int HEIGHT = 1200;
+	public static final int STARTING_WIDTH = 1920;
+	public static final int STARTING_HEIGHT = 1200;
+	public static int width = STARTING_WIDTH;
+	public static int height = STARTING_HEIGHT;
 
 	public Graphics() {
-		cam = new OrthographicCamera(WIDTH, HEIGHT);
-		viewport = new FitViewport(WIDTH, HEIGHT, cam);
+		cam = new OrthographicCamera();
 
 		fontTexture = new Texture(Gdx.files.internal("lucida-console-96.png"));
 		font = new BitmapFont(Gdx.files.internal("lucida-console-96.fnt"), new TextureRegion(fontTexture), false);
 		fontTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+	}
 
-		currentSpriteBatch = new SpriteBatch();
-		
+	public void resize(int x, int y) {
+		width = x;
+		height = y;
+		viewport = new FitViewport(width, height, cam);
+		getViewport().update(width, height, true);
 	}
 	
 	public Viewport getViewport() {
@@ -46,6 +49,8 @@ public class Graphics {
 	}
 	
 	public void startBatch() {
+		// TODO necessary?  seems not
+		currentSpriteBatch = new SpriteBatch();
 		if (batchInProgress) {
 			throw new RuntimeException("Tried to create a SpriteBatch within a batch");
 		}
@@ -74,7 +79,7 @@ public class Graphics {
 		font.setColor(color);
 		font.getData().setScale(1.1f * fontSize / defaultFontSize);
 		//font.getData().setScale(1f * fontSize / defaultFontSize);
-		font.draw(batch(), text, offsetX + x * fontSize, HEIGHT - (offsetY + y * fontSize));
+		font.draw(batch(), text, offsetX + x * fontSize, height - (offsetY + y * fontSize));
 	}
 	
 	public BitmapFont font() {

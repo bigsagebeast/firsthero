@@ -1,23 +1,21 @@
 package com.churchofcoyote.hero.module;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
-import com.churchofcoyote.hero.roguelike.game.AnnounceWindow;
+import com.churchofcoyote.hero.ui.AnnounceWindow;
 import com.churchofcoyote.hero.roguelike.game.Game;
-import com.churchofcoyote.hero.roguelike.game.EquipmentWindow;
+import com.churchofcoyote.hero.ui.EquipmentWindow;
 import com.churchofcoyote.hero.roguelike.game.MainWindow;
-import com.churchofcoyote.hero.roguelike.game.StatsWindow;
+import com.churchofcoyote.hero.ui.StatsWindow;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Fov;
-import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,11 +35,11 @@ public class RoguelikeModule extends Module {
 	private float zoom = 1.0f;
 
 	public Game game;
-	
-	MainWindow mainWindow;
-	AnnounceWindow announceWindow;
-	StatsWindow statsWindow;
-	EquipmentWindow equipWindow;
+
+	public static MainWindow mainWindow;
+	public static AnnounceWindow announceWindow;
+	public static StatsWindow statsWindow;
+	public static EquipmentWindow equipWindow;
 	
 	private boolean dirty = true;
 	
@@ -57,37 +55,12 @@ public class RoguelikeModule extends Module {
 		statsWindow = new StatsWindow();
 		equipWindow = new EquipmentWindow();
 
-		TextBlock borderBlock = new TextBlock("", FONT_SIZE, 0, 0, new Color(0, 0, 0, 0));
-
-		uiEngine.addBlock(new TextBlock("##############################################################################################################",
-				FONT_SIZE, 0, 0, Color.GRAY));
-		borderBlock.addChild(new TextBlock("##############################################################################################################",
-				FONT_SIZE, 0, 61, Color.GRAY));
-		for (int i=1; i<61; i++) {
-			if (i != 21) {
-				borderBlock.addChild(new TextBlock("#                                                            #                                               #",
-						FONT_SIZE, 0, i, Color.GRAY));
-			} else {
-				borderBlock.addChild(new TextBlock("#                                                            #################################################",
-						FONT_SIZE, 0, i, Color.GRAY));
-			}
-		}
-		borderBlock.compile();
-		uiEngine.addBlock(borderBlock);
-
-		//uiEngine.addBlock(new TextBlock(EntityGlyph.getGlyph(Game.getPlayerEntity()), 20f, 20f, 20f, 0, 0, null, null));
-		//uiEngine.addBlock(new TextBlock(GlyphIndex.get("player.farmer").create(new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_WHITE)), 40f, 0f, 0f, 20, 20, null, null));
 
 		announceWindow.addLine("Announcements:");
-		//statsWindow.update(Game.getPlayerEntity());
-		//equipWindow.update(Game.getPlayerEntity());
-		//Game.getLevel().updateVis();
 
 		uiEngine.addBlock(announceWindow.getTextBlockParent());
 		uiEngine.addBlock(statsWindow.getTextBlockParent());
 		uiEngine.addBlock(equipWindow.getTextBlockParent());
-
-		//GameLoop.popupModule.createPopup("Pick up your weapon", 5f, Game.getPlayerEntity(), 0.75f);
 	}
 	
 	

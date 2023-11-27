@@ -1,6 +1,7 @@
-package com.churchofcoyote.hero.roguelike.game;
+package com.churchofcoyote.hero.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
@@ -14,9 +15,9 @@ public class StatsWindow {
 	private TextBlock[] rows = new TextBlock[windowHeight];
 	
 	public StatsWindow() {
-		parent = new TextBlock("", RoguelikeModule.FONT_SIZE, 62, 22, Color.WHITE);
+		parent = new TextBlock("", "stats", RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
 		for (int i=0; i<windowHeight; i++) {
-			rows[i] = new TextBlock("", RoguelikeModule.FONT_SIZE, 0, i, Color.WHITE);
+			rows[i] = new TextBlock("", null, RoguelikeModule.FONT_SIZE, 0, i, Color.WHITE);
 			parent.addChild(rows[i]);
 			parent.compile();
 		}
@@ -27,6 +28,7 @@ public class StatsWindow {
 	}
 
 	public void update(Entity c) {
+		WindowEngine.setDirty("stats");
 		rows[0].text = StringFormat.format("HP: %3d/%3d", c.hitPoints, c.maxHitPoints);
 		if (c.hitPoints > (c.maxHitPoints / 2)) {
 			rows[0].color = Color.WHITE;

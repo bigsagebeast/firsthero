@@ -194,8 +194,8 @@ public class GlyphEngine implements GameLogic {
             if (buffer != null) {
                 buffer.dispose();
             }
-            buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Graphics.WIDTH, Graphics.HEIGHT, false);
-            texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Graphics.WIDTH, Graphics.HEIGHT);
+            buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Graphics.width, Graphics.height, false);
+            texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Graphics.width, Graphics.height);
 
             g.endBatch();
             buffer.begin();
@@ -222,8 +222,7 @@ public class GlyphEngine implements GameLogic {
             g.startBatch();
             HeroGame.updateTimer("gDrw", System.currentTimeMillis() - start);
         }
-        g.batch().draw(texRegion, 0, 0, g.WIDTH, g.HEIGHT);
-
+        g.batch().draw(texRegion, 0, 0, g.width, g.height);
     }
 
     public void destroyEntity(Entity e) {

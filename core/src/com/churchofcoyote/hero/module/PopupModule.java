@@ -28,7 +28,7 @@ public class PopupModule extends Module {
             effectEngine.addGfx(trackingCircle);
         }
 
-        TextBlock popupBlock = new TextBlock(order.text,
+        TextBlock popupBlock = new TextBlock(order.text, null,
                 36, 10, 5, Color.GRAY, 0f, 0f).fade(order.time-1, order.time);
         textEngine.addBlock(popupBlock);
 

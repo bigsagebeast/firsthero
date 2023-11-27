@@ -27,7 +27,7 @@ public class GfxMovingCircle extends Gfx {
     }
 
     public GfxMovingCircle(Entity e, Color color, float startRadius, float endRadius, float seconds, float hold) {
-        super(GameLoop.glyphEngine.getTilePixelX(e.pos.x, e.pos.y), Graphics.HEIGHT - GameLoop.glyphEngine.getTilePixelY(e.pos.x, e.pos.y));
+        super(GameLoop.glyphEngine.getTilePixelX(e.pos.x, e.pos.y), Graphics.height - GameLoop.glyphEngine.getTilePixelY(e.pos.x, e.pos.y));
         this.color = color;
         this.startRadius = startRadius;
         this.endRadius = endRadius;

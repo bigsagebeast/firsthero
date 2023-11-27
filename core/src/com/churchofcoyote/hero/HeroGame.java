@@ -7,6 +7,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.churchofcoyote.hero.module.RoguelikeModule;
+import com.churchofcoyote.hero.ui.UIManager;
 
 public class HeroGame extends ApplicationAdapter {
 	
@@ -104,7 +105,8 @@ public class HeroGame extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height)
 	{
-	    g.getViewport().update(width, height, true);
+		g.resize(width, height);
+		UIManager.resize(width, height);
 	}
 	
 	public static void updateTimer(String name, Long millis) {

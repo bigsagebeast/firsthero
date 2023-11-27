@@ -1,28 +1,28 @@
 package com.churchofcoyote.hero;
 
 import java.util.*;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
 import com.churchofcoyote.hero.module.*;
+import com.churchofcoyote.hero.ui.UIManager;
 import com.churchofcoyote.hero.util.QueuedKeypress;
-
-import javax.print.Doc;
 
 public class GameLoop implements GameLogic, InputProcessor {
 
-	TextEngine uiEngine = new TextEngine();
-	TextEngine textEngine = new TextEngine();
+	public static TextEngine uiEngine = new TextEngine();
+	public static TextEngine textEngine = new TextEngine();
 	EffectEngine effectEngine = new EffectEngine();
 	public static final GlyphEngine glyphEngine = new GlyphEngine();
-	ShapeRenderer shapeBatch = new ShapeRenderer();
-	
+
 	public static final IntroModule introModule = new IntroModule();
 	public static final TitleScreenModule titleModule = new TitleScreenModule();
 	public static final RoguelikeModule roguelikeModule = new RoguelikeModule();
@@ -43,6 +43,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.setVSync(false);
 		Module.setEngines(textEngine, uiEngine, effectEngine);
+		UIManager.resize(Graphics.width, Graphics.height);
 		allModules = new ArrayList<Module>();
 		allModules.add(popupModule);
 		allModules.add(dialogueBoxModule);
@@ -95,21 +96,34 @@ public class GameLoop implements GameLogic, InputProcessor {
 	}
 	
 	public void render(Graphics g, GraphicsState gState) {
+		ShapeRenderer shapeBatch = new ShapeRenderer();
 		shapeBatch.begin(ShapeType.Filled);
 	    shapeBatch.setColor(0.1f, 0.1f, 0.1f, 1.0f);
 	    shapeBatch.rect(0, 0, g.getViewport().getWorldWidth(), g.getViewport().getWorldHeight());
 	    shapeBatch.end();
 
+		long startAll = System.currentTimeMillis();
+		long start = System.currentTimeMillis();
 	    g.startBatch();
 		glyphEngine.render(g, gState);
+		HeroGame.updateTimer("ge", System.currentTimeMillis() - start);
+		start = System.currentTimeMillis();
 		uiEngine.render(g, gState);
+		HeroGame.updateTimer("uie", System.currentTimeMillis() - start);
 		g.endBatch();
+		start = System.currentTimeMillis();
 		effectEngine.render(g, gState);
+		HeroGame.updateTimer("ee", System.currentTimeMillis() - start);
+		start = System.currentTimeMillis();
 		g.startBatch();
-		long start = System.currentTimeMillis();
 	    textEngine.render(g, gState);
-	    HeroGame.updateTimer("te", System.currentTimeMillis() - start);
+		HeroGame.updateTimer("te", System.currentTimeMillis() - start);
+		WindowEngine.setAllClean();
+		start = System.currentTimeMillis();
+		WindowEngine.render(g);
+		HeroGame.updateTimer("we", System.currentTimeMillis() - start);
 	    g.endBatch();
+		HeroGame.updateTimer("all", System.currentTimeMillis() - startAll);
 	}
 	
 	@Override

@@ -67,22 +67,22 @@ public class TitleScreenModule extends Module {
 		activeBlocks.add(block5);
 		*/
 		
-		textEngine.addBlock(new TextBlock("THE",
+		textEngine.addBlock(new TextBlock("THE", null,
 				48f, 5f, 2f, 0f, 0f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
-		textEngine.addBlock(new TextBlock("FIRST",
+		textEngine.addBlock(new TextBlock("FIRST", null,
 				48f, 7f, 3.5f, 0f, 0f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
-		textEngine.addBlock(new TextBlock("HERO",
+		textEngine.addBlock(new TextBlock("HERO", null,
 				48f, 9f, 5f, 0f, 0f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
 
-		textEngine.addBlock(new TextBlock("@", 332f, 2.5f, 0.4f, Color.DARK_GRAY, 0f, 0f, null, null));
+		textEngine.addBlock(new TextBlock("@", null, 332f, 2.5f, 0.4f, Color.DARK_GRAY, 0f, 0f, null, null));
 
-		textEngine.addBlock(new TextBlock("Music credit: Archons of Light - Nils Ingvarsson", 14, 0, 52, Color.GRAY, -1f, -1f));
+		textEngine.addBlock(new TextBlock("Music credit: Archons of Light - Nils Ingvarsson", null, 14, 0, 52, Color.GRAY, -1f, -1f));
 		
-		options[0] = new TextBlock("  Continue", 14, 18, 29, Color.WHITE, 0f, 0f);
-		options[1] = new TextBlock("> New Game", 14, 18, 30, Color.YELLOW, 0f, 0f);
-		options[2] = new TextBlock("  Settings", 14, 18, 31, Color.WHITE, 0f, 0f);
-		options[3] = new TextBlock("  Watch Intro", 14, 18, 32, Color.WHITE, 0f, 0f);
-		options[4] = new TextBlock("  Quit", 14, 18, 33, Color.WHITE, 0f, 0f);
+		options[0] = new TextBlock("  Continue", null, 14, 18, 29, Color.WHITE, 0f, 0f);
+		options[1] = new TextBlock("> New Game", null, 14, 18, 30, Color.YELLOW, 0f, 0f);
+		options[2] = new TextBlock("  Settings", null, 14, 18, 31, Color.WHITE, 0f, 0f);
+		options[3] = new TextBlock("  Watch Intro", null, 14, 18, 32, Color.WHITE, 0f, 0f);
+		options[4] = new TextBlock("  Quit", null, 14, 18, 33, Color.WHITE, 0f, 0f);
 		updateOptions();
 		for (TextBlock tb : options) {
 			textEngine.addBlock(tb);

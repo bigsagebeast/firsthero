@@ -1,6 +1,5 @@
 package com.churchofcoyote.hero.logic;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.churchofcoyote.hero.GameLogic;
 import com.churchofcoyote.hero.GameState;
@@ -45,7 +44,7 @@ public class EffectEngine implements GameLogic {
             if (gfx instanceof GfxRectFilled) {
                 GfxRectFilled gfxRectFilled = (GfxRectFilled)gfx;
                 shapeBatch.setColor(gfxRectFilled.color);
-                shapeBatch.rect(gfxRectFilled.x, Graphics.HEIGHT - gfxRectFilled.y - gfxRectFilled.height, gfxRectFilled.width, gfxRectFilled.height);
+                shapeBatch.rect(gfxRectFilled.x, Graphics.height - gfxRectFilled.y - gfxRectFilled.height, gfxRectFilled.width, gfxRectFilled.height);
             }
         }
         shapeBatch.end();
@@ -55,7 +54,7 @@ public class EffectEngine implements GameLogic {
             if (gfx instanceof GfxRectBorder) {
                 GfxRectBorder gfxRectBorder = (GfxRectBorder)gfx;
                 shapeBatch.setColor(gfxRectBorder.color);
-                shapeBatch.rect(gfxRectBorder.x, Graphics.HEIGHT - gfxRectBorder.y - gfxRectBorder.height, gfxRectBorder.width, gfxRectBorder.height);
+                shapeBatch.rect(gfxRectBorder.x, Graphics.height - gfxRectBorder.y - gfxRectBorder.height, gfxRectBorder.width, gfxRectBorder.height);
             }
         }
         for (Gfx gfx : gfxList) {

@@ -8,7 +8,6 @@ import com.churchofcoyote.hero.logic.TextEngine;
 import com.churchofcoyote.hero.text.TextBlock;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DialogueBox {
@@ -61,8 +60,8 @@ public class DialogueBox {
     public DialogueBox withMargins(int marginX, int marginY) {
         this.x = marginX;
         this.y = marginY;
-        this.width = Graphics.WIDTH - (marginX * 2);
-        this.height = Graphics.HEIGHT - (marginY * 2);
+        this.width = Graphics.width - (marginX * 2);
+        this.height = Graphics.height - (marginY * 2);
         return this;
     }
 
@@ -107,13 +106,13 @@ public class DialogueBox {
     }
 
     public void compile(TextEngine textEngine) {
-        lineParent = new TextBlock("", FONT_SIZE, 0, 0,
+        lineParent = new TextBlock("", null, FONT_SIZE, 0, 0,
                 x + ITEM_OFFSET_FROM_LEFT, y + ITEM_OFFSET_FROM_TOP,
                 Color.WHITE);
-        title =  new TextBlock(titleText, FONT_SIZE, 0, 0,
+        title =  new TextBlock(titleText, null, FONT_SIZE, 0, 0,
                 x + width/2 - (titleText.length() * FONT_SIZE)/2, y + TITLE_OFFSET_FROM_TOP,
                 Color.YELLOW);
-        footer = new TextBlock(footerText, FONT_SIZE, 0, 0,
+        footer = new TextBlock(footerText, null, FONT_SIZE, 0, 0,
                 x + FOOTER_OFFSET_FROM_LEFT, y + height - FOOTER_OFFSET_FROM_BOTTOM,
                 Color.YELLOW);
 
@@ -123,7 +122,7 @@ public class DialogueBox {
 
         for (int i=0; i<lines.size(); i++) {
             DialogueLine line = lines.get(i);
-            line.textBlock = new TextBlock(line.text, FONT_SIZE, 0, i,
+            line.textBlock = new TextBlock(line.text, null, FONT_SIZE, 0, i,
                     0, 0, Color.WHITE, line.glyphs);
             lineParent.addChild(line.textBlock);
         }
