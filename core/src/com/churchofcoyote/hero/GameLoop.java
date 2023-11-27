@@ -31,6 +31,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	private List<Module> allModules = new ArrayList<Module>();
 	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
+	private Queue<Float> queuedScrollEvents = new LinkedList<>();
 
 	public GameLoop() {
 		try {
@@ -72,6 +73,15 @@ public class GameLoop implements GameLogic, InputProcessor {
 			for (Module m : allModules) {
 				if (m.isRunning()) {
 					if (m.keyDown(q.keycode, q.shift, q.ctrl, q.alt)) {
+						break;
+					}
+				}
+			}
+		}
+		for (Float f : queuedScrollEvents) {
+			for (Module m : allModules) {
+				if (m.isRunning()) {
+					if (m.scrolled(f)) {
 						break;
 					}
 				}
@@ -151,11 +161,8 @@ public class GameLoop implements GameLogic, InputProcessor {
 		return false;
 	}
 
-	public boolean scrolled(int amount) {
-		return false;
-	}
-
 	public boolean scrolled(float x, float y) {
+		queuedScrollEvents.add(y);
 		return false;
 	}
 

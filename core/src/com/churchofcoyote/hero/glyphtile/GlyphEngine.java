@@ -25,6 +25,8 @@ public class GlyphEngine implements GameLogic {
     static final int RENDER_OFFSET_X = 8;
     static final int RENDER_OFFSET_Y = 16;
 
+    public float zoom = 1.0f;
+
     // TODO convert to pos?
     int offsetX = 0;
     int offsetY = 0;
@@ -199,14 +201,16 @@ public class GlyphEngine implements GameLogic {
             buffer.begin();
             g.startBatch();
 
-            for (int x = 0; x < SCREEN_TILE_WIDTH; x++) {
-                for (int y = 0; y < SCREEN_TILE_HEIGHT; y++) {
-                    if (grid.withinBounds(x + offsetX - SCREEN_TILE_WIDTH/2, y + offsetY - SCREEN_TILE_HEIGHT/2)) {
+            for (int x = 0; x < SCREEN_TILE_WIDTH / zoom; x++) {
+                for (int y = 0; y < SCREEN_TILE_HEIGHT / zoom; y++) {
+                    if (grid.withinBounds((int)(x + offsetX - (SCREEN_TILE_WIDTH/2) / zoom), (int)(y + offsetY - (SCREEN_TILE_HEIGHT/2) / zoom))) {
                         // TODO background
-                        GlyphTile glyph = grid.get(x + offsetX - SCREEN_TILE_WIDTH/2, y + offsetY - SCREEN_TILE_HEIGHT/2);
+                        GlyphTile glyph = grid.get((int)(x + offsetX - (SCREEN_TILE_WIDTH/2)/zoom), (int)(y + offsetY - (SCREEN_TILE_HEIGHT/2)/zoom));
                         if (glyph != null) {
-                            Texture drawTexture = level.cell(x + offsetX - SCREEN_TILE_WIDTH/2, y + offsetY - SCREEN_TILE_HEIGHT/2).visible() ? glyph.texture : glyph.grayTexture;
-                            g.batch().draw(drawTexture, RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH, RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT);
+                            Texture drawTexture = level.cell((int)(x + offsetX - (SCREEN_TILE_WIDTH/2)/zoom), (int)(y + offsetY - (SCREEN_TILE_HEIGHT/2)/zoom)).visible() ? glyph.texture : glyph.grayTexture;
+                            //g.batch().draw(drawTexture, RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH * zoom, RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT * zoom);
+                            g.batch().draw(drawTexture, RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH * zoom, RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT * zoom,
+                                    GlyphEngine.GLYPH_WIDTH * zoom, GlyphEngine.GLYPH_HEIGHT * zoom);
                         }
                     }
                     // TODO else?
@@ -232,6 +236,10 @@ public class GlyphEngine implements GameLogic {
 
     public float getTilePixelY(int x, int y) {
         return (y - topTile() + 0.5f) * GLYPH_HEIGHT + RENDER_OFFSET_Y;
+    }
+
+    public void zoom(float zoom) {
+        this.zoom = zoom;
     }
 
     private int leftTile() {

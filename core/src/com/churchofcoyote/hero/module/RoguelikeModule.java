@@ -28,7 +28,14 @@ public class RoguelikeModule extends Module {
 	int mainWindowOffsetY = 1;
 	
 	public static final int FONT_SIZE = 16;
-	
+
+
+	static final float ZOOM_MIN = 1.0f;
+	static final float ZOOM_MAX = 2.0f;
+	static final float ZOOM_PER_MWHEEL = -0.1f;
+
+	private float zoom = 1.0f;
+
 	public Game game;
 	
 	MainWindow mainWindow;
@@ -260,6 +267,16 @@ public class RoguelikeModule extends Module {
 	public boolean keyTyped(char key, boolean ctrl, boolean alt) {
 		return true;
 	}
+
+	@Override
+	public boolean scrolled(float distance) {
+		float zoomBy = distance * ZOOM_PER_MWHEEL;
+		zoom += zoomBy;
+		zoom = Math.min(Math.max(zoom, ZOOM_MIN), ZOOM_MAX);
+		GameLoop.glyphEngine.zoom(zoom);
+		return true;
+	}
+
 
 	public void updateEquipmentWindow() {
 		equipWindow.update(Game.getPlayerEntity());

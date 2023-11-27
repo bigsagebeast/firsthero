@@ -30,4 +30,5 @@ public abstract class Module implements GameLogic {
 	public boolean keyTyped(char key, boolean ctrl, boolean alt) {
 		return false;
 	}
+	public boolean scrolled(float distance) { return false; }
 }
