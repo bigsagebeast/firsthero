@@ -8,7 +8,7 @@ import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.text.TextBlock;
 
-public class AnnounceWindow {
+public class AnnounceWindow extends UIWindow {
 	private int windowWidth;
 	private int windowHeight;
 	private int paraWidth;
@@ -29,6 +29,7 @@ public class AnnounceWindow {
 		return parent;
 	}
 
+	@Override
 	public void update() {
 		parent.compile();
 	}

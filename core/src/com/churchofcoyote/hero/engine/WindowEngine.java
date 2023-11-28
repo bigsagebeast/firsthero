@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.churchofcoyote.hero.Graphics;
+import com.churchofcoyote.hero.ui.UIManager;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.HashMap;
@@ -42,6 +43,13 @@ public class WindowEngine {
             throw new RuntimeException("Tried to access uninitialized framebuffer " + key);
         }
         return size.get(key);
+    }
+
+    public static Point getOffset(String key) {
+        if (!frameBuffers.containsKey(key)) {
+            throw new RuntimeException("Tried to access uninitialized framebuffer " + key);
+        }
+        return offset.get(key);
     }
 
     public static boolean isDirty(String key) {

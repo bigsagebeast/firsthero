@@ -5,11 +5,9 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
-import com.churchofcoyote.hero.ui.AnnounceWindow;
+import com.churchofcoyote.hero.ui.*;
 import com.churchofcoyote.hero.roguelike.game.Game;
-import com.churchofcoyote.hero.ui.EquipmentWindow;
 import com.churchofcoyote.hero.roguelike.game.MainWindow;
-import com.churchofcoyote.hero.ui.StatsWindow;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
@@ -40,7 +38,9 @@ public class RoguelikeModule extends Module {
 	public static AnnounceWindow announceWindow;
 	public static StatsWindow statsWindow;
 	public static EquipmentWindow equipWindow;
-	
+	public static HitPointWindow hitPointWindow;
+	public static ExperienceWindow experienceWindow;
+
 	private boolean dirty = true;
 	
 	public static TextBlock topBorder = null;
@@ -54,6 +54,8 @@ public class RoguelikeModule extends Module {
 		announceWindow = new AnnounceWindow();
 		statsWindow = new StatsWindow();
 		equipWindow = new EquipmentWindow();
+		hitPointWindow = new HitPointWindow();
+		experienceWindow = new ExperienceWindow();
 
 
 		announceWindow.addLine("Announcements:");
@@ -61,6 +63,8 @@ public class RoguelikeModule extends Module {
 		uiEngine.addBlock(announceWindow.getTextBlockParent());
 		uiEngine.addBlock(statsWindow.getTextBlockParent());
 		uiEngine.addBlock(equipWindow.getTextBlockParent());
+		textEngine.addBlock(hitPointWindow.getTextBlockParent());
+		uiEngine.addBlock(experienceWindow.getTextBlockParent());
 	}
 	
 	
@@ -128,8 +132,11 @@ public class RoguelikeModule extends Module {
 		if (Game.getPlayerEntity() == null) {
 			return;
 		}
-		statsWindow.update(Game.getPlayerEntity());
-		equipWindow.update(Game.getPlayerEntity());
+		statsWindow.update();
+		equipWindow.update();
+		hitPointWindow.update();
+		experienceWindow.update();
+
 		Game.getLevel().updateVis();
 	}
 
@@ -252,7 +259,7 @@ public class RoguelikeModule extends Module {
 
 
 	public void updateEquipmentWindow() {
-		equipWindow.update(Game.getPlayerEntity());
+		equipWindow.update();
 	}
 	
 }

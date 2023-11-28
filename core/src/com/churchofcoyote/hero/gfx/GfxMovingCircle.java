@@ -14,6 +14,7 @@ public class GfxMovingCircle extends Gfx {
     public float startTime;
     public float endTime;
     public float holdTime;
+    public Entity e;
 
     public GfxMovingCircle(float x, float y, Color color, float startRadius, float endRadius, float seconds, float hold) {
         super(x, y);
@@ -28,6 +29,7 @@ public class GfxMovingCircle extends Gfx {
 
     public GfxMovingCircle(Entity e, Color color, float startRadius, float endRadius, float seconds, float hold) {
         super(GameLoop.glyphEngine.getTilePixelX(e.pos.x, e.pos.y), Graphics.height - GameLoop.glyphEngine.getTilePixelY(e.pos.x, e.pos.y));
+        this.e = e;
         this.color = color;
         this.startRadius = startRadius;
         this.endRadius = endRadius;
@@ -46,6 +48,8 @@ public class GfxMovingCircle extends Gfx {
     }
 
     public void update() {
+        x = GameLoop.glyphEngine.getTilePixelX(e.pos.x, e.pos.y);
+        y = Graphics.height - GameLoop.glyphEngine.getTilePixelY(e.pos.x, e.pos.y);
         if (HeroGame.getSeconds() > holdTime) {
             active = false;
         }

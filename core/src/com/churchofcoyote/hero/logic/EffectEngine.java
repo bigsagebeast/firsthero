@@ -15,7 +15,7 @@ import java.util.List;
 
 public class EffectEngine implements GameLogic {
 
-    ShapeRenderer shapeBatch = new ShapeRenderer();
+    ShapeRenderer shapeBatch;
     public List<Gfx> gfxList = new ArrayList<>();
 
     public void addGfx(Gfx gfx) {
@@ -39,6 +39,7 @@ public class EffectEngine implements GameLogic {
     @Override
     public void render(Graphics g, GraphicsState gState) {
 
+        shapeBatch = new ShapeRenderer();
         shapeBatch.begin(ShapeRenderer.ShapeType.Filled);
         for (Gfx gfx : gfxList) {
             if (gfx instanceof GfxRectFilled) {

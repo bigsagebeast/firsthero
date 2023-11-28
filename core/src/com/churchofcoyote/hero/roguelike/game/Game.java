@@ -89,6 +89,7 @@ public class Game {
 
 		level = nextLevel;
 		Game.time = 0;
+		Game.lastTurnProc = 0;
 		level.addEntity(player.getEntity());
 		player.getEntity().pos = playerPos;
 
@@ -139,6 +140,15 @@ public class Game {
 		while (true) {
 			roguelikeModule.setDirty();
 
+			// TODO getProcEntities needs a variant that gets ALL procs including on inventory,
+			// maybe filtered by ones that have an 'act' or a 'turnPassed'
+			while (lastTurnProc + 1000 < time) {
+				lastTurnProc += 1000;
+				for (Proc p : level.getProcEntities()) {
+					p.turnPassed();
+				}
+			}
+
 			long lowestTurn = -1;
 			long secondLowestTurn = -1;
 			Proc lowestProc = null;
@@ -155,13 +165,6 @@ public class Game {
 				break;
 			}
 			lowestProc.act();
-
-			while (lastTurnProc + 1000 < time) {
-				lastTurnProc += 1000;
-				for (Proc p : level.getProcEntities()) {
-					p.turnPassed();
-				}
-			}
 		}
 	}
 

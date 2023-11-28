@@ -1,15 +1,17 @@
 package com.churchofcoyote.hero.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.glyphtile.EntityGlyph;
 import com.churchofcoyote.hero.module.RoguelikeModule;
+import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.StringFormat;
 
-public class EquipmentWindow {
+public class EquipmentWindow extends UIWindow {
 	private int windowWidth = 26;
 	private int windowHeight = 10;
 	TextBlock parent;
@@ -32,7 +34,12 @@ public class EquipmentWindow {
 		return parent;
 	}
 
-	public void update(Entity c) {
+	@Override
+	public void update() {
+		Entity c = Game.getPlayerEntity();
+		if (c == null) {
+			return;
+		}
 		WindowEngine.setDirty(UIManager.NAME_EQUIPMENT);
 		int row = 0;
 		for (BodyPart bp : c.body.getParts())

@@ -22,6 +22,7 @@ public class CombatLogic {
 			hurt(target, damage);
 			
 			if (target.dead) {
+				actor.experience += 10;
 				Game.announceVis(vis,
 					"You kill " + target.getVisibleName(Game.getPlayer()) + ".",
 					actor.getVisibleName(Game.getPlayer()) + " kills you.",
@@ -52,7 +53,7 @@ public class CombatLogic {
 		if (damage < 1) {
 			throw new IllegalArgumentException("Less than 1 damage dealt");
 		}
-		target.hitPoints -= damage;
+		target.hurt(damage);
 		if (target.hitPoints <= 0) {
 			target.dead = true;
 		}

@@ -48,6 +48,8 @@ public class Entity {
     public int maxHitPoints;
     public int maxSpellPoints;
     public int maxDivinePoints;
+    public int experience = 0;
+    public int experienceToNext = 100;
 
     public int healingDelay = 3;
     public int healingRate = 1;
@@ -98,6 +100,10 @@ public class Entity {
 
     public void heal(int amount) {
         hitPoints = Math.min(hitPoints + amount, maxHitPoints);
+    }
+
+    public void hurt(int amount) {
+        hitPoints = Math.max(hitPoints - amount, 0);
     }
 
     public boolean canSee(Entity target) {

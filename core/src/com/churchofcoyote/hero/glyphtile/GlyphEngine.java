@@ -21,9 +21,6 @@ public class GlyphEngine implements GameLogic {
     public static int GLYPH_WIDTH = 16;
     public static int GLYPH_HEIGHT = 24;
 
-    static final int SCREEN_TILE_WIDTH = 45;
-    static final int SCREEN_TILE_HEIGHT = 29;
-
     static final int RENDER_OFFSET_X = 8;
     static final int RENDER_OFFSET_Y = 16;
 
@@ -114,16 +111,22 @@ public class GlyphEngine implements GameLogic {
         return level.cell(x, y).terrain.getBlockCategory().equals(blockType);
     }
 
+    private float tileWidth () {
+        return GLYPH_WIDTH * zoom;
+    }
+
+    private float tileHeight () {
+        return GLYPH_HEIGHT * zoom;
+    }
+
     private void compile() {
         long start = System.currentTimeMillis();
 
-        Point size = WindowEngine.getSize("mainWindow");
-        float tileWidth = GLYPH_WIDTH * zoom;
-        float tileHeight = GLYPH_HEIGHT * zoom;
+        Point size = WindowEngine.getSize(UIManager.NAME_MAIN_WINDOW);
         //int widthInTiles = (int)((size.x / 2 - 1) / tileWidth);
         //int heightInTiles = (int)((size.y / 2 - 1) / tileHeight);
-        int widthInTiles = (int)((size.x / 2 - 1) / tileWidth);
-        int heightInTiles = (int)((size.y / 2 - 1) / tileHeight);
+        int widthInTiles = (int)((size.x / 2 - 1) / tileWidth());
+        int heightInTiles = (int)((size.y / 2 - 1) / tileHeight());
 
         if (isDirty()) {
             for (int x = offsetX - widthInTiles; x <= offsetX + widthInTiles; x++) {
@@ -256,11 +259,12 @@ public class GlyphEngine implements GameLogic {
     }
 
     public float getTilePixelX(int x, int y) {
-        return (x - leftTile() + 0.5f) * GLYPH_WIDTH + RENDER_OFFSET_X;
+        // TODO need to get the margin
+        return (x - leftTile() + 0.5f) * tileWidth() + RENDER_OFFSET_X;
     }
 
     public float getTilePixelY(int x, int y) {
-        return (y - topTile() + 0.5f) * GLYPH_HEIGHT + RENDER_OFFSET_Y;
+        return (y - topTile() + 0.5f) * tileHeight() + RENDER_OFFSET_Y;
     }
 
     public void zoom(float zoom) {
@@ -268,11 +272,13 @@ public class GlyphEngine implements GameLogic {
     }
 
     private int leftTile() {
-        return offsetX - SCREEN_TILE_WIDTH/2;
+        Point size = WindowEngine.getSize(UIManager.NAME_MAIN_WINDOW);
+        return offsetX - (int)((size.x / tileWidth())/2);
     }
 
     private int topTile() {
-        return offsetY - SCREEN_TILE_HEIGHT/2;
+        Point size = WindowEngine.getSize(UIManager.NAME_MAIN_WINDOW);
+        return offsetY - (int)((size.y / tileHeight())/2);
     }
 
 }

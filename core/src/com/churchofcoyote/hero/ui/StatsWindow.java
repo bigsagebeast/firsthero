@@ -3,11 +3,12 @@ package com.churchofcoyote.hero.ui;
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
+import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.StringFormat;
 
-public class StatsWindow {
+public class StatsWindow extends UIWindow {
 	private int windowWidth = 16;
 	private int windowHeight = 10;
 	TextBlock parent;
@@ -27,7 +28,9 @@ public class StatsWindow {
 		return parent;
 	}
 
-	public void update(Entity c) {
+	@Override
+	public void update() {
+		Entity c = Game.getPlayerEntity();
 		WindowEngine.setDirty(UIManager.NAME_STATS);
 		rows[0].text = StringFormat.format("HP: %3d/%3d", c.hitPoints, c.maxHitPoints);
 		if (c.hitPoints > (c.maxHitPoints / 2)) {

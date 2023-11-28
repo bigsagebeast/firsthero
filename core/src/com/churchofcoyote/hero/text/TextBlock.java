@@ -22,6 +22,8 @@ import com.churchofcoyote.hero.text.effect.TextEffectGranularity;
 import com.churchofcoyote.hero.text.effect.TextEffectJitter;
 import com.churchofcoyote.hero.text.effect.TextEffectSwap;
 import com.churchofcoyote.hero.text.effect.TextEffectSwapLinear;
+import com.churchofcoyote.hero.ui.UIManager;
+import com.churchofcoyote.hero.ui.UIWindow;
 
 public class TextBlock implements GameLogic {
 	private final Random random = new Random();
@@ -85,17 +87,17 @@ public class TextBlock implements GameLogic {
 		this.frameBufferKey = frameBufferKey;
 		this.pixelOffsetX = pixelOffsetX;
 		this.pixelOffsetY = pixelOffsetY;
+		this.secondStart = secondStart;
+		this.secondsPerLetter = secondsPerLetter;
+		this.color = color;
+		this.fontSize = fontSize;
+		this.jitter = jitter;
+		this.swap = swap;
 		switch (granularity) {
 			case BLOCK:
 				this.text = text;
 				this.x = x;
 				this.y = y;
-				this.color = color;
-				this.fontSize = fontSize;
-				this.secondStart = secondStart;
-				this.secondsPerLetter = secondsPerLetter;
-				this.jitter = jitter;
-				this.swap = swap;
 				if (jitter != null) {
 					effects.add(jitter);
 				}
