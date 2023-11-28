@@ -38,6 +38,7 @@ public class Bestiary {
 		goblin.glyphName = "humanoid.goblin";
 		goblin.isManipulator = true;
 		goblin.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		goblin.experienceAwarded = 10;
 
 		farmer.name="Farmer";
 		farmer.peaceful = true;
@@ -48,6 +49,7 @@ public class Bestiary {
 		farmer.glyphName = "creature.humanoid";
 		farmer.isManipulator = true;
 		farmer.paletteEntry = new PaletteEntry(Palette.COLOR_YELLOW, Palette.COLOR_TAN, Palette.COLOR_BROWN);
+		farmer.experienceAwarded = 10;
 
 		map.put("player", pc);
 		map.put("goblin", goblin);
@@ -80,6 +82,7 @@ public class Bestiary {
 		e.glyphName = p.glyphName;
 		e.palette = p.paletteEntry;
 		e.isManipulator = p.isManipulator;
+		e.experienceAwarded = p.experienceAwarded;
 		if (key.equals("player")) {
 			e.addProc(new ProcPlayer(e));
 		}

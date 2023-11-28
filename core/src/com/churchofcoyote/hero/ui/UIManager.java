@@ -52,6 +52,12 @@ public class UIManager {
             RoguelikeModule.announceWindow.update();
         }
         GameLoop.uiEngine.recompile();
+
+        // TODO should be centralized in a List of UIWindows
+        if (RoguelikeModule.hitPointWindow != null) {
+            RoguelikeModule.hitPointWindow.update();
+            RoguelikeModule.experienceWindow.update();
+        }
     }
 
     public static void render(Graphics g) {

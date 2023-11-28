@@ -33,7 +33,7 @@ public class ProcMover extends Proc {
     @Override
     public void postDoPickup(Entity target) {}
 
-    public boolean isPeacefulToPlayer(Player p) {
+    public boolean isPeacefulToPlayer() {
         return false;//peaceful;
     }
 }

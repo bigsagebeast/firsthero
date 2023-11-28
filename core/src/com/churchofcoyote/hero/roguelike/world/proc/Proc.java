@@ -96,5 +96,9 @@ public class Proc {
     public Boolean preBeUnlocked(Entity actor) { return null; }
     public void postBeUnlocked(Entity actor) { }
 
+    public Boolean preBeKilled(Entity actor, Entity tool) { return null; }
+    public void postBeKilled(Entity actor, Entity tool) { }
+    public void postKillAnother(Entity target, Entity tool) { }
+
     public void beDestroyed() {}
 }

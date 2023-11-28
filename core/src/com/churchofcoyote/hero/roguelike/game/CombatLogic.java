@@ -22,7 +22,9 @@ public class CombatLogic {
 			hurt(target, damage);
 			
 			if (target.dead) {
-				actor.experience += 10;
+				// TODO should pass the entity you killed them with as 'tool'
+				actor.forEachProc(p -> p.postKillAnother(target, null));
+
 				Game.announceVis(vis,
 					"You kill " + target.getVisibleName(Game.getPlayer()) + ".",
 					actor.getVisibleName(Game.getPlayer()) + " kills you.",

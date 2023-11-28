@@ -335,9 +335,9 @@ public class Game {
 		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {
 			ProcMover targetMover = targetCreature.getMover();
-			if (targetMover.isPeacefulToPlayer(player)) {
+			if (targetMover.isPeacefulToPlayer()) {
 				announce("Moved into a " +
-						(targetMover.isPeacefulToPlayer(player) ? "peaceful" : "hostile") +
+						(targetMover.isPeacefulToPlayer() ? "peaceful" : "hostile") +
 						" creature (" + targetCreature.getVisibleName(player) + ").");
 			} else {
 				CombatLogic.swing(player.getEntity(), targetCreature);
@@ -399,9 +399,9 @@ public class Game {
 
 		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {
-			if (targetCreature.getMover().isPeacefulToPlayer(player)) {
+			if (targetCreature.getMover().isPeacefulToPlayer()) {
 				announce("Was moved into by a " +
-						(targetCreature.getMover().isPeacefulToPlayer(player) ? "peaceful" : "hostile") +
+						(targetCreature.getMover().isPeacefulToPlayer() ? "peaceful" : "hostile") +
 						" creature (" + actor.getVisibleName(player) + ").");
 			} else {
 				CombatLogic.swing(actor, targetCreature);

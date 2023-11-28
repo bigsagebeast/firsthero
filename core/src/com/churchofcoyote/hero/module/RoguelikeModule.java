@@ -63,7 +63,7 @@ public class RoguelikeModule extends Module {
 		uiEngine.addBlock(announceWindow.getTextBlockParent());
 		uiEngine.addBlock(statsWindow.getTextBlockParent());
 		uiEngine.addBlock(equipWindow.getTextBlockParent());
-		textEngine.addBlock(hitPointWindow.getTextBlockParent());
+		uiEngine.addBlock(hitPointWindow.getTextBlockParent());
 		uiEngine.addBlock(experienceWindow.getTextBlockParent());
 	}
 	

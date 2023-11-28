@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -50,6 +52,7 @@ public class Entity {
     public int maxDivinePoints;
     public int experience = 0;
     public int experienceToNext = 100;
+    public int experienceAwarded = 0;
 
     public int healingDelay = 3;
     public int healingRate = 1;
@@ -368,6 +371,26 @@ public class Entity {
             }
         }
         return false;
+    }
+
+    public Stream<Entity> recursiveInventoryAndEquipment() {
+        LinkedList<Entity> allEntities = new LinkedList<>();
+        allEntities.addAll(getInventoryEntities());
+        allEntities.addAll(getEquippedEntities());
+        LinkedList<Entity> subEntities = new LinkedList<>();
+        for (Entity e : allEntities) {
+            subEntities.addAll(e.recursiveInventoryAndEquipment().collect(Collectors.toList()));
+        }
+        return Stream.concat(allEntities.stream(), subEntities.stream());
+    }
+
+    public Stream<Proc> allProcsIncludingInventory() {
+        return Stream.concat(procs.stream(),
+                recursiveInventoryAndEquipment().flatMap(entity -> entity.procs.stream()));
+    }
+
+    public void forEachProc(Consumer<Proc> lambda) {
+        allProcsIncludingInventory().forEach(lambda);
     }
 
     public void receiveItem(Entity e) {

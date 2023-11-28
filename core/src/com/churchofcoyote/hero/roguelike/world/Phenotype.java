@@ -16,4 +16,5 @@ public class Phenotype {
 	public String glyphName;
 	public PaletteEntry paletteEntry;
 	public boolean isManipulator;
+	public int experienceAwarded;
 }
