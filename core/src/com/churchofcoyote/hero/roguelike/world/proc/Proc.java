@@ -106,9 +106,16 @@ public class Proc {
     public Boolean preBeUnlocked(Entity actor) { return null; }
     public void postBeUnlocked(Entity actor) { }
 
-    public Boolean preBeKilled(Entity actor, Entity tool) { return null; }
+    public Boolean preBeHit(Entity actor, Entity tool) { return null; }
+    public void postBeHit(Entity actor, Entity tool) { }
+    public Boolean preDoHit(Entity target, Entity tool) { return null; }
+    public void postDoHit(Entity target, Entity tool) { }
+
+    public void postBeMissed(Entity actor, Entity tool) { }
+    public void postDoMiss(Entity target, Entity tool) { }
+
     public void postBeKilled(Entity actor, Entity tool) { }
-    public void postKillAnother(Entity target, Entity tool) { }
+    public void postDoKill(Entity target, Entity tool) { }
 
     public void beDestroyed() {}
 }

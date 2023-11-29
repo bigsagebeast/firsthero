@@ -28,11 +28,25 @@ public class ProcPlayer extends ProcMover {
     }
 
     @Override
-    public void postKillAnother(Entity target, Entity tool) {
+    public void postDoKill(Entity target, Entity tool) {
         entity.experience += target.experienceAwarded;
         if (target.peaceful) {
             Game.announce("If only talking was implemented.");
         }
+        if (entity.experience > entity.experienceToNext) {
+            levelUp();
+        }
+    }
+
+    private void levelUp() {
+        entity.level++;
+        entity.experience -= entity.experienceToNext;
+        entity.experienceToNext *= 2;
+        entity.hitPoints += 15;
+        entity.maxHitPoints += 15;
+        entity.healingDelay = 300 / entity.maxHitPoints;
+
+        Game.announce("You have reached level " + entity.level + "!");
     }
 
 }

@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.roguelike.world;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
@@ -26,7 +27,7 @@ public class Bestiary {
 		Phenotype fungusRed = new Phenotype();
 
 		pc.name = "player";
-		pc.hitPoints = 50;
+		pc.hitPoints = 30;
 		pc.spellPoints = 20;
 		pc.stats = Rank.B_PLUS;
 		pc.isMonster = false;
@@ -35,6 +36,9 @@ public class Bestiary {
 		pc.isManipulator = true;
 		pc.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_YELLOW);
 		pc.threat = -1;
+		pc.naturalWeaponDamage = 3;
+		pc.naturalWeaponToHit = 0;
+		pc.naturalArmorClass = 7;
 
 		goblinLackey.name = "sea-withered goblin lackey";
 		goblinLackey.peaceful = false;
@@ -47,6 +51,9 @@ public class Bestiary {
 		goblinLackey.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
 		goblinLackey.experienceAwarded = 10;
 		goblinLackey.threat = 1;
+		goblinLackey.naturalWeaponDamage = 4;
+		goblinLackey.naturalWeaponToHit = -2;
+		goblinLackey.naturalArmorClass = 5;
 
 		goblinWarrior.name = "sea-withered goblin warrior";
 		goblinWarrior.peaceful = false;
@@ -59,8 +66,11 @@ public class Bestiary {
 		goblinWarrior.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
 		goblinWarrior.experienceAwarded = 20;
 		goblinWarrior.threat = 2;
+		goblinWarrior.naturalWeaponDamage = 6;
+		goblinWarrior.naturalWeaponToHit = 1;
+		goblinWarrior.naturalArmorClass = 5;
 
-		jackalTrained.name="trained jackal";
+		jackalTrained.name = "trained jackal";
 		jackalTrained.peaceful = false;
 		jackalTrained.hitPoints = 6;
 		jackalTrained.stats = Rank.C_MINUS;
@@ -71,6 +81,9 @@ public class Bestiary {
 		jackalTrained.paletteEntry = new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_BROWN, Palette.COLOR_RED);
 		jackalTrained.experienceAwarded = 5;
 		jackalTrained.threat = 1;
+		jackalTrained.naturalWeaponDamage = 3;
+		jackalTrained.naturalWeaponToHit = -2;
+		jackalTrained.naturalArmorClass = 5;
 
 		wolf.name = "wolf";
 		wolf.peaceful = false;
@@ -83,8 +96,12 @@ public class Bestiary {
 		wolf.paletteEntry = new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_WHITE, Palette.COLOR_RED);
 		wolf.experienceAwarded = 40;
 		wolf.threat = 3;
+		wolf.naturalWeaponDamage = 8;
+		wolf.naturalWeaponToHit = 1;
+		wolf.naturalArmorClass = 5;
 
-		skeleton.name="skeleton";
+
+		skeleton.name = "skeleton";
 		skeleton.peaceful = false;
 		skeleton.hitPoints = 16;
 		skeleton.stats = Rank.C_MINUS;
@@ -95,8 +112,11 @@ public class Bestiary {
 		skeleton.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
 		skeleton.experienceAwarded = 10;
 		skeleton.threat = 1;
+		skeleton.naturalWeaponDamage = 6;
+		skeleton.naturalWeaponToHit = 0;
+		skeleton.naturalArmorClass = 4;
 
-		zombie.name="zombie";
+		zombie.name = "zombie";
 		zombie.peaceful = false;
 		zombie.hitPoints = 16;
 		zombie.stats = Rank.C_MINUS;
@@ -108,8 +128,11 @@ public class Bestiary {
 		zombie.experienceAwarded = 20;
 		zombie.moveCost = 2000;
 		zombie.threat = 2;
+		zombie.naturalWeaponDamage = 12;
+		zombie.naturalWeaponToHit = -4;
+		zombie.naturalArmorClass = 0;
 
-		fungusRed.name="red fungus";
+		fungusRed.name = "red fungus";
 		fungusRed.peaceful = false;
 		fungusRed.hitPoints = 16;
 		fungusRed.stats = Rank.C_MINUS;
@@ -121,8 +144,12 @@ public class Bestiary {
 		fungusRed.experienceAwarded = 10;
 		fungusRed.moveCost = 20000;
 		fungusRed.threat = 2;
+		fungusRed.naturalWeaponDamage = 0;
+		fungusRed.naturalWeaponToHit = -5;
+		fungusRed.naturalArmorClass = -5;
+		fungusRed.setup.add((e) -> {e.addProc(new ProcBurningTouch(e, 3, 3, 0));});
 
-		farmer.name="Farmer";
+		farmer.name = "Farmer";
 		farmer.peaceful = true;
 		farmer.hitPoints = 10;
 		farmer.stats = Rank.D;
@@ -175,6 +202,10 @@ public class Bestiary {
 		e.palette = p.paletteEntry;
 		e.isManipulator = p.isManipulator;
 		e.experienceAwarded = p.experienceAwarded;
+		e.naturalWeaponDamage = p.naturalWeaponDamage;
+		e.naturalWeaponToHit = p.naturalWeaponToHit;
+		e.naturalArmorClass = p.naturalArmorClass;
+		e.naturalArmorThickness = p.naturalArmorThickness;
 		if (p.moveCost == 0) throw new RuntimeException("Bad move cost");
 		if (key.equals("player")) {
 			e.addProc(new ProcPlayer(e));
@@ -187,6 +218,11 @@ public class Bestiary {
 			//e.addProc(new PropPopupOnSeen(e, "It's a creature!"));
 		}
 		e.addProc(new ProcTimedEffects(e));
+
+		for (Consumer<Entity> consumer : p.setup) {
+			consumer.accept(e);
+		}
+
 		return e;
 	}
 

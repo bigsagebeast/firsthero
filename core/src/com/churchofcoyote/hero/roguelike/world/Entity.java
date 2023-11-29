@@ -54,7 +54,12 @@ public class Entity {
     public int experience = 0;
     public int experienceToNext = 100;
     public int experienceAwarded = 0;
+    public int level = 1;
     public int moveCost = 1000;
+    public int naturalWeaponDamage;
+    public int naturalWeaponToHit;
+    public int naturalArmorClass;
+    public int naturalArmorThickness;
 
     public int healingDelay = 3;
     public int healingRate = 1;
@@ -340,6 +345,22 @@ public class Entity {
         }
         getMover().setDelay(Game.ONE_TURN);
         return true;
+    }
+
+    public int getNaturalWeaponDamage() {
+        return naturalWeaponDamage;
+    }
+
+    public int getNaturalWeaponToHit() {
+        return naturalWeaponToHit;
+    }
+
+    public int getArmorClass() {
+        return naturalArmorClass;
+    }
+
+    public int getArmorThickness() {
+        return naturalArmorThickness;
     }
 
     public TextBlock getNameBlock() {
