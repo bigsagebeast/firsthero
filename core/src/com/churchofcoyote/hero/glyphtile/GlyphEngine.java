@@ -271,6 +271,32 @@ public class GlyphEngine implements GameLogic {
         return (y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y;
     }
 
+    public Point getTileCenterPixel(Point p) {
+        return new Point((int)((p.x - leftTile() + 0.5f) * tileWidth() + marginX + RENDER_OFFSET_X),
+                (int)((p.y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y));
+    }
+
+    public Point getTileCenterPixelInWindow(Point p) {
+        Point windowOffset = WindowEngine.getOffset(UIManager.NAME_MAIN_WINDOW);
+        return new Point((int)((p.x - leftTile() + 0.5f) * tileWidth() + marginX + RENDER_OFFSET_X + windowOffset.x),
+                (int)((p.y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y + windowOffset.y));
+    }
+
+    public float getTilePixelX(int x, int y) {
+        // TODO need to get the margin
+        return (x - leftTile()) * tileWidth() + marginX + RENDER_OFFSET_X;
+    }
+
+    public float getTilePixelY(int x, int y) {
+        return (y - topTile()) * tileHeight() + marginY + RENDER_OFFSET_Y;
+    }
+
+    public Point getTilePixel(Point p) {
+        Point windowOffset = WindowEngine.getOffset(UIManager.NAME_MAIN_WINDOW);
+        return new Point((int)((p.x - leftTile()) * tileWidth() + marginX + RENDER_OFFSET_X + windowOffset.x),
+                (int)((p.y - topTile()) * tileHeight() + marginY + RENDER_OFFSET_Y) + windowOffset.y);
+    }
+
     public void zoom(float zoom) {
         this.zoom = zoom;
     }

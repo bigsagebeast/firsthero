@@ -218,6 +218,9 @@ public class RoguelikeModule extends Module {
 				case Keys.C:
 					game.cmdClose();
 					break;
+				case Keys.T:
+					game.cmdTarget();
+					break;
 			}
 		}
 		if (shift) {

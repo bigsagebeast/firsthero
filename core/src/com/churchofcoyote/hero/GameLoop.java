@@ -28,6 +28,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final RoguelikeModule roguelikeModule = new RoguelikeModule();
 	public static final PopupModule popupModule = new PopupModule();
 	public static final DialogueBoxModule dialogueBoxModule = new DialogueBoxModule();
+	public static final TargetingModule targetingModule = new TargetingModule();
 	private List<Module> allModules = new ArrayList<Module>();
 	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
@@ -47,6 +48,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		allModules = new ArrayList<Module>();
 		allModules.add(popupModule);
 		allModules.add(dialogueBoxModule);
+		allModules.add(targetingModule);
 		allModules.add(introModule);
 		allModules.add(titleModule);
 		allModules.add(roguelikeModule);

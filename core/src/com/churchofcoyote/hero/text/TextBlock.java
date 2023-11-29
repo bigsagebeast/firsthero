@@ -55,7 +55,7 @@ public class TextBlock implements GameLogic {
 	public String text;
 	public GlyphTile glyph;
 
-	private String frameBufferKey;
+	public String frameBufferKey;
 
 	// locked = only render once
 	private boolean wantLocked = false;
@@ -77,6 +77,8 @@ public class TextBlock implements GameLogic {
 		this.jitter = jitter;
 		this.swap = swap;
 	}
+
+	public TextBlock() { this(""); }
 
 	public TextBlock(String text) {
 		this(text, null, RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
@@ -148,19 +150,19 @@ public class TextBlock implements GameLogic {
 		}
 	}
 
-	public TextBlock(String text, String frameBufferKey, int fontSize,
+	public TextBlock(String text, String frameBufferKey, float fontSize,
 					 int x, int y, Color color) {
 		this(text, frameBufferKey, (float)fontSize, (float)x, (float)y, 0f, 0f, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);
 	}
 
-	public TextBlock(String text, String frameBufferKey, int fontSize,
+	public TextBlock(String text, String frameBufferKey, float fontSize,
 					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color) {
 		this(text, frameBufferKey, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);
 	}
 
-	public TextBlock(String text, String frameBufferKey, int fontSize,
+	public TextBlock(String text, String frameBufferKey, float fontSize,
 					 int x, int y, float pixelOffsetX, float pixelOffsetY, Color color, GlyphTile[] glyphs) {
 		this(text, frameBufferKey, (float)fontSize, (float)x, (float)y, pixelOffsetX, pixelOffsetY, color, -1f, -1f,
 				null, null, TextEffectGranularity.BLOCK);

@@ -3,6 +3,7 @@ package com.churchofcoyote.hero.roguelike.game;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.module.RoguelikeModule;
+import com.churchofcoyote.hero.module.TargetingModule;
 import com.churchofcoyote.hero.persistence.Persistence;
 import com.churchofcoyote.hero.persistence.PersistentProfile;
 import com.churchofcoyote.hero.roguelike.world.*;
@@ -229,35 +230,35 @@ public class Game {
 	}
 
 	public void cmdMoveLeft() {
-		cmdMoveBy(-1, 0);
+		playerCmdMoveBy(-1, 0);
 	}
 	
 	public void cmdMoveRight() {
-		cmdMoveBy(+1, 0);
+		playerCmdMoveBy(+1, 0);
 	}
 	
 	public void cmdMoveUp() {
-		cmdMoveBy(0, -1);
+		playerCmdMoveBy(0, -1);
 	}
 	
 	public void cmdMoveDown() {
-		cmdMoveBy(0, +1);
+		playerCmdMoveBy(0, +1);
 	}
 	
 	public void cmdMoveUpLeft() {
-		cmdMoveBy(-1, -1);
+		playerCmdMoveBy(-1, -1);
 	}
 	
 	public void cmdMoveDownLeft() {
-		cmdMoveBy(-1, +1);
+		playerCmdMoveBy(-1, +1);
 	}
 	
 	public void cmdMoveDownRight() {
-		cmdMoveBy(+1, +1);
+		playerCmdMoveBy(+1, +1);
 	}
 	
 	public void cmdMoveUpRight() {
-		cmdMoveBy(+1, -1);
+		playerCmdMoveBy(+1, -1);
 	}
 	
 	public void cmdStairsUp() {
@@ -341,7 +342,12 @@ public class Game {
 
 	}
 
-	public static void cmdMoveBy(int dx, int dy) {
+	public void cmdTarget() {
+		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, false, 0);
+		GameLoop.targetingModule.begin(tm);
+	}
+
+	public static void playerCmdMoveBy(int dx, int dy) {
 		int tx = player.getEntity().pos.x + dx;
 		int ty = player.getEntity().pos.y + dy;
 
