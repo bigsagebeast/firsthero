@@ -30,6 +30,10 @@ public class GlyphEngine implements GameLogic {
     int offsetX = 0;
     int offsetY = 0;
 
+    // store last margins from resize
+    int marginX;
+    int marginY;
+
     private GlyphGrid grid;
 
     private FrameBuffer buffer;
@@ -209,8 +213,8 @@ public class GlyphEngine implements GameLogic {
         int heightInTiles = (int)((size.y - 0) / (tileHeight * 2)) * 2;
         int widthInPixels = (int)(widthInTiles * tileWidth);
         int heightInPixels = (int)(heightInTiles * tileHeight);
-        int marginX = (size.x - widthInPixels) / 2;
-        int marginY = (size.y - heightInPixels) / 2;
+        marginX = (size.x - widthInPixels) / 2;
+        marginY = (size.y - heightInPixels) / 2;
 
         if (buffer == null || isDirty()) {
             compile();
@@ -258,13 +262,13 @@ public class GlyphEngine implements GameLogic {
         entityGlyph.forget(e);
     }
 
-    public float getTilePixelX(int x, int y) {
+    public float getTileCenterPixelX(int x, int y) {
         // TODO need to get the margin
-        return (x - leftTile() + 0.5f) * tileWidth() + RENDER_OFFSET_X;
+        return (x - leftTile() + 0.5f) * tileWidth() + marginX + RENDER_OFFSET_X;
     }
 
-    public float getTilePixelY(int x, int y) {
-        return (y - topTile() + 0.5f) * tileHeight() + RENDER_OFFSET_Y;
+    public float getTileCenterPixelY(int x, int y) {
+        return (y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y;
     }
 
     public void zoom(float zoom) {
