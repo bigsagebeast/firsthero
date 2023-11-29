@@ -1,5 +1,6 @@
 package com.churchofcoyote.hero;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,11 +36,16 @@ public class HeroGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		instance = this;
-		loop = new GameLoop();
-		startTimeMillis = System.currentTimeMillis();
-		g = new Graphics();
-		Gdx.input.setInputProcessor(loop);
+		try {
+			instance = this;
+			loop = new GameLoop();
+			startTimeMillis = System.currentTimeMillis();
+			g = new Graphics();
+			Gdx.input.setInputProcessor(loop);
+		} catch (Exception e) {
+			System.out.println("Exception in create: " + e.getMessage());
+			throw e;
+		}
 	}
 
 	long minRenderDuration = 50;
@@ -47,54 +53,59 @@ public class HeroGame extends ApplicationAdapter {
 	
 	@Override
 	public void render () {
-		float seconds = getSeconds();
-		long desiredTick = (long)(seconds * tickRate);
-		while (tick < desiredTick) {
-			tick++;
-			GameState state = new GameState(tick, seconds);
-			loop.update(state);
-			//updated = true;
-		}
-		//if (!updated) return;
-		
-		long pre = System.currentTimeMillis();
-		lastRenderTime = pre;
-		if (pre - lastRenderTime < minRenderDuration) {
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		try {
+			float seconds = getSeconds();
+			long desiredTick = (long) (seconds * tickRate);
+			while (tick < desiredTick) {
+				tick++;
+				GameState state = new GameState(tick, seconds);
+				loop.update(state);
+				//updated = true;
 			}
-		}
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			//if (!updated) return;
 
-		loop.render(g, new GraphicsState());
-		renderTime *= (renderScale - 1) / renderScale;
-		renderTime += (System.currentTimeMillis() - pre);
-		//Gdx.graphics.setTitle("The First Hero - Render time: " + (long)(renderTime / renderScale) + "ms");
-		StringBuilder timerOutput = new StringBuilder();
-		for (String key : timer.keySet()) {
-			timerOutput.append(" ");
-			timerOutput.append(key);
-			timerOutput.append(":");
-			if (timer.get(key) < 10) {
+			long pre = System.currentTimeMillis();
+			lastRenderTime = pre;
+			if (pre - lastRenderTime < minRenderDuration) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+			loop.render(g, new GraphicsState());
+			renderTime *= (renderScale - 1) / renderScale;
+			renderTime += (System.currentTimeMillis() - pre);
+			//Gdx.graphics.setTitle("The First Hero - Render time: " + (long)(renderTime / renderScale) + "ms");
+			StringBuilder timerOutput = new StringBuilder();
+			for (String key : timer.keySet()) {
 				timerOutput.append(" ");
+				timerOutput.append(key);
+				timerOutput.append(":");
+				if (timer.get(key) < 10) {
+					timerOutput.append(" ");
+				}
+				timerOutput.append(timer.get(key));
+				timerOutput.append("ms");
 			}
-			timerOutput.append(timer.get(key));
-			timerOutput.append("ms");
-		}
-		Gdx.graphics.setTitle("The First Hero -" + timerOutput.toString());
-		if (RoguelikeModule.topBorder != null) {
-			StringBuilder border = new StringBuilder();
-			border.append("# ");
-			border.append(timerOutput.toString());
-			border.append(" ");
-			while (border.length() < 120) {
-				border.append("#");
+			Gdx.graphics.setTitle("The First Hero -" + timerOutput.toString());
+			if (RoguelikeModule.topBorder != null) {
+				StringBuilder border = new StringBuilder();
+				border.append("# ");
+				border.append(timerOutput.toString());
+				border.append(" ");
+				while (border.length() < 120) {
+					border.append("#");
+				}
+				RoguelikeModule.topBorder.text = border.toString();
 			}
-			RoguelikeModule.topBorder.text = border.toString();
+		} catch (Exception e) {
+			System.out.println("Exception in render loop: " + e.getMessage());
+			throw e;
 		}
 	}
 
@@ -105,8 +116,13 @@ public class HeroGame extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height)
 	{
-		g.resize(width, height);
-		UIManager.resize(width, height);
+		try {
+			g.resize(width, height);
+			UIManager.resize(width, height);
+		} catch (Exception e) {
+			System.out.println("Exception in resize: " + e.getMessage());
+			throw e;
+		}
 	}
 	
 	public static void updateTimer(String name, Long millis) {

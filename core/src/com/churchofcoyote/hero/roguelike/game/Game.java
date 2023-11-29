@@ -64,8 +64,8 @@ public class Game {
 
 	public void startCaves() {
 		Entity pc = bestiary.create("player");
-		Entity shortsword = itempedia.create("short sword");
-		pc.equip(shortsword, BodyPart.PRIMARY_HAND);
+		Entity dagger = itempedia.create("dagger");
+		pc.equip(dagger, BodyPart.PRIMARY_HAND);
 		player.setEntityId(pc.entityId);
 		dungeon.generateBrogue("dungeon1", 0);
 		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
