@@ -1,6 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon;
 import com.churchofcoyote.hero.roguelike.world.*;
-import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class Level {
 	public int threat = -1;
 	private long lastWander = 0;
 	public long wanderRate = 50000;
-	public int maxForWander = 20;
+	public int maxForWander = 15;
 	
 	public Level(String name, int width, int height) {
 		this.name = name;
@@ -54,7 +53,7 @@ public class Level {
 				return;
 			}
 			String monsterKey = getAllowedMonster();
-			Point pos = findDistantNonvisibleTile(10);
+			Point pos = findSpawnTile(10);
 			if (pos == null || monsterKey == null) {
 				return;
 			}
@@ -68,7 +67,7 @@ public class Level {
 		if (threat < 0) {
 			return Collections.EMPTY_LIST;
 		}
-		int minThreatAllowed = threat - 1;
+		int minThreatAllowed = Math.max(0, threat - 1);
 		int maxThreatAllowed = threat + 1;
 		ArrayList<String> allowedEntities = new ArrayList<>();
 		for (String key : Game.bestiary.map.keySet()) {
@@ -90,8 +89,34 @@ public class Level {
 		return allowedEntities.get(index);
 	}
 
+	private List<String> getAllowedItems() {
+		if (threat < 0) {
+			return Collections.EMPTY_LIST;
+		}
+		int minLevelAllowed = Math.max(0, threat - 1);
+		int maxLevelAllowed = threat + 1;
+		ArrayList<String> allowedEntities = new ArrayList<>();
+		for (String key : Game.itempedia.map.keySet()) {
+			ItemType p = Game.itempedia.map.get(key);
+			if (p.level < 0) continue;
+			if (p.level >= minLevelAllowed && p.level <= maxLevelAllowed) {
+				allowedEntities.add(key);
+			}
+		}
+		return allowedEntities;
+	}
+
+	private String getAllowedItem() {
+		List<String> allowedEntities = getAllowedItems();
+		if (allowedEntities.isEmpty()) {
+			return null;
+		}
+		int index = Game.random.nextInt(allowedEntities.size());
+		return allowedEntities.get(index);
+	}
+
 	public void populate() {
-		for (int i=0; i<20; i++) {
+		for (int i=0; i<15; i++) {
 			String chosenMonster = getAllowedMonster();
 			if (chosenMonster == null) {
 				System.out.println("No allowed monsters");
@@ -101,8 +126,28 @@ public class Level {
 			Entity e = Game.bestiary.create(chosenMonster, null);
 			e.pos = pos;
 			addEntity(e);
+			int packSize = (int)(Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
+			for (int j = 1; j < packSize; j++) {
+				Point packSpawnPos = findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
+				if (packSpawnPos != null) {
+					Entity packmember = Game.bestiary.create(chosenMonster, null);
+					packmember.pos = packSpawnPos;
+					addEntity(packmember);
+				}
+			}
 		}
 
+		for (int i=0; i<7; i++) {
+			String chosenItem = getAllowedItem();
+			if (chosenItem == null) {
+				System.out.println("No allowed items");
+				return;
+			}
+			Point pos = findOpenTile();
+			Entity e = Game.itempedia.create(chosenItem, null);
+			e.pos = pos;
+			addEntity(e);
+		}
 	}
 
 	public String getName() {
@@ -279,7 +324,7 @@ public class Level {
 		return null;
 	}
 
-	public Point findDistantNonvisibleTile(int distance) {
+	public Point findSpawnTile(int distance) {
 		int playerPosX = Game.getPlayerEntity().pos.x;
 		int playerPosY = Game.getPlayerEntity().pos.y;
 		int excludedXMin = playerPosX - distance;
@@ -300,6 +345,23 @@ public class Level {
 					}
 				}
 				return new Point(x, y);
+			}
+		}
+		return null;
+	}
+
+	public Point findPackSpawnTile(Point origin, int area) {
+		for (int i = 0; i<100; i++) {
+			int xRand = origin.x - (area/2) + Game.random.nextInt(area);
+			int yRand = origin.y - (area/2) + Game.random.nextInt(area);
+			if (!withinBounds(xRand, yRand)) continue;
+			if (cell[xRand][yRand].terrain.isPassable() && cell[xRand][yRand].visible() == false) {
+				for (Entity e : getEntitiesOnTile(new Point(xRand, yRand))) {
+					if (e.getMover() != null) {
+						continue;
+					}
+				}
+				return new Point(xRand, yRand);
 			}
 		}
 		return null;

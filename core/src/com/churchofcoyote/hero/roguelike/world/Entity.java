@@ -4,10 +4,7 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Rank;
-import com.churchofcoyote.hero.roguelike.world.proc.Proc;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcEquippable;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
+import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
@@ -52,7 +49,7 @@ public class Entity {
     public int maxDivinePoints;
     public boolean peaceful = false;
     public int experience = 0;
-    public int experienceToNext = 100;
+    public int experienceToNext = 40;
     public int experienceAwarded = 0;
     public int level = 1;
     public int moveCost = 1000;
@@ -356,11 +353,19 @@ public class Entity {
     }
 
     public int getArmorClass() {
-        return naturalArmorClass;
+        int ac = naturalArmorClass;
+        for (Proc p : allProcsIncludingEquipment().collect(Collectors.toList())) {
+            ac += p.provideArmorClass();
+        }
+        return ac;
     }
 
     public int getArmorThickness() {
-        return naturalArmorThickness;
+        int at = naturalArmorThickness;
+        for (Proc p : allProcsIncludingEquipment().collect(Collectors.toList())) {
+            at += p.provideArmorThickness();
+        }
+        return at;
     }
 
     public TextBlock getNameBlock() {
@@ -423,13 +428,28 @@ public class Entity {
         return Stream.concat(allEntities.stream(), subEntities.stream());
     }
 
-    public Stream<Proc> allProcsIncludingInventory() {
+    public Stream<Entity> recursiveEquipment() {
+        LinkedList<Entity> allEntities = new LinkedList<>();
+        allEntities.addAll(getEquippedEntities());
+        LinkedList<Entity> subEntities = new LinkedList<>();
+        for (Entity e : allEntities) {
+            subEntities.addAll(e.recursiveInventoryAndEquipment().collect(Collectors.toList()));
+        }
+        return Stream.concat(allEntities.stream(), subEntities.stream());
+    }
+
+    public Stream<Proc> allProcsIncludingEquipmentAndInventory() {
         return Stream.concat(procs.stream(),
                 recursiveInventoryAndEquipment().flatMap(entity -> entity.procs.stream()));
     }
 
+    public Stream<Proc> allProcsIncludingEquipment() {
+        return Stream.concat(procs.stream(),
+                recursiveEquipment().flatMap(entity -> entity.procs.stream()));
+    }
+
     public void forEachProc(Consumer<Proc> lambda) {
-        allProcsIncludingInventory().forEach(lambda);
+        allProcsIncludingEquipmentAndInventory().forEach(lambda);
     }
 
     public void receiveItem(Entity e) {

@@ -117,5 +117,8 @@ public class Proc {
     public void postBeKilled(Entity actor, Entity tool) { }
     public void postDoKill(Entity target, Entity tool) { }
 
+    public int provideArmorClass() { return 0; }
+    public int provideArmorThickness() { return 0; }
+
     public void beDestroyed() {}
 }

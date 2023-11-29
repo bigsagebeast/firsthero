@@ -33,7 +33,7 @@ public class ProcPlayer extends ProcMover {
         if (target.peaceful) {
             Game.announce("If only talking was implemented.");
         }
-        if (entity.experience > entity.experienceToNext) {
+        if (entity.experience >= entity.experienceToNext) {
             levelUp();
         }
     }

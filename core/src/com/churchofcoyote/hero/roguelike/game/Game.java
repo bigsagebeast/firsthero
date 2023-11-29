@@ -67,9 +67,25 @@ public class Game {
 		Entity shortsword = itempedia.create("short sword");
 		pc.equip(shortsword, BodyPart.PRIMARY_HAND);
 		player.setEntityId(pc.entityId);
-		dungeon.generateBrogue("dungeon1", 1);
+		dungeon.generateBrogue("dungeon1", 0);
 		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
 		level = dungeon.getLevel("dungeon1");
+		dungeon.generateBrogue("dungeon2", 1);
+		Level level2 = dungeon.getLevel("dungeon2");
+		dungeon.generateBrogue("dungeon3", 2);
+		Level level3 = dungeon.getLevel("dungeon3");
+		Point downStairs1 = level.findOpenTile();
+		level.cell(downStairs1).terrain = Terrain.get("downstair");
+		Point upStairs2 = level2.findOpenTile();
+		level2.cell(upStairs2).terrain = Terrain.get("upstair");
+		Point downStairs2 = level2.findOpenTile();
+		level2.cell(downStairs2).terrain = Terrain.get("downstair");
+		Point upStairs3 = level3.findOpenTile();
+		level3.cell(upStairs3).terrain = Terrain.get("upstair");
+		level.addTransition(new LevelTransition("down", downStairs1, "dungeon2", upStairs2));
+		level2.addTransition(new LevelTransition("up", upStairs2, "dungeon1", downStairs1));
+		level2.addTransition(new LevelTransition("down", downStairs2, "dungeon3", upStairs3));
+		level3.addTransition(new LevelTransition("up", upStairs3, "dungeon2", downStairs2));
 	}
 
 	public void changeLevel(Level nextLevel, Point playerPos) {
@@ -337,7 +353,9 @@ public class Game {
 						(targetMover.isPeacefulToPlayer() ? "peaceful" : "hostile") +
 						" creature (" + targetCreature.getVisibleName() + ").");
 			} else {
-				CombatLogic.swing(player.getEntity(), targetCreature);
+				Entity weaponPrimary = player.getEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
+				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
+				CombatLogic.swing(player.getEntity(), targetCreature, weaponPrimary);
 				player.getEntity().getMover().setDelay(player.getEntity().moveCost);
 				// happen every tick?
 				if (targetCreature.dead) {
@@ -401,7 +419,9 @@ public class Game {
 						(targetCreature.getMover().isPeacefulToPlayer() ? "peaceful" : "hostile") +
 						" creature (" + actor.getVisibleName() + ").");
 			} else {
-				CombatLogic.swing(actor, targetCreature);
+				Entity weaponPrimary = actor.body.getEquipment(BodyPart.PRIMARY_HAND);
+				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
+				CombatLogic.swing(actor, targetCreature, weaponPrimary);
 
 				// check if player is dead
 			}

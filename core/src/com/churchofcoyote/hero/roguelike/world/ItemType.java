@@ -13,5 +13,6 @@ public class ItemType {
     public String glyphName;
     public PaletteEntry palette;
     public ItemCategory category;
+    public int level = -1;
     Set<Consumer<Entity>> setup = new HashSet<>();
 }

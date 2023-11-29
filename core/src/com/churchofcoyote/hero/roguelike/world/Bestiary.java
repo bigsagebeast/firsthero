@@ -25,9 +25,10 @@ public class Bestiary {
 		Phenotype skeleton = new Phenotype();
 		Phenotype zombie = new Phenotype();
 		Phenotype fungusRed = new Phenotype();
+		Phenotype fungusGreenFunglet = new Phenotype();
 
 		pc.name = "player";
-		pc.hitPoints = 30;
+		pc.hitPoints = 20;
 		pc.spellPoints = 20;
 		pc.stats = Rank.B_PLUS;
 		pc.isMonster = false;
@@ -84,6 +85,8 @@ public class Bestiary {
 		jackalTrained.naturalWeaponDamage = 3;
 		jackalTrained.naturalWeaponToHit = -2;
 		jackalTrained.naturalArmorClass = 5;
+		jackalTrained.packSize = 4;
+		jackalTrained.packSpawnArea = 3;
 
 		wolf.name = "wolf";
 		wolf.peaceful = false;
@@ -92,7 +95,7 @@ public class Bestiary {
 		wolf.isMonster = true;
 		wolf.bodyPlan = "humanoid";
 		wolf.glyphName = "animal.canine";
-		wolf.isManipulator = true;
+		wolf.isManipulator = false;
 		wolf.paletteEntry = new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_WHITE, Palette.COLOR_RED);
 		wolf.experienceAwarded = 40;
 		wolf.threat = 3;
@@ -103,14 +106,14 @@ public class Bestiary {
 
 		skeleton.name = "skeleton";
 		skeleton.peaceful = false;
-		skeleton.hitPoints = 16;
+		skeleton.hitPoints = 8;
 		skeleton.stats = Rank.C_MINUS;
 		skeleton.isMonster = true;
 		skeleton.bodyPlan = "humanoid";
 		skeleton.glyphName = "undead.skeleton";
 		skeleton.isManipulator = true;
 		skeleton.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
-		skeleton.experienceAwarded = 10;
+		skeleton.experienceAwarded = 15;
 		skeleton.threat = 1;
 		skeleton.naturalWeaponDamage = 6;
 		skeleton.naturalWeaponToHit = 0;
@@ -118,7 +121,7 @@ public class Bestiary {
 
 		zombie.name = "zombie";
 		zombie.peaceful = false;
-		zombie.hitPoints = 16;
+		zombie.hitPoints = 20;
 		zombie.stats = Rank.C_MINUS;
 		zombie.isMonster = true;
 		zombie.bodyPlan = "humanoid";
@@ -134,20 +137,38 @@ public class Bestiary {
 
 		fungusRed.name = "red fungus";
 		fungusRed.peaceful = false;
-		fungusRed.hitPoints = 16;
+		fungusRed.hitPoints = 25;
 		fungusRed.stats = Rank.C_MINUS;
 		fungusRed.isMonster = true;
 		fungusRed.bodyPlan = "humanoid";
 		fungusRed.glyphName = "plant.fungus";
-		fungusRed.isManipulator = true;
+		fungusRed.isManipulator = false;
 		fungusRed.paletteEntry = new PaletteEntry(Palette.COLOR_RED, Palette.COLOR_TAN, Palette.COLOR_BROWN);
-		fungusRed.experienceAwarded = 10;
+		fungusRed.experienceAwarded = 15;
 		fungusRed.moveCost = 20000;
 		fungusRed.threat = 2;
 		fungusRed.naturalWeaponDamage = 0;
 		fungusRed.naturalWeaponToHit = -5;
 		fungusRed.naturalArmorClass = -5;
 		fungusRed.setup.add((e) -> {e.addProc(new ProcBurningTouch(e, 3, 3, 0));});
+
+		fungusGreenFunglet.name = "green funglet";
+		fungusGreenFunglet.peaceful = false;
+		fungusGreenFunglet.hitPoints = 10;
+		fungusGreenFunglet.stats = Rank.C_MINUS;
+		fungusGreenFunglet.isMonster = true;
+		fungusGreenFunglet.bodyPlan = "humanoid";
+		fungusGreenFunglet.glyphName = "plant.fungus";
+		fungusGreenFunglet.isManipulator = false;
+		fungusGreenFunglet.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_BROWN);
+		fungusGreenFunglet.experienceAwarded = 5;
+		fungusGreenFunglet.moveCost = 20000;
+		fungusGreenFunglet.threat = 0;
+		fungusGreenFunglet.naturalWeaponDamage = 0;
+		fungusGreenFunglet.naturalWeaponToHit = -5;
+		fungusGreenFunglet.naturalArmorClass = -10;
+		fungusGreenFunglet.packSize = 2;
+		fungusGreenFunglet.packSpawnArea = 9;
 
 		farmer.name = "Farmer";
 		farmer.peaceful = true;
@@ -169,6 +190,7 @@ public class Bestiary {
 		map.put("skeleton", skeleton);
 		map.put("zombie", zombie);
 		map.put("fungus.red", fungusRed);
+		map.put("fungus.greenfunglet", fungusGreenFunglet);
 		map.put("farmer", farmer);
 	}
 

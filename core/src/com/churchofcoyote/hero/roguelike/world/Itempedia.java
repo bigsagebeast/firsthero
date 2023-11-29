@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 public class Itempedia {
 
-    private static Map<String, ItemType> map = new HashMap<String, ItemType>();
+    public static Map<String, ItemType> map = new HashMap<String, ItemType>();
 
     public Itempedia() {
         ItemType door = new ItemType();
@@ -28,6 +28,7 @@ public class Itempedia {
         pitchfork.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
         pitchfork.equipmentFor = BodyPart.TWO_HAND;
         pitchfork.category = ItemCategory.CATEGORY_TWO_HANDED_WEAPONS;
+        pitchfork.level = -1;
         pitchfork.setup.add((e) -> {e.addProc(new ProcPopupOnSeen(e, "Pick up your weapon"));});
         pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnStepOn(e, "Press 'comma' to pick it up."));});
         pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnPickup(e, "Press 'w' to wield it."));});
@@ -46,6 +47,7 @@ public class Itempedia {
         shortsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         shortsword.equipmentFor = BodyPart.ANY_HAND;
         shortsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
+        shortsword.level = 1;
         shortsword.setup.add((e) -> {
             ProcWeapon pw = new ProcWeapon(e);
             pw.averageDamage = 6;
@@ -60,13 +62,13 @@ public class Itempedia {
         longsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         longsword.equipmentFor = BodyPart.ANY_HAND;
         longsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
+        longsword.level = 2;
         longsword.setup.add((e) -> {
             ProcWeapon pw = new ProcWeapon(e);
             pw.averageDamage = 8;
             pw.toHitBonus = 2;
             e.addProc(pw);
         });
-
         map.put(longsword.name, longsword);
 
         ItemType dagger = new ItemType();
@@ -75,6 +77,13 @@ public class Itempedia {
         dagger.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         dagger.equipmentFor = BodyPart.ANY_HAND;
         dagger.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
+        dagger.level = 0;
+        dagger.setup.add((e) -> {
+            ProcWeapon pw = new ProcWeapon(e);
+            pw.averageDamage = 5;
+            pw.toHitBonus = 3;
+            e.addProc(pw);
+        });
         map.put(dagger.name, dagger);
 
         ItemType buckler = new ItemType();
@@ -83,6 +92,10 @@ public class Itempedia {
         buckler.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_GRAY, Palette.COLOR_WHITE);
         buckler.equipmentFor = BodyPart.ANY_HAND;
         buckler.category = ItemCategory.CATEGORY_SHIELDS;
+        buckler.level = 1;
+        buckler.setup.add((e) -> {
+            e.addProc(new ProcArmor(e, 2, 0));
+        });
         map.put(buckler.name, buckler);
     }
 
