@@ -20,9 +20,11 @@ public class DungeonGenerator {
 	}
 	
 	
-	public void generateBrogue(String key) {
+	public void generateBrogue(String key, int threat) {
 		Level level = new Brogue().generate();
-		
+		level.threat = threat;
+		level.populate();
+
 		
 		
 		levels.put(key, level);

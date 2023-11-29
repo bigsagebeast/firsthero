@@ -49,6 +49,7 @@ public class GlyphEngine implements GameLogic {
 
         loadGlyphFile("tiles/terrain.gly");
         loadGlyphFile("tiles/humanoid.gly");
+        loadGlyphFile("tiles/animal.gly");
         loadGlyphFile("tiles/items.gly");
     }
 
@@ -86,7 +87,6 @@ public class GlyphEngine implements GameLogic {
                             0, 0, GLYPH_WIDTH, GLYPH_HEIGHT);
 
                     BaseGlyph baseGlyph = new BaseGlyph(pixmap);
-
                     GlyphIndex.add(nameSplit[0], baseGlyph, blockJoin);
                 }
             }

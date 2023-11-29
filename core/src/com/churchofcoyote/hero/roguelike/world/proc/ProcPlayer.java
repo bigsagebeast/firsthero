@@ -30,7 +30,7 @@ public class ProcPlayer extends ProcMover {
     @Override
     public void postKillAnother(Entity target, Entity tool) {
         entity.experience += target.experienceAwarded;
-        if (target.getMover() != null && target.getMover().isPeacefulToPlayer()) {
+        if (target.peaceful) {
             Game.announce("If only talking was implemented.");
         }
     }

@@ -17,6 +17,7 @@ import com.churchofcoyote.hero.GraphicsState;
 import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.glyphtile.GlyphTile;
+import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.text.effect.TextEffectFadeOut;
 import com.churchofcoyote.hero.text.effect.TextEffectGranularity;
 import com.churchofcoyote.hero.text.effect.TextEffectJitter;
@@ -77,6 +78,17 @@ public class TextBlock implements GameLogic {
 		this.swap = swap;
 	}
 
+	public TextBlock(String text) {
+		this(text, null, RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
+	}
+
+	public TextBlock(String text, Color color) {
+		this(text, null, RoguelikeModule.FONT_SIZE, 0, 0, color);
+	}
+
+	public TextBlock(String text, int x, int y, Color color) {
+		this(text, null, RoguelikeModule.FONT_SIZE, x, y, color);
+	}
 
 	public TextBlock(String text, String frameBufferKey, Float fontSize,
 					 Float x, Float y, float pixelOffsetX, float pixelOffsetY,

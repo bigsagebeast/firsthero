@@ -3,12 +3,12 @@ package com.churchofcoyote.hero.roguelike.world;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
-import com.churchofcoyote.hero.roguelike.game.Player;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcEquippable;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
+import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -50,9 +50,11 @@ public class Entity {
     public int maxHitPoints;
     public int maxSpellPoints;
     public int maxDivinePoints;
+    public boolean peaceful = false;
     public int experience = 0;
     public int experienceToNext = 100;
     public int experienceAwarded = 0;
+    public int moveCost = 1000;
 
     public int healingDelay = 3;
     public int healingRate = 1;
@@ -97,8 +99,12 @@ public class Entity {
         return null;
     }
 
-    public String getVisibleName(Player p) {
+    public String getVisibleName() {
         return name;
+    }
+
+    public int getMoveCost() {
+        return moveCost;
     }
 
     public void heal(int amount) {
@@ -332,8 +338,20 @@ public class Entity {
         {
             Game.roguelikeModule.updateEquipmentWindow();
         }
-        getMover().setDelay(1000);
+        getMover().setDelay(Game.ONE_TURN);
         return true;
+    }
+
+    public TextBlock getNameBlock() {
+        // TODO also have methods for prefixes and suffixes?
+        // Maybe this method also handles overall colors for parts that aren't overridden?
+        for (Proc p : procs) {
+            TextBlock tb = p.getNameBlock();
+            if (tb != null) {
+                return tb;
+            }
+        }
+        return new TextBlock(getVisibleName());
     }
 
     public ProcMover getMover() {

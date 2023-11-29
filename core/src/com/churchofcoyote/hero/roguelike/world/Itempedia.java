@@ -31,6 +31,13 @@ public class Itempedia {
         pitchfork.setup.add((e) -> {e.addProc(new ProcPopupOnSeen(e, "Pick up your weapon"));});
         pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnStepOn(e, "Press 'comma' to pick it up."));});
         pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnPickup(e, "Press 'w' to wield it."));});
+        pitchfork.setup.add((e) -> {
+            ProcWeapon pw = new ProcWeapon(e);
+            pw.averageDamage = 5;
+            pw.toHitBonus = 2;
+            e.addProc(pw);
+        });
+
         map.put(pitchfork.name, pitchfork);
 
         ItemType shortsword = new ItemType();
@@ -39,6 +46,12 @@ public class Itempedia {
         shortsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         shortsword.equipmentFor = BodyPart.ANY_HAND;
         shortsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
+        shortsword.setup.add((e) -> {
+            ProcWeapon pw = new ProcWeapon(e);
+            pw.averageDamage = 6;
+            pw.toHitBonus = 3;
+            e.addProc(pw);
+        });
         map.put(shortsword.name, shortsword);
 
         ItemType longsword = new ItemType();
@@ -47,6 +60,13 @@ public class Itempedia {
         longsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
         longsword.equipmentFor = BodyPart.ANY_HAND;
         longsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
+        longsword.setup.add((e) -> {
+            ProcWeapon pw = new ProcWeapon(e);
+            pw.averageDamage = 8;
+            pw.toHitBonus = 2;
+            e.addProc(pw);
+        });
+
         map.put(longsword.name, longsword);
 
         ItemType dagger = new ItemType();

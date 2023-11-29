@@ -4,7 +4,6 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.persistence.Persistence;
-import com.churchofcoyote.hero.persistence.PersistentLevel;
 import com.churchofcoyote.hero.persistence.PersistentProfile;
 import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
@@ -17,11 +16,6 @@ import com.churchofcoyote.hero.util.Point;
 import java.util.List;
 import java.util.Random;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 public class Game {
 	// current level
 	private static Level level;
@@ -33,6 +27,7 @@ public class Game {
 	public static long time = 0;
 	public static long lastTurnProc = 0;
 	public static Random random = new Random();
+	public static int ONE_TURN = 1000;
 
 	private Inventory inventory = new Inventory();
 	
@@ -72,7 +67,7 @@ public class Game {
 		Entity shortsword = itempedia.create("short sword");
 		pc.equip(shortsword, BodyPart.PRIMARY_HAND);
 		player.setEntityId(pc.entityId);
-		dungeon.generateBrogue("dungeon1");
+		dungeon.generateBrogue("dungeon1", 1);
 		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
 		level = dungeon.getLevel("dungeon1");
 	}
@@ -140,10 +135,12 @@ public class Game {
 		while (true) {
 			roguelikeModule.setDirty();
 
+			level.timePassed(time);
+
 			// TODO getProcEntities needs a variant that gets ALL procs including on inventory,
 			// maybe filtered by ones that have an 'act' or a 'turnPassed'
-			while (lastTurnProc + 1000 < time) {
-				lastTurnProc += 1000;
+			while (lastTurnProc + ONE_TURN < time) {
+				lastTurnProc += ONE_TURN;
 				for (Proc p : level.getProcEntities()) {
 					p.turnPassed();
 				}
@@ -276,7 +273,7 @@ public class Game {
 	}
 
 	public void cmdWait() {
-		player.getEntity().getMover().setDelay(1000);
+		player.getEntity().getMover().setDelay(ONE_TURN);
 	}
 
 	public void cmdWield() {
@@ -338,10 +335,10 @@ public class Game {
 			if (targetMover.isPeacefulToPlayer()) {
 				announce("Moved into a " +
 						(targetMover.isPeacefulToPlayer() ? "peaceful" : "hostile") +
-						" creature (" + targetCreature.getVisibleName(player) + ").");
+						" creature (" + targetCreature.getVisibleName() + ").");
 			} else {
 				CombatLogic.swing(player.getEntity(), targetCreature);
-				player.getEntity().getMover().setDelay(1000);
+				player.getEntity().getMover().setDelay(player.getEntity().moveCost);
 				// happen every tick?
 				if (targetCreature.dead) {
 					level.removeEntity(targetCreature);
@@ -368,7 +365,7 @@ public class Game {
 		}
 
 		//announce("Walked one square.");
-		player.getEntity().getMover().setDelay(1000);
+		player.getEntity().getMover().setDelay(player.getEntity().moveCost);
 		movePlayer(tx, ty);
 	}
 
@@ -376,7 +373,7 @@ public class Game {
 		int tx = actor.pos.x + dx;
 		int ty = actor.pos.y + dy;
 		
-		pm.setDelay(1000);
+		pm.setDelay(actor.moveCost);
 		
 		//Entity targetCreature = level.moverAt(tx, ty);
 
@@ -402,7 +399,7 @@ public class Game {
 			if (targetCreature.getMover().isPeacefulToPlayer()) {
 				announce("Was moved into by a " +
 						(targetCreature.getMover().isPeacefulToPlayer() ? "peaceful" : "hostile") +
-						" creature (" + actor.getVisibleName(player) + ").");
+						" creature (" + actor.getVisibleName() + ").");
 			} else {
 				CombatLogic.swing(actor, targetCreature);
 

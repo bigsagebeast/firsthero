@@ -6,6 +6,7 @@ import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.text.effect.TextEffectGranularity;
 import com.churchofcoyote.hero.text.effect.TextEffectJitter;
+import com.churchofcoyote.hero.util.Util;
 
 public abstract class ProgressWindow extends UIWindow {
     private TextBlock parentBlock;
@@ -48,8 +49,8 @@ public abstract class ProgressWindow extends UIWindow {
         float proportion = ((float)current / (float)max);
         int maxHashes = (int)(usableLength * proportion);
 
-        String preString = produceHashes(Math.min(midStart - 1, maxHashes));
-        String postString = produceHashes(Math.min(usableLength - midEnd - 1, maxHashes - midEnd));
+        String preString = Util.repeat("#", Math.min(midStart - 1, maxHashes));
+        String postString = Util.repeat("#", Math.min(usableLength - midEnd - 1, maxHashes - midEnd));
 
 
         preBlock.text = preString;

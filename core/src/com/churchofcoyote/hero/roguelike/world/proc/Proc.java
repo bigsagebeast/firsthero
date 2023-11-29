@@ -4,6 +4,7 @@ import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.EntityTracker;
+import com.churchofcoyote.hero.text.TextBlock;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.List;
@@ -38,7 +39,14 @@ public class Proc {
         return entityId;
     }
 
+    public void clearDelay() {
+        nextAction = Game.time;
+    }
+
     public void setDelay(long delay) {
+        if (delay == 0) {
+            throw new RuntimeException("Set delay of 0 for " + this.getClass() + " on " + entity.name);
+        }
         nextAction = Game.time + delay;
     }
 
@@ -52,6 +60,8 @@ public class Proc {
 
     // activates every 1000
     public void turnPassed() { }
+
+    public TextBlock getNameBlock() { return null; }
 
     // return true if pickup is allowed, false if it's aborted, null if no opinion
     public Boolean preBePickedUp(Entity actor) { return null; }

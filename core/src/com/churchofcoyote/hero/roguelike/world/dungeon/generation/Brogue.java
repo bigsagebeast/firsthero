@@ -125,15 +125,6 @@ public class Brogue {
             }
         }
 
-
-        for (int i=0; i<20; i++) {
-            Point pos = findRandomPassable();
-            //level.addEntity(Game.bestiary.create("goblin", null));
-            Entity e = Game.bestiary.create("goblin", null);
-            e.pos = pos;
-            level.addEntity(e);
-        }
-
         for (int i=0; i<level.getWidth(); i++) {
             for (int j=0; j<level.getHeight(); j++) {
                 if (level.cell(i, j).terrain == doorway) {

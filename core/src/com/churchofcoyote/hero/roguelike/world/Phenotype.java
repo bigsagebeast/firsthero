@@ -17,4 +17,6 @@ public class Phenotype {
 	public PaletteEntry paletteEntry;
 	public boolean isManipulator;
 	public int experienceAwarded;
+	public int moveCost = 1000;
+	public int threat;
 }

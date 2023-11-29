@@ -26,23 +26,23 @@ public class CombatLogic {
 				actor.forEachProc(p -> p.postKillAnother(target, null));
 
 				Game.announceVis(vis,
-					"You kill " + target.getVisibleName(Game.getPlayer()) + ".",
-					actor.getVisibleName(Game.getPlayer()) + " kills you.",
-					actor.getVisibleName(Game.getPlayer()) + " kills " + target.getVisibleName(Game.getPlayer()) + ".",
+					"You kill " + target.getVisibleName() + ".",
+					actor.getVisibleName() + " kills you.",
+					actor.getVisibleName() + " kills " + target.getVisibleName() + ".",
 					null);
 			} else {
 				Game.announceVis(vis,
-						"You hit " + target.getVisibleName(Game.getPlayer()) + ".",
-						actor.getVisibleName(Game.getPlayer()) + " hits you.",
-						actor.getVisibleName(Game.getPlayer()) + " hits " + target.getVisibleName(Game.getPlayer()) + ".",
+						"You hit " + target.getVisibleName() + ".",
+						actor.getVisibleName() + " hits you.",
+						actor.getVisibleName() + " hits " + target.getVisibleName() + ".",
 						null);
 			}
 			//Game.announce("(" + damage + " damage.)");
 		} else {
 			Game.announceVis(vis,
-					"You miss " + target.getVisibleName(Game.getPlayer()) + ".",
-					actor.getVisibleName(Game.getPlayer()) + " misses you.",
-					actor.getVisibleName(Game.getPlayer()) + " misses " + target.getVisibleName(Game.getPlayer()) + ".",
+					"You miss " + target.getVisibleName() + ".",
+					actor.getVisibleName() + " misses you.",
+					actor.getVisibleName() + " misses " + target.getVisibleName() + ".",
 					null);
 			/*
 			Game.feelMsg(target, "The " + actor.getVisibleName(Game.getPlayer()) + " misses you.");

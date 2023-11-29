@@ -1,5 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon;
-import com.churchofcoyote.hero.roguelike.world.EntityTracker;
+import com.churchofcoyote.hero.roguelike.world.*;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 
 import java.util.*;
@@ -8,9 +8,6 @@ import java.util.stream.Stream;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Visibility;
-import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.churchofcoyote.hero.roguelike.world.LevelTransition;
-import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
@@ -25,6 +22,10 @@ public class Level {
 	private LevelCell[] allCells;
 	private List<LevelTransition> transitions;
 	private int lastEntityId = 0;
+	public int threat = -1;
+	private long lastWander = 0;
+	public long wanderRate = 50000;
+	public int maxForWander = 20;
 	
 	public Level(String name, int width, int height) {
 		this.name = name;
@@ -43,7 +44,65 @@ public class Level {
 			}
 		}
 		
-		transitions = new ArrayList<LevelTransition>();
+		transitions = new ArrayList<>();
+	}
+
+	public void timePassed(long time) {
+		if (lastWander + wanderRate < time) {
+			lastWander = time;
+			if (getMovers().size() > maxForWander) {
+				return;
+			}
+			String monsterKey = getAllowedMonster();
+			Point pos = findDistantNonvisibleTile(10);
+			if (pos == null || monsterKey == null) {
+				return;
+			}
+			Entity e = Game.bestiary.create(monsterKey, null);
+			e.pos = pos;
+			addEntity(e);
+		}
+	}
+
+	private List<String> getAllowedMonsters() {
+		if (threat < 0) {
+			return Collections.EMPTY_LIST;
+		}
+		int minThreatAllowed = threat - 1;
+		int maxThreatAllowed = threat + 1;
+		ArrayList<String> allowedEntities = new ArrayList<>();
+		for (String key : Game.bestiary.map.keySet()) {
+			Phenotype p = Game.bestiary.map.get(key);
+			if (p.peaceful) continue;
+			if (p.threat >= minThreatAllowed && p.threat <= maxThreatAllowed) {
+				allowedEntities.add(key);
+			}
+		}
+		return allowedEntities;
+	}
+
+	private String getAllowedMonster() {
+		List<String> allowedEntities = getAllowedMonsters();
+		if (allowedEntities.isEmpty()) {
+			return null;
+		}
+		int index = Game.random.nextInt(allowedEntities.size());
+		return allowedEntities.get(index);
+	}
+
+	public void populate() {
+		for (int i=0; i<20; i++) {
+			String chosenMonster = getAllowedMonster();
+			if (chosenMonster == null) {
+				System.out.println("No allowed monsters");
+				return;
+			}
+			Point pos = findOpenTile();
+			Entity e = Game.bestiary.create(chosenMonster, null);
+			e.pos = pos;
+			addEntity(e);
+		}
+
 	}
 
 	public String getName() {
@@ -134,7 +193,7 @@ public class Level {
 		entityIds.add(entity.entityId);
 		for (Proc p : entity.procs) {
 			if (p.hasAction() && p.nextAction < 0) {
-				p.setDelay(0);
+				p.clearDelay();
 			}
 		}
 	}
@@ -205,14 +264,46 @@ public class Level {
 	}
 
 	public Point findOpenTile() {
-		for (int i=0; i<width; i++) {
-			for (int j=0; j<height; j++) {
-				if (cell[i][j].terrain.isPassable()) {
-					return new Point(i, j);
+		for (int i=0; i<10000; i++) {
+			int x = Game.random.nextInt(width);
+			int y = Game.random.nextInt(height);
+			if (cell[x][y].terrain.isPassable()) {
+				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
+					if (e.getMover() != null) {
+						continue;
+					}
 				}
+				return new Point(x, y);
 			}
 		}
-		throw new RuntimeException("Failed to find any open tile in the level");
+		return null;
 	}
+
+	public Point findDistantNonvisibleTile(int distance) {
+		int playerPosX = Game.getPlayerEntity().pos.x;
+		int playerPosY = Game.getPlayerEntity().pos.y;
+		int excludedXMin = playerPosX - distance;
+		int excludedXMax = playerPosX + distance;
+		int excludedYMin = playerPosY - distance;
+		int excludedYMax = playerPosY + distance;
+
+		for (int i=0; i<10000; i++) {
+			int x = Game.random.nextInt(width);
+			int y = Game.random.nextInt(height);
+			if (x > excludedXMin && x < excludedXMax &&	y > excludedYMin && y < excludedYMax) {
+				continue;
+			}
+			if (cell[x][y].terrain.isPassable() && cell[x][y].visible() == false) {
+				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
+					if (e.getMover() != null) {
+						continue;
+					}
+				}
+				return new Point(x, y);
+			}
+		}
+		return null;
+	}
+
 
 }

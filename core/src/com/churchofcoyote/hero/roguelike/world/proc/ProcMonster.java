@@ -17,8 +17,9 @@ public class ProcMonster extends ProcMover {
     }
 
     public void act() {
-        tactic.execute(entity, this);
-        setDelay(1000);
+        if (!tactic.execute(entity, this)) {
+            setDelay(entity.getMoveCost());
+        }
     }
 
     @Override
