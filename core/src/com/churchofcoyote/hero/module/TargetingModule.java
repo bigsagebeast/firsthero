@@ -12,6 +12,7 @@ import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.ui.UIManager;
+import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
@@ -86,18 +87,35 @@ public class TargetingModule extends Module {
         }
 
         targetBlockParent = new TextBlock("", UIManager.NAME_MAIN_WINDOW, 12, 0, 0, 0, 0, Color.WHITE);
-        ArrayList<Point> ray = new ArrayList<>();
-        ray.add(targetTile);
+        //ArrayList<Point> ray = new ArrayList<>();
+        //ray.add(targetTile);
 
+        List<Point> ray = Fov.findRay(Game.getLevel(), Game.getPlayerEntity().pos, targetTile);
+
+        boolean valid = true;
         for (int i=0; i<ray.size(); i++) {
             Point currentRay = ray.get(i);
+            if (currentRay == null) {
+                valid = false;
+                continue;
+            }
             Point centerPixel = GameLoop.glyphEngine.getTileCenterPixelInWindow(currentRay);
             float fontSize = RoguelikeModule.FONT_SIZE * 1.2f * GameLoop.glyphEngine.zoom;
             // TODO better font centering calculation
-            TextBlock tb = new TextBlock("O", null,
+
+            String symbol = "O";
+            if (i == ray.size()-1) {
+                symbol = "X";
+            }
+            Color color = Color.GREEN;
+            if (!valid) {
+                color = Color.RED;
+            }
+
+            TextBlock tb = new TextBlock(symbol, null,
                     fontSize,
                     0, 0, centerPixel.x - (fontSize / 3), centerPixel.y - (fontSize / 3),
-                    Color.GREEN);
+                    color);
 
             targetBlocks.add(tb);
             targetBlockParent.addChild(tb);

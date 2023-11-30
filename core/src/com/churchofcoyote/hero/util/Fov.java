@@ -2,6 +2,9 @@ package com.churchofcoyote.hero.util;
 
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Fov {
 
 	/**
@@ -233,6 +236,81 @@ public class Fov {
 
 		//System.out.println("Can see");
 		return true;
+	}
+
+	public static List<Point> findRay(Level level, Point origin, Point target) {
+		boolean hasInsertedFailedSentinel = false;
+		List<Point> ray = new ArrayList<>();
+		List<Point> failedCanonicalRay = null;
+		int signX = (origin.x < target.x) ? 1 : (origin.x == target.x) ? 0 : -1;
+		int signY = (origin.y < target.y) ? 1 : (origin.y == target.y) ? 0 : -1;
+		if (signX == 0 && signY == 0) {
+			ray.add(new Point(origin));
+			return ray;
+		}
+		// straight lines
+		if (signY == 0) {
+			int y = origin.y;
+			for (int x = origin.x; x != target.x; x += signX) {
+				if (level.isOpaque(x, y) && !hasInsertedFailedSentinel) {
+					hasInsertedFailedSentinel = true;
+					ray.add(null);
+				}
+				ray.add(new Point(x, y));
+			}
+			ray.add(new Point(target));
+			return ray;
+		}
+		if (signX == 0) {
+			int x = origin.x;
+			for (int y = origin.y; y != target.y; y += signY) {
+				if (level.isOpaque(x, y) && !hasInsertedFailedSentinel) {
+					hasInsertedFailedSentinel = true;
+					ray.add(null);
+				}
+				ray.add(new Point(x, y));
+			}
+			ray.add(new Point(target));
+			return ray;
+		}
+		float distX = Math.abs(target.x - origin.x);
+		float distY = Math.abs(target.y - origin.y);
+		float slope = distX / distY;
+		// x more than y: iterate over x
+		if (slope >= 1.0f) {
+			for (int xStep = 0; xStep <= distX; xStep++) {
+				int x = origin.x + (xStep * signX);
+				int y = origin.y + (Math.round(xStep / slope * signY));
+				if (level.isOpaque(x, y) && !hasInsertedFailedSentinel) {
+					// YES, we WILL keep adding to the failed canonical ray after this point, don't clone it
+					ray.add(null);
+					hasInsertedFailedSentinel = true;
+					failedCanonicalRay = ray;
+				}
+				ray.add(new Point(x, y));
+			}
+			if (failedCanonicalRay == null) {
+				return ray;
+			}
+		}
+		// y more than x: iterate over y
+		if (slope < 1.0f) {
+			for (int yStep = 0; yStep <= distY; yStep++) {
+				int y = origin.y + (yStep * signY);
+				int x = origin.x + (Math.round(yStep * slope * signX));
+				if (level.isOpaque(x, y) && !hasInsertedFailedSentinel) {
+					ray.add(null);
+					hasInsertedFailedSentinel = true;
+					failedCanonicalRay = ray;
+				}
+				ray.add(new Point(x, y));
+			}
+			if (failedCanonicalRay == null) {
+				return ray;
+			}
+		}
+
+		return failedCanonicalRay;
 	}
 
 

@@ -10,6 +10,10 @@ public class Point {
 	public Point() {
 		this(0, 0);
 	}
+
+	public Point(Point p) {
+		this(p.x, p.y);
+	}
 	
 	@Override
 	public String toString() {
