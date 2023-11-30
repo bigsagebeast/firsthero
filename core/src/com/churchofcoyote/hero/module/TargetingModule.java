@@ -83,14 +83,18 @@ public class TargetingModule extends Module {
                 }
             }
         } else {
-            description.text = "";
+            description.text = "You can't see there.";
         }
 
         targetBlockParent = new TextBlock("", UIManager.NAME_MAIN_WINDOW, 12, 0, 0, 0, 0, Color.WHITE);
         //ArrayList<Point> ray = new ArrayList<>();
         //ray.add(targetTile);
 
-        List<Point> ray = Fov.findRay(Game.getLevel(), Game.getPlayerEntity().pos, targetTile);
+        // Permissive = we can see it through FOV calculation, so use a more permissive LOS calculation
+        // Not permissive = we think we can't see it, so accept a simple failure
+        boolean permissive = Game.getLevel().cell(targetTile).visible();
+        Point origin = Game.getPlayerEntity().pos;
+        List<Point> ray = Fov.findRay(Game.getLevel(), origin, targetTile, permissive);
 
         boolean valid = true;
         for (int i=0; i<ray.size(); i++) {
@@ -101,25 +105,52 @@ public class TargetingModule extends Module {
             }
             Point centerPixel = GameLoop.glyphEngine.getTileCenterPixelInWindow(currentRay);
             float fontSize = RoguelikeModule.FONT_SIZE * 1.2f * GameLoop.glyphEngine.zoom;
-            // TODO better font centering calculation
 
-            String symbol = "O";
+            String symbol;
             if (i == ray.size()-1) {
                 symbol = "X";
+            } else {
+                int deltaX = Math.abs(origin.x - targetTile.x);
+                int deltaY = Math.abs(origin.y - targetTile.y);
+                if (deltaX >= deltaY) {
+                    symbol = "-";
+                } else {
+                    symbol = "|";
+                }
+
+                // this didn't look good
+                /*
+                if (i > 0) {
+                    Point curPoint = ray.get(i);
+                    Point lastPoint = ray.get(i-1) != null ? ray.get(i-1) : ray.get(i-2);
+                    int deltaX = curPoint.x - lastPoint.x;
+                    int deltaY = curPoint.y - lastPoint.y;
+                    if (deltaX == 0 && deltaY != 0) symbol = "|";
+                    if (deltaX != 0 && deltaY == 0) symbol = "-";
+                    if (deltaX * deltaY == 1) symbol = "\\";
+                    if (deltaX * deltaY == -1) symbol = "/";
+                }
+                 */
             }
             Color color = Color.GREEN;
             if (!valid) {
                 color = Color.RED;
             }
 
+            // TODO better font centering calculation
             TextBlock tb = new TextBlock(symbol, null,
                     fontSize,
                     0, 0, centerPixel.x - (fontSize / 3), centerPixel.y - (fontSize / 3),
                     color);
+            // ugly!
+            if (tb.text == "|") {
+                tb.pixelOffsetX += (fontSize / 3);
+            }
 
             targetBlocks.add(tb);
             targetBlockParent.addChild(tb);
         }
+
         targetBlockParent.compile();
         GameLoop.uiEngine.addBlock(targetBlockParent);
 

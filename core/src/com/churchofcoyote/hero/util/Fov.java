@@ -238,6 +238,8 @@ public class Fov {
 		return true;
 	}
 
+
+	/*
 	public static List<Point> findRay(Level level, Point origin, Point target) {
 		boolean hasInsertedFailedSentinel = false;
 		List<Point> ray = new ArrayList<>();
@@ -293,6 +295,7 @@ public class Fov {
 				return ray;
 			}
 		}
+
 		// y more than x: iterate over y
 		if (slope < 1.0f) {
 			for (int yStep = 0; yStep <= distY; yStep++) {
@@ -309,9 +312,157 @@ public class Fov {
 				return ray;
 			}
 		}
+		return failedCanonicalRay;
+	}
+	*/
+
+	// "permissive" means we think we should be able to see it - find some way, even if it's a little unreasonable
+	// not permissive means we think we shouldn't OR we have no opinion, and it cuts corners
+	// I don't presently have a LOS calculator that agrees with my FOV calculator, so this is a little cheat.
+	public static List<Point> findRay(Level level, Point origin, Point target, boolean permissive) {
+		boolean hasInsertedFailedSentinel = false;
+		List<Point> ray = new ArrayList<>();
+		List<Point> failedCanonicalRay = null;
+		int signX = (origin.x < target.x) ? 1 : (origin.x == target.x) ? 0 : -1;
+		int signY = (origin.y < target.y) ? 1 : (origin.y == target.y) ? 0 : -1;
+		if (signX == 0 && signY == 0) {
+			ray.add(new Point(origin));
+			return ray;
+		}
+		// straight lines
+		if (signY == 0) {
+			int y = origin.y;
+			for (int x = origin.x; x != target.x; x += signX) {
+				if (level.isOpaque(x, y) && !hasInsertedFailedSentinel) {
+					hasInsertedFailedSentinel = true;
+					ray.add(null);
+				}
+				ray.add(new Point(x, y));
+			}
+			ray.add(new Point(target));
+			return ray;
+		}
+		if (signX == 0) {
+			int x = origin.x;
+			for (int y = origin.y; y != target.y; y += signY) {
+				if (level.isOpaque(x, y) && !hasInsertedFailedSentinel) {
+					hasInsertedFailedSentinel = true;
+					ray.add(null);
+				}
+				ray.add(new Point(x, y));
+			}
+			ray.add(new Point(target));
+			return ray;
+		}
+		float distX = Math.abs(target.x - origin.x);
+		float distY = Math.abs(target.y - origin.y);
+		float slope = distX / distY;
+		// x more than y: iterate over x
+		if (slope >= 1.0f) {
+			for (int xStep = 0; xStep <= distX; xStep++) {
+				int x = origin.x + (xStep * signX);
+				int y = origin.y + (Math.round(xStep / slope * signY));
+				if (level.isOpaque(x, y) && !hasInsertedFailedSentinel) {
+					// YES, we WILL keep adding to the failed canonical ray after this point, don't clone it
+					ray.add(null);
+					hasInsertedFailedSentinel = true;
+					failedCanonicalRay = ray;
+				}
+				ray.add(new Point(x, y));
+			}
+			if (failedCanonicalRay == null) {
+				return ray;
+			}
+
+			// permissive: we THINK we should be able to see it
+			if (permissive) {
+				boolean failedAttempt2 = false;
+				ray = new ArrayList<>();
+				for (int xStep = 0; xStep <= distX; xStep++) {
+					int x = origin.x + (xStep * signX);
+					int y = origin.y + (int) (Math.floor(xStep / slope * signY));
+					if (level.isOpaque(x, y)) {
+						failedAttempt2 = true;
+						break;
+					}
+					ray.add(new Point(x, y));
+				}
+				if (!failedAttempt2) {
+					return ray;
+				}
+
+				boolean failedAttempt3 = false;
+				ray = new ArrayList<>();
+				for (int xStep = 0; xStep <= distX; xStep++) {
+					int x = origin.x + (xStep * signX);
+					int y = origin.y + (int) (Math.ceil(xStep / slope * signY));
+					if (level.isOpaque(x, y)) {
+						failedAttempt3 = true;
+						break;
+					}
+					ray.add(new Point(x, y));
+				}
+				if (!failedAttempt3) {
+					return ray;
+				}
+			}
+		}
+
+		// y more than x: iterate over y
+		if (slope < 1.0f) {
+			for (int yStep = 0; yStep <= distY; yStep++) {
+				int y = origin.y + (yStep * signY);
+				int x = origin.x + (Math.round(yStep * slope * signX));
+				if (level.isOpaque(x, y) && !hasInsertedFailedSentinel) {
+					ray.add(null);
+					hasInsertedFailedSentinel = true;
+					failedCanonicalRay = ray;
+				}
+				ray.add(new Point(x, y));
+			}
+			if (failedCanonicalRay == null) {
+				return ray;
+			}
+
+			if (permissive) {
+				boolean failedAttempt2 = false;
+				ray = new ArrayList<>();
+				for (int yStep = 0; yStep <= distY; yStep++) {
+					int y = origin.y + (yStep * signY);
+					int x = origin.x + (int) (Math.floor(yStep * slope * signX));
+					if (level.isOpaque(x, y)) {
+						failedAttempt2 = true;
+						break;
+					}
+					ray.add(new Point(x, y));
+				}
+				if (!failedAttempt2) {
+					return ray;
+				}
+
+				boolean failedAttempt3 = false;
+				ray = new ArrayList<>();
+				for (int yStep = 0; yStep <= distY; yStep++) {
+					int y = origin.y + (yStep * signY);
+					int x = origin.x + (int) (Math.ceil(yStep * slope * signX));
+					if (level.isOpaque(x, y)) {
+						failedAttempt3 = true;
+						break;
+					}
+					ray.add(new Point(x, y));
+				}
+				if (!failedAttempt3) {
+					return ray;
+				}
+			}
+		}
 
 		return failedCanonicalRay;
 	}
 
-
+	// TODO this is a little slower than it needs to be, re-implement it without fucking with lists
+	public static boolean canSee(Level level, Point origin, Point target, boolean permissive) {
+		List<Point> ray = findRay(level, origin, target, permissive);
+		return !ray.contains(null);
+	}
 }
