@@ -68,7 +68,7 @@ public class Inventory {
                 box.addHeader(cat.getName());
             }
             for (Entity ent : ents) {
-                box.addItem(ent.name, EntityGlyph.getGlyph(ent), ent);
+                box.addItem(ent.getVisibleNameSingularOrSpecific(), EntityGlyph.getGlyph(ent), ent);
                 addedAnything = true;
             }
         }
@@ -97,7 +97,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.name, ent);
+                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryResponse);

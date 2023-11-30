@@ -75,9 +75,9 @@ public class TargetingModule extends Module {
                 // TODO fetch a text block etc
                 List<Entity> targetItems = Game.getLevel().getItemsOnTile(targetTile);
                 if (targetItems.size() > 1) {
-                    description.text = "You see a " + targetItems.get(0).getVisibleName() + " and " + (targetItems.size() - 1) + " other items.";
+                    description.text = "You see " + targetItems.get(0).getVisibleNameSingularOrVague() + " and " + (targetItems.size() - 1) + " other items.";
                 } else if (targetItems.size() == 1) {
-                    description.text = "You see a " + targetItems.get(0).getVisibleName() + ".";
+                    description.text = "You see " + targetItems.get(0).getVisibleNameSingularOrVague() + ".";
                 } else {
                     description.text = "You see " + Game.getLevel().cell(targetTile).terrain.getDescription() + ".";
                 }

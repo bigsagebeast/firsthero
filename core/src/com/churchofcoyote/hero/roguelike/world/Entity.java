@@ -30,6 +30,8 @@ public class Entity {
     }
 
     public String name;
+    public String pluralName;
+
     //public Glyph glyph;
     public Point pos;
 
@@ -102,7 +104,53 @@ public class Entity {
     }
 
     public String getVisibleName() {
+        ProcItem item = getItem();
+        if (item != null && item.quantity > 0) {
+            // pluralize.  probably a better place to put this code
+            if (pluralName != null) {
+                return item.quantity + " " + pluralName;
+            } else {
+                if (name.endsWith("s")) {
+                    return item.quantity + " " + name + "es";
+                } else {
+                    return item.quantity + " " + name + "s";
+                }
+            }
+        }
         return name;
+    }
+
+    public String getVisibleNameThe() {
+        ProcItem item = getItem();
+        if (item != null && item.quantity > 0) {
+            return getVisibleNameSingularOrSpecific();
+        }
+        return "the " + getVisibleName();
+    }
+
+    public String getVisibleNameSingularOrSpecific() {
+        ProcItem item = getItem();
+        if (item != null && item.quantity > 0) {
+            // pluralize.  probably a better place to put this code
+            if (pluralName != null) {
+                return item.quantity + " " + pluralName;
+            } else {
+                if (name.endsWith("s")) {
+                    return item.quantity + " " + name + "es";
+                } else {
+                    return item.quantity + " " + name + "s";
+                }
+            }
+        }
+        return "a " + name;
+    }
+
+    public String getVisibleNameSingularOrVague() {
+        ProcItem item = getItem();
+        if (item != null && item.quantity > 0) {
+            return "some " + name;
+        }
+        return "a " + name;
     }
 
     public int getMoveCost() {
@@ -398,6 +446,10 @@ public class Entity {
         return null;
     }
 
+    public ItemType getItemType() {
+        return Itempedia.get(itemTypeName);
+    }
+
     // temporary approach
     public ProcEquippable getEquippable() {
         for (Proc p : procs) {
@@ -467,7 +519,42 @@ public class Entity {
         destroyed = true;
     }
 
+    public boolean canStackWith(Entity other) {
+        ProcItem thisItem = getItem();
+        ProcItem otherItem = other.getItem();
+        if (thisItem == null || otherItem == null) {
+            return false;
+        }
+        if (itemTypeName != other.itemTypeName) {
+            return false;
+        }
+        ItemType itemType = getItemType();
+        if (!itemType.stackable) {
+            return false;
+        }
+        if (thisItem.identified != otherItem.identified ||
+            thisItem.status != otherItem.status) {
+            return false;
+        }
+        return true;
+    }
+
+    public void beStackedWith(Entity other) {
+        // assume canStackWith has already been tested
+        getItem().quantity += other.getItem().quantity;
+    }
+
+
+    // TODO better error reporting...
+    public void assertValid() {
+        if (destroyed) {
+            throw new RuntimeException("interacted with destroyed object: " + name);
+        }
+    }
+
     public boolean isValid() {
         return !destroyed;
     }
+
+
 }

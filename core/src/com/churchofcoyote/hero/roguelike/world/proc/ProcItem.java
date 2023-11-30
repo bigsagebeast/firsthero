@@ -2,9 +2,15 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.ItemStatus;
 import com.churchofcoyote.hero.text.TextBlock;
 
 public class ProcItem extends Proc {
+
+    public ItemStatus status;
+    public boolean identified;
+    public int quantity;
+
     protected ProcItem() {}
     public ProcItem(Entity e) {
         super(e);
@@ -18,6 +24,6 @@ public class ProcItem extends Proc {
 
     @Override
     public TextBlock getNameBlock() {
-        return new TextBlock(entity.name, Color.WHITE);
+        return new TextBlock(entity.getVisibleName(), Color.WHITE);
     }
 }

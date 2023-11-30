@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
+import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.ai.ChaseAndMeleeTactic;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
@@ -27,7 +28,7 @@ public class Bestiary {
 		Phenotype fungusRed = new Phenotype();
 		Phenotype fungusGreenFunglet = new Phenotype();
 
-		pc.name = "player";
+		pc.name = "yourself";
 		pc.hitPoints = 20;
 		pc.spellPoints = 20;
 		pc.stats = Rank.B_PLUS;
@@ -236,7 +237,9 @@ public class Bestiary {
 			e.addProc(new ProcMonster(e, new ChaseAndMeleeTactic()));
 			//e.addProc(new PropPopupOnSeen(e, "It's a monster!"));
 		} else {
-			e.addProc(new ProcMover(e));
+			ProcMover pm = new ProcMover(e);
+			pm.setDelay(Game.random.nextInt(e.moveCost));
+			e.addProc(pm);
 			//e.addProc(new PropPopupOnSeen(e, "It's a creature!"));
 		}
 		e.addProc(new ProcTimedEffects(e));

@@ -2,11 +2,11 @@ package com.churchofcoyote.hero.roguelike.world;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.churchofcoyote.hero.roguelike.game.Dice;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Brogue;
@@ -18,12 +18,111 @@ public class DungeonGenerator {
 	public Level getLevel(String key) {
 		return levels.get(key);
 	}
-	
-	
+
+	public static void populate(Level level) {
+		if (level.threat < 0) {
+			return;
+		}
+		for (int i = 0; i < 15; i++) {
+			String chosenMonster = getAllowedMonster(level);
+			if (chosenMonster == null) {
+				System.out.println("No allowed monsters");
+				return;
+			}
+			Point pos = level.findOpenTile();
+			Entity e = Game.bestiary.create(chosenMonster, null);
+			e.pos = pos;
+			level.addEntity(e);
+			int packSize = (int) (Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
+			for (int j = 1; j < packSize; j++) {
+				Point packSpawnPos = level.findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
+				if (packSpawnPos != null) {
+					Entity packmember = Game.bestiary.create(chosenMonster);
+					packmember.pos = packSpawnPos;
+					level.addEntity(packmember);
+				}
+			}
+		}
+		for (int i=0; i<5; i++) {
+			String chosenItem = getAllowedItem(level);
+			if (chosenItem == null) {
+				System.out.println("No allowed items");
+				return;
+			}
+			Point pos = level.findOpenTile();
+			Entity e = Game.itempedia.create(chosenItem);
+			e.pos = pos;
+			level.addEntity(e);
+		}
+		int goldPiles = Game.random.nextInt(4) + 4;
+		for (int i=0; i<goldPiles; i++) {
+			int quantity = Dice.roll(level.threat * 2 + 1, 8, 5);
+			Point pos = level.findOpenTile();
+			Entity e = Game.itempedia.create("gold", quantity);
+			e.pos = pos;
+			level.addEntity(e);
+		}
+	}
+
+
+
+	public static List<String> getAllowedMonsters(Level level) {
+		if (level.threat < 0) {
+			return Collections.EMPTY_LIST;
+		}
+		int minThreatAllowed = Math.max(0, level.threat - 1);
+		int maxThreatAllowed = level.threat + 1;
+		ArrayList<String> allowedEntities = new ArrayList<>();
+		for (String key : Game.bestiary.map.keySet()) {
+			Phenotype p = Game.bestiary.map.get(key);
+			if (p.peaceful) continue;
+			if (p.threat >= minThreatAllowed && p.threat <= maxThreatAllowed) {
+				allowedEntities.add(key);
+			}
+		}
+		return allowedEntities;
+	}
+
+	public static String getAllowedMonster(Level level) {
+		List<String> allowedEntities = getAllowedMonsters(level);
+		if (allowedEntities.isEmpty()) {
+			return null;
+		}
+		int index = Game.random.nextInt(allowedEntities.size());
+		return allowedEntities.get(index);
+	}
+
+	public static List<String> getAllowedItems(Level level) {
+		if (level.threat < 0) {
+			return Collections.EMPTY_LIST;
+		}
+		int minLevelAllowed = Math.max(0, level.threat - 1);
+		int maxLevelAllowed = level.threat + 1;
+		ArrayList<String> allowedEntities = new ArrayList<>();
+		for (String key : Game.itempedia.map.keySet()) {
+			ItemType p = Game.itempedia.map.get(key);
+			if (p.level < 0) continue;
+			if (p.level >= minLevelAllowed && p.level <= maxLevelAllowed) {
+				allowedEntities.add(key);
+			}
+		}
+		return allowedEntities;
+	}
+
+	public static String getAllowedItem(Level level) {
+		List<String> allowedEntities = getAllowedItems(level);
+		if (allowedEntities.isEmpty()) {
+			return null;
+		}
+		int index = Game.random.nextInt(allowedEntities.size());
+		return allowedEntities.get(index);
+	}
+
+
 	public void generateBrogue(String key, int threat) {
 		Level level = new Brogue().generate();
 		level.threat = threat;
-		level.populate();
+		populate(level);
 
 		
 		

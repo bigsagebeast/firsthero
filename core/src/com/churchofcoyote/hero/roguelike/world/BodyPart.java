@@ -14,6 +14,9 @@ public class BodyPart {
     public static BodyPart HANDS = new BodyPart("hands", "Hands", 5);
     public static BodyPart FEET = new BodyPart("feet", "Feet", 6);
 
+    public static BodyPart RANGED_WEAPON = new BodyPart("ranged weapon", "Ranged", 7);
+    public static BodyPart RANGED_AMMO = new BodyPart("ammunition", "Ammo", 8);
+
     // do not put on a body part
     public static BodyPart ANY_HAND = new BodyPart("any hand", "Any Hand", -1);
     public static BodyPart TWO_HAND = new BodyPart("two hand", "Two Hand", -1);

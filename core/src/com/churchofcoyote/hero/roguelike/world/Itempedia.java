@@ -15,13 +15,15 @@ public class Itempedia {
 
     public Itempedia() {
         ItemType door = new ItemType();
+        door.keyName = "door";
         door.name = "door";
         door.glyphName = "terrain.door_closed";
         door.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TAN, Palette.COLOR_BROWN);
         door.setup.add((e) -> {e.addProc(new ProcDoor(e));});
-        map.put("door", door);
+        map.put(door.keyName, door);
 
         ItemType pitchfork = new ItemType();
+        pitchfork.keyName = "pitchfork";
         pitchfork.name = "pitchfork";
         //pitchfork.glyph = new Glyph('/', Color.LIGHT_GRAY);
         pitchfork.glyphName = "weapon.pitchfork";
@@ -39,9 +41,10 @@ public class Itempedia {
             e.addProc(pw);
         });
 
-        map.put(pitchfork.name, pitchfork);
+        map.put(pitchfork.keyName, pitchfork);
 
         ItemType shortsword = new ItemType();
+        shortsword.keyName = "short sword";
         shortsword.name = "short sword";
         shortsword.glyphName = "weapon.shortsword";
         shortsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
@@ -54,9 +57,10 @@ public class Itempedia {
             pw.toHitBonus = 3;
             e.addProc(pw);
         });
-        map.put(shortsword.name, shortsword);
+        map.put(shortsword.keyName, shortsword);
 
         ItemType longsword = new ItemType();
+        longsword.keyName = "longsword";
         longsword.name = "longsword";
         longsword.glyphName = "weapon.longsword";
         longsword.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
@@ -69,9 +73,10 @@ public class Itempedia {
             pw.toHitBonus = 2;
             e.addProc(pw);
         });
-        map.put(longsword.name, longsword);
+        map.put(longsword.keyName, longsword);
 
         ItemType dagger = new ItemType();
+        dagger.keyName = "dagger";
         dagger.name = "dagger";
         dagger.glyphName = "weapon.dagger";
         dagger.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_WHITE);
@@ -84,9 +89,10 @@ public class Itempedia {
             pw.toHitBonus = 3;
             e.addProc(pw);
         });
-        map.put(dagger.name, dagger);
+        map.put(dagger.keyName, dagger);
 
         ItemType buckler = new ItemType();
+        buckler.keyName = "buckler";
         buckler.name = "buckler";
         buckler.glyphName = "armor.buckler";
         buckler.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_GRAY, Palette.COLOR_WHITE);
@@ -96,7 +102,17 @@ public class Itempedia {
         buckler.setup.add((e) -> {
             e.addProc(new ProcArmor(e, 2, 0));
         });
-        map.put(buckler.name, buckler);
+        map.put(buckler.keyName, buckler);
+
+        ItemType gold = new ItemType();
+        gold.keyName = "gold";
+        gold.name = "gold piece";
+        gold.glyphName = "misc.gold";
+        gold.palette = new PaletteEntry(Palette.COLOR_ORANGE, Palette.COLOR_YELLOW, Palette.COLOR_WHITE);
+        gold.category = ItemCategory.CATEGORY_GOLD;
+        gold.level = -1;
+        gold.stackable = true;
+        map.put(gold.keyName, gold);
     }
 
     public Entity create(String key) {
@@ -104,9 +120,13 @@ public class Itempedia {
     }
 
     public Entity create(String key, String name) {
+        ItemType t = map.get(key);
+        if (t == null) {
+            throw new RuntimeException("Tried to create nonexistent item type " + key);
+        }
+
         Entity e = EntityTracker.create();
 
-        ItemType t = map.get(key);
         if (name != null) {
             e.name = name;
         } else {
@@ -115,7 +135,7 @@ public class Itempedia {
         //e.glyph = t.glyph;
         e.glyphName = t.glyphName;
         e.palette = t.palette;
-        e.itemTypeName = t.name;
+        e.itemTypeName = t.keyName;
 
         for (Consumer<Entity> consumer : t.setup) {
             consumer.accept(e);
@@ -129,6 +149,16 @@ public class Itempedia {
             e.addProc(new ProcEquippable(e, t.equipmentFor));
         }
 
+        return e;
+    }
+
+    public Entity create(String key, int quantity) {
+        ItemType t = map.get(key);
+        if (!t.stackable) {
+            throw new RuntimeException("Tried to create a stack of unstackable " + key);
+        }
+        Entity e = create(key);
+        e.getItem().quantity = quantity;
         return e;
     }
 

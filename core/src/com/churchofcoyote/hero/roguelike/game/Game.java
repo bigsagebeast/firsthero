@@ -9,6 +9,7 @@ import com.churchofcoyote.hero.persistence.PersistentProfile;
 import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.util.Compass;
@@ -215,16 +216,39 @@ public class Game {
 			return false;
 		}
 
-		announce("You pick up the " + target.name);
+		announceVis(actor, target, "You pick up " + target.getVisibleNameThe() + ".",
+				"You are picked up by " + actor.getVisibleNameThe() + ".",
+				actor.getVisibleNameThe() + " picks up " + target.getVisibleNameThe() + ".",
+				null);
 
 		level.removeEntity(target);
-		actor.inventoryIds.add(target.entityId);
+
+		Entity stackedInto = null;
+		for (int mergeTargetId : actor.inventoryIds) {
+			Entity mergeTarget = EntityTracker.get(mergeTargetId);
+			if (mergeTarget.canStackWith(target)) {
+				stackedInto = mergeTarget;
+				mergeTarget.beStackedWith(target);
+				target.destroy();
+			}
+		}
+		if (stackedInto == null) {
+			actor.inventoryIds.add(target.entityId);
+		}
 
 		for (Proc p : actor.procs) {
 			p.postDoPickup(target);
 		}
-		for (Proc p : target.procs) {
-			p.postBePickedUp(actor);
+		if (stackedInto == null) {
+			for (Proc p : target.procs) {
+				p.postBePickedUp(actor);
+			}
+		} else {
+			// careful with this: picking up 10 gold coins to add to a stack of 90
+			// will invoke on the entire stack of 100
+			for (Proc p : stackedInto.procs) {
+				p.postBePickedUp(actor);
+			}
 		}
 		return true;
 	}
@@ -404,7 +428,17 @@ public class Game {
 		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
 			ProcDoor door = (ProcDoor)target.getProcByType(ProcDoor.class);
 			if (door != null && !door.isOpen) {
-				target.tryOpen(actor);
+				// TODO some creatures can destroy doors?
+				if (target.isManipulator) {
+					target.tryOpen(actor);
+				} else {
+					/*
+					// TODO should depend on creature type; floating eyes shouldn't scratch at doors
+					Game.announceVis(actor, actor, null, null,
+							actor.getVisibleName() + " scratches at " + door.entity.getVisibleName() + ".",
+							"You hear something scratching at a door.");
+					 */
+				}
 				return;
 			}
 		}
@@ -439,7 +473,11 @@ public class Game {
 		player.getEntity().pos = new Point(tx, ty);
 
 		for (Entity item : level.getItemsOnTile(player.getEntity().pos)) {
-			announce("There is a " + item.name + " here.");
+			if (item.getItem().quantity > 0) {
+				announce("There are " + item.getVisibleNameSingularOrSpecific() + " here.");
+			} else {
+				announce("There is " + item.getVisibleNameSingularOrVague() + " here.");
+			}
 			for (Proc p : item.procs) {
 				p.postBeSteppedOn(player.getEntity());
 			}

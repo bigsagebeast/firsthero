@@ -52,99 +52,12 @@ public class Level {
 			if (getMovers().size() > maxForWander) {
 				return;
 			}
-			String monsterKey = getAllowedMonster();
+			String monsterKey = DungeonGenerator.getAllowedMonster(this);
 			Point pos = findSpawnTile(10);
 			if (pos == null || monsterKey == null) {
 				return;
 			}
 			Entity e = Game.bestiary.create(monsterKey, null);
-			e.pos = pos;
-			addEntity(e);
-		}
-	}
-
-	private List<String> getAllowedMonsters() {
-		if (threat < 0) {
-			return Collections.EMPTY_LIST;
-		}
-		int minThreatAllowed = Math.max(0, threat - 1);
-		int maxThreatAllowed = threat + 1;
-		ArrayList<String> allowedEntities = new ArrayList<>();
-		for (String key : Game.bestiary.map.keySet()) {
-			Phenotype p = Game.bestiary.map.get(key);
-			if (p.peaceful) continue;
-			if (p.threat >= minThreatAllowed && p.threat <= maxThreatAllowed) {
-				allowedEntities.add(key);
-			}
-		}
-		return allowedEntities;
-	}
-
-	private String getAllowedMonster() {
-		List<String> allowedEntities = getAllowedMonsters();
-		if (allowedEntities.isEmpty()) {
-			return null;
-		}
-		int index = Game.random.nextInt(allowedEntities.size());
-		return allowedEntities.get(index);
-	}
-
-	private List<String> getAllowedItems() {
-		if (threat < 0) {
-			return Collections.EMPTY_LIST;
-		}
-		int minLevelAllowed = Math.max(0, threat - 1);
-		int maxLevelAllowed = threat + 1;
-		ArrayList<String> allowedEntities = new ArrayList<>();
-		for (String key : Game.itempedia.map.keySet()) {
-			ItemType p = Game.itempedia.map.get(key);
-			if (p.level < 0) continue;
-			if (p.level >= minLevelAllowed && p.level <= maxLevelAllowed) {
-				allowedEntities.add(key);
-			}
-		}
-		return allowedEntities;
-	}
-
-	private String getAllowedItem() {
-		List<String> allowedEntities = getAllowedItems();
-		if (allowedEntities.isEmpty()) {
-			return null;
-		}
-		int index = Game.random.nextInt(allowedEntities.size());
-		return allowedEntities.get(index);
-	}
-
-	public void populate() {
-		for (int i=0; i<15; i++) {
-			String chosenMonster = getAllowedMonster();
-			if (chosenMonster == null) {
-				System.out.println("No allowed monsters");
-				return;
-			}
-			Point pos = findOpenTile();
-			Entity e = Game.bestiary.create(chosenMonster, null);
-			e.pos = pos;
-			addEntity(e);
-			int packSize = (int)(Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
-			for (int j = 1; j < packSize; j++) {
-				Point packSpawnPos = findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
-				if (packSpawnPos != null) {
-					Entity packmember = Game.bestiary.create(chosenMonster, null);
-					packmember.pos = packSpawnPos;
-					addEntity(packmember);
-				}
-			}
-		}
-
-		for (int i=0; i<7; i++) {
-			String chosenItem = getAllowedItem();
-			if (chosenItem == null) {
-				System.out.println("No allowed items");
-				return;
-			}
-			Point pos = findOpenTile();
-			Entity e = Game.itempedia.create(chosenItem, null);
 			e.pos = pos;
 			addEntity(e);
 		}
