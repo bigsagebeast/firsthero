@@ -111,7 +111,6 @@ public class Itempedia {
         gold.palette = new PaletteEntry(Palette.COLOR_ORANGE, Palette.COLOR_YELLOW, Palette.COLOR_WHITE);
         gold.category = ItemCategory.CATEGORY_GOLD;
         gold.level = -1;
-        gold.stackable = true;
         map.put(gold.keyName, gold);
     }
 
@@ -135,7 +134,7 @@ public class Itempedia {
         //e.glyph = t.glyph;
         e.glyphName = t.glyphName;
         e.palette = t.palette;
-        e.itemTypeName = t.keyName;
+        e.itemTypeKey = t.keyName;
 
         for (Consumer<Entity> consumer : t.setup) {
             consumer.accept(e);

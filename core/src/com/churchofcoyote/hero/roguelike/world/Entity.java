@@ -69,7 +69,7 @@ public class Entity {
 
     public boolean isManipulator;
 
-    public String itemTypeName;
+    public String itemTypeKey;
 
     public Rank stats = Rank.C;
 
@@ -104,53 +104,51 @@ public class Entity {
     }
 
     public String getVisibleName() {
-        ProcItem item = getItem();
-        if (item != null && item.quantity > 0) {
-            // pluralize.  probably a better place to put this code
-            if (pluralName != null) {
-                return item.quantity + " " + pluralName;
+        return name;
+    }
+
+    public String getVisiblePluralName() {
+        if (pluralName != null) {
+            return pluralName;
+        } else {
+            if (name.endsWith("s")) {
+                return name + "es";
             } else {
-                if (name.endsWith("s")) {
-                    return item.quantity + " " + name + "es";
-                } else {
-                    return item.quantity + " " + name + "s";
-                }
+                return name + "s";
             }
         }
-        return name;
+    }
+
+    public String getVisibleNameWithQuantity() {
+        ProcItem item = getItem();
+        if (item != null && item.quantity > 1) {
+            return item.quantity + " " + getVisiblePluralName();
+        }
+        return getVisibleName();
     }
 
     public String getVisibleNameThe() {
         ProcItem item = getItem();
-        if (item != null && item.quantity > 0) {
-            return getVisibleNameSingularOrSpecific();
+        if (item != null && item.quantity > 1) {
+            return getVisibleNameWithQuantity();
         }
-        return "the " + getVisibleName();
+        return "the " + getVisibleNameWithQuantity();
     }
 
     public String getVisibleNameSingularOrSpecific() {
         ProcItem item = getItem();
-        if (item != null && item.quantity > 0) {
-            // pluralize.  probably a better place to put this code
-            if (pluralName != null) {
-                return item.quantity + " " + pluralName;
-            } else {
-                if (name.endsWith("s")) {
-                    return item.quantity + " " + name + "es";
-                } else {
-                    return item.quantity + " " + name + "s";
-                }
-            }
+        if (item != null && item.quantity > 1) {
+            return getVisibleNameWithQuantity();
         }
-        return "a " + name;
+        return "a " + getVisibleName();
     }
 
     public String getVisibleNameSingularOrVague() {
         ProcItem item = getItem();
-        if (item != null && item.quantity > 0) {
-            return "some " + name;
+        if (item != null && item.quantity > 1) {
+            return "some " + getVisiblePluralName();
         }
-        return "a " + name;
+        return "a " + getVisibleName();
     }
 
     public int getMoveCost() {
@@ -244,9 +242,9 @@ public class Entity {
         return false;
     }
 
-    public boolean equip(Entity e, BodyPart bp)
+    public boolean equip(Entity target, BodyPart bp)
     {
-        ProcEquippable pe = e.getEquippable();
+        ProcEquippable pe = target.getEquippable();
 
         // wielding a 2h in the offhand? no, it's stored in the primary hand
         if (pe.equipmentFor == BodyPart.TWO_HAND && bp == BodyPart.OFF_HAND) {
@@ -254,8 +252,8 @@ public class Entity {
         }
 
         // TODO error messages?
-        if (!inventoryIds.contains(e.entityId)) {
-            inventoryIds.add(e.entityId);
+        if (!inventoryIds.contains(target.entityId)) {
+            inventoryIds.add(target.entityId);
             /*
             if (this == Game.getPlayerEntity()) {
                 Game.announce("That's not in your inventory.");
@@ -333,7 +331,7 @@ public class Entity {
                 Game.announce("You unequip the " + alreadyEquipped.name + ".");
             }
             body.putEquipment(alreadyEquippedBodyPart, null);
-            inventoryIds.add(alreadyEquipped.entityId);
+            acquireWithStacking(alreadyEquipped);
             for (Proc p : this.procs) {
                 p.postDoUnequip(alreadyEquippedBodyPart, alreadyEquipped);
             }
@@ -348,7 +346,7 @@ public class Entity {
 
         // equip the new item
         for (Proc p : this.procs) {
-            Boolean val = p.preDoEquip(bp, e);
+            Boolean val = p.preDoEquip(bp, target);
             if (val != null && !val) {
                 if (this == Game.getPlayerEntity()) {
                     Game.announce("You fail to equip it.");
@@ -356,7 +354,7 @@ public class Entity {
                 return false;
             }
         }
-        for (Proc p : e.procs) {
+        for (Proc p : target.procs) {
             Boolean val = p.preBeEquipped(bp, this);
             if (val != null && !val) {
                 if (this == Game.getPlayerEntity()) {
@@ -366,30 +364,69 @@ public class Entity {
             }
         }
 
+        ProcItem pi = target.getItem();
+        Entity actualTarget = target;
+        if (bp != BodyPart.RANGED_AMMO && pi.quantity > 1) {
+            actualTarget = target.split(1);
+        }
+
         // TODO announce with vis
         if (this == Game.getPlayerEntity()) {
             if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND ||
-                    bp == BodyPart.ANY_HAND || bp == BodyPart.TWO_HAND) {
-                Game.announce("You wield the " + e.name + ".");
+                    bp == BodyPart.ANY_HAND || bp == BodyPart.TWO_HAND ||
+                    bp == BodyPart.RANGED_AMMO || bp == BodyPart.RANGED_WEAPON) {
+                Game.announce("You wield " + actualTarget.getVisibleNameThe() + ".");
             } else {
-                Game.announce("You wear the " + e.name + ".");
+                Game.announce("You wear " + actualTarget.getVisibleNameThe() + ".");
             }
         }
 
         for (Proc p : this.procs) {
-            p.postDoEquip(bp, e);
+            p.postDoEquip(bp, actualTarget);
         }
-        for (Proc p : e.procs) {
+        for (Proc p : actualTarget.procs) {
             p.postBeEquipped(bp, this);
         }
-        body.putEquipment(bp, e.entityId);
-        inventoryIds.remove(e.entityId);
+        body.putEquipment(bp, actualTarget.entityId);
+        if (actualTarget == target) {
+            inventoryIds.remove(actualTarget.entityId);
+        }
         if (this == Game.getPlayerEntity())
         {
             Game.roguelikeModule.updateEquipmentWindow();
         }
         getMover().setDelay(Game.ONE_TURN);
         return true;
+    }
+
+    public Entity acquireWithStacking(Entity target) {
+        Entity stackedInto = null;
+        for (int mergeTargetId : inventoryIds) {
+            Entity mergeTarget = EntityTracker.get(mergeTargetId);
+            if (mergeTarget.canStackWith(target)) {
+                stackedInto = mergeTarget;
+                mergeTarget.beStackedWith(target);
+                target.destroy();
+            }
+        }
+        if (stackedInto == null) {
+            inventoryIds.add(target.entityId);
+        }
+        return (stackedInto != null) ? stackedInto : target;
+    }
+
+    public void dropItem(Entity target) {
+        if (!inventoryIds.contains(target.entityId)) {
+            throw new RuntimeException("Tried to drop item not in inventory: " + target.name);
+        }
+        // TODO predrop, postdrop
+        inventoryIds.remove(target.entityId);
+        target.pos = pos;
+        Game.getLevel().addEntityWithStacking(target);
+        Game.announceVis(this, target, "You drop " + target.getVisibleNameThe() + ".",
+                this.getVisibleNameThe() + " drops you.",
+                this.getVisibleNameThe() + " drops " + target.getVisibleNameSingularOrSpecific(),
+                null);
     }
 
     public int getNaturalWeaponDamage() {
@@ -425,7 +462,7 @@ public class Entity {
                 return tb;
             }
         }
-        return new TextBlock(getVisibleName());
+        return new TextBlock(getVisibleNameWithQuantity());
     }
 
     public ProcMover getMover() {
@@ -447,7 +484,7 @@ public class Entity {
     }
 
     public ItemType getItemType() {
-        return Itempedia.get(itemTypeName);
+        return Itempedia.get(itemTypeKey);
     }
 
     // temporary approach
@@ -525,7 +562,7 @@ public class Entity {
         if (thisItem == null || otherItem == null) {
             return false;
         }
-        if (itemTypeName != other.itemTypeName) {
+        if (itemTypeKey != other.itemTypeKey) {
             return false;
         }
         ItemType itemType = getItemType();
@@ -554,6 +591,30 @@ public class Entity {
 
     public boolean isValid() {
         return !destroyed;
+    }
+
+    public Entity split(int quantity) {
+        assertValid();
+        ProcItem pi = getItem();
+        if (quantity < 1 || quantity >= pi.quantity) {
+            throw new IllegalArgumentException("Tried to split " + quantity + " out of " + pi.quantity);
+        }
+        Entity other = EntityTracker.create();
+        other.name = name;
+        other.pluralName = name;
+        other.itemTypeKey = itemTypeKey;
+        other.glyphName = glyphName;
+        other.palette = palette;
+        for (Proc p : procs) {
+            Proc op = p.clone(other);
+            if (op != null) {
+                other.procs.add(op);
+            }
+        }
+        ProcItem opi = other.getItem();
+        pi.quantity -= quantity;
+        opi.quantity = quantity;
+        return other;
     }
 
 

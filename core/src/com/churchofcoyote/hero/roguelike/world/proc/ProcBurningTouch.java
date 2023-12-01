@@ -21,7 +21,7 @@ public class ProcBurningTouch extends Proc {
         Game.announceVis(actor, entity,
                 "It burns!",
                 "They burn!",
-                actor.getVisibleName() + " is burned!",
+                actor.getVisibleNameWithQuantity() + " is burned!",
                 null);
         actor.hurt(Dice.roll(dice, sides, modifier));
     }
@@ -31,7 +31,7 @@ public class ProcBurningTouch extends Proc {
         Game.announceVis(entity, target,
                 "They burn!",
                 "You burn!",
-                target.getVisibleName() + " is burned!",
+                target.getVisibleNameWithQuantity() + " is burned!",
                 null);
         target.hurt(Dice.roll(dice, sides, modifier));
     }

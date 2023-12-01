@@ -52,7 +52,7 @@ public class DungeonGenerator {
 			Point pos = level.findOpenTile();
 			Entity e = Game.itempedia.create(chosenItem);
 			e.pos = pos;
-			level.addEntity(e);
+			level.addEntityWithStacking(e);
 		}
 		int goldPiles = Game.random.nextInt(4) + 4;
 		for (int i=0; i<goldPiles; i++) {
@@ -60,7 +60,7 @@ public class DungeonGenerator {
 			Point pos = level.findOpenTile();
 			Entity e = Game.itempedia.create("gold", quantity);
 			e.pos = pos;
-			level.addEntity(e);
+			level.addEntityWithStacking(e);
 		}
 	}
 

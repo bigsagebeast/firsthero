@@ -64,7 +64,7 @@ public class ProcWeapon extends Proc {
         if (th > 0) {
             thString = "+" + th;
         }
-        String entityName = entity.getVisibleName();
+        String entityName = entity.getVisibleNameWithQuantity();
         int adLocation = entityName.length() + 2;
         int thLocation = adLocation + adString.length() + 1;
         String mainString = String.format("%s (%s,%s)", entityName, Util.repeat(" ", adString.length()), Util.repeat(" ", thString.length()));
@@ -74,5 +74,13 @@ public class ProcWeapon extends Proc {
         tbMain.addChild(tbDamage);
         tbMain.addChild(tbHit);
         return tbMain;
+    }
+
+    @Override
+    public Proc clone(Entity other) {
+        ProcWeapon pw = new ProcWeapon(other);
+        pw.averageDamage = averageDamage;
+        pw.toHitBonus = toHitBonus;
+        return pw;
     }
 }

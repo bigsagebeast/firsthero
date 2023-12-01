@@ -9,7 +9,7 @@ public class ProcItem extends Proc {
 
     public ItemStatus status;
     public boolean identified;
-    public int quantity;
+    public int quantity = 1;
 
     protected ProcItem() {}
     public ProcItem(Entity e) {
@@ -24,6 +24,16 @@ public class ProcItem extends Proc {
 
     @Override
     public TextBlock getNameBlock() {
-        return new TextBlock(entity.getVisibleName(), Color.WHITE);
+        return new TextBlock(entity.getVisibleNameWithQuantity(), Color.WHITE);
+    }
+
+    @Override
+    public Proc clone(Entity other) {
+        ProcItem pi = new ProcItem(other);
+        pi.status = status;
+        pi.identified = identified;
+        // careful to reset this afterwards if you're destacking
+        pi.quantity = quantity;
+        return pi;
     }
 }

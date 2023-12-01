@@ -21,4 +21,9 @@ public class ProcArmor extends Proc {
     public int provideArmorThickness() {
         return armorThickness;
     }
+
+    @Override
+    public Proc clone(Entity other) {
+        return new ProcArmor(other, armorClass, armorThickness);
+    }
 }

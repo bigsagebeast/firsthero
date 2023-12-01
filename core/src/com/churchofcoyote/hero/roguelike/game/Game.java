@@ -9,7 +9,6 @@ import com.churchofcoyote.hero.persistence.PersistentProfile;
 import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.util.Compass;
@@ -223,32 +222,15 @@ public class Game {
 
 		level.removeEntity(target);
 
-		Entity stackedInto = null;
-		for (int mergeTargetId : actor.inventoryIds) {
-			Entity mergeTarget = EntityTracker.get(mergeTargetId);
-			if (mergeTarget.canStackWith(target)) {
-				stackedInto = mergeTarget;
-				mergeTarget.beStackedWith(target);
-				target.destroy();
-			}
-		}
-		if (stackedInto == null) {
-			actor.inventoryIds.add(target.entityId);
-		}
+		target = actor.acquireWithStacking(target);
 
+		Entity stackedInto = null;
 		for (Proc p : actor.procs) {
 			p.postDoPickup(target);
 		}
-		if (stackedInto == null) {
-			for (Proc p : target.procs) {
-				p.postBePickedUp(actor);
-			}
-		} else {
-			// careful with this: picking up 10 gold coins to add to a stack of 90
-			// will invoke on the entire stack of 100
-			for (Proc p : stackedInto.procs) {
-				p.postBePickedUp(actor);
-			}
+		// careful with this: if stacked, this operates on the entire stack
+		for (Proc p : target.procs) {
+			p.postBePickedUp(actor);
 		}
 		return true;
 	}
@@ -325,6 +307,10 @@ public class Game {
 		inventory.openInventory();
 	}
 
+	public void cmdDrop() {
+		inventory.openInventoryToDrop();
+	}
+
 	public void cmdRegenerate() { startCaves(); }
 
 	public void cmdOpen() {
@@ -381,7 +367,7 @@ public class Game {
 			if (targetMover.isPeacefulToPlayer()) {
 				announce("Moved into a " +
 						(targetMover.isPeacefulToPlayer() ? "peaceful" : "hostile") +
-						" creature (" + targetCreature.getVisibleName() + ").");
+						" creature (" + targetCreature.getVisibleNameWithQuantity() + ").");
 			} else {
 				Entity weaponPrimary = player.getEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
 				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
@@ -457,7 +443,7 @@ public class Game {
 			if (targetCreature.getMover().isPeacefulToPlayer()) {
 				announce("Was moved into by a " +
 						(targetCreature.getMover().isPeacefulToPlayer() ? "peaceful" : "hostile") +
-						" creature (" + actor.getVisibleName() + ").");
+						" creature (" + actor.getVisibleNameWithQuantity() + ").");
 			} else {
 				Entity weaponPrimary = actor.body.getEquipment(BodyPart.PRIMARY_HAND);
 				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
@@ -472,18 +458,33 @@ public class Game {
 	private static void movePlayer(int tx, int ty) {
 		player.getEntity().pos = new Point(tx, ty);
 
-		for (Entity item : level.getItemsOnTile(player.getEntity().pos)) {
-			if (item.getItem().quantity > 0) {
-				announce("There are " + item.getVisibleNameSingularOrSpecific() + " here.");
-			} else {
-				announce("There is " + item.getVisibleNameSingularOrVague() + " here.");
+		List<Entity> items = level.getItemsOnTile(player.getEntity().pos);
+		if (items.isEmpty()) {
+			return;
+		}
+		StringBuilder listString = new StringBuilder();
+		if (items.size() == 1 && items.get(0).getItem().quantity == 1) {
+			listString.append("There is ");
+		} else {
+			listString.append("There are ");
+		}
+		for (int i=0; i<items.size(); i++) {
+			listString.append(items.get(i).getVisibleNameSingularOrSpecific());
+			if (items.size() > 1 && i < items.size() - 2) {
+				listString.append(", ");
 			}
+			if (i == items.size() - 2) {
+				listString.append(" and ");
+			}
+		}
+		listString.append(" here.");
+		announce(listString.toString());
+
+		for (Entity item : items) {
 			for (Proc p : item.procs) {
 				p.postBeSteppedOn(player.getEntity());
 			}
 		}
-
-		//announce("Now standing at " + tx + ", " + ty + ".");
 	}
 	
 	private static void moveNpc(Entity actor, int tx, int ty) {

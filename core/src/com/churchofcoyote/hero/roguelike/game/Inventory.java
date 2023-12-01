@@ -62,7 +62,7 @@ public class Inventory {
                 .withFooterClosableAndSelectable()
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
-            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeName).category == cat &&
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat &&
                     (bodyParts.contains(BodyPart.PRIMARY_HAND) || bodyParts.contains(e.getEquippable().equipmentFor))).collect(Collectors.toList());
             if (ents.size() > 0) {
                 box.addHeader(cat.getName());
@@ -86,13 +86,38 @@ public class Inventory {
     }
 
 
+    public void openInventoryToDrop() {
+        Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
+        DialogueBox box = new DialogueBox()
+                .withFooterClosable()
+                .withMargins(60, 60);
+        for (ItemCategory cat : ItemCategory.categories) {
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
+            if (ents.size() > 0) {
+                box.addHeader("*** " + cat.getName() + " ***");
+            }
+            for (Entity ent : ents) {
+                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+            }
+        }
+        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryToDropResponse);
+    }
+
+    public void handleInventoryToDropResponse(Object chosenEntity) {
+        Entity e = (Entity)chosenEntity;
+        if (e != null) {
+            Game.getPlayerEntity().dropItem(e);
+        }
+    }
+
+
     public void openInventory() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
-            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeName).category == cat).collect(Collectors.toList());
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
             if (ents.size() > 0) {
                 box.addHeader("*** " + cat.getName() + " ***");
             }

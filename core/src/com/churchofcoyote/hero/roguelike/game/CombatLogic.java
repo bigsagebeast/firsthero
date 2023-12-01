@@ -1,6 +1,5 @@
 package com.churchofcoyote.hero.roguelike.game;
 
-import com.churchofcoyote.hero.roguelike.chart.DamageChart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcWeapon;
 
@@ -20,10 +19,10 @@ public class CombatLogic {
 			accuracy = weapon.toHitBonus(actor) + Game.random.nextInt(20);
 			// TODO should be a TextBlock
 			if (actor == Game.getPlayerEntity()) {
-				withWeaponString = " with your " + tool.getVisibleName();
+				withWeaponString = " with your " + tool.getVisibleNameWithQuantity();
 			} else {
 				// TODO pronouns...
-				withWeaponString = " with their " + tool.getVisibleName();
+				withWeaponString = " with their " + tool.getVisibleNameWithQuantity();
 			}
 		} else {
 			damage = (int)(actor.getNaturalWeaponDamage() * randomFactor);
@@ -45,17 +44,17 @@ public class CombatLogic {
 
 			if (damage == 0 && actor.naturalWeaponDamage == 0) {
 				Game.announceVis(vis,
-						"You touch " + target.getVisibleName() + withWeaponString + ".",
-						actor.getVisibleName() + " touches you" + withWeaponString + ".",
-						actor.getVisibleName() + " touches " + target.getVisibleName() + withWeaponString + ".",
+						"You touch " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
+						actor.getVisibleNameWithQuantity() + " touches you" + withWeaponString + ".",
+						actor.getVisibleNameWithQuantity() + " touches " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
 						null);
 				actor.forEachProc(p -> p.postDoHit(target, null));
 				target.forEachProc(p -> p.postBeHit(actor, null));
 			} else {
 				Game.announceVis(vis,
-						"You hit " + target.getVisibleName() + withWeaponString + ".",
-						actor.getVisibleName() + " hits you" + withWeaponString + ".",
-						actor.getVisibleName() + " hits " + target.getVisibleName() + withWeaponString + ".",
+						"You hit " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
+						actor.getVisibleNameWithQuantity() + " hits you" + withWeaponString + ".",
+						actor.getVisibleNameWithQuantity() + " hits " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
 						null);
 				actor.forEachProc(p -> p.postDoHit(target, null));
 				target.forEachProc(p -> p.postBeHit(actor, null));
@@ -63,9 +62,9 @@ public class CombatLogic {
 			//Game.announce("(" + damage + " damage.)");
 		} else {
 			Game.announceVis(vis,
-					"You miss " + target.getVisibleName() + withWeaponString + ".",
-					actor.getVisibleName() + " misses you" + withWeaponString + ".",
-					actor.getVisibleName() + " misses " + target.getVisibleName() + withWeaponString + ".",
+					"You miss " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
+					actor.getVisibleNameWithQuantity() + " misses you" + withWeaponString + ".",
+					actor.getVisibleNameWithQuantity() + " misses " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
 					null);
 
 			actor.forEachProc(p -> p.postDoMiss(target, null));
@@ -83,9 +82,9 @@ public class CombatLogic {
 			// TODO does pre kill make sense?
 
 			Game.announceVis(vis,
-					"You kill " + target.getVisibleName() + ".",
-					actor.getVisibleName() + " kills you.",
-					actor.getVisibleName() + " kills " + target.getVisibleName() + ".",
+					"You kill " + target.getVisibleNameWithQuantity() + ".",
+					actor.getVisibleNameWithQuantity() + " kills you.",
+					actor.getVisibleNameWithQuantity() + " kills " + target.getVisibleNameWithQuantity() + ".",
 					null);
 			actor.forEachProc(p -> p.postDoHit(target, null));
 			target.forEachProc(p -> p.postBeHit(actor, null));

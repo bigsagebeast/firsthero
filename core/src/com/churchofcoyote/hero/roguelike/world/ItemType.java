@@ -16,6 +16,6 @@ public class ItemType {
     public PaletteEntry palette;
     public ItemCategory category;
     public int level = -1;
-    public boolean stackable = false;
+    public boolean stackable = true;
     Set<Consumer<Entity>> setup = new HashSet<>();
 }

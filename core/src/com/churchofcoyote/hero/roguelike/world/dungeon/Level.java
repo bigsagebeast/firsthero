@@ -147,6 +147,7 @@ public class Level {
 		}
 		return procEntities;
 	}
+
 	public void addEntity(Entity entity) {
 		entityIds.add(entity.entityId);
 		for (Proc p : entity.procs) {
@@ -155,6 +156,28 @@ public class Level {
 			}
 		}
 	}
+
+	public Entity addEntityWithStacking(Entity entity) {
+		Entity stackedInto = null;
+		for (Entity mergeTarget : getItemsOnTile(entity.pos)) {
+			if (entity.canStackWith(mergeTarget)) {
+				stackedInto = mergeTarget;
+				mergeTarget.beStackedWith(entity);
+				entity.destroy();
+			}
+		}
+
+		if (stackedInto == null) {
+			entityIds.add(entity.entityId);
+			for (Proc p : entity.procs) {
+				if (p.hasAction() && p.nextAction < 0) {
+					p.clearDelay();
+				}
+			}
+		}
+		return stackedInto == null ? entity : stackedInto;
+	}
+
 	public void removeEntity(Entity creature) {
 		entityIds.remove(creature.entityId);
 	}

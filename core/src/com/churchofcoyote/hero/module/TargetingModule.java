@@ -7,7 +7,6 @@ import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
 import com.churchofcoyote.hero.engine.WindowEngine;
-import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
@@ -70,12 +69,14 @@ public class TargetingModule extends Module {
             Entity targetMover = Game.getLevel().moverAt(targetTile.x, targetTile.y);
             if (targetMover != null) {
                 // TODO fetch a text block, child it to description
-                description.text = "You see a " + targetMover.getVisibleName() + ".";
+                description.text = "You see " + targetMover.getVisibleNameSingularOrSpecific() + ".";
             } else {
                 // TODO fetch a text block etc
                 List<Entity> targetItems = Game.getLevel().getItemsOnTile(targetTile);
-                if (targetItems.size() > 1) {
+                if (targetItems.size() > 2) {
                     description.text = "You see " + targetItems.get(0).getVisibleNameSingularOrVague() + " and " + (targetItems.size() - 1) + " other items.";
+                } else if (targetItems.size() == 2) {
+                    description.text = "You see " + targetItems.get(0).getVisibleNameSingularOrVague() + " and " + (targetItems.size() - 1) + " other item.";
                 } else if (targetItems.size() == 1) {
                     description.text = "You see " + targetItems.get(0).getVisibleNameSingularOrVague() + ".";
                 } else {

@@ -15,4 +15,8 @@ public class ProcEquippable extends Proc {
     public Boolean preBeUnequipped(BodyPart bp, Entity actor) { return null; }
     public void postBeUnequipped(BodyPart bp, Entity actor) {}
 
+    @Override
+    public Proc clone(Entity other) {
+        return new ProcEquippable(other, equipmentFor);
+    }
 }

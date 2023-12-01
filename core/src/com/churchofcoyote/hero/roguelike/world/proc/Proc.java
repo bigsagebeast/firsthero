@@ -66,9 +66,13 @@ public class Proc {
     // return true if pickup is allowed, false if it's aborted, null if no opinion
     public Boolean preBePickedUp(Entity actor) { return null; }
     public void postBePickedUp(Entity actor) {}
+    public Boolean preBeDropped(Entity actor) { return null; }
+    public void postBeDropped(Entity actor) {}
 
     public Boolean preDoPickup(Entity target) { return null; }
     public void postDoPickup(Entity target) {}
+    public Boolean preDoDrop(Entity target) { return null; }
+    public void postDoDrop(Entity target) {}
 
     public Boolean preBeEquipped(BodyPart bp, Entity actor) { return null; }
     public void postBeEquipped(BodyPart bp, Entity actor) {}
@@ -121,4 +125,6 @@ public class Proc {
     public int provideArmorThickness() { return 0; }
 
     public void beDestroyed() {}
+
+    public Proc clone(Entity other) { return null; }
 }
