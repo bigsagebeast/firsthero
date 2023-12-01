@@ -28,17 +28,30 @@ public class TargetingModule extends Module {
     public ArrayList<TextBlock> targetBlocks = new ArrayList<>();
     boolean dirty = true;
     Consumer<Point> handler;
+    List<Entity> moversInLOS;
+    int trackMoverIndex;
 
     public TargetingModule() {
     }
 
     public void begin(TargetMode targetMode, Consumer<Point> handler) {
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
-        targetTile = Game.getPlayerEntity().pos;
+        moversInLOS = new ArrayList<>();
+        for (Entity mover : Game.getLevel().getMovers()) {
+            if (Game.getPlayerEntity() != mover && Game.getPlayerEntity().canSee(mover)) {
+                moversInLOS.add(mover);
+            }
+        }
+        if (!moversInLOS.isEmpty() && targetMode.trackMovers) {
+            trackMoverIndex = 0;
+            targetTile = moversInLOS.get(trackMoverIndex).pos;
+        } else {
+            targetTile = Game.getPlayerEntity().pos;
+        }
         this.targetMode = targetMode;
         this.handler = handler;
         // TODO draw black boxes over the top and bottom of the main window
-        instructions = new TextBlock("'t' to select target, space to cancel", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
+        instructions = new TextBlock("'t' to select target, tab to cycle targets, space to cancel", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
                 0, 0, 20, 0, Color.WHITE);
         instructions.compile();
         description = new TextBlock("Target description", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
@@ -207,6 +220,16 @@ public class TargetingModule extends Module {
             case Input.Keys.NUMPAD_3:
                 moveTarget(1, 1);
                 break;
+            case Input.Keys.TAB:
+                if (!moversInLOS.isEmpty()) {
+                    if (shift) {
+                        trackMoverIndex = (trackMoverIndex + moversInLOS.size() - 1) % moversInLOS.size();
+                    } else {
+                        trackMoverIndex = (trackMoverIndex + 1) % moversInLOS.size();
+                    }
+                    targetTile = moversInLOS.get(trackMoverIndex).pos;
+                }
+                break;
         }
         return true;
     }
@@ -227,7 +250,9 @@ public class TargetingModule extends Module {
             description = null;
         }
         end();
-        handler.accept(p);
+        if (handler != null) {
+            handler.accept(p);
+        }
     }
 
 

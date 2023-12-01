@@ -161,6 +161,9 @@ public class Entity {
 
     public void hurt(int amount) {
         hitPoints = Math.max(hitPoints - amount, 0);
+        if (this == Game.getPlayerEntity()) {
+            return;
+        }
         if (hitPoints <= 0) {
             dead = true;
         }

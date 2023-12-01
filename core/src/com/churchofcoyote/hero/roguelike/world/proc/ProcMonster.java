@@ -2,7 +2,10 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.DungeonGenerator;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.EntityTracker;
+import com.churchofcoyote.hero.roguelike.world.Itempedia;
 import com.churchofcoyote.hero.roguelike.world.ai.ChaseAndMeleeTactic;
 import com.churchofcoyote.hero.roguelike.world.ai.Tactic;
 
@@ -33,6 +36,15 @@ public class ProcMonster extends ProcMover {
             if (mover.entity == Game.getPlayerEntity()) {
                 targetEntityId = mover.entity.entityId;
             }
+        }
+    }
+
+    @Override
+    public void postBeKilled(Entity actor, Entity tool) {
+        // Chance to drop an item
+        if (Game.random.nextInt(5) == 0) {
+            Entity loot = DungeonGenerator.spawnLoot(Game.getLevel());
+            Game.getLevel().addEntityWithStacking(loot, entity.pos);
         }
     }
 

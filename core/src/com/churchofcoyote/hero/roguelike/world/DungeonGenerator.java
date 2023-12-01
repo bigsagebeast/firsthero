@@ -44,17 +44,12 @@ public class DungeonGenerator {
 				}
 			}
 		}
-		for (int i=0; i<55; i++) {
-			String chosenItem = getAllowedItem(level);
-			if (chosenItem == null) {
-				System.out.println("No allowed items");
-				return;
-			}
+		for (int i=0; i<5; i++) {
 			Point pos = level.findOpenTile();
-			Entity e = Game.itempedia.create(chosenItem);
-			ProcItem item = e.getItem();
-			ItemType type = Itempedia.get(chosenItem);
-			item.quantity = type.minCount + Game.random.nextInt(type.maxCount - type.minCount + 1);
+			Entity e = spawnLoot(level);
+			if (e == null) {
+				continue;
+			}
 			level.addEntityWithStacking(e, pos);
 		}
 		int goldPiles = Game.random.nextInt(4) + 4;
@@ -120,6 +115,17 @@ public class DungeonGenerator {
 		return allowedEntities.get(index);
 	}
 
+	public static Entity spawnLoot(Level level) {
+		String itemKey = getAllowedItem(level);
+		if (itemKey == null) {
+			System.out.println("No allowed items");
+			return null;
+		}
+		ItemType itemType = Itempedia.get(itemKey);
+		int quantity = itemType.minCount + Game.random.nextInt(itemType.maxCount - itemType.minCount + 1);
+		Entity loot = Game.itempedia.create(itemKey, quantity);
+		return loot;
+	}
 
 	public void generateBrogue(String key, int threat) {
 		Level level = new Brogue().generate();

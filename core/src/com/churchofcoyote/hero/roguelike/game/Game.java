@@ -395,19 +395,27 @@ public class Game {
 
 		ProcItem pia = rangedAmmo.getItem();
 		Entity shotEntity;
+		boolean lastShot = false;
 		if (pia.quantity == 1) {
 			shotEntity = rangedAmmo;
 			getPlayerEntity().body.putEquipment(BodyPart.RANGED_AMMO, null);
+			lastShot = true;
 		} else {
 			shotEntity = rangedAmmo.split(1);
 		}
 
-		if (target != null) {
+		if (target != null && target != getPlayerEntity()) {
 			CombatLogic.shoot(player.getEntity(), target, rangedWeapon, shotEntity);
 			passTime(player.getEntity().moveCost);
 		}
+		if (lastShot) {
+			announce("You're out of " + shotEntity.getVisiblePluralName() + ".");
+		}
 
-		level.addEntityWithStacking(shotEntity, targetPoint);
+		// targeting yourself is like canceling your shot
+		if (target != getPlayerEntity()) {
+			level.addEntityWithStacking(shotEntity, targetPoint);
+		}
 	}
 
 	public void cmdLook() {

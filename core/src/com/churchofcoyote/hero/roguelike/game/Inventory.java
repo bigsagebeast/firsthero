@@ -65,7 +65,9 @@ public class Inventory {
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat &&
-                    (bodyParts.contains(BodyPart.ANY_HAND) || bodyParts.contains(e.getEquippable().equipmentFor))).collect(Collectors.toList());
+                    (bodyParts.contains(BodyPart.ANY_HAND) ||
+                            (e.getEquippable() != null && bodyParts.contains(e.getEquippable().equipmentFor))
+                    )).collect(Collectors.toList());
             if (ents.size() > 0) {
                 box.addHeader(cat.getName());
             }
