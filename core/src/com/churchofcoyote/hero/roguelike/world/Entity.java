@@ -161,6 +161,13 @@ public class Entity {
 
     public void hurt(int amount) {
         hitPoints = Math.max(hitPoints - amount, 0);
+        if (hitPoints <= 0) {
+            dead = true;
+        }
+        if (dead) {
+            Game.getLevel().removeEntity(this);
+            destroy();
+        }
     }
 
     public boolean canSee(Entity target) {
@@ -421,8 +428,7 @@ public class Entity {
         }
         // TODO predrop, postdrop
         inventoryIds.remove(target.entityId);
-        target.pos = pos;
-        Game.getLevel().addEntityWithStacking(target);
+        Game.getLevel().addEntityWithStacking(target, pos);
         Game.announceVis(this, target, "You drop " + target.getVisibleNameThe() + ".",
                 this.getVisibleNameThe() + " drops you.",
                 this.getVisibleNameThe() + " drops " + target.getVisibleNameSingularOrSpecific(),
@@ -601,7 +607,7 @@ public class Entity {
         }
         Entity other = EntityTracker.create();
         other.name = name;
-        other.pluralName = name;
+        other.pluralName = pluralName;
         other.itemTypeKey = itemTypeKey;
         other.glyphName = glyphName;
         other.palette = palette;

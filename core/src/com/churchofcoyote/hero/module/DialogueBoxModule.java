@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.module;
 
 import com.badlogic.gdx.graphics.Color;
+import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
@@ -50,6 +51,7 @@ public class DialogueBoxModule extends Module {
             background1.active = false;
             background2.active = false;
             this.end();
+            GameLoop.roguelikeModule.setDirty();
             Object finalValue = dialogueBox.getFinalValue();
             dialogueBox = null;
             handler.accept(finalValue);

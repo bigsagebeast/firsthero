@@ -24,7 +24,7 @@ public class Inventory {
         for (BodyPart bp : Game.getPlayerEntity().body.getParts()) {
             String equipmentName;
             if (playerEntity.body.getEquipment(bp) != null) {
-                equipmentName = playerEntity.body.getEquipment(bp).name;
+                equipmentName = playerEntity.body.getEquipment(bp).getVisibleNameSingularOrSpecific();
             } else {
                 // TODO: I don't like this test, it seems like the wielder should have an "is 2h" flag
                 if (bp == BodyPart.OFF_HAND && playerEntity.body.getEquipment(BodyPart.PRIMARY_HAND) != null &&
@@ -51,6 +51,8 @@ public class Inventory {
         if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND) {
             equippable.add(BodyPart.ANY_HAND);
             equippable.add(BodyPart.TWO_HAND);
+        } else {
+            equippable.add(bp);
         }
         openInventoryToEquip(equippable);
     }
@@ -63,7 +65,7 @@ public class Inventory {
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat &&
-                    (bodyParts.contains(BodyPart.PRIMARY_HAND) || bodyParts.contains(e.getEquippable().equipmentFor))).collect(Collectors.toList());
+                    (bodyParts.contains(BodyPart.ANY_HAND) || bodyParts.contains(e.getEquippable().equipmentFor))).collect(Collectors.toList());
             if (ents.size() > 0) {
                 box.addHeader(cat.getName());
             }
@@ -82,6 +84,7 @@ public class Inventory {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             Game.getPlayerEntity().equip(e, chosenBodyPartForDialogue);
+            GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
         }
     }
 
@@ -107,6 +110,7 @@ public class Inventory {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             Game.getPlayerEntity().dropItem(e);
+            GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
         }
     }
 
@@ -129,9 +133,5 @@ public class Inventory {
     }
 
     public void handleInventoryResponse(Object chosenEntity) {
-        Entity e = (Entity)chosenEntity;
-        if (e != null) {
-            System.out.println("responded with option " + e.name);
-        }
     }
 }

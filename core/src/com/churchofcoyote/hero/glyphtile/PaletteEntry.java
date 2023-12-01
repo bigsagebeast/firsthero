@@ -16,4 +16,7 @@ public class PaletteEntry {
     public PaletteEntry(int primary, int secondary, int tertiary) {
         this(primary, secondary, tertiary, Palette.COLOR_TRANSPARENT);
     }
+    public PaletteEntry(int primary, int secondary) {
+        this(primary, secondary, Palette.COLOR_TRANSPARENT, Palette.COLOR_TRANSPARENT);
+    }
 }

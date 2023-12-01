@@ -10,6 +10,7 @@ import com.churchofcoyote.hero.roguelike.game.Dice;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Brogue;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.util.Point;
 
 public class DungeonGenerator {
@@ -43,7 +44,7 @@ public class DungeonGenerator {
 				}
 			}
 		}
-		for (int i=0; i<5; i++) {
+		for (int i=0; i<55; i++) {
 			String chosenItem = getAllowedItem(level);
 			if (chosenItem == null) {
 				System.out.println("No allowed items");
@@ -51,16 +52,17 @@ public class DungeonGenerator {
 			}
 			Point pos = level.findOpenTile();
 			Entity e = Game.itempedia.create(chosenItem);
-			e.pos = pos;
-			level.addEntityWithStacking(e);
+			ProcItem item = e.getItem();
+			ItemType type = Itempedia.get(chosenItem);
+			item.quantity = type.minCount + Game.random.nextInt(type.maxCount - type.minCount + 1);
+			level.addEntityWithStacking(e, pos);
 		}
 		int goldPiles = Game.random.nextInt(4) + 4;
 		for (int i=0; i<goldPiles; i++) {
 			int quantity = Dice.roll(level.threat * 2 + 1, 8, 5);
 			Point pos = level.findOpenTile();
 			Entity e = Game.itempedia.create("gold", quantity);
-			e.pos = pos;
-			level.addEntityWithStacking(e);
+			level.addEntityWithStacking(e, pos);
 		}
 	}
 

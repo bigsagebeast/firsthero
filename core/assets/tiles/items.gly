@@ -1,6 +1,8 @@
-1 5
+1 7
 0 0 weapon.pitchfork
 0 1 weapon.longsword
 0 2 weapon.shortsword
 0 3 weapon.dagger
 0 4 armor.buckler
+0 5 weapon.bow
+0 6 weapon.arrow

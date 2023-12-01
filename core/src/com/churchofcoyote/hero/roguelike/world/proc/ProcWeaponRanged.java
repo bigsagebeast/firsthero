@@ -2,20 +2,27 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.AmmoType;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Util;
 
-public class ProcWeapon extends Proc {
+public class ProcWeaponRanged extends Proc {
 
-    protected ProcWeapon() {}
-    public ProcWeapon(Entity e) {
+    protected ProcWeaponRanged() {}
+    public ProcWeaponRanged(Entity e, int averageDamage, int toHitBonus, int range, AmmoType ammoType) {
         super(e);
+        this.averageDamage = averageDamage;
+        this.toHitBonus = toHitBonus;
+        this.range = range;
+        this.ammoType = ammoType;
     }
 
-    public int averageDamage = 7;
-    public int toHitBonus = 3;
+    public int averageDamage;
+    public int toHitBonus;
+    public int range;
+    public AmmoType ammoType;
 
     public int averageDamage(Entity wielder) {
         return averageDamage;
@@ -42,9 +49,9 @@ public class ProcWeapon extends Proc {
     @Override
     public TextBlock getNameBlock() {
         Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
-        ProcWeapon p = null;
+        ProcWeaponRanged p = null;
         if (pcPrimaryWeapon != null) {
-            p = (ProcWeapon)pcPrimaryWeapon.getProcByType(ProcWeapon.class);
+            p = (ProcWeaponRanged)pcPrimaryWeapon.getProcByType(ProcWeaponRanged.class);
         }
 
         int ad = averageDamage();
@@ -78,9 +85,7 @@ public class ProcWeapon extends Proc {
 
     @Override
     public Proc clone(Entity other) {
-        ProcWeapon pw = new ProcWeapon(other);
-        pw.averageDamage = averageDamage;
-        pw.toHitBonus = toHitBonus;
+        ProcWeaponRanged pw = new ProcWeaponRanged(other, averageDamage, toHitBonus, range, ammoType);
         return pw;
     }
 }

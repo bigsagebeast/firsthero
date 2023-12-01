@@ -8,6 +8,8 @@ public class ItemCategory {
     public static ItemCategory CATEGORY_ONE_HANDED_WEAPONS = new ItemCategory("One-Handed Weapons");
     public static ItemCategory CATEGORY_TWO_HANDED_WEAPONS = new ItemCategory("Two-Handed Weapons");
     public static ItemCategory CATEGORY_SHIELDS = new ItemCategory("Shields");
+    public static ItemCategory CATEGORY_RANGED = new ItemCategory("Ranged Weapons");
+    public static ItemCategory CATEGORY_AMMO = new ItemCategory("Ammunition");
     public static ItemCategory CATEGORY_GOLD = new ItemCategory("Gold");
 
     public static List<ItemCategory> categories = new ArrayList<>();
@@ -16,6 +18,8 @@ public class ItemCategory {
         categories.add(CATEGORY_ONE_HANDED_WEAPONS);
         categories.add(CATEGORY_TWO_HANDED_WEAPONS);
         categories.add(CATEGORY_SHIELDS);
+        categories.add(CATEGORY_RANGED);
+        categories.add(CATEGORY_AMMO);
         categories.add(CATEGORY_GOLD);
     }
 

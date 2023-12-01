@@ -35,7 +35,7 @@ public class Itempedia {
         pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnStepOn(e, "Press 'comma' to pick it up."));});
         pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnPickup(e, "Press 'w' to wield it."));});
         pitchfork.setup.add((e) -> {
-            ProcWeapon pw = new ProcWeapon(e);
+            ProcWeaponMelee pw = new ProcWeaponMelee(e);
             pw.averageDamage = 5;
             pw.toHitBonus = 2;
             e.addProc(pw);
@@ -52,7 +52,7 @@ public class Itempedia {
         shortsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
         shortsword.level = 1;
         shortsword.setup.add((e) -> {
-            ProcWeapon pw = new ProcWeapon(e);
+            ProcWeaponMelee pw = new ProcWeaponMelee(e);
             pw.averageDamage = 6;
             pw.toHitBonus = 3;
             e.addProc(pw);
@@ -68,7 +68,7 @@ public class Itempedia {
         longsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
         longsword.level = 2;
         longsword.setup.add((e) -> {
-            ProcWeapon pw = new ProcWeapon(e);
+            ProcWeaponMelee pw = new ProcWeaponMelee(e);
             pw.averageDamage = 8;
             pw.toHitBonus = 2;
             e.addProc(pw);
@@ -84,7 +84,7 @@ public class Itempedia {
         dagger.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
         dagger.level = 0;
         dagger.setup.add((e) -> {
-            ProcWeapon pw = new ProcWeapon(e);
+            ProcWeaponMelee pw = new ProcWeaponMelee(e);
             pw.averageDamage = 5;
             pw.toHitBonus = 3;
             e.addProc(pw);
@@ -103,6 +103,34 @@ public class Itempedia {
             e.addProc(new ProcArmor(e, 2, 0));
         });
         map.put(buckler.keyName, buckler);
+
+        ItemType shortbow = new ItemType();
+        shortbow.keyName = "shortbow";
+        shortbow.name = "wooden shortbow";
+        shortbow.glyphName = "weapon.bow";
+        shortbow.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE);
+        shortbow.equipmentFor = BodyPart.RANGED_WEAPON;
+        shortbow.category = ItemCategory.CATEGORY_RANGED;
+        shortbow.level = 1;
+        shortbow.setup.add((e) -> {
+            e.addProc(new ProcWeaponRanged(e, 0, 0, 10, AmmoType.ARROW));
+        });
+        map.put(shortbow.keyName, shortbow);
+
+        ItemType arrow = new ItemType();
+        arrow.keyName = "arrow";
+        arrow.name = "wooden arrow";
+        arrow.glyphName = "weapon.arrow";
+        arrow.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE);
+        arrow.equipmentFor = BodyPart.RANGED_AMMO;
+        arrow.category = ItemCategory.CATEGORY_AMMO;
+        arrow.level = 1;
+        arrow.minCount = 5;
+        arrow.maxCount = 10;
+        arrow.setup.add((e) -> {
+            e.addProc(new ProcWeaponAmmo(e, 5, 0, AmmoType.ARROW));
+        });
+        map.put(arrow.keyName, arrow);
 
         ItemType gold = new ItemType();
         gold.keyName = "gold";

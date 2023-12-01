@@ -147,6 +147,7 @@ public class RoguelikeModule extends Module {
 	@Override
 	public void update(GameState state) {
 		if (dirty) {
+			System.out.println("Dirty" + Game.random.nextInt());
 			redraw();
 			process();
 			dirty = false;
@@ -220,6 +221,9 @@ public class RoguelikeModule extends Module {
 					break;
 				case Keys.T:
 					game.cmdTarget();
+					break;
+				case Keys.L:
+					game.cmdLook();
 					break;
 				case Keys.D:
 					game.cmdDrop();

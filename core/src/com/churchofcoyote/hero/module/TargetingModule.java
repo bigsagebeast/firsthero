@@ -16,6 +16,7 @@ import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class TargetingModule extends Module {
 
@@ -26,14 +27,16 @@ public class TargetingModule extends Module {
     public TextBlock description;
     public ArrayList<TextBlock> targetBlocks = new ArrayList<>();
     boolean dirty = true;
+    Consumer<Point> handler;
 
     public TargetingModule() {
     }
 
-    public void begin(TargetMode targetMode) {
+    public void begin(TargetMode targetMode, Consumer<Point> handler) {
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
         targetTile = Game.getPlayerEntity().pos;
         this.targetMode = targetMode;
+        this.handler = handler;
         // TODO draw black boxes over the top and bottom of the main window
         instructions = new TextBlock("'t' to select target, space to cancel", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
                 0, 0, 20, 0, Color.WHITE);
@@ -167,7 +170,11 @@ public class TargetingModule extends Module {
         dirty = true;
         switch (keycode) {
             case Input.Keys.SPACE:
-                close();
+            case Input.Keys.ESCAPE:
+                select(null);
+            case Input.Keys.ENTER:
+            case Input.Keys.T:
+                select(targetTile);
             case Input.Keys.LEFT:
             case Input.Keys.NUMPAD_4:
                 moveTarget(-1, 0);
@@ -208,16 +215,19 @@ public class TargetingModule extends Module {
         targetTile = new Point(targetTile.x + x, targetTile.y + y);
     }
 
-    public void close() {
+    public void select(Point p) {
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
-        targetBlockParent.close();
-        targetBlockParent = null;
         targetBlocks.clear();
-        instructions.close();
-        instructions = null;
-        description.close();
-        description = null;
+        if (targetBlockParent != null) {
+            targetBlockParent.close();
+            targetBlockParent = null;
+            instructions.close();
+            instructions = null;
+            description.close();
+            description = null;
+        }
         end();
+        handler.accept(p);
     }
 
 

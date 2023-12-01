@@ -133,29 +133,54 @@ public class DialogueBox {
     }
 
     private void selectNext() {
+        int nextSelection = -1;
         for (int i = selection+1; i < lines.size(); i++) {
             if (i >= 0 && lines.get(i).value > -1) {
-                if (selection >= 0) {
-                    lines.get(selection).textBlock.text = " " + lines.get(selection).textBlock.text.substring(1);
-                }
-                selection = i;
-                lines.get(i).textBlock.text = ">" + lines.get(i).textBlock.text.substring(1);
+                nextSelection = i;
                 break;
             }
+        }
+        if (nextSelection == -1) {
+            for (int i = 0; i < selection; i++) {
+                if (lines.get(i).value > -1) {
+                    nextSelection = i;
+                    break;
+                }
+            }
+        }
+        if (nextSelection > -1) {
+            if (selection >= 0) {
+                lines.get(selection).textBlock.text = " " + lines.get(selection).textBlock.text.substring(1);
+            }
+            selection = nextSelection;
+            lines.get(nextSelection).textBlock.text = ">" + lines.get(nextSelection).textBlock.text.substring(1);
         }
     }
 
     private void selectPrevious() {
+        int nextSelection = -1;
         for (int i = selection-1; i >= 0; i--) {
             if (i >= 0 && lines.get(i).value > -1) {
-                if (selection >= 0) {
-                    lines.get(selection).textBlock.text = " " + lines.get(selection).textBlock.text.substring(1);
-                }
-                selection = i;
-                lines.get(i).textBlock.text = ">" + lines.get(i).textBlock.text.substring(1);
+                nextSelection = i;
                 break;
             }
         }
+        if (nextSelection == -1) {
+            for (int i = lines.size()-1; i > selection; i--) {
+                if (lines.get(i).value > -1) {
+                    nextSelection = i;
+                    break;
+                }
+            }
+        }
+        if (nextSelection > -1) {
+            if (selection >= 0) {
+                lines.get(selection).textBlock.text = " " + lines.get(selection).textBlock.text.substring(1);
+            }
+            selection = nextSelection;
+            lines.get(nextSelection).textBlock.text = ">" + lines.get(nextSelection).textBlock.text.substring(1);
+        }
+
     }
 
     public void close() {

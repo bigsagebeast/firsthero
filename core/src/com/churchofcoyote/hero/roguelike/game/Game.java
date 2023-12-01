@@ -8,8 +8,7 @@ import com.churchofcoyote.hero.persistence.Persistence;
 import com.churchofcoyote.hero.persistence.PersistentProfile;
 import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
-import com.churchofcoyote.hero.roguelike.world.proc.Proc;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
+import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
@@ -182,6 +181,11 @@ public class Game {
 		}
 	}
 
+	public void passTime(int delay) {
+		getPlayerEntity().getMover().setDelay(delay);
+		turn();
+	}
+
 	public boolean pickup(Entity actor, Entity target) {
 		boolean canBePickedUp = false;
 		for (Proc p : target.procs) {
@@ -323,9 +327,12 @@ public class Game {
 				}
 			}
 		}
-		if (!somethingToHandle) {
+		if (somethingToHandle) {
+			player.getEntity().getMover().setDelay(player.getEntity().moveCost);
+		} else {
 			announce("There's nothing to open.");
 		}
+
 	}
 
 	public void cmdClose() {
@@ -338,7 +345,9 @@ public class Game {
 				}
 			}
 		}
-		if (!somethingToHandle) {
+		if (somethingToHandle) {
+			player.getEntity().getMover().setDelay(player.getEntity().moveCost);
+		} else {
 			announce("There's nothing to close.");
 		}
 	}
@@ -353,8 +362,57 @@ public class Game {
 	}
 
 	public void cmdTarget() {
-		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, false, 0);
-		GameLoop.targetingModule.begin(tm);
+		Entity rangedWeapon = getPlayerEntity().body.getEquipment(BodyPart.RANGED_WEAPON);
+		Entity rangedAmmo = getPlayerEntity().body.getEquipment(BodyPart.RANGED_AMMO);
+		if (rangedWeapon == null || rangedAmmo == null) {
+			announce("You need a ranged weapon and ammo equipped!");
+			return;
+		}
+		ProcWeaponRanged pwr = (ProcWeaponRanged)(rangedWeapon.procs.stream().filter(p -> p.getClass() == ProcWeaponRanged.class).findFirst().orElse(null));
+		ProcWeaponAmmo pwa = (ProcWeaponAmmo)(rangedAmmo.procs.stream().filter(p -> p.getClass() == ProcWeaponAmmo.class).findFirst().orElse(null));
+		if (pwr == null || pwa == null) {
+			throw new RuntimeException("Invalid ranged or ammo equipped");
+		}
+
+		int range = pwr.range;
+		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(true, true, range);
+		GameLoop.targetingModule.begin(tm, this::handleTarget);
+	}
+
+	public void handleTarget(Point targetPoint) {
+		if (targetPoint == null) {
+			announce("Cancelled.");
+			return;
+		}
+		Entity target = level.moverAt(targetPoint.x, targetPoint.y);
+		if (target == null) {
+			// It's okay to target the floor
+			//announce("No target.");
+		}
+
+		Entity rangedWeapon = getPlayerEntity().body.getEquipment(BodyPart.RANGED_WEAPON);
+		Entity rangedAmmo = getPlayerEntity().body.getEquipment(BodyPart.RANGED_AMMO);
+
+		ProcItem pia = rangedAmmo.getItem();
+		Entity shotEntity;
+		if (pia.quantity == 1) {
+			shotEntity = rangedAmmo;
+			getPlayerEntity().body.putEquipment(BodyPart.RANGED_AMMO, null);
+		} else {
+			shotEntity = rangedAmmo.split(1);
+		}
+
+		if (target != null) {
+			CombatLogic.shoot(player.getEntity(), target, rangedWeapon, shotEntity);
+			passTime(player.getEntity().moveCost);
+		}
+
+		level.addEntityWithStacking(shotEntity, targetPoint);
+	}
+
+	public void cmdLook() {
+		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, false, -1);
+		GameLoop.targetingModule.begin(tm, null);
 	}
 
 	public static void playerCmdMoveBy(int dx, int dy) {
@@ -373,11 +431,6 @@ public class Game {
 				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
 				CombatLogic.swing(player.getEntity(), targetCreature, weaponPrimary);
 				player.getEntity().getMover().setDelay(player.getEntity().moveCost);
-				// happen every tick?
-				if (targetCreature.dead) {
-					level.removeEntity(targetCreature);
-					targetCreature.destroy();
-				}
 			}
 			return;
 		}

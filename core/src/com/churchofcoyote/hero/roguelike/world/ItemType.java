@@ -17,5 +17,7 @@ public class ItemType {
     public ItemCategory category;
     public int level = -1;
     public boolean stackable = true;
+    public int minCount = 1;
+    public int maxCount = 1;
     Set<Consumer<Entity>> setup = new HashSet<>();
 }

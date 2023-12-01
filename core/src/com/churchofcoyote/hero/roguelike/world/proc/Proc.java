@@ -115,6 +115,11 @@ public class Proc {
     public Boolean preDoHit(Entity target, Entity tool) { return null; }
     public void postDoHit(Entity target, Entity tool) { }
 
+    public Boolean preBeShot(Entity actor, Entity tool) { return null; }
+    public void postBeShot(Entity actor, Entity tool) { }
+    public Boolean preDoShoot(Entity target, Entity tool) { return null; }
+    public void postDoShoot(Entity target, Entity tool) { }
+
     public void postBeMissed(Entity actor, Entity tool) { }
     public void postDoMiss(Entity target, Entity tool) { }
 

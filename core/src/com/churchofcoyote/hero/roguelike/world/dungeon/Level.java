@@ -157,7 +157,8 @@ public class Level {
 		}
 	}
 
-	public Entity addEntityWithStacking(Entity entity) {
+	public Entity addEntityWithStacking(Entity entity, Point pos) {
+		entity.pos = pos;
 		Entity stackedInto = null;
 		for (Entity mergeTarget : getItemsOnTile(entity.pos)) {
 			if (entity.canStackWith(mergeTarget)) {
