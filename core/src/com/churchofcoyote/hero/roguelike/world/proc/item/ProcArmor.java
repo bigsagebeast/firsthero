@@ -1,6 +1,7 @@
-package com.churchofcoyote.hero.roguelike.world.proc;
+package com.churchofcoyote.hero.roguelike.world.proc.item;
 
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcArmor extends Proc {
     int armorClass = 0;

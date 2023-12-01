@@ -1,4 +1,4 @@
-package com.churchofcoyote.hero.roguelike.world.proc;
+package com.churchofcoyote.hero.roguelike.world.proc.monster;
 
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.roguelike.game.Game;
@@ -8,6 +8,7 @@ import com.churchofcoyote.hero.roguelike.world.EntityTracker;
 import com.churchofcoyote.hero.roguelike.world.Itempedia;
 import com.churchofcoyote.hero.roguelike.world.ai.ChaseAndMeleeTactic;
 import com.churchofcoyote.hero.roguelike.world.ai.Tactic;
+import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class ProcMonster extends ProcMover {
     }
 
     public void act() {
+        if (tactic == null) {
+            throw new RuntimeException("No tactic found on ProcMonster " + entity.name);
+        }
         if (!tactic.execute(entity, this)) {
             setDelay(entity.getMoveCost());
         }

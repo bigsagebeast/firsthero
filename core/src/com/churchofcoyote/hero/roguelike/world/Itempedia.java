@@ -4,6 +4,7 @@ import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
+import com.churchofcoyote.hero.roguelike.world.proc.item.*;
 
 import java.util.HashMap;
 import java.util.Map;

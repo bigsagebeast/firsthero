@@ -201,9 +201,9 @@ public class DialogueBox {
     public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
         if (keycode == Input.Keys.SPACE) {
             close();
-        } else if (keycode == Input.Keys.UP) {
+        } else if (keycode == Input.Keys.UP || keycode == Input.Keys.NUMPAD_8) {
             selectPrevious();
-        } else if (keycode == Input.Keys.DOWN) {
+        } else if (keycode == Input.Keys.DOWN || keycode == Input.Keys.NUMPAD_2) {
             selectNext();
         } else if (keycode == Input.Keys.ENTER) {
             if (selection >= 0) {

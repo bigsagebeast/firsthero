@@ -9,7 +9,10 @@ import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.ai.ChaseAndMeleeTactic;
+import com.churchofcoyote.hero.roguelike.world.ai.RangedAmmoThenMeleeTactic;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
+import com.churchofcoyote.hero.roguelike.world.proc.monster.ProcMonster;
+import com.churchofcoyote.hero.roguelike.world.proc.monster.ProcShooter;
 
 public class Bestiary {
 	public static Map<String, Phenotype> map = new HashMap<String, Phenotype>();
@@ -19,6 +22,7 @@ public class Bestiary {
 
 		Phenotype pc = new Phenotype();
 		Phenotype goblinLackey = new Phenotype();
+		Phenotype goblinArcher = new Phenotype();
 		Phenotype goblinWarrior = new Phenotype();
 		Phenotype farmer = new Phenotype();
 		Phenotype jackalTrained = new Phenotype();
@@ -55,7 +59,7 @@ public class Bestiary {
 		goblinLackey.threat = 1;
 		goblinLackey.naturalWeaponDamage = 4;
 		goblinLackey.naturalWeaponToHit = -2;
-		goblinLackey.naturalArmorClass = 5;
+		goblinLackey.naturalArmorClass = 2;
 
 		goblinWarrior.name = "sea-withered goblin warrior";
 		goblinWarrior.peaceful = false;
@@ -71,6 +75,27 @@ public class Bestiary {
 		goblinWarrior.naturalWeaponDamage = 6;
 		goblinWarrior.naturalWeaponToHit = 1;
 		goblinWarrior.naturalArmorClass = 5;
+
+		goblinArcher.name = "sea-withered goblin archer";
+		goblinArcher.peaceful = false;
+		goblinArcher.hitPoints = 8;
+		goblinArcher.stats = Rank.C_MINUS;
+		goblinArcher.isMonster = true;
+		goblinArcher.bodyPlan = "humanoid";
+		goblinArcher.glyphName = "humanoid.goblin.archer";
+		goblinArcher.isManipulator = true;
+		goblinArcher.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		goblinArcher.experienceAwarded = 15;
+		goblinArcher.threat = 1;
+		goblinArcher.naturalWeaponDamage = 3;
+		goblinArcher.naturalWeaponToHit = -2;
+		goblinArcher.naturalRangedWeaponDamage = 0;
+		goblinArcher.naturalRangedWeaponToHit = -1;
+		goblinArcher.naturalArmorClass = 0;
+		goblinArcher.setup.add(e -> {
+			e.addProc(new ProcShooter(e, "arrow"));
+			e.addProc(new ProcMonster(e, new RangedAmmoThenMeleeTactic(10)));
+		});
 
 		jackalTrained.name = "trained jackal";
 		jackalTrained.peaceful = false;
@@ -186,6 +211,7 @@ public class Bestiary {
 		map.put("player", pc);
 		map.put("goblin.lackey", goblinLackey);
 		map.put("goblin.warrior", goblinWarrior);
+		map.put("goblin.archer", goblinArcher);
 		map.put("jackal.trained", jackalTrained);
 		map.put("wolf", wolf);
 		map.put("skeleton", skeleton);
@@ -229,11 +255,17 @@ public class Bestiary {
 		e.naturalWeaponToHit = p.naturalWeaponToHit;
 		e.naturalArmorClass = p.naturalArmorClass;
 		e.naturalArmorThickness = p.naturalArmorThickness;
+
 		if (p.moveCost == 0) throw new RuntimeException("Bad move cost");
+		for (Consumer<Entity> consumer : p.setup) {
+			consumer.accept(e);
+		}
+		e.addProc(new ProcTimedEffects(e));
+
 		if (key.equals("player")) {
 			e.addProc(new ProcPlayer(e));
 		}
-		else if (p.isMonster) {
+		else if (p.isMonster && e.getProcByType(ProcMonster.class) == null) {
 			e.addProc(new ProcMonster(e, new ChaseAndMeleeTactic()));
 			//e.addProc(new PropPopupOnSeen(e, "It's a monster!"));
 		} else {
@@ -241,11 +273,6 @@ public class Bestiary {
 			pm.setDelay(Game.random.nextInt(e.moveCost));
 			e.addProc(pm);
 			//e.addProc(new PropPopupOnSeen(e, "It's a creature!"));
-		}
-		e.addProc(new ProcTimedEffects(e));
-
-		for (Consumer<Entity> consumer : p.setup) {
-			consumer.accept(e);
 		}
 
 		return e;

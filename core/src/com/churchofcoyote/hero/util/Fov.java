@@ -153,9 +153,9 @@ public class Fov {
 	}
 */
 
+	/*
 	// TODO this is broken when seeing around corners at long angles
 	public static boolean canSee (Level level, Point from, Point to, float distance, float minLight) {
-
 		int delta_x, delta_y, move_x, move_y, error;
 
 		Point track = new Point(from.x, from.y);
@@ -237,7 +237,7 @@ public class Fov {
 		//System.out.println("Can see");
 		return true;
 	}
-
+	*/
 
 	/*
 	public static List<Point> findRay(Level level, Point origin, Point target) {
@@ -461,8 +461,12 @@ public class Fov {
 	}
 
 	// TODO this is a little slower than it needs to be, re-implement it without fucking with lists
-	public static boolean canSee(Level level, Point origin, Point target, boolean permissive) {
+	public static boolean canSee(Level level, Point origin, Point target, boolean permissive, float distance) {
 		List<Point> ray = findRay(level, origin, target, permissive);
-		return !ray.contains(null);
+		return !ray.contains(null) && ray.size() <= distance;
+	}
+
+	public static boolean canSee(Level level, Point origin, Point target, float distance) {
+		return canSee(level, origin, target, true, distance);
 	}
 }

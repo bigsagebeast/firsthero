@@ -1,8 +1,9 @@
-package com.churchofcoyote.hero.roguelike.world.proc;
+package com.churchofcoyote.hero.roguelike.world.proc.item;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.ItemStatus;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.text.TextBlock;
 
 public class ProcItem extends Proc {

@@ -1,6 +1,7 @@
-1 5
+1 6
 0 0 player.farmer
 0 1 humanoid.goblin.grunt
 0 2 humanoid.goblin.warrior
 0 3 undead.skeleton
 0 4 undead.zombie
+0 5 humanoid.goblin.archer

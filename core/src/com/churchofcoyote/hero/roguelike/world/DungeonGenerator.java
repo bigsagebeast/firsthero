@@ -10,7 +10,6 @@ import com.churchofcoyote.hero.roguelike.game.Dice;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Brogue;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcItem;
 import com.churchofcoyote.hero.util.Point;
 
 public class DungeonGenerator {

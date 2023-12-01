@@ -1,26 +1,22 @@
-package com.churchofcoyote.hero.roguelike.world.proc;
+package com.churchofcoyote.hero.roguelike.world.proc.item;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.roguelike.game.Game;
-import com.churchofcoyote.hero.roguelike.world.AmmoType;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Util;
 
-public class ProcWeaponAmmo extends Proc {
+public class ProcWeaponMelee extends Proc {
 
-    protected ProcWeaponAmmo() {}
-    public ProcWeaponAmmo(Entity e, int averageDamage, int toHitBonus, AmmoType ammoType) {
+    protected ProcWeaponMelee() {}
+    public ProcWeaponMelee(Entity e) {
         super(e);
-        this.averageDamage = averageDamage;
-        this.toHitBonus = toHitBonus;
-        this.ammoType = ammoType;
     }
 
-    public int averageDamage;
-    public int toHitBonus;
-    public AmmoType ammoType;
+    public int averageDamage = 7;
+    public int toHitBonus = 3;
 
     public int averageDamage(Entity wielder) {
         return averageDamage;
@@ -47,9 +43,9 @@ public class ProcWeaponAmmo extends Proc {
     @Override
     public TextBlock getNameBlock() {
         Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
-        ProcWeaponAmmo p = null;
+        ProcWeaponMelee p = null;
         if (pcPrimaryWeapon != null) {
-            p = (ProcWeaponAmmo)pcPrimaryWeapon.getProcByType(ProcWeaponAmmo.class);
+            p = (ProcWeaponMelee)pcPrimaryWeapon.getProcByType(ProcWeaponMelee.class);
         }
 
         int ad = averageDamage();
@@ -83,7 +79,9 @@ public class ProcWeaponAmmo extends Proc {
 
     @Override
     public Proc clone(Entity other) {
-        ProcWeaponAmmo pw = new ProcWeaponAmmo(other, averageDamage, toHitBonus, ammoType);
+        ProcWeaponMelee pw = new ProcWeaponMelee(other);
+        pw.averageDamage = averageDamage;
+        pw.toHitBonus = toHitBonus;
         return pw;
     }
 }

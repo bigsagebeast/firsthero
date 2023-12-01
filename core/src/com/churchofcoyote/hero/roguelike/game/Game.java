@@ -10,6 +10,10 @@ import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
+import com.churchofcoyote.hero.roguelike.world.proc.item.ProcItem;
+import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponAmmo;
+import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponRanged;
+import com.churchofcoyote.hero.roguelike.world.proc.monster.ProcShooter;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
@@ -66,6 +70,10 @@ public class Game {
 		Entity pc = bestiary.create("player");
 		Entity dagger = itempedia.create("dagger");
 		pc.equip(dagger, BodyPart.PRIMARY_HAND);
+		Entity shortbow = itempedia.create("shortbow");
+		pc.equip(shortbow, BodyPart.RANGED_WEAPON);
+		Entity arrow = itempedia.create("arrow", 100);
+		pc.equip(arrow, BodyPart.RANGED_AMMO);
 		player.setEntityId(pc.entityId);
 		dungeon.generateBrogue("dungeon1", 0);
 		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
@@ -105,11 +113,13 @@ public class Game {
 		player.getEntity().pos = playerPos;
 
 		GameLoop.glyphEngine.initializeLevel(level);
+		passTime(0);
 	}
 
 	public void changeLevel(Level nextLevel) {
 		level = nextLevel;
 		GameLoop.glyphEngine.initializeLevel(level);
+		passTime(0);
 	}
 
 	// TODO should specify a profile name or slot or something
@@ -375,7 +385,7 @@ public class Game {
 		}
 
 		int range = pwr.range;
-		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(true, true, range);
+		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(true, true, true, range);
 		GameLoop.targetingModule.begin(tm, this::handleTarget);
 	}
 
@@ -385,10 +395,12 @@ public class Game {
 			return;
 		}
 		Entity target = level.moverAt(targetPoint.x, targetPoint.y);
-		if (target == null) {
-			// It's okay to target the floor
-			//announce("No target.");
+		// Targeting yourself is like canceling your shot
+		if (target == getPlayerEntity()) {
+			announce("No target.");
+			return;
 		}
+		System.out.println("player shooting target: " + targetPoint);
 
 		Entity rangedWeapon = getPlayerEntity().body.getEquipment(BodyPart.RANGED_WEAPON);
 		Entity rangedAmmo = getPlayerEntity().body.getEquipment(BodyPart.RANGED_AMMO);
@@ -412,14 +424,37 @@ public class Game {
 			announce("You're out of " + shotEntity.getVisiblePluralName() + ".");
 		}
 
-		// targeting yourself is like canceling your shot
-		if (target != getPlayerEntity()) {
-			level.addEntityWithStacking(shotEntity, targetPoint);
+		level.addEntityWithStacking(shotEntity, targetPoint);
+		GameLoop.targetingModule.animate(getPlayerEntity().pos, targetPoint);
+	}
+
+	public static void npcShoot(Entity actor, Point targetPoint) {
+		Proc procShooter = actor.getProcByType(ProcShooter.class);
+		String itemKeyAmmo = procShooter.provideProjectile();
+		if (itemKeyAmmo == null) {
+			// TODO debug message and abort safely?
+			throw new RuntimeException("No ammo type for shooter: " + actor.name);
 		}
+		Entity oneAmmo = itempedia.create(itemKeyAmmo, 1);
+		GameLoop.targetingModule.animate(actor.pos, targetPoint);
+		npcShootConsequence(actor, targetPoint, oneAmmo);
+	}
+
+	// later support for passing this method to 'animate', so it gets called afterwards
+	public static void npcShootConsequence(Entity actor, Point targetPoint, Entity ammo) {
+		Entity rangedWeapon = actor.body.getEquipment(BodyPart.RANGED_WEAPON);
+		Entity targetEntity = level.moverAt(targetPoint.x, targetPoint.y);
+
+		if (targetPoint != null) {
+			CombatLogic.shoot(actor, targetEntity, rangedWeapon, ammo);
+
+		}
+		actor.getMover().setDelay(actor.moveCost);
+		level.addEntityWithStacking(ammo, targetPoint);
 	}
 
 	public void cmdLook() {
-		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, false, -1);
+		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, false, false, -1);
 		GameLoop.targetingModule.begin(tm, null);
 	}
 

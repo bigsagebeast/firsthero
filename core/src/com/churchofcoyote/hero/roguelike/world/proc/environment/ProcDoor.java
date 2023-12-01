@@ -7,7 +7,7 @@ import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
-public class ProcDoor extends Proc {
+public class ProcDoor extends ProcFeature {
     protected ProcDoor() {}
     public ProcDoor(Entity e) {
         super(e);

@@ -5,6 +5,8 @@ import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
+import com.churchofcoyote.hero.roguelike.world.proc.item.ProcEquippable;
+import com.churchofcoyote.hero.roguelike.world.proc.item.ProcItem;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
@@ -55,8 +57,11 @@ public class Entity {
     public int experienceAwarded = 0;
     public int level = 1;
     public int moveCost = 1000;
+    // TODO update all natural weapons to proc-based?
     public int naturalWeaponDamage;
     public int naturalWeaponToHit;
+    public int naturalRangedWeaponDamage;
+    public int naturalRangedWeaponToHit;
     public int naturalArmorClass;
     public int naturalArmorThickness;
 
@@ -174,7 +179,7 @@ public class Entity {
     }
 
     public boolean canSee(Entity target) {
-        return Fov.canSee(Game.getLevel(), pos, target.pos, visionRange, 0.01f);
+        return Fov.canSee(Game.getLevel(), pos, target.pos, visionRange);
     }
 
     public boolean canHear(Entity target) {
@@ -444,6 +449,14 @@ public class Entity {
 
     public int getNaturalWeaponToHit() {
         return naturalWeaponToHit;
+    }
+
+    public int getNaturalRangedWeaponDamage() {
+        return naturalRangedWeaponDamage;
+    }
+
+    public int getNaturalRangedWeaponToHit() {
+        return naturalRangedWeaponToHit;
     }
 
     public int getArmorClass() {

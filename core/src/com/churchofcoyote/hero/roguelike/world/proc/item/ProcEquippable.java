@@ -1,7 +1,8 @@
-package com.churchofcoyote.hero.roguelike.world.proc;
+package com.churchofcoyote.hero.roguelike.world.proc.item;
 
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcEquippable extends Proc {
     public BodyPart equipmentFor;

@@ -114,7 +114,7 @@ public class RoguelikeModule extends Module {
 				for (Entity target : level.getMovers()) {
 					if (e == target)
 						continue;
-					if (Fov.canSee(level, e.pos, target.pos, 15, 0)) {
+					if (Fov.canSee(level, e.pos, target.pos, 15)) {
 						//System.out.println("Can   see: " + e.name + ", " + target.name);
 						visibleMovers.add(target.getMover());
 					} else {
@@ -147,7 +147,6 @@ public class RoguelikeModule extends Module {
 	@Override
 	public void update(GameState state) {
 		if (dirty) {
-			System.out.println("Dirty" + Game.random.nextInt());
 			redraw();
 			process();
 			dirty = false;

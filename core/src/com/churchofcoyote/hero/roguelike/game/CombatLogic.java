@@ -1,9 +1,9 @@
 package com.churchofcoyote.hero.roguelike.game;
 
 import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcWeaponAmmo;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcWeaponMelee;
-import com.churchofcoyote.hero.roguelike.world.proc.ProcWeaponRanged;
+import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponAmmo;
+import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponMelee;
+import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponRanged;
 
 public class CombatLogic {
 
@@ -111,10 +111,17 @@ public class CombatLogic {
 		int damage, accuracy;
 		float randomFactor = Game.random.nextFloat() + 0.5f;
 		// TODO invoke all procs, not just pwa/pwr
+		int averageDamage;
+		int accuracyBonus;
 		ProcWeaponAmmo pwa = (ProcWeaponAmmo)ammo.getProcByType(ProcWeaponAmmo.class);
-		ProcWeaponRanged pwr = (ProcWeaponRanged)tool.getProcByType(ProcWeaponRanged.class);
-		int averageDamage = pwr.averageDamage(actor) + pwa.averageDamage(actor);
-		int accuracyBonus = pwr.toHitBonus(actor) + pwa.toHitBonus(actor);
+		if (tool != null) {
+			ProcWeaponRanged pwr = (ProcWeaponRanged)tool.getProcByType(ProcWeaponRanged.class);
+			averageDamage = pwr.averageDamage(actor) + pwa.averageDamage(actor);
+			accuracyBonus = pwr.toHitBonus(actor) + pwa.toHitBonus(actor);
+		} else {
+			averageDamage = actor.getNaturalRangedWeaponDamage() + pwa.averageDamage(actor);
+			accuracyBonus = actor.getNaturalRangedWeaponToHit() + pwa.toHitBonus(actor);
+		}
 		damage = (int)(averageDamage * randomFactor);
 		accuracy = accuracyBonus + Game.random.nextInt(20);
 		// TODO should be a TextBlock

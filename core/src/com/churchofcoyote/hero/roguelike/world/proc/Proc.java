@@ -44,8 +44,8 @@ public class Proc {
     }
 
     public void setDelay(long delay) {
-        if (delay == 0) {
-            throw new RuntimeException("Set delay of 0 for " + this.getClass() + " on " + entity.name);
+        if (delay == 0 && entity != Game.getPlayerEntity()) {
+            //throw new RuntimeException("Set delay of 0 for " + this.getClass() + " on " + entity.name);
         }
         nextAction = Game.time + delay;
     }
@@ -119,6 +119,8 @@ public class Proc {
     public void postBeShot(Entity actor, Entity tool) { }
     public Boolean preDoShoot(Entity target, Entity tool) { return null; }
     public void postDoShoot(Entity target, Entity tool) { }
+
+    public String provideProjectile() { return null; }
 
     public void postBeMissed(Entity actor, Entity tool) { }
     public void postDoMiss(Entity target, Entity tool) { }

@@ -20,6 +20,8 @@ import java.util.function.Consumer;
 
 public class TargetingModule extends Module {
 
+    private static int ANIMATION_STEP_TIME = 1;
+    private OperationMode operationMode;
     public TargetMode targetMode;
     public Point targetTile;
     public TextBlock targetBlockParent;
@@ -30,11 +32,26 @@ public class TargetingModule extends Module {
     Consumer<Point> handler;
     List<Entity> moversInLOS;
     int trackMoverIndex;
+    private long animationStart;
+    private int lastAnimationStep;
+    private TextBlock animationBlock;
+    private List<Point> ray;
 
     public TargetingModule() {
     }
 
+    public void animate(Point origin, Point target) {
+        operationMode = OperationMode.ANIMATING;
+        animationStart = -1;
+        lastAnimationStep = -1;
+        ray = Fov.findRay(Game.getLevel(), origin, target, true);
+        animationBlock = new TextBlock("", UIManager.NAME_MAIN_WINDOW, 12, 0, 0, Color.WHITE);
+        GameLoop.uiEngine.addBlock(animationBlock);
+        super.start();
+    }
+
     public void begin(TargetMode targetMode, Consumer<Point> handler) {
+        operationMode = OperationMode.TARGETING;
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
         moversInLOS = new ArrayList<>();
         for (Entity mover : Game.getLevel().getMovers()) {
@@ -66,6 +83,14 @@ public class TargetingModule extends Module {
 
     @Override
     public void update(GameState state) {
+        if (operationMode == OperationMode.TARGETING) {
+            updateTarget(state);
+        } else {
+            updateAnimation(state);
+        }
+    }
+
+    private void updateTarget(GameState state) {
         if (!dirty) {
             return;
         }
@@ -111,7 +136,7 @@ public class TargetingModule extends Module {
         // Not permissive = we think we can't see it, so accept a simple failure
         boolean permissive = Game.getLevel().cell(targetTile).visible();
         Point origin = Game.getPlayerEntity().pos;
-        List<Point> ray = Fov.findRay(Game.getLevel(), origin, targetTile, permissive);
+        ray = Fov.findRay(Game.getLevel(), origin, targetTile, permissive);
 
         boolean valid = true;
         for (int i=0; i<ray.size(); i++) {
@@ -125,6 +150,7 @@ public class TargetingModule extends Module {
 
             String symbol;
             if (i == ray.size()-1) {
+                System.out.println("loc: " + currentRay + ", centerPixel: " + centerPixel);
                 symbol = "X";
             } else {
                 int deltaX = Math.abs(origin.x - targetTile.x);
@@ -134,20 +160,6 @@ public class TargetingModule extends Module {
                 } else {
                     symbol = "|";
                 }
-
-                // this didn't look good
-                /*
-                if (i > 0) {
-                    Point curPoint = ray.get(i);
-                    Point lastPoint = ray.get(i-1) != null ? ray.get(i-1) : ray.get(i-2);
-                    int deltaX = curPoint.x - lastPoint.x;
-                    int deltaY = curPoint.y - lastPoint.y;
-                    if (deltaX == 0 && deltaY != 0) symbol = "|";
-                    if (deltaX != 0 && deltaY == 0) symbol = "-";
-                    if (deltaX * deltaY == 1) symbol = "\\";
-                    if (deltaX * deltaY == -1) symbol = "/";
-                }
-                 */
             }
             Color color = Color.GREEN;
             if (!valid) {
@@ -174,12 +186,65 @@ public class TargetingModule extends Module {
         dirty = false;
     }
 
+    private void updateAnimation(GameState state) {
+        if (animationStart == -1) {
+            animationStart = state.getTick();
+        }
+        int animationStep = (int)(state.getTick() - animationStart) / ANIMATION_STEP_TIME;
+        if (animationStep == lastAnimationStep) {
+            return;
+        }
+        WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
+        lastAnimationStep = animationStep;
+        System.out.println("animationStep: " + animationStep);
+        if (animationStep >= ray.size()) {
+            animationBlock.close();
+            animationBlock = null;
+            end();
+            return;
+        }
+        System.out.println(ray.get(animationStep));
+
+        String symbol;
+        // can we precalc this?  No, in case we change it to per-block
+        int deltaX = Math.abs(ray.get(0).x - ray.get(ray.size()-1).x);
+        int deltaY = Math.abs(ray.get(0).y - ray.get(ray.size()-1).y);
+        if (deltaX >= deltaY) {
+            symbol = "-";
+        } else {
+            symbol = "|";
+        }
+        animationBlock.text = symbol;
+
+        // TODO fix positioning
+        if (targetBlockParent != null) {
+            targetBlockParent.close();
+        }
+
+        Point currentRay = ray.get(animationStep);
+        Point centerPixel = GameLoop.glyphEngine.getTileCenterPixelInWindow(currentRay);
+        System.out.println("centerPixel: " + centerPixel);
+        float fontSize = RoguelikeModule.FONT_SIZE * 1.2f * GameLoop.glyphEngine.zoom;
+        // TODO update this calculation at the same time as the targeting one
+        animationBlock.pixelOffsetX = centerPixel.x - (fontSize / 3);
+        animationBlock.pixelOffsetY = centerPixel.y - (fontSize / 3);
+        if (animationBlock.text == "|") {
+            animationBlock.pixelOffsetX += (fontSize / 3);
+        }
+
+        animationBlock.compile();
+    }
+
+
     @Override
     public void render(Graphics g, GraphicsState gState) {
     }
 
     @Override
     public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
+        if (operationMode != OperationMode.TARGETING) {
+            return true;
+        }
         dirty = true;
         switch (keycode) {
             case Input.Keys.SPACE:
@@ -240,6 +305,15 @@ public class TargetingModule extends Module {
 
     public void select(Point p) {
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
+
+        if (targetMode.stopAtWall) {
+            for (int i=1; i<ray.size(); i++) {
+                if (ray.get(i) == null) {
+                    p = ray.get(i-1);
+                }
+            }
+        }
+
         targetBlocks.clear();
         if (targetBlockParent != null) {
             targetBlockParent.close();
@@ -255,15 +329,21 @@ public class TargetingModule extends Module {
         }
     }
 
+    private enum OperationMode {
+        TARGETING,
+        ANIMATING
+    }
 
     public class TargetMode {
         public boolean lineFromPlayer;
         public boolean trackMovers;
+        public boolean stopAtWall;
         public float maxRange;
 
-        public TargetMode(boolean lineFromPlayer, boolean trackMovers, float maxRange) {
+        public TargetMode(boolean lineFromPlayer, boolean trackMovers, boolean stopAtWall, float maxRange) {
             this.lineFromPlayer = lineFromPlayer;
             this.trackMovers = trackMovers;
+            this.stopAtWall = stopAtWall;
             this.maxRange = maxRange;
         }
     }

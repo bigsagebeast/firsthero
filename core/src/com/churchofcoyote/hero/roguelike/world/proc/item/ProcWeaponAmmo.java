@@ -1,27 +1,26 @@
-package com.churchofcoyote.hero.roguelike.world.proc;
+package com.churchofcoyote.hero.roguelike.world.proc.item;
 
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.AmmoType;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Util;
 
-public class ProcWeaponRanged extends Proc {
+public class ProcWeaponAmmo extends Proc {
 
-    protected ProcWeaponRanged() {}
-    public ProcWeaponRanged(Entity e, int averageDamage, int toHitBonus, int range, AmmoType ammoType) {
+    protected ProcWeaponAmmo() {}
+    public ProcWeaponAmmo(Entity e, int averageDamage, int toHitBonus, AmmoType ammoType) {
         super(e);
         this.averageDamage = averageDamage;
         this.toHitBonus = toHitBonus;
-        this.range = range;
         this.ammoType = ammoType;
     }
 
     public int averageDamage;
     public int toHitBonus;
-    public int range;
     public AmmoType ammoType;
 
     public int averageDamage(Entity wielder) {
@@ -49,9 +48,9 @@ public class ProcWeaponRanged extends Proc {
     @Override
     public TextBlock getNameBlock() {
         Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
-        ProcWeaponRanged p = null;
+        ProcWeaponAmmo p = null;
         if (pcPrimaryWeapon != null) {
-            p = (ProcWeaponRanged)pcPrimaryWeapon.getProcByType(ProcWeaponRanged.class);
+            p = (ProcWeaponAmmo)pcPrimaryWeapon.getProcByType(ProcWeaponAmmo.class);
         }
 
         int ad = averageDamage();
@@ -85,7 +84,7 @@ public class ProcWeaponRanged extends Proc {
 
     @Override
     public Proc clone(Entity other) {
-        ProcWeaponRanged pw = new ProcWeaponRanged(other, averageDamage, toHitBonus, range, ammoType);
+        ProcWeaponAmmo pw = new ProcWeaponAmmo(other, averageDamage, toHitBonus, ammoType);
         return pw;
     }
 }
