@@ -251,7 +251,7 @@ public class Level {
 			int y = Game.random.nextInt(height);
 			if (cell[x][y].terrain.isPassable()) {
 				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
-					if (e.getMover() != null) {
+					if (e.getMover() != null || e.isObstructive()) {
 						continue;
 					}
 				}

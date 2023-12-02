@@ -50,6 +50,10 @@ public class Proc {
         nextAction = Game.time + delay;
     }
 
+    public void initialize() {
+        active = true;
+    }
+
     public boolean hasAction() { return false; }
 
     public boolean isMover() {

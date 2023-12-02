@@ -13,6 +13,7 @@ import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
 import com.churchofcoyote.hero.module.*;
+import com.churchofcoyote.hero.roguelike.world.DefinitionLoader;
 import com.churchofcoyote.hero.ui.UIManager;
 import com.churchofcoyote.hero.util.QueuedKeypress;
 
@@ -37,6 +38,9 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public GameLoop() {
 		try {
 			glyphEngine.initialize();
+			DefinitionLoader.loadFile("defs/environment/features.json");
+			DefinitionLoader.loadFile("defs/items/weapons.json");
+			DefinitionLoader.loadFile("defs/unique/unique.json");
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
 		}

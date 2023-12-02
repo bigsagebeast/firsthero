@@ -10,7 +10,7 @@ import com.churchofcoyote.hero.util.Util;
 
 public class ProcWeaponMelee extends Proc {
 
-    protected ProcWeaponMelee() {}
+    public ProcWeaponMelee() {}
     public ProcWeaponMelee(Entity e) {
         super(e);
     }

@@ -2,7 +2,9 @@ package com.churchofcoyote.hero.roguelike.world;
 
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -20,4 +22,5 @@ public class ItemType {
     public int minCount = 1;
     public int maxCount = 1;
     Set<Consumer<Entity>> setup = new HashSet<>();
+    public List<LoadProc> procLoaders = new ArrayList<>();
 }

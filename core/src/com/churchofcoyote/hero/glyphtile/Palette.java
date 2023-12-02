@@ -39,8 +39,30 @@ public class Palette {
     public static final int COLOR_GRAY = 17;
     public static final int COLOR_WHITE = 18;
 
+    public static HashMap<String, Integer> stringMap = new HashMap<>();
+
     public static void initialize() {
         colors.put(0, 0);
+
+        stringMap.put("transparent", 0);
+        stringMap.put("brown", 1);
+        stringMap.put("red", 2);
+        stringMap.put("orange", 3);
+        stringMap.put("yellow", 4);
+        stringMap.put("tan", 5);
+        stringMap.put("chartreuse", 6);
+        stringMap.put("darkgreen", 7);
+        stringMap.put("lightgreen", 8);
+        stringMap.put("blue", 9);
+        stringMap.put("cerulean", 10);
+        stringMap.put("cyan", 11);
+        stringMap.put("skyblue", 12);
+        stringMap.put("purple", 13);
+        stringMap.put("pink", 14);
+        stringMap.put("forestgreen", 15);
+        stringMap.put("teal", 16);
+        stringMap.put("gray", 17);
+        stringMap.put("white", 18);
 
         BufferedReader reader;
         try {

@@ -150,7 +150,6 @@ public class TargetingModule extends Module {
 
             String symbol;
             if (i == ray.size()-1) {
-                System.out.println("loc: " + currentRay + ", centerPixel: " + centerPixel);
                 symbol = "X";
             } else {
                 int deltaX = Math.abs(origin.x - targetTile.x);
@@ -196,14 +195,12 @@ public class TargetingModule extends Module {
         }
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
         lastAnimationStep = animationStep;
-        System.out.println("animationStep: " + animationStep);
         if (animationStep >= ray.size()) {
             animationBlock.close();
             animationBlock = null;
             end();
             return;
         }
-        System.out.println(ray.get(animationStep));
 
         String symbol;
         // can we precalc this?  No, in case we change it to per-block
@@ -223,7 +220,6 @@ public class TargetingModule extends Module {
 
         Point currentRay = ray.get(animationStep);
         Point centerPixel = GameLoop.glyphEngine.getTileCenterPixelInWindow(currentRay);
-        System.out.println("centerPixel: " + centerPixel);
         float fontSize = RoguelikeModule.FONT_SIZE * 1.2f * GameLoop.glyphEngine.zoom;
         // TODO update this calculation at the same time as the targeting one
         animationBlock.pixelOffsetX = centerPixel.x - (fontSize / 3);

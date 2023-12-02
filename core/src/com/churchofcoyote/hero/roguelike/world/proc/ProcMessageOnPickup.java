@@ -8,7 +8,7 @@ public class ProcMessageOnPickup extends Proc {
 
     private String text;
 
-    protected ProcMessageOnPickup() {}
+    public ProcMessageOnPickup() {}
     public ProcMessageOnPickup(Entity e, String text) {
         super(e);
         this.text = text;

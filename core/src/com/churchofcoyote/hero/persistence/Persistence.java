@@ -55,6 +55,7 @@ public class Persistence {
         PersistentLevel pl = new PersistentLevel(Game.getLevel());
         String filename = saveLocation + levelPrefix + level.getName() + suffix;
         File levelFileHandle = new File(filename);
+        System.out.println("Saving game as " + levelFileHandle.getAbsolutePath());
         if (levelFileHandle.exists()) {
             levelFileHandle.delete();
         }

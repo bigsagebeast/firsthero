@@ -1,0 +1,16 @@
+{
+  "items": {
+    "door": {
+      "name": "door",
+      "glyphName": "terrain.door_closed",
+      "palette": [
+        "white",
+        "tan",
+        "brown"
+      ],
+      "procs": {
+        "environment.ProcDoor": {}
+      }
+    }
+  }
+}

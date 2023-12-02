@@ -1,0 +1,30 @@
+{
+  "items": {
+    "pitchfork": {
+      "name": "pitchfork",
+      "glyphName": "weapon.pitchfork",
+      "palette": [
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": -1,
+      "procs": {
+        "ProcPopupOnSeen": {
+          "text": "Pick up your weapon"
+        },
+        "ProcMessageOnStepOn": {
+          "text": "Press 'comma' to pick it up."
+        },
+        "ProcMessageOnPickup": {
+          "text": "Press 'w' to wield it."
+        },
+        "item.ProcWeaponMelee": {
+          "averageDamage": 5,
+          "toHitBonus": 2
+        }
+      }
+    }
+  }
+}

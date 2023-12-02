@@ -5,12 +5,12 @@ import java.util.List;
 
 public class ItemCategory {
 
-    public static ItemCategory CATEGORY_ONE_HANDED_WEAPONS = new ItemCategory("One-Handed Weapons");
-    public static ItemCategory CATEGORY_TWO_HANDED_WEAPONS = new ItemCategory("Two-Handed Weapons");
-    public static ItemCategory CATEGORY_SHIELDS = new ItemCategory("Shields");
-    public static ItemCategory CATEGORY_RANGED = new ItemCategory("Ranged Weapons");
-    public static ItemCategory CATEGORY_AMMO = new ItemCategory("Ammunition");
-    public static ItemCategory CATEGORY_GOLD = new ItemCategory("Gold");
+    public static ItemCategory CATEGORY_ONE_HANDED_WEAPONS = new ItemCategory("One-Handed Weapons", "onehanded");
+    public static ItemCategory CATEGORY_TWO_HANDED_WEAPONS = new ItemCategory("Two-Handed Weapons", "twohanded");
+    public static ItemCategory CATEGORY_SHIELDS = new ItemCategory("Shields", "shields");
+    public static ItemCategory CATEGORY_RANGED = new ItemCategory("Ranged Weapons", "rangedweapon");
+    public static ItemCategory CATEGORY_AMMO = new ItemCategory("Ammunition", "ammunition");
+    public static ItemCategory CATEGORY_GOLD = new ItemCategory("Gold", "gold");
 
     public static List<ItemCategory> categories = new ArrayList<>();
 
@@ -23,10 +23,11 @@ public class ItemCategory {
         categories.add(CATEGORY_GOLD);
     }
 
-
     private String name;
-    public ItemCategory(String name) {
+    public String key;
+    public ItemCategory(String name, String key) {
         this.name = name;
+        this.key = key;
     }
     public String getName() {
         return name;

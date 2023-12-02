@@ -7,7 +7,7 @@ public class ProcMessageOnStepOn extends Proc {
 
     private String text;
 
-    protected ProcMessageOnStepOn() {}
+    public ProcMessageOnStepOn() {}
     public ProcMessageOnStepOn(Entity e, String text) {
         super(e);
         this.text = text;

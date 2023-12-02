@@ -21,7 +21,7 @@ public class Itempedia {
         door.glyphName = "terrain.door_closed";
         door.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TAN, Palette.COLOR_BROWN);
         door.setup.add((e) -> {e.addProc(new ProcDoor(e));});
-        map.put(door.keyName, door);
+        //map.put(door.keyName, door);
 
         ItemType pitchfork = new ItemType();
         pitchfork.keyName = "pitchfork";
@@ -42,7 +42,7 @@ public class Itempedia {
             e.addProc(pw);
         });
 
-        map.put(pitchfork.keyName, pitchfork);
+        //map.put(pitchfork.keyName, pitchfork);
 
         ItemType shortsword = new ItemType();
         shortsword.keyName = "short sword";
@@ -167,6 +167,11 @@ public class Itempedia {
 
         for (Consumer<Entity> consumer : t.setup) {
             consumer.accept(e);
+        }
+        if (t.procLoaders != null) {
+            for (LoadProc loader : t.procLoaders) {
+                loader.apply(e);
+            }
         }
 
         if (!e.containsProc(ProcItem.class)) {

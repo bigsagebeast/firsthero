@@ -32,7 +32,6 @@ public class RangedAmmoThenMeleeTactic extends Tactic {
 				pm.setDelay(e.getMoveCost());
 				return true;
 			}
-			System.out.println("npc shooting target: " + e.name + " at " + e.pos + ", " + target.name + " at " + target.pos);
 			Game.npcShoot(e, target.pos);
 			pm.setDelay(e.getMoveCost());
 			return true;

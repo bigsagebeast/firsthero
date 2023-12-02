@@ -7,7 +7,7 @@ public class ProcPopupOnSeen extends Proc {
 
     private String text;
 
-    protected ProcPopupOnSeen() {}
+    public ProcPopupOnSeen() {}
     public ProcPopupOnSeen(Entity e, String text) {
         super(e);
         this.text = text;
