@@ -25,6 +25,12 @@
           "toHitBonus": 2
         }
       }
+    },
+    "misc.corpse": {
+      "name": "generic corpse (error)",
+      "glyphName": "misc.corpse",
+      "category": "food",
+      "stackable": false
     }
   }
 }

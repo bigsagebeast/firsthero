@@ -1,5 +1,6 @@
 package com.churchofcoyote.hero.roguelike.world;
 
+import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 
@@ -31,5 +32,7 @@ public class Phenotype {
 	public int threat;
 	public int packSize = 1;
 	public int packSpawnArea = 3;
+	public int corpseSpawnPercent = 50;
+	public PaletteEntry corpseSpawnColors = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
 	Set<Consumer<Entity>> setup = new HashSet<>();
 }

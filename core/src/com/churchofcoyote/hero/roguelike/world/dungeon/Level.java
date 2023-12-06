@@ -148,7 +148,9 @@ public class Level {
 		return procEntities;
 	}
 
+	// TODO deprecate
 	public void addEntity(Entity entity) {
+		entity.containingLevel = this.name;
 		entityIds.add(entity.entityId);
 		for (Proc p : entity.procs) {
 			if (p.hasAction() && p.nextAction < 0) {
@@ -158,6 +160,8 @@ public class Level {
 	}
 
 	public Entity addEntityWithStacking(Entity entity, Point pos) {
+		entity.containingLevel = this.name;
+		entity.containingEntity = -1;
 		entity.pos = pos;
 		Entity stackedInto = null;
 		for (Entity mergeTarget : getItemsOnTile(entity.pos)) {

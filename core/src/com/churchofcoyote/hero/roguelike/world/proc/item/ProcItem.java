@@ -12,7 +12,7 @@ public class ProcItem extends Proc {
     public boolean identified;
     public int quantity = 1;
 
-    protected ProcItem() {}
+    public ProcItem() {}
     public ProcItem(Entity e) {
         super(e);
     }

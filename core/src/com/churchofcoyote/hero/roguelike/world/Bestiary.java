@@ -230,7 +230,7 @@ public class Bestiary {
 
 		Phenotype p = map.get(key);
 
-		e.phenotypeName = p.name;
+		e.phenotypeName = key;
 		if (name != null) {
 			e.name = name;
 		} else {

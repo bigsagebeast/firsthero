@@ -3,6 +3,7 @@ package com.churchofcoyote.hero.roguelike.world;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.game.MoverLogic;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.roguelike.world.proc.item.ProcEquippable;
@@ -40,6 +41,9 @@ public class Entity {
     public List<Proc> procs = new ArrayList<>();
     public Collection<Integer> inventoryIds = new ArrayList<>();
     public Body body;
+
+    public int containingEntity = -1;
+    public String containingLevel = null;
 
     public boolean dead = false;
     public boolean destroyed = false;
@@ -173,6 +177,7 @@ public class Entity {
             dead = true;
         }
         if (dead) {
+            MoverLogic.createCorpse(Game.getLevel(), this);
             Game.getLevel().removeEntity(this);
             destroy();
         }
@@ -268,7 +273,7 @@ public class Entity {
 
         // TODO error messages?
         if (!inventoryIds.contains(target.entityId)) {
-            inventoryIds.add(target.entityId);
+            acquireWithStacking(target);
             /*
             if (this == Game.getPlayerEntity()) {
                 Game.announce("That's not in your inventory.");
@@ -565,6 +570,8 @@ public class Entity {
 
     public void receiveItem(Entity e) {
         inventoryIds.add(e.entityId);
+        e.containingEntity = this.entityId;
+        e.containingLevel = null;
     }
 
     // TODO call this whenever things die or permanently leave the world
@@ -574,6 +581,26 @@ public class Entity {
         for (Proc p : procs) {
             p.beDestroyed();
         }
+
+        if (containingEntity > -1) {
+            Entity container = EntityTracker.get(containingEntity);
+            if (container.inventoryIds.contains(entityId)) {
+                container.inventoryIds.remove(entityId);
+            } else {
+                BodyPart bp = container.body.getParts().stream().filter(b -> container.body.getEquipment(b) == this).findFirst().orElse(null);
+                if (bp != null) {
+                    container.body.putEquipment(bp, -1);
+                } else {
+                    throw new RuntimeException("Tried to destroy a " + name + " contained by " + container.name + " that wasn't in inventory or equipped");
+                }
+            }
+        } else if (containingLevel != null) {
+            // TODO other levels
+            Game.getLevel().removeEntity(this);
+        } else {
+            System.out.println("DEBUG: Destroyed entity " + entityId + " (" + name + ") contained in no entity or level");
+        }
+
         GameLoop.glyphEngine.destroyEntity(this);
         destroyed = true;
     }

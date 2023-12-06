@@ -53,10 +53,10 @@ public class Game {
 		Entity dagger = itempedia.create("dagger");
 		Entity buckler = itempedia.create("buckler");
 		player.setEntityId(pc.entityId);
-		player.getEntity().inventoryIds.add(shortsword.entityId);
-		player.getEntity().inventoryIds.add(longsword.entityId);
-		player.getEntity().inventoryIds.add(buckler.entityId);
-		player.getEntity().inventoryIds.add(dagger.entityId);
+		player.getEntity().receiveItem(shortsword);
+		player.getEntity().receiveItem(longsword);
+		player.getEntity().receiveItem(buckler);
+		player.getEntity().receiveItem(dagger);
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");

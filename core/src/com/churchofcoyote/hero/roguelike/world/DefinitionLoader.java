@@ -82,6 +82,8 @@ public class DefinitionLoader {
                                 itemTypeField.set(itemType, nodeField.asInt());
                             } else if (itemTypeField.getType().isAssignableFrom(float.class) || itemTypeField.getType().isAssignableFrom(Float.class)) {
                                 itemTypeField.set(itemType, Float.valueOf(nodeField.asText()));
+                            } else if (itemTypeField.getType().isAssignableFrom(boolean.class) || itemTypeField.getType().isAssignableFrom(Boolean.class)) {
+                                itemTypeField.set(itemType, Boolean.valueOf(nodeField.asText()));
                             }
 
                         }
