@@ -6,9 +6,9 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 public class ProcArmor extends Proc {
     int armorClass = 0;
     int armorThickness = 0;
-
-    public ProcArmor(Entity e, int armorClass, int armorThickness) {
-        super(e);
+    public ProcArmor() { super(); }
+    public ProcArmor(int armorClass, int armorThickness) {
+        this();
         this.armorClass = armorClass;
         this.armorThickness = armorThickness;
     }
@@ -24,7 +24,7 @@ public class ProcArmor extends Proc {
     }
 
     @Override
-    public Proc clone(Entity other) {
-        return new ProcArmor(other, armorClass, armorThickness);
+    public Proc clone() {
+        return new ProcArmor(armorClass, armorThickness);
     }
 }

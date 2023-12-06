@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -222,7 +223,7 @@ public class Entity {
     public boolean tryOpen(Entity actor) {
         boolean canOpen = false;
         for (Proc p : procs) {
-            Boolean canOpenThisProc = p.preBeOpened(actor);
+            Boolean canOpenThisProc = p.preBeOpened(this, actor);
             if (canOpenThisProc == Boolean.TRUE) {
                 canOpen = true;
             } else if (canOpenThisProc == Boolean.FALSE) {
@@ -233,7 +234,7 @@ public class Entity {
         }
         if (canOpen) {
             for (Proc p : procs) {
-                p.postBeOpened(actor);
+                p.postBeOpened(this, actor);
             }
             return true;
         }
@@ -244,7 +245,7 @@ public class Entity {
     public boolean tryClose(Entity actor) {
         boolean canClose = false;
         for (Proc p : procs) {
-            Boolean canCloseThisProc = p.preBeClosed(actor);
+            Boolean canCloseThisProc = p.preBeClosed(this, actor);
             if (canCloseThisProc == Boolean.TRUE) {
                 canClose = true;
             } else if (canCloseThisProc == Boolean.FALSE) {
@@ -255,7 +256,7 @@ public class Entity {
         }
         if (canClose) {
             for (Proc p : procs) {
-                p.postBeClosed(actor);
+                p.postBeClosed(this, actor);
             }
             return true;
         }
@@ -326,7 +327,7 @@ public class Entity {
         for (BodyPart alreadyEquippedBodyPart : allToUnequip.keySet()) {
             Entity alreadyEquipped = allToUnequip.get(alreadyEquippedBodyPart);
             for (Proc p : this.procs) {
-                Boolean val = p.preDoUnequip(alreadyEquippedBodyPart, alreadyEquipped);
+                Boolean val = p.preDoUnequip(this, alreadyEquippedBodyPart, alreadyEquipped);
                 if (val != null && !val) {
                     if (this == Game.getPlayerEntity()) {
                         // TODO should be handled by other proc
@@ -336,7 +337,7 @@ public class Entity {
                 }
             }
             for (Proc p : alreadyEquipped.procs) {
-                Boolean val = p.preBeUnequipped(alreadyEquippedBodyPart, this);
+                Boolean val = p.preBeUnequipped(alreadyEquipped, alreadyEquippedBodyPart, this);
                 if (val != null && !val) {
                     if (this == Game.getPlayerEntity()) {
                         // TODO should be handled by other proc
@@ -353,10 +354,10 @@ public class Entity {
             body.putEquipment(alreadyEquippedBodyPart, null);
             acquireWithStacking(alreadyEquipped);
             for (Proc p : this.procs) {
-                p.postDoUnequip(alreadyEquippedBodyPart, alreadyEquipped);
+                p.postDoUnequip(this, alreadyEquippedBodyPart, alreadyEquipped);
             }
             for (Proc p : alreadyEquipped.procs) {
-                p.postBeUnequipped(alreadyEquippedBodyPart, this);
+                p.postBeUnequipped(alreadyEquipped, alreadyEquippedBodyPart, this);
             }
             if (this == Game.getPlayerEntity())
             {
@@ -366,7 +367,7 @@ public class Entity {
 
         // equip the new item
         for (Proc p : this.procs) {
-            Boolean val = p.preDoEquip(bp, target);
+            Boolean val = p.preDoEquip(this, bp, target);
             if (val != null && !val) {
                 if (this == Game.getPlayerEntity()) {
                     Game.announce("You fail to equip it.");
@@ -375,7 +376,7 @@ public class Entity {
             }
         }
         for (Proc p : target.procs) {
-            Boolean val = p.preBeEquipped(bp, this);
+            Boolean val = p.preBeEquipped(target, bp, this);
             if (val != null && !val) {
                 if (this == Game.getPlayerEntity()) {
                     Game.announce("It can't be equipped.");
@@ -402,10 +403,10 @@ public class Entity {
         }
 
         for (Proc p : this.procs) {
-            p.postDoEquip(bp, actualTarget);
+            p.postDoEquip(this, bp, actualTarget);
         }
         for (Proc p : actualTarget.procs) {
-            p.postBeEquipped(bp, this);
+            p.postBeEquipped(actualTarget, bp, this);
         }
         body.putEquipment(bp, actualTarget.entityId);
         if (actualTarget == target) {
@@ -415,7 +416,7 @@ public class Entity {
         {
             Game.roguelikeModule.updateEquipmentWindow();
         }
-        getMover().setDelay(Game.ONE_TURN);
+        getMover().setDelay(this, Game.ONE_TURN);
         return true;
     }
 
@@ -484,7 +485,7 @@ public class Entity {
         // TODO also have methods for prefixes and suffixes?
         // Maybe this method also handles overall colors for parts that aren't overridden?
         for (Proc p : procs) {
-            TextBlock tb = p.getNameBlock();
+            TextBlock tb = p.getNameBlock(this);
             if (tb != null) {
                 return tb;
             }
@@ -564,8 +565,10 @@ public class Entity {
                 recursiveEquipment().flatMap(entity -> entity.procs.stream()));
     }
 
-    public void forEachProc(Consumer<Proc> lambda) {
-        allProcsIncludingEquipmentAndInventory().forEach(lambda);
+    public void forEachProc(BiConsumer<Entity, Proc> lambda) {
+        for (Proc p : allProcsIncludingEquipmentAndInventory().collect(Collectors.toList())) {
+            lambda.accept(this, p);
+        }
     }
 
     public void receiveItem(Entity e) {
@@ -655,7 +658,7 @@ public class Entity {
         other.glyphName = glyphName;
         other.palette = palette;
         for (Proc p : procs) {
-            Proc op = p.clone(other);
+            Proc op = p.clone();
             if (op != null) {
                 other.procs.add(op);
             }

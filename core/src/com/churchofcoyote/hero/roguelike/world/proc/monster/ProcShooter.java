@@ -5,12 +5,9 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcShooter extends Proc {
     public String projectile;
-    protected ProcShooter() {}
-    public ProcShooter(Entity e) {
-        super(e);
-    }
+    public ProcShooter() {}
 
-    public ProcShooter(Entity e, String projectile) {
+    public ProcShooter(String projectile) {
         this.projectile = projectile;
     }
     @Override

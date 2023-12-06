@@ -7,15 +7,12 @@ import java.util.List;
 
 public class ProcPlayer extends ProcMover {
 
-    protected ProcPlayer() {}
-    public ProcPlayer(Entity e) {
-        super(e);
-    }
+    public ProcPlayer() { super(); }
 
     @Override
-    public Boolean preDoPickup(Entity target) { return Boolean.TRUE; }
+    public Boolean preDoPickup(Entity entity, Entity target) { return Boolean.TRUE; }
     @Override
-    public void postDoPickup(Entity target) {
+    public void postDoPickup(Entity entity, Entity target) {
         //Game.announce("You pick up the " + target.name + ".");
     }
 
@@ -23,22 +20,22 @@ public class ProcPlayer extends ProcMover {
     public Boolean wantsMoverLos() { return Boolean.TRUE; }
 
     @Override
-    public void handleMoverLos(List<ProcMover> movers) {
+    public void handleMoverLos(Entity entity, List<Entity> movers) {
 
     }
 
     @Override
-    public void postDoKill(Entity target, Entity tool) {
+    public void postDoKill(Entity entity, Entity target, Entity tool) {
         entity.experience += target.experienceAwarded;
         if (target.peaceful) {
             Game.announce("If only talking was implemented.");
         }
         if (entity.experience >= entity.experienceToNext) {
-            levelUp();
+            levelUp(entity);
         }
     }
 
-    private void levelUp() {
+    private void levelUp(Entity entity) {
         entity.level++;
         entity.experience -= entity.experienceToNext;
         entity.experienceToNext *= 2;

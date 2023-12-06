@@ -11,9 +11,9 @@ import com.churchofcoyote.hero.util.Util;
 
 public class ProcWeaponRanged extends Proc {
 
-    protected ProcWeaponRanged() {}
-    public ProcWeaponRanged(Entity e, int averageDamage, int toHitBonus, int range, AmmoType ammoType) {
-        super(e);
+    protected ProcWeaponRanged() { super(); }
+    public ProcWeaponRanged(int averageDamage, int toHitBonus, int range, AmmoType ammoType) {
+        this();
         this.averageDamage = averageDamage;
         this.toHitBonus = toHitBonus;
         this.range = range;
@@ -42,13 +42,13 @@ public class ProcWeaponRanged extends Proc {
     }
 
     @Override
-    public Boolean preBePickedUp(Entity actor) { return true; }
+    public Boolean preBePickedUp(Entity entity, Entity actor) { return true; }
 
     @Override
-    public void postBePickedUp(Entity actor) {}
+    public void postBePickedUp(Entity entity, Entity actor) {}
 
     @Override
-    public TextBlock getNameBlock() {
+    public TextBlock getNameBlock(Entity entity) {
         Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
         ProcWeaponRanged p = null;
         if (pcPrimaryWeapon != null) {
@@ -85,8 +85,8 @@ public class ProcWeaponRanged extends Proc {
     }
 
     @Override
-    public Proc clone(Entity other) {
-        ProcWeaponRanged pw = new ProcWeaponRanged(other, averageDamage, toHitBonus, range, ammoType);
+    public Proc clone() {
+        ProcWeaponRanged pw = new ProcWeaponRanged(averageDamage, toHitBonus, range, ammoType);
         return pw;
     }
 }

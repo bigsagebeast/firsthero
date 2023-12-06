@@ -1,4 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon;
+import com.churchofcoyote.hero.roguelike.game.EntityProc;
 import com.churchofcoyote.hero.roguelike.world.*;
 
 import java.util.*;
@@ -140,6 +141,7 @@ public class Level {
 		return getEntityStream().filter(e -> e.pos.equals(p) && e.getMover() != null).collect(Collectors.toList());
 	}
 
+	/*
 	public List<Proc> getProcEntities() {
 		List<Proc> procEntities = new ArrayList<Proc>();
 		for (Entity e : getEntities()) {
@@ -147,6 +149,17 @@ public class Level {
 		}
 		return procEntities;
 	}
+	 */
+	public List<EntityProc> getProcEntities() {
+		List<EntityProc> procEntities = new ArrayList<>();
+		for (Entity e : getEntities()) {
+			for (Proc p : e.procs) {
+				procEntities.add(new EntityProc(e, p));
+			}
+		}
+		return procEntities;
+	}
+
 
 	// TODO deprecate
 	public void addEntity(Entity entity) {

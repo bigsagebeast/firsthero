@@ -63,9 +63,11 @@ public class PersistentLevel {
 
         for (Entity ent : entities) {
             EntityTracker.load(ent);
+            /*
             for (Proc p : ent.procs) {
                p.entity = EntityTracker.get(p.entityId);
             }
+             */
             // TODO: Better way of tracking which entities are on-map and which are off?
             if (ent.pos != null) {
                 level.addEntity(ent);

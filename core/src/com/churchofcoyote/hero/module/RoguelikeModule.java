@@ -86,7 +86,7 @@ public class RoguelikeModule extends Module {
 			}
 			if (level.cell(e.pos.x, e.pos.y).visible()) {
 				for (Proc p : e.procs) {
-					p.actPlayerLos();
+					p.actPlayerLos(e);
 				}
 			}
 		}
@@ -99,7 +99,7 @@ public class RoguelikeModule extends Module {
 			}
 			if (level.cell(e.pos.x, e.pos.y).visible()) {
 				for (Proc p : e.procs) {
-					p.actPlayerLos();
+					p.actPlayerLos(e);
 				}
 			}
 
@@ -109,21 +109,21 @@ public class RoguelikeModule extends Module {
 					moverLosProcs.add(p);
 				}
 			}
-			ArrayList<ProcMover> visibleMovers = new ArrayList<>();
+			ArrayList<Entity> visibleMovers = new ArrayList<>();
 			if (!moverLosProcs.isEmpty()) {
 				for (Entity target : level.getMovers()) {
 					if (e == target)
 						continue;
 					if (Fov.canSee(level, e.pos, target.pos, 15)) {
 						//System.out.println("Can   see: " + e.name + ", " + target.name);
-						visibleMovers.add(target.getMover());
+						visibleMovers.add(target);
 					} else {
 						//System.out.println("Can't see: " + e.name + ", " + target.name);
 					}
 				}
 			}
 			for (Proc p : moverLosProcs) {
-				p.handleMoverLos(visibleMovers);
+				p.handleMoverLos(e, visibleMovers);
 			}
 		}
 	}

@@ -8,14 +8,14 @@ public class ProcMessageOnPickup extends Proc {
 
     private String text;
 
-    public ProcMessageOnPickup() {}
-    public ProcMessageOnPickup(Entity e, String text) {
-        super(e);
+    public ProcMessageOnPickup() { super(); }
+    public ProcMessageOnPickup(String text) {
+        this();
         this.text = text;
     }
 
     @Override
-    public void postBePickedUp(Entity actor) {
+    public void postBePickedUp(Entity entity, Entity actor) {
         if (active) {
             // TODO only for player?
             Game.announce(text);

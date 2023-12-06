@@ -132,9 +132,9 @@ public class Brogue {
                     door.pos = new Point(i, j);
                     level.addEntity(door);
                     if (Game.random.nextInt(2) == 0) {
-                        ((ProcDoor)door.getProcByType(ProcDoor.class)).close();
+                        ((ProcDoor)door.getProcByType(ProcDoor.class)).close(door);
                     } else {
-                        ((ProcDoor)door.getProcByType(ProcDoor.class)).open();
+                        ((ProcDoor)door.getProcByType(ProcDoor.class)).open(door);
                     }
                 }
             }

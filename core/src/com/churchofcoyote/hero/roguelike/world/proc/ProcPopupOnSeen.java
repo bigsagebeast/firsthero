@@ -7,13 +7,14 @@ public class ProcPopupOnSeen extends Proc {
 
     private String text;
 
-    public ProcPopupOnSeen() {}
-    public ProcPopupOnSeen(Entity e, String text) {
-        super(e);
+    public ProcPopupOnSeen() { super(); }
+    public ProcPopupOnSeen(String text) {
+        this();
         this.text = text;
     }
 
-    public void actPlayerLos() {
+    @Override
+    public void actPlayerLos(Entity entity) {
         if (active) {
             GameLoop.popupModule.createPopup(text, 3f, entity, 0.75f);
         }

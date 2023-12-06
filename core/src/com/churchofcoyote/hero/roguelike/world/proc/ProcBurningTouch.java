@@ -8,16 +8,17 @@ public class ProcBurningTouch extends Proc {
     int dice;
     int sides;
     int modifier;
+    public ProcBurningTouch() { super(); }
 
-    public ProcBurningTouch(Entity e, int dice, int sides, int modifier) {
-        super(e);
+    public ProcBurningTouch(int dice, int sides, int modifier) {
+        this();
         this.dice = dice;
         this.sides = sides;
         this.modifier = modifier;
     }
 
     @Override
-    public void postBeHit(Entity actor, Entity tool) {
+    public void postBeHit(Entity entity, Entity actor, Entity tool) {
         Game.announceVis(actor, entity,
                 "It burns!",
                 "They burn!",
@@ -27,7 +28,7 @@ public class ProcBurningTouch extends Proc {
     }
 
     @Override
-    public void postDoHit(Entity target, Entity tool) {
+    public void postDoHit(Entity entity, Entity target, Entity tool) {
         Game.announceVis(entity, target,
                 "They burn!",
                 "You burn!",

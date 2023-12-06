@@ -17,33 +17,28 @@ import java.util.List;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Proc {
 
-    @JsonIgnore
-    public Entity entity;
-
-    public int entityId;
-
     public long nextAction = -1;
     public boolean active;
 
     // for deserialization
-    protected Proc() {}
-    public Proc(Entity e) {
-        entity = e;
+    protected Proc() {
         active = true;
     }
 
+    /*
     // Custom logic before serialization
     @JsonGetter("entityId")
     public int getEntityIdForSerialization() {
         entityId = entity.entityId;
         return entityId;
     }
+    */
 
     public void clearDelay() {
         nextAction = Game.time;
     }
 
-    public void setDelay(long delay) {
+    public void setDelay(Entity entity, long delay) {
         if (delay == 0 && entity != Game.getPlayerEntity()) {
             //throw new RuntimeException("Set delay of 0 for " + this.getClass() + " on " + entity.name);
         }
@@ -60,41 +55,41 @@ public class Proc {
         return false;
     }
 
-    public void act() { }
+    public void act(Entity entity) { }
 
     // activates every 1000
-    public void turnPassed() { }
+    public void turnPassed(Entity entity) { }
 
-    public TextBlock getNameBlock() { return null; }
+    public TextBlock getNameBlock(Entity entity) { return null; }
 
     // return true if pickup is allowed, false if it's aborted, null if no opinion
-    public Boolean preBePickedUp(Entity actor) { return null; }
-    public void postBePickedUp(Entity actor) {}
-    public Boolean preBeDropped(Entity actor) { return null; }
-    public void postBeDropped(Entity actor) {}
+    public Boolean preBePickedUp(Entity entity, Entity actor) { return null; }
+    public void postBePickedUp(Entity entity, Entity actor) {}
+    public Boolean preBeDropped(Entity entity, Entity actor) { return null; }
+    public void postBeDropped(Entity entity, Entity actor) {}
 
-    public Boolean preDoPickup(Entity target) { return null; }
-    public void postDoPickup(Entity target) {}
-    public Boolean preDoDrop(Entity target) { return null; }
-    public void postDoDrop(Entity target) {}
+    public Boolean preDoPickup(Entity entity, Entity target) { return null; }
+    public void postDoPickup(Entity entity, Entity target) {}
+    public Boolean preDoDrop(Entity entity, Entity target) { return null; }
+    public void postDoDrop(Entity entity, Entity target) {}
 
-    public Boolean preBeEquipped(BodyPart bp, Entity actor) { return null; }
-    public void postBeEquipped(BodyPart bp, Entity actor) {}
-    public Boolean preBeUnequipped(BodyPart bp, Entity actor) { return null; }
-    public void postBeUnequipped(BodyPart bp, Entity actor) {}
+    public Boolean preBeEquipped(Entity entity, BodyPart bp, Entity actor) { return null; }
+    public void postBeEquipped(Entity entity, BodyPart bp, Entity actor) {}
+    public Boolean preBeUnequipped(Entity entity, BodyPart bp, Entity actor) { return null; }
+    public void postBeUnequipped(Entity entity, BodyPart bp, Entity actor) {}
 
-    public Boolean preDoEquip(BodyPart bp, Entity target) { return null; }
-    public void postDoEquip(BodyPart bp, Entity target) {}
-    public Boolean preDoUnequip(BodyPart bp, Entity target) { return null; }
-    public void postDoUnequip(BodyPart bp, Entity target) {}
+    public Boolean preDoEquip(Entity entity, BodyPart bp, Entity target) { return null; }
+    public void postDoEquip(Entity entity, BodyPart bp, Entity target) {}
+    public Boolean preDoUnequip(Entity entity, BodyPart bp, Entity target) { return null; }
+    public void postDoUnequip(Entity entity, BodyPart bp, Entity target) {}
 
-    public void postBeSteppedOn(Entity actor) { }
+    public void postBeSteppedOn(Entity entity, Entity actor) { }
 
-    public void actPlayerLos() {}
+    public void actPlayerLos(Entity entity) {}
 
     // True iff any "True"
     public Boolean wantsMoverLos() { return null; }
-    public void handleMoverLos(List<ProcMover> movers) {}
+    public void handleMoverLos(Entity entity, List<Entity> movers) {}
 
     // True iff any "True"
     public Boolean isObstructive() { return null; }
@@ -104,38 +99,44 @@ public class Proc {
     // False iff any "False"
     public Boolean pathfindable(Entity actor) { return null; }
 
-    public Boolean preBeOpened(Entity actor) { return null; }
-    public void postBeOpened(Entity actor) { }
-    public Boolean preBeClosed(Entity actor) { return null; }
-    public void postBeClosed(Entity actor) { }
+    public Boolean preBeOpened(Entity entity, Entity actor) { return null; }
+    public void postBeOpened(Entity entity, Entity actor) { }
+    public Boolean preBeClosed(Entity entity, Entity actor) { return null; }
+    public void postBeClosed(Entity entity, Entity actor) { }
 
-    public Boolean preBeLocked(Entity actor) { return null; }
-    public void postBeLocked(Entity actor) { }
-    public Boolean preBeUnlocked(Entity actor) { return null; }
-    public void postBeUnlocked(Entity actor) { }
+    public Boolean preBeLocked(Entity entity, Entity actor) { return null; }
+    public void postBeLocked(Entity entity, Entity actor) { }
+    public Boolean preBeUnlocked(Entity entity, Entity actor) { return null; }
+    public void postBeUnlocked(Entity entity, Entity actor) { }
 
-    public Boolean preBeHit(Entity actor, Entity tool) { return null; }
-    public void postBeHit(Entity actor, Entity tool) { }
-    public Boolean preDoHit(Entity target, Entity tool) { return null; }
-    public void postDoHit(Entity target, Entity tool) { }
+    public Boolean preBeHit(Entity entity, Entity actor, Entity tool) { return null; }
+    public void postBeHit(Entity entity, Entity actor, Entity tool) { }
+    public Boolean preDoHit(Entity entity, Entity target, Entity tool) { return null; }
+    public void postDoHit(Entity entity, Entity target, Entity tool) { }
 
-    public Boolean preBeShot(Entity actor, Entity tool) { return null; }
-    public void postBeShot(Entity actor, Entity tool) { }
-    public Boolean preDoShoot(Entity target, Entity tool) { return null; }
-    public void postDoShoot(Entity target, Entity tool) { }
+    public Boolean preBeShot(Entity entity, Entity actor, Entity tool) { return null; }
+    public void postBeShot(Entity entity, Entity actor, Entity tool) { }
+    public Boolean preDoShoot(Entity entity, Entity target, Entity tool) { return null; }
+    public void postDoShoot(Entity entity, Entity target, Entity tool) { }
 
     public String provideProjectile() { return null; }
 
-    public void postBeMissed(Entity actor, Entity tool) { }
-    public void postDoMiss(Entity target, Entity tool) { }
+    public void postBeMissed(Entity entity, Entity actor, Entity tool) { }
+    public void postDoMiss(Entity entity, Entity target, Entity tool) { }
 
-    public void postBeKilled(Entity actor, Entity tool) { }
-    public void postDoKill(Entity target, Entity tool) { }
+    public void postBeKilled(Entity entity, Entity actor, Entity tool) { }
+    public void postDoKill(Entity entity, Entity target, Entity tool) { }
 
     public int provideArmorClass() { return 0; }
     public int provideArmorThickness() { return 0; }
 
+    public Boolean targetForQuaff(Entity entity) { return null; }
+    public Boolean preBeQuaffed(Entity entity, Entity actor) { return null; }
+    public void postBeQuaffed(Entity entity, Entity actor) { }
+    public Boolean preDoQuaff(Entity entity, Entity target) { return null; }
+    public void postDoQuaff(Entity entity, Entity target) { }
+
     public void beDestroyed() {}
 
-    public Proc clone(Entity other) { return null; }
+    public Proc clone() { return null; }
 }

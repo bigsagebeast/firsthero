@@ -1,0 +1,9 @@
+{
+  "items": {
+    "potion.yellow": {
+      "unidGroup": "potion1",
+      "unidentifiedName": "yellow potion",
+      "glyphName": "potion.yellow"
+    }
+  }
+}

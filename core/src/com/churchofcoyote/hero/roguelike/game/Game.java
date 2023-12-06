@@ -98,9 +98,9 @@ public class Game {
 
 	public void changeLevel(Level nextLevel, Point playerPos) {
 		if (level != null) {
-			for (Proc p : level.getProcEntities()) {
-				if (p.hasAction()) {
-					p.nextAction = p.nextAction - Game.time;
+			for (EntityProc tuple : level.getProcEntities()) {
+				if (tuple.proc.hasAction()) {
+					tuple.proc.nextAction = tuple.proc.nextAction - Game.time;
 				}
 			}
 			level.removeEntity(player.getEntity());
@@ -167,39 +167,39 @@ public class Game {
 			// maybe filtered by ones that have an 'act' or a 'turnPassed'
 			while (lastTurnProc + ONE_TURN < time) {
 				lastTurnProc += ONE_TURN;
-				for (Proc p : level.getProcEntities()) {
-					p.turnPassed();
+				for (EntityProc tuple : level.getProcEntities()) {
+					tuple.proc.turnPassed(tuple.entity);
 				}
 			}
 
 			long lowestTurn = -1;
 			long secondLowestTurn = -1;
-			Proc lowestProc = null;
-			for (Proc p : level.getProcEntities()) {
-				if (p.nextAction != -1 && (lowestTurn == -1 || p.nextAction < lowestTurn)) {
-					lowestTurn = p.nextAction;
-					lowestProc = p;
-				} else if (p.nextAction != -1 && (secondLowestTurn == -1 || p.nextAction < secondLowestTurn)) {
-					secondLowestTurn = p.nextAction;
+			EntityProc lowestProc = null;
+			for (EntityProc tuple : level.getProcEntities()) {
+				if (tuple.proc.nextAction != -1 && (lowestTurn == -1 || tuple.proc.nextAction < lowestTurn)) {
+					lowestTurn = tuple.proc.nextAction;
+					lowestProc = tuple;
+				} else if (tuple.proc.nextAction != -1 && (secondLowestTurn == -1 || tuple.proc.nextAction < secondLowestTurn)) {
+					secondLowestTurn = tuple.proc.nextAction;
 				}
 			}
 			time = lowestTurn;
-			if (lowestProc == player.getEntity().getMover()) {
+			if (lowestProc.proc == player.getEntity().getMover()) {
 				break;
 			}
-			lowestProc.act();
+			lowestProc.proc.act(lowestProc.entity);
 		}
 	}
 
 	public void passTime(int delay) {
-		getPlayerEntity().getMover().setDelay(delay);
+		getPlayerEntity().getMover().setDelay(getPlayerEntity(), delay);
 		turn();
 	}
 
 	public boolean pickup(Entity actor, Entity target) {
 		boolean canBePickedUp = false;
 		for (Proc p : target.procs) {
-			Boolean attempt = p.preBePickedUp(actor);
+			Boolean attempt = p.preBePickedUp(target, actor);
 			if (attempt == null) {
 				continue;
 			} else if (attempt == true) {
@@ -215,7 +215,7 @@ public class Game {
 
 		boolean canDoPickup = false;
 		for (Proc p : actor.procs) {
-			Boolean attempt = p.preDoPickup(target);
+			Boolean attempt = p.preDoPickup(actor, target);
 			if (attempt == null) {
 				continue;
 			} else if (attempt == true) {
@@ -240,11 +240,11 @@ public class Game {
 
 		Entity stackedInto = null;
 		for (Proc p : actor.procs) {
-			p.postDoPickup(target);
+			p.postDoPickup(actor, target);
 		}
 		// careful with this: if stacked, this operates on the entire stack
 		for (Proc p : target.procs) {
-			p.postBePickedUp(actor);
+			p.postBePickedUp(target, actor);
 		}
 		return true;
 	}
@@ -310,7 +310,7 @@ public class Game {
 	}
 
 	public void cmdWait() {
-		player.getEntity().getMover().setDelay(ONE_TURN);
+		player.getEntity().getMover().setDelay(getPlayerEntity(), ONE_TURN);
 	}
 
 	public void cmdWield() {
@@ -338,7 +338,7 @@ public class Game {
 			}
 		}
 		if (somethingToHandle) {
-			player.getEntity().getMover().setDelay(player.getEntity().moveCost);
+			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 		} else {
 			announce("There's nothing to open.");
 		}
@@ -356,7 +356,7 @@ public class Game {
 			}
 		}
 		if (somethingToHandle) {
-			player.getEntity().getMover().setDelay(player.getEntity().moveCost);
+			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 		} else {
 			announce("There's nothing to close.");
 		}
@@ -449,7 +449,7 @@ public class Game {
 			CombatLogic.shoot(actor, targetEntity, rangedWeapon, ammo);
 
 		}
-		actor.getMover().setDelay(actor.moveCost);
+		actor.getMover().setDelay(actor, actor.moveCost);
 		level.addEntityWithStacking(ammo, targetPoint);
 	}
 
@@ -473,7 +473,7 @@ public class Game {
 				Entity weaponPrimary = player.getEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
 				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
 				CombatLogic.swing(player.getEntity(), targetCreature, weaponPrimary);
-				player.getEntity().getMover().setDelay(player.getEntity().moveCost);
+				player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 			}
 			return;
 		}
@@ -495,7 +495,7 @@ public class Game {
 		}
 
 		//announce("Walked one square.");
-		player.getEntity().getMover().setDelay(player.getEntity().moveCost);
+		player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 		movePlayer(tx, ty);
 	}
 
@@ -503,7 +503,7 @@ public class Game {
 		int tx = actor.pos.x + dx;
 		int ty = actor.pos.y + dy;
 		
-		pm.setDelay(actor.moveCost);
+		pm.setDelay(actor, actor.moveCost);
 		
 		//Entity targetCreature = level.moverAt(tx, ty);
 
@@ -578,7 +578,7 @@ public class Game {
 
 		for (Entity item : items) {
 			for (Proc p : item.procs) {
-				p.postBeSteppedOn(player.getEntity());
+				p.postBeSteppedOn(item, player.getEntity());
 			}
 		}
 	}
@@ -587,7 +587,7 @@ public class Game {
 		actor.pos = new Point(tx, ty);
 		for (Entity item : level.getItemsOnTile(actor.pos)) {
 			for (Proc p : item.procs) {
-				p.postBeSteppedOn(actor);
+				p.postBeSteppedOn(item, actor);
 			}
 		}
 	}

@@ -12,25 +12,22 @@ public class ProcItem extends Proc {
     public boolean identified;
     public int quantity = 1;
 
-    public ProcItem() {}
-    public ProcItem(Entity e) {
-        super(e);
-    }
+    public ProcItem() { super(); }
 
     @Override
-    public Boolean preBePickedUp(Entity actor) { return true; }
+    public Boolean preBePickedUp(Entity entity, Entity actor) { return true; }
 
     @Override
-    public void postBePickedUp(Entity actor) {}
+    public void postBePickedUp(Entity entity, Entity actor) {}
 
     @Override
-    public TextBlock getNameBlock() {
+    public TextBlock getNameBlock(Entity entity) {
         return new TextBlock(entity.getVisibleNameWithQuantity(), Color.WHITE);
     }
 
     @Override
-    public Proc clone(Entity other) {
-        ProcItem pi = new ProcItem(other);
+    public Proc clone() {
+        ProcItem pi = new ProcItem();
         pi.status = status;
         pi.identified = identified;
         // careful to reset this afterwards if you're destacking

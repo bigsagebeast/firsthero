@@ -29,7 +29,7 @@ public class LoadProc {
         } catch (InstantiationException e) {
             throw new RuntimeException("Couldn't instantiate " + procName, e);
         }
-        proc.entity = entity;
+        //proc.entity = entity;
         try {
             for (String fieldName : fields.keySet()) {
                 Field procField = clazz.getDeclaredField(fieldName);

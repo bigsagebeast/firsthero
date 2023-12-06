@@ -8,10 +8,9 @@ public class ProcCorpse extends Proc {
 
     int age = 0;
 
-    public ProcCorpse() {}
-    public ProcCorpse(Entity e) {super(e);}
+    public ProcCorpse() { super(); }
 
-    public void turnPassed() {
+    public void turnPassed(Entity entity) {
         age++;
         if (age > 100) {
             entity.destroy();

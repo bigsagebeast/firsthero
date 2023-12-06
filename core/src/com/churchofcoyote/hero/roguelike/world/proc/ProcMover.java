@@ -8,13 +8,6 @@ public class ProcMover extends Proc {
 
     public int targetEntityId = EntityTracker.NONE;
 
-
-    protected ProcMover() {}
-    public ProcMover(Entity e) {
-        super(e);
-    }
-
-
     public boolean isMover() {
         return true;
     }
@@ -23,15 +16,15 @@ public class ProcMover extends Proc {
         return true;
     }
 
-    public void act()
+    public void act(Entity entity)
     {
-        setDelay(1000);
+        setDelay(entity, 1000);
     }
 
     @Override
-    public Boolean preDoPickup(Entity target) { return false; }
+    public Boolean preDoPickup(Entity entity, Entity target) { return false; }
     @Override
-    public void postDoPickup(Entity target) {}
+    public void postDoPickup(Entity entity, Entity target) {}
 
     public boolean isPeacefulToPlayer() {
         return false;//peaceful;

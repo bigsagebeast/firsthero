@@ -6,9 +6,9 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcEquippable extends Proc {
     public BodyPart equipmentFor;
-    protected ProcEquippable() {}
-    public ProcEquippable (Entity e, BodyPart equipmentFor) {
-        super(e);
+    protected ProcEquippable() { super(); }
+    public ProcEquippable (BodyPart equipmentFor) {
+        super();
         this.equipmentFor = equipmentFor;
     }
     public Boolean preBeEquipped(BodyPart bp, Entity actor) { return true; }
@@ -17,7 +17,7 @@ public class ProcEquippable extends Proc {
     public void postBeUnequipped(BodyPart bp, Entity actor) {}
 
     @Override
-    public Proc clone(Entity other) {
-        return new ProcEquippable(other, equipmentFor);
+    public Proc clone() {
+        return new ProcEquippable(equipmentFor);
     }
 }

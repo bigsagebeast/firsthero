@@ -29,12 +29,12 @@ public class RangedAmmoThenMeleeTactic extends Tactic {
 		if (target != null && e.canSee(target)) {
 			// maybe stand there instead of shooting
 			if (Math.random() < 0.5) {
-				pm.setDelay(e.getMoveCost());
+				pm.setDelay(e, e.getMoveCost());
 				return true;
 			}
 			ammo--;
 			Game.npcShoot(e, target.pos);
-			pm.setDelay(e.getMoveCost());
+			pm.setDelay(e, e.getMoveCost());
 			return true;
 		}
 		return executeChaseAndMelee(e, pm);
@@ -68,7 +68,7 @@ public class RangedAmmoThenMeleeTactic extends Tactic {
 						Game.npcMoveBy(e, pm, direction.getX(), direction.getY());
 					}
 				} else {
-					pm.setDelay(Game.ONE_TURN);
+					pm.setDelay(e, Game.ONE_TURN);
 				}
 			}
 		} else {

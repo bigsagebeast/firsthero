@@ -8,16 +8,12 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcDoor extends ProcFeature {
-    public ProcDoor() {}
-    public ProcDoor(Entity e) {
-        super(e);
-        open();
-    }
+    public ProcDoor() { super(); }
 
     public boolean isOpen;
 
     @Override
-    public Boolean preBeOpened(Entity actor) {
+    public Boolean preBeOpened(Entity entity, Entity actor) {
         if (!isOpen) {
             return Boolean.TRUE;
         }
@@ -26,7 +22,7 @@ public class ProcDoor extends ProcFeature {
     }
 
     @Override
-    public Boolean preBeClosed(Entity actor) {
+    public Boolean preBeClosed(Entity entity, Entity actor) {
         if (isOpen) {
             return Boolean.TRUE;
         }
@@ -35,15 +31,15 @@ public class ProcDoor extends ProcFeature {
     }
 
     @Override
-    public void postBeOpened(Entity actor) {
+    public void postBeOpened(Entity entity, Entity actor) {
         Game.announceVis(actor, null, "You open the door.", null, actor.name + " opens the door.", "You hear a door being opened.");
-        open();
+        open(entity);
     }
 
     @Override
-    public void postBeClosed(Entity actor) {
+    public void postBeClosed(Entity entity, Entity actor) {
         Game.announceVis(actor, null, "You close the door.", null, actor.name + " closes the door.", "You hear a door being closed.");
-        close();
+        close(entity);
     }
 
     @Override
@@ -63,11 +59,11 @@ public class ProcDoor extends ProcFeature {
     }
 
     @Override
-    public void postBeSteppedOn(Entity e) {
+    public void postBeSteppedOn(Entity entity, Entity e) {
         Game.announceVis(e, null, "You pass through a door.", null, null, null);
     }
 
-    public void open() {
+    public void open(Entity entity) {
         entity.glyphName = "terrain.door_open";
         entity.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT, Palette.COLOR_BROWN);
         entity.name = "open door";
@@ -75,7 +71,7 @@ public class ProcDoor extends ProcFeature {
         isOpen = true;
     }
 
-    public void close() {
+    public void close(Entity entity) {
         entity.glyphName = "terrain.door_closed";
         entity.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TAN, Palette.COLOR_BROWN);
         entity.name = "closed door";

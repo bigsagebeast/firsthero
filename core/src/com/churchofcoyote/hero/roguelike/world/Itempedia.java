@@ -20,7 +20,7 @@ public class Itempedia {
         door.name = "door";
         door.glyphName = "terrain.door_closed";
         door.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TAN, Palette.COLOR_BROWN);
-        door.setup.add((e) -> {e.addProc(new ProcDoor(e));});
+        door.setup.add((e) -> {e.addProc(new ProcDoor());});
         //map.put(door.keyName, door);
 
         ItemType pitchfork = new ItemType();
@@ -32,11 +32,11 @@ public class Itempedia {
         pitchfork.equipmentFor = BodyPart.TWO_HAND;
         pitchfork.category = ItemCategory.CATEGORY_TWO_HANDED_WEAPONS;
         pitchfork.level = -1;
-        pitchfork.setup.add((e) -> {e.addProc(new ProcPopupOnSeen(e, "Pick up your weapon"));});
-        pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnStepOn(e, "Press 'comma' to pick it up."));});
-        pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnPickup(e, "Press 'w' to wield it."));});
+        pitchfork.setup.add((e) -> {e.addProc(new ProcPopupOnSeen("Pick up your weapon"));});
+        pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnStepOn("Press 'comma' to pick it up."));});
+        pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnPickup("Press 'w' to wield it."));});
         pitchfork.setup.add((e) -> {
-            ProcWeaponMelee pw = new ProcWeaponMelee(e);
+            ProcWeaponMelee pw = new ProcWeaponMelee();
             pw.averageDamage = 5;
             pw.toHitBonus = 2;
             e.addProc(pw);
@@ -53,7 +53,7 @@ public class Itempedia {
         shortsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
         shortsword.level = 1;
         shortsword.setup.add((e) -> {
-            ProcWeaponMelee pw = new ProcWeaponMelee(e);
+            ProcWeaponMelee pw = new ProcWeaponMelee();
             pw.averageDamage = 6;
             pw.toHitBonus = 3;
             e.addProc(pw);
@@ -69,7 +69,7 @@ public class Itempedia {
         longsword.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
         longsword.level = 2;
         longsword.setup.add((e) -> {
-            ProcWeaponMelee pw = new ProcWeaponMelee(e);
+            ProcWeaponMelee pw = new ProcWeaponMelee();
             pw.averageDamage = 8;
             pw.toHitBonus = 2;
             e.addProc(pw);
@@ -85,7 +85,7 @@ public class Itempedia {
         dagger.category = ItemCategory.CATEGORY_ONE_HANDED_WEAPONS;
         dagger.level = 0;
         dagger.setup.add((e) -> {
-            ProcWeaponMelee pw = new ProcWeaponMelee(e);
+            ProcWeaponMelee pw = new ProcWeaponMelee();
             pw.averageDamage = 5;
             pw.toHitBonus = 3;
             e.addProc(pw);
@@ -101,7 +101,7 @@ public class Itempedia {
         buckler.category = ItemCategory.CATEGORY_SHIELDS;
         buckler.level = 1;
         buckler.setup.add((e) -> {
-            e.addProc(new ProcArmor(e, 2, 0));
+            e.addProc(new ProcArmor(2, 0));
         });
         map.put(buckler.keyName, buckler);
 
@@ -114,7 +114,7 @@ public class Itempedia {
         shortbow.category = ItemCategory.CATEGORY_RANGED;
         shortbow.level = 1;
         shortbow.setup.add((e) -> {
-            e.addProc(new ProcWeaponRanged(e, 0, 0, 10, AmmoType.ARROW));
+            e.addProc(new ProcWeaponRanged(0, 0, 10, AmmoType.ARROW));
         });
         map.put(shortbow.keyName, shortbow);
 
@@ -129,7 +129,7 @@ public class Itempedia {
         arrow.minCount = 5;
         arrow.maxCount = 10;
         arrow.setup.add((e) -> {
-            e.addProc(new ProcWeaponAmmo(e, 5, 0, AmmoType.ARROW));
+            e.addProc(new ProcWeaponAmmo(5, 0, AmmoType.ARROW));
         });
         map.put(arrow.keyName, arrow);
 
@@ -175,11 +175,11 @@ public class Itempedia {
         }
 
         if (!e.containsProc(ProcItem.class)) {
-            e.addProc(new ProcItem(e));
+            e.addProc(new ProcItem());
         }
 
         if (t.equipmentFor != null && !e.containsProc(ProcEquippable.class)) {
-            e.addProc(new ProcEquippable(e, t.equipmentFor));
+            e.addProc(new ProcEquippable(t.equipmentFor));
         }
 
         return e;

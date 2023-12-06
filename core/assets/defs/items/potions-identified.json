@@ -1,0 +1,9 @@
+{
+  "items": {
+    "potion.healing": {
+      "idGroup": "potion1",
+      "name": "potion of healing",
+      "category": "potion"
+    }
+  }
+}

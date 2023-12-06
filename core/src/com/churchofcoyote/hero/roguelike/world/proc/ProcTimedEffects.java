@@ -6,12 +6,9 @@ public class ProcTimedEffects extends Proc {
 
     private int healingTimer;
 
-    protected ProcTimedEffects() {}
-    public ProcTimedEffects(Entity e) {
-        super(e);
-    }
+    public ProcTimedEffects() { super(); }
     @Override
-    public void turnPassed() {
+    public void turnPassed(Entity entity) {
         if (entity.getMover() != null) {
             if (++healingTimer >= entity.healingDelay) {
                 entity.heal(entity.healingRate);

@@ -10,10 +10,7 @@ import com.churchofcoyote.hero.util.Util;
 
 public class ProcWeaponMelee extends Proc {
 
-    public ProcWeaponMelee() {}
-    public ProcWeaponMelee(Entity e) {
-        super(e);
-    }
+    public ProcWeaponMelee() { super(); }
 
     public int averageDamage = 7;
     public int toHitBonus = 3;
@@ -35,13 +32,13 @@ public class ProcWeaponMelee extends Proc {
     }
 
     @Override
-    public Boolean preBePickedUp(Entity actor) { return true; }
+    public Boolean preBePickedUp(Entity entity, Entity actor) { return true; }
 
     @Override
-    public void postBePickedUp(Entity actor) {}
+    public void postBePickedUp(Entity entity, Entity actor) {}
 
     @Override
-    public TextBlock getNameBlock() {
+    public TextBlock getNameBlock(Entity entity) {
         Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
         ProcWeaponMelee p = null;
         if (pcPrimaryWeapon != null) {
@@ -78,8 +75,8 @@ public class ProcWeaponMelee extends Proc {
     }
 
     @Override
-    public Proc clone(Entity other) {
-        ProcWeaponMelee pw = new ProcWeaponMelee(other);
+    public Proc clone() {
+        ProcWeaponMelee pw = new ProcWeaponMelee();
         pw.averageDamage = averageDamage;
         pw.toHitBonus = toHitBonus;
         return pw;

@@ -93,8 +93,8 @@ public class Bestiary {
 		goblinArcher.naturalRangedWeaponToHit = -1;
 		goblinArcher.naturalArmorClass = 0;
 		goblinArcher.setup.add(e -> {
-			e.addProc(new ProcShooter(e, "arrow"));
-			e.addProc(new ProcMonster(e, new RangedAmmoThenMeleeTactic(10)));
+			e.addProc(new ProcShooter("arrow"));
+			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(10)));
 		});
 
 		jackalTrained.name = "trained jackal";
@@ -176,7 +176,7 @@ public class Bestiary {
 		fungusRed.naturalWeaponDamage = 0;
 		fungusRed.naturalWeaponToHit = -5;
 		fungusRed.naturalArmorClass = -5;
-		fungusRed.setup.add((e) -> {e.addProc(new ProcBurningTouch(e, 3, 3, 0));});
+		fungusRed.setup.add((e) -> {e.addProc(new ProcBurningTouch(3, 3, 0));});
 
 		fungusGreenFunglet.name = "green funglet";
 		fungusGreenFunglet.peaceful = false;
@@ -260,17 +260,17 @@ public class Bestiary {
 		for (Consumer<Entity> consumer : p.setup) {
 			consumer.accept(e);
 		}
-		e.addProc(new ProcTimedEffects(e));
+		e.addProc(new ProcTimedEffects());
 
 		if (key.equals("player")) {
-			e.addProc(new ProcPlayer(e));
+			e.addProc(new ProcPlayer());
 		}
 		else if (p.isMonster && e.getProcByType(ProcMonster.class) == null) {
-			e.addProc(new ProcMonster(e, new ChaseAndMeleeTactic()));
+			e.addProc(new ProcMonster(new ChaseAndMeleeTactic()));
 			//e.addProc(new PropPopupOnSeen(e, "It's a monster!"));
 		} else {
-			ProcMover pm = new ProcMover(e);
-			pm.setDelay(Game.random.nextInt(e.moveCost));
+			ProcMover pm = new ProcMover();
+			pm.setDelay(e, Game.random.nextInt(e.moveCost));
 			e.addProc(pm);
 			//e.addProc(new PropPopupOnSeen(e, "It's a creature!"));
 		}
