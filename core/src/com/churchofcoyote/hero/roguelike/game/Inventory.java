@@ -66,11 +66,19 @@ public class Inventory {
                 .withFooterClosableAndSelectable()
                 .withTitle("Select item to equip") // TODO show selected slot?
                 .withMargins(60, 60);
+        // Use player entity as a special value
+        box.addItem("Nothing", null, Game.getPlayerEntity());
         for (ItemCategory cat : ItemCategory.categories) {
+            /*
+            // Removed the ability to equip anything for melee
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat &&
                     (bodyParts.contains(BodyPart.ANY_HAND) ||
                             (e.getEquippable() != null && bodyParts.contains(e.getEquippable().equipmentFor))
                     )).collect(Collectors.toList());
+             */
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat &&
+                            e.getEquippable() != null && bodyParts.contains(e.getEquippable().equipmentFor)
+                    ).collect(Collectors.toList());
             if (ents.size() > 0) {
                 box.addHeader(cat.getName());
             }
@@ -87,7 +95,9 @@ public class Inventory {
 
     public void handleInventoryToEquipResponse(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
-        if (e != null) {
+        if (e == Game.getPlayerEntity()) {
+            Game.getPlayerEntity().equip(null, chosenBodyPartForDialogue);
+        } else if (e != null) {
             Game.getPlayerEntity().equip(e, chosenBodyPartForDialogue);
             GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
         }

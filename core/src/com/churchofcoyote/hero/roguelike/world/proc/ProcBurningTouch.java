@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.churchofcoyote.hero.roguelike.game.Dice;
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
 public class ProcBurningTouch extends Proc {
@@ -19,6 +20,9 @@ public class ProcBurningTouch extends Proc {
 
     @Override
     public void postBeHit(Entity entity, Entity actor, Entity tool) {
+        if (tool != null && tool.getEquippable().equipmentFor == BodyPart.RANGED_AMMO) {
+            return;
+        }
         Game.announceVis(actor, entity,
                 "It burns!",
                 "They burn!",

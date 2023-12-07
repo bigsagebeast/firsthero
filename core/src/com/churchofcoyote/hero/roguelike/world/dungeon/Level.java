@@ -25,7 +25,7 @@ public class Level {
 	public int threat = -1;
 	private long lastWander = 0;
 	public long wanderRate = 50000;
-	public int maxForWander = 15;
+	public int maxForWander = DungeonGenerator.NUM_MONSTERS;
 	
 	public Level(String name, int width, int height) {
 		this.name = name;
@@ -247,10 +247,15 @@ public class Level {
 			int x = Game.random.nextInt(width);
 			int y = Game.random.nextInt(height);
 			if (cell[x][y].terrain.isPassable()) {
+				boolean blockingEntity = false;
 				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
 					if (e.getMover() != null || e.isObstructive()) {
-						continue;
+						blockingEntity = true;
+						break;
 					}
+				}
+				if (blockingEntity) {
+					continue;
 				}
 				return new Point(x, y);
 			}

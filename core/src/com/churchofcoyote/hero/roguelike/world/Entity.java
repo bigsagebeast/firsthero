@@ -105,9 +105,14 @@ public class Entity {
     {
         procs.add(proc);
     }
-    public Proc getProcByType(Class klass) {
+
+    public void removeProc(Proc proc) {
+        procs.remove(proc);
+    }
+
+    public Proc getProcByType(Class clazz) {
         for (Proc p : procs) {
-            if (klass.isAssignableFrom(p.getClass()))
+            if (clazz.isAssignableFrom(p.getClass()))
                 return p;
         }
         return null;
@@ -334,49 +339,42 @@ public class Entity {
 
     public boolean equip(Entity target, BodyPart bp)
     {
-        ProcEquippable pe = target.getEquippable();
+        ProcEquippable pe = null;
+        if (target != null) {
+            pe = target.getEquippable();
+        }
 
         // wielding a 2h in the offhand? no, it's stored in the primary hand
-        if (pe.equipmentFor == BodyPart.TWO_HAND && bp == BodyPart.OFF_HAND) {
+        if (pe != null && pe.equipmentFor == BodyPart.TWO_HAND && bp == BodyPart.OFF_HAND) {
             bp = BodyPart.PRIMARY_HAND;
         }
 
         // TODO error messages?
-        if (!inventoryIds.contains(target.entityId)) {
+        if (target != null && !inventoryIds.contains(target.entityId)) {
             acquireWithStacking(target);
-            /*
-            if (this == Game.getPlayerEntity()) {
-                Game.announce("That's not in your inventory.");
-            }
-            return false;
-             */
         }
 
-        if (pe == null) {
-            if (this == Game.getPlayerEntity()) {
-                Game.announce("That's not equippable in any slot.");
-            }
+        if (target != null && pe == null) {
+            Game.announceVis(this, null, "That's not equippable in any slot.", null,
+                    "Failed to equip: " + this.name + ", " + target.name, "Failed to equip: " + this.name + ", " + target.name);
             return false;
         }
 
-        if (pe.equipmentFor != bp &&
+        if (target != null && pe.equipmentFor != bp &&
                 !(pe.equipmentFor == BodyPart.ANY_HAND && (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND)) &&
                 !(pe.equipmentFor == BodyPart.TWO_HAND && bp == BodyPart.PRIMARY_HAND)) {
-            if (this == Game.getPlayerEntity()) {
-                Game.announce("That's not equippable in that slot.");
-            }
+            Game.announceVis(this, null, "That's not equippable in that slot.", null,
+                    "Failed to equip: " + this.name + ", " + target.name, "Failed to equip: " + this.name + ", " + target.name);
             return false;
         }
-        if (body == null) {
-            if (this == Game.getPlayerEntity()) {
-                Game.announce("Your body can't equip anything.");
-            }
+        if (target != null && body == null) {
+            Game.announceVis(this, null, "Your body can't equip anything.", null,
+                    "Failed to equip: " + this.name + ", " + target.name, "Failed to equip: " + this.name + ", " + target.name);
             return false;
         }
-        if (!body.hasBodyPart(bp)) {
-            if (this == Game.getPlayerEntity()) {
-                Game.announce("You don't have a " + bp.getName() + ".");
-            }
+        if (target != null && !body.hasBodyPart(bp)) {
+            Game.announceVis(this, null, "You don't have a " + bp.getName() + ".", null,
+                    "Failed to equip: " + this.name + ", " + target.name, "Failed to equip: " + this.name + ", " + target.name);
             return false;
         }
 
@@ -385,7 +383,7 @@ public class Entity {
         if (body.getEquipment(bp) != null) {
             allToUnequip.put(bp, body.getEquipment(bp));
         }
-        if (pe.equipmentFor == BodyPart.TWO_HAND && body.getEquipment(BodyPart.OFF_HAND) != null) {
+        if (pe != null && pe.equipmentFor == BodyPart.TWO_HAND && body.getEquipment(BodyPart.OFF_HAND) != null) {
             allToUnequip.put(BodyPart.OFF_HAND, body.getEquipment(BodyPart.OFF_HAND));
         }
         if (bp == BodyPart.OFF_HAND &&
@@ -432,6 +430,10 @@ public class Entity {
             {
                 Game.roguelikeModule.updateEquipmentWindow();
             }
+        }
+
+        if (target == null) {
+            return true;
         }
 
         // equip the new item

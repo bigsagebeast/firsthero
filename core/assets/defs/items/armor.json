@@ -1,0 +1,141 @@
+{
+  "items": {
+    "armor.head.hat": {
+      "name": "hat",
+      "glyphName": "armor.head.bowler",
+      "palette": [
+        "tan"
+      ],
+      "equipmentFor": "head",
+      "category": "head",
+      "level": 1,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 0,
+          "armorThickness": 0
+        }
+      }
+    },
+    "armor.head.leatherhat": {
+      "name": "leather helm",
+      "glyphName": "armor.head.leatherhat",
+      "palette": [
+        "tan",
+        "brown"
+      ],
+      "equipmentFor": "head",
+      "category": "head",
+      "level": 1,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 1,
+          "armorThickness": 1
+        }
+      }
+    },
+    "armor.head.helm": {
+      "name": "metal helm",
+      "glyphName": "armor.head.helm",
+      "palette": [
+        "white",
+        "gray"
+      ],
+      "equipmentFor": "head",
+      "category": "head",
+      "level": 1,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 2,
+          "armorThickness": 2
+        }
+      }
+    },
+    "armor.head.spikedhelm": {
+      "name": "spiked helm",
+      "glyphName": "armor.head.spikedhelm",
+      "palette": [
+        "white",
+        "gray"
+      ],
+      "equipmentFor": "head",
+      "category": "head",
+      "level": 1,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 1,
+          "armorThickness": 1
+        }
+      }
+    },
+    "armor.head.plumed": {
+      "name": "plumed helmet",
+      "glyphName": "armor.head.plumed",
+      "palette": [
+        "gray",
+        "forestgreen",
+        "red"
+      ],
+      "equipmentFor": "head",
+      "category": "head",
+      "level": 2,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 1,
+          "armorThickness": 1
+        }
+      }
+    },
+    "armor.body.whiterobe": {
+      "name": "white robe",
+      "glyphName": "armor.body.robe",
+      "palette": [
+        "white",
+        "red"
+      ],
+      "equipmentFor": "torso",
+      "category": "body",
+      "level": 1,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 1,
+          "armorThickness": 0
+        }
+      }
+    },
+    "armor.body.leather": {
+      "name": "leather armor",
+      "glyphName": "armor.body.leather",
+      "palette": [
+        "brown",
+        "tan"
+      ],
+      "equipmentFor": "torso",
+      "category": "body",
+      "level": 1,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 1,
+          "armorThickness": 1
+        }
+      }
+    },
+    "armor.body.chain": {
+      "name": "chainmail",
+      "glyphName": "armor.body.chain",
+      "palette": [
+        "white",
+        "gray",
+        "teal"
+      ],
+      "equipmentFor": "torso",
+      "category": "body",
+      "level": 2,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 1,
+          "armorThickness": 2
+        }
+      }
+    }
+  }
+}

@@ -39,8 +39,8 @@ public class CombatLogic {
 
 		if (accuracy >= dodge) {
 			// TODO stop on pre failure
-			actor.forEachProc((e, p) -> p.preDoHit(e, target, null));
-			target.forEachProc((e, p) -> p.preBeHit(e, actor, null));
+			actor.forEachProc((e, p) -> p.preDoHit(e, target, tool));
+			target.forEachProc((e, p) -> p.preBeHit(e, actor, tool));
 
 			if (damage <= 0) {
 				damage = 0;
@@ -54,8 +54,8 @@ public class CombatLogic {
 						actor.getVisibleNameWithQuantity() + " touches you" + withWeaponString + ".",
 						actor.getVisibleNameWithQuantity() + " touches " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
 						null);
-				actor.forEachProc((e, p) -> p.postDoHit(e, target, null));
-				target.forEachProc((e, p) -> p.postBeHit(e, actor, null));
+				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
+				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
 			} else {
 				// TODO: Damage type indicators instead of 'hit', for example 'slash' and 'crush'
 				// TODO: Resistance and weakly modifiers, like "you stab the skeleton moderately" or "you crush the skeleton powerfully"
@@ -64,8 +64,8 @@ public class CombatLogic {
 						actor.getVisibleNameWithQuantity() + " hits you" + withWeaponString + ".",
 						actor.getVisibleNameWithQuantity() + " hits " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
 						null);
-				actor.forEachProc((e, p) -> p.postDoHit(e, target, null));
-				target.forEachProc((e, p) -> p.postBeHit(e, actor, null));
+				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
+				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
 			}
 			//Game.announce("(" + damage + " damage.)");
 		} else {
@@ -75,8 +75,8 @@ public class CombatLogic {
 					actor.getVisibleNameWithQuantity() + " misses " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
 					null);
 
-			actor.forEachProc((e, p) -> p.postDoMiss(e, target, null));
-			target.forEachProc((e, p) -> p.postBeMissed(e, actor, null));
+			actor.forEachProc((e, p) -> p.postDoMiss(e, target, tool));
+			target.forEachProc((e, p) -> p.postBeMissed(e, actor, tool));
 
 			/*
 			Game.feelMsg(target, "The " + actor.getVisibleName(Game.getPlayer()) + " misses you.");
@@ -178,11 +178,11 @@ public class CombatLogic {
 					actor.getVisibleNameWithQuantity() + " kills you.",
 					actor.getVisibleNameWithQuantity() + " kills " + target.getVisibleNameWithQuantity() + ".",
 					null);
-			actor.forEachProc((e, p) -> p.postDoHit(e, target, null));
-			target.forEachProc((e, p) -> p.postBeHit(e, actor, null));
+			actor.forEachProc((e, p) -> p.postDoHit(e, target, ammo));
+			target.forEachProc((e, p) -> p.postBeHit(e, actor, ammo));
 
-			actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
-			target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
+			actor.forEachProc((e, p) -> p.postDoKill(e, target, ammo));
+			target.forEachProc((e, p) -> p.postBeKilled(e, actor, ammo));
 		}
 	}
 

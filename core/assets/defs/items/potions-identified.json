@@ -5,7 +5,7 @@
       "name": "potion of healing",
       "pluralName": "potions of healing",
       "category": "potion",
-      "frequency": 10000,
+      "frequency": 200,
       "identityHidden": true,
       "level": 1,
       "procs": {
@@ -17,11 +17,23 @@
       "name": "potion of acid",
       "pluralName": "potions of acid",
       "category": "potion",
-      "frequency": 10000,
+      "frequency": 200,
       "identityHidden": true,
       "level": 1,
       "procs": {
         "item.potion.ProcPotionAcid": {}
+      }
+    },
+    "potion.regeneration": {
+      "idenGroup": "potion1",
+      "name": "potion of regeneration",
+      "pluralName": "potions of regeneration",
+      "category": "potion",
+      "frequency": 200,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.potion.ProcPotionRegeneration": {}
       }
     }
   }

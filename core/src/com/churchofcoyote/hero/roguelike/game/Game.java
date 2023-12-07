@@ -362,7 +362,6 @@ public class Game {
 			announce("No target.");
 			return;
 		}
-		System.out.println("player shooting target: " + targetPoint);
 
 		Entity rangedWeapon = getPlayerEntity().body.getEquipment(BodyPart.RANGED_WEAPON);
 		Entity rangedAmmo = getPlayerEntity().body.getEquipment(BodyPart.RANGED_AMMO);

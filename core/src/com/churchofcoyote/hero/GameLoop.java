@@ -46,15 +46,18 @@ public class GameLoop implements GameLogic, InputProcessor {
 		try {
 			glyphEngine.initialize();
 			Path defPath = Paths.get("defs");
+			List<File> files = null;
 			try (Stream<Path> walk = Files.walk(defPath, Integer.MAX_VALUE)) {
-				List<File> files = walk
+				files = walk
 						.filter(Files::isRegularFile)
 						.map(Path::toFile)
 						.collect(Collectors.toList());
-				files.forEach(f -> DefinitionLoader.loadFile(f));
 			} catch (IOException e) {
 				throw new SetupException("Can't find defs directory");
 			}
+			for (File f : files) {
+				DefinitionLoader.loadFile(f);
+			};
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
 		}

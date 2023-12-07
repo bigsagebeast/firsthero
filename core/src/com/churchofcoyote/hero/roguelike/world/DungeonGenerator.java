@@ -13,6 +13,9 @@ import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Brogue;
 import com.churchofcoyote.hero.util.Point;
 
 public class DungeonGenerator {
+
+	public static final int NUM_MONSTERS = 10;
+	public static final int NUM_ITEMS = 10;
 	public Map<String, Level> levels = new HashMap<String, Level>();
 	
 	public Level getLevel(String key) {
@@ -23,7 +26,7 @@ public class DungeonGenerator {
 		if (level.threat < 0) {
 			return;
 		}
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < NUM_MONSTERS; i++) {
 			String chosenMonster = getAllowedMonster(level);
 			if (chosenMonster == null) {
 				System.out.println("No allowed monsters");
@@ -41,7 +44,7 @@ public class DungeonGenerator {
 				}
 			}
 		}
-		for (int i=0; i<50; i++) {
+		for (int i=0; i<NUM_ITEMS; i++) {
 			Point pos = level.findOpenTile();
 			Entity e = spawnLoot(level);
 			if (e == null) {

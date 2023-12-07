@@ -55,6 +55,7 @@ public class GlyphEngine implements GameLogic {
         loadGlyphFile("tiles/humanoid.gly");
         loadGlyphFile("tiles/animal.gly");
         loadGlyphFile("tiles/items.gly");
+        loadGlyphFile("tiles/armor.gly");
         loadGlyphFile("tiles/misc.gly");
     }
 

@@ -9,6 +9,8 @@ public class ItemCategory {
     public static ItemCategory CATEGORY_TWO_HANDED_WEAPONS = new ItemCategory("Two-Handed Weapons", "twohanded");
     public static ItemCategory CATEGORY_SHIELDS = new ItemCategory("Shields", "shields");
     public static ItemCategory CATEGORY_RANGED = new ItemCategory("Ranged Weapons", "rangedweapon");
+    public static ItemCategory CATEGORY_HELMETS = new ItemCategory("Helmets", "head");
+    public static ItemCategory CATEGORY_BODY = new ItemCategory("Body Armor", "body");
     public static ItemCategory CATEGORY_AMMO = new ItemCategory("Ammunition", "ammunition");
     public static ItemCategory CATEGORY_POTION = new ItemCategory("Potion", "potion");
     public static ItemCategory CATEGORY_SCROLL = new ItemCategory("Scroll", "scroll");
@@ -21,6 +23,8 @@ public class ItemCategory {
         categories.add(CATEGORY_ONE_HANDED_WEAPONS);
         categories.add(CATEGORY_TWO_HANDED_WEAPONS);
         categories.add(CATEGORY_SHIELDS);
+        categories.add(CATEGORY_HELMETS);
+        categories.add(CATEGORY_BODY);
         categories.add(CATEGORY_RANGED);
         categories.add(CATEGORY_AMMO);
         categories.add(CATEGORY_FOOD);

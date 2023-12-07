@@ -17,6 +17,15 @@
         "white",
         "red"
       ]
+    },
+    "potion.green": {
+      "unidGroup": "potion1",
+      "unidentifiedName": "green potion",
+      "glyphName": "potion.large",
+      "palette": [
+        "white",
+        "lightgreen"
+      ]
     }
   }
 }

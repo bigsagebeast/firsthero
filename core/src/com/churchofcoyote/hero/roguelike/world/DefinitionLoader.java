@@ -1,5 +1,6 @@
 package com.churchofcoyote.hero.roguelike.world;
 
+import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class DefinitionLoader {
-    public static void loadFile(File file) {
+    public static void loadFile(File file) throws SetupException {
         //File file = new File(filename);
         if (!file.exists()) {
             throw new RuntimeException("Definition filename " + file.getName() + " does not exist");
@@ -34,6 +35,10 @@ public class DefinitionLoader {
                     JsonNode itemNode = items.get(itemName);
                     ItemType itemType = new ItemType();
                     itemType.keyName = itemName;
+                    // TODO: This check is impossible, because Jackson strips duplicates.  Find another way.
+                    if (Itempedia.map.get(itemType.keyName) != null) {
+                        throw new SetupException("Duplicate item key: " + itemName);
+                    }
                     for (Iterator<String> defFieldName = itemNode.fieldNames(); defFieldName.hasNext(); ) {
                         String fieldName = defFieldName.next();
                         JsonNode nodeField = itemNode.get(fieldName);
@@ -65,6 +70,10 @@ public class DefinitionLoader {
                             }
                             ArrayList<Integer> paletteEntries = new ArrayList<>();
                             for (JsonNode entry : nodeField) {
+                                if (Palette.stringMap.get(entry.textValue()) == null) {
+                                    throw new SetupException("Unknown color in palette: " + entry.textValue() +
+                                            " for item: " + itemName);
+                                }
                                 paletteEntries.add(Palette.stringMap.get(entry.textValue()));
                             }
                             while (paletteEntries.size() < 4) {
