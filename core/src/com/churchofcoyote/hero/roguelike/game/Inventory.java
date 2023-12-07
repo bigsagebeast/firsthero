@@ -4,6 +4,7 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.dialogue.DialogueBox;
 import com.churchofcoyote.hero.glyphtile.EntityGlyph;
 import com.churchofcoyote.hero.roguelike.world.*;
+import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -115,6 +116,48 @@ public class Inventory {
             GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
         }
     }
+
+    public void doQuaff() {
+        Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
+        DialogueBox box = new DialogueBox()
+                .withFooterClosable()
+                .withMargins(60, 60);
+        for (ItemCategory cat : ItemCategory.categories) {
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
+            List<Entity> quaffableEnts = new ArrayList<>();
+            for (Entity ent : ents) {
+                boolean isQuaffable = false;
+                boolean notQuaffable = false;
+                for (Proc p : ent.procs) {
+                    Boolean quaffable = p.targetForQuaff(ent);
+                    if (quaffable == Boolean.FALSE) {
+                        notQuaffable = true;
+                    } else if (quaffable == Boolean.TRUE) {
+                        isQuaffable = true;
+                    }
+                }
+                if (isQuaffable && !notQuaffable) {
+                    quaffableEnts.add(ent);
+                }
+            }
+
+            if (quaffableEnts.size() > 0) {
+                box.addHeader("*** " + cat.getName() + " ***");
+            }
+            for (Entity ent : quaffableEnts) {
+                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+            }
+        }
+        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleQuaff);
+    }
+
+    public void handleQuaff(Object chosenEntity) {
+        Entity e = (Entity)chosenEntity;
+        if (e != null) {
+            Game.getPlayerEntity().quaffItem(e);
+        }
+    }
+
 
 
     public void openInventory() {

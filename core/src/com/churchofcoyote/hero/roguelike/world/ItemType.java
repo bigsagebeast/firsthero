@@ -10,8 +10,12 @@ import java.util.function.Consumer;
 
 public class ItemType {
     public String keyName;
+    public String idenGroup;
+    public String unidGroup;
     public String name;
+    public String pluralName;
     public String unidentifiedName;
+    public String unidentifiedPluralName;
     //public Glyph glyph;
     public BodyPart equipmentFor;
     public String glyphName;
@@ -19,8 +23,11 @@ public class ItemType {
     public ItemCategory category;
     public int level = -1;
     public boolean stackable = true;
+    public boolean identityHidden = false;
+    public boolean identified = false;
     public int minCount = 1;
     public int maxCount = 1;
+    public int frequency = 100;
     Set<Consumer<Entity>> setup = new HashSet<>();
     public List<LoadProc> procLoaders = new ArrayList<>();
 }

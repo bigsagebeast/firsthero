@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class DefinitionLoader {
-    public static void loadFile(String filename) {
-        File file = new File(filename);
+    public static void loadFile(File file) {
+        //File file = new File(filename);
         if (!file.exists()) {
-            throw new RuntimeException("Definition filename " + filename + " does not exist");
+            throw new RuntimeException("Definition filename " + file.getName() + " does not exist");
         }
         ObjectMapper om = new ObjectMapper();
         JsonNode root;

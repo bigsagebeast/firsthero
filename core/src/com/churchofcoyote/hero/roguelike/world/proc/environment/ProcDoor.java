@@ -32,13 +32,13 @@ public class ProcDoor extends ProcFeature {
 
     @Override
     public void postBeOpened(Entity entity, Entity actor) {
-        Game.announceVis(actor, null, "You open the door.", null, actor.name + " opens the door.", "You hear a door being opened.");
+        Game.announceVis(actor, null, "You open the door.", null, actor.getVisibleNameThe() + " opens the door.", "You hear a door being opened.");
         open(entity);
     }
 
     @Override
     public void postBeClosed(Entity entity, Entity actor) {
-        Game.announceVis(actor, null, "You close the door.", null, actor.name + " closes the door.", "You hear a door being closed.");
+        Game.announceVis(actor, null, "You close the door.", null, actor.getVisibleNameThe() + " closes the door.", "You hear a door being closed.");
         close(entity);
     }
 

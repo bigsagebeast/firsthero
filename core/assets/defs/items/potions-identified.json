@@ -1,9 +1,28 @@
 {
   "items": {
     "potion.healing": {
-      "idGroup": "potion1",
+      "idenGroup": "potion1",
       "name": "potion of healing",
-      "category": "potion"
+      "pluralName": "potions of healing",
+      "category": "potion",
+      "frequency": 10000,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.potion.ProcPotionHealing": {}
+      }
+    },
+    "potion.acid": {
+      "idenGroup": "potion1",
+      "name": "potion of acid",
+      "pluralName": "potions of acid",
+      "category": "potion",
+      "frequency": 10000,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.potion.ProcPotionAcid": {}
+      }
     }
   }
 }

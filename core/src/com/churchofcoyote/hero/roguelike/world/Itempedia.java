@@ -140,6 +140,7 @@ public class Itempedia {
         gold.palette = new PaletteEntry(Palette.COLOR_ORANGE, Palette.COLOR_YELLOW, Palette.COLOR_WHITE);
         gold.category = ItemCategory.CATEGORY_GOLD;
         gold.level = -1;
+        gold.frequency = 0;
         map.put(gold.keyName, gold);
     }
 
@@ -160,6 +161,7 @@ public class Itempedia {
         } else {
             e.name = t.name;
         }
+        e.pluralName = t.pluralName;
         //e.glyph = t.glyph;
         e.glyphName = t.glyphName;
         e.palette = t.palette;

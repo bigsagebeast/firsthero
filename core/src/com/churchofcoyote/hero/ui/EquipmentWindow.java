@@ -53,7 +53,7 @@ public class EquipmentWindow extends UIWindow {
 			if (equipped != null)
 			{
 				glyphs[row].glyph = EntityGlyph.getGlyph(equipped);
-				equipmentString = equipped.name;
+				equipmentString = equipped.getVisibleName();
 				//equipmentName[row] = new TextBlock(equipmentString, null, RoguelikeModule.FONT_SIZE, 9, 0, Color.WHITE);
 				equipmentName[row] = equipped.getNameBlock();
 				equipmentName[row].x = 9;

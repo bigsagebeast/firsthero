@@ -28,6 +28,7 @@ public class Game {
 	public static DungeonGenerator dungeon = new DungeonGenerator();
 	public static Bestiary bestiary = new Bestiary();
 	public static Itempedia itempedia = new Itempedia();
+	public static UnidMapping unidMapping = new UnidMapping();
 	public static long time = 0;
 	public static long lastTurnProc = 0;
 	public static Random random = new Random();
@@ -38,7 +39,9 @@ public class Game {
 	public Game(RoguelikeModule module) {
 		try {
 			BodyPlanpedia.initialize();
-
+			unidMapping.scan();
+			unidMapping.randomize();
+			unidMapping.apply();
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
 		}
@@ -304,7 +307,7 @@ public class Game {
 		for (Entity e : itemsHere) {
 			// TODO move this announce into pickup
 			if (!pickup(player.getEntity(), e)) {
-				announce("You can't pick up the " + e.name + ".");
+				announce("You can't pick up the " + e.getVisibleName() + ".");
 			}
 		}
 	}
@@ -315,6 +318,10 @@ public class Game {
 
 	public void cmdWield() {
 		inventory.doWield();
+	}
+
+	public void cmdQuaff() {
+		inventory.doQuaff();
 	}
 
 	public void cmdInventory() {
@@ -489,7 +496,7 @@ public class Game {
 
 		for (Entity e : level.getEntitiesOnTile(new Point(tx, ty))) {
 			if (e.isObstructive()) {
-				announce("You bump into " + e.name + ".");
+				announce("You bump into " + e.getVisibleNameThe() + ".");
 				return;
 			}
 		}
@@ -624,7 +631,10 @@ public class Game {
 
 		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
 			if (target.isObstructive()) {
-				announceVis(e, target, "You bump into " + target.name + ".", e.name + " bumps into you.", e.name + " bumps into " + target.name + ".", null);
+				announceVis(e, target, "You bump into " + target.getVisibleNameThe() + ".",
+						e.getVisibleNameThe() + " bumps into you.",
+						e.getVisibleNameThe() + " bumps into " + target.getVisibleNameThe() + ".",
+						null);
 				return false;
 			}
 		}

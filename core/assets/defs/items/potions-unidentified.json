@@ -3,7 +3,20 @@
     "potion.yellow": {
       "unidGroup": "potion1",
       "unidentifiedName": "yellow potion",
-      "glyphName": "potion.yellow"
+      "glyphName": "potion.large",
+      "palette": [
+        "white",
+        "yellow"
+      ]
+    },
+    "potion.red": {
+      "unidGroup": "potion1",
+      "unidentifiedName": "red potion",
+      "glyphName": "potion.large",
+      "palette": [
+        "white",
+        "red"
+      ]
     }
   }
 }

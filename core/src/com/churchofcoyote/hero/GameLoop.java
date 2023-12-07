@@ -1,7 +1,14 @@
 package com.churchofcoyote.hero;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -38,9 +45,16 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public GameLoop() {
 		try {
 			glyphEngine.initialize();
-			DefinitionLoader.loadFile("defs/environment/features.json");
-			DefinitionLoader.loadFile("defs/items/weapons.json");
-			DefinitionLoader.loadFile("defs/unique/unique.json");
+			Path defPath = Paths.get("defs");
+			try (Stream<Path> walk = Files.walk(defPath, Integer.MAX_VALUE)) {
+				List<File> files = walk
+						.filter(Files::isRegularFile)
+						.map(Path::toFile)
+						.collect(Collectors.toList());
+				files.forEach(f -> DefinitionLoader.loadFile(f));
+			} catch (IOException e) {
+				throw new SetupException("Can't find defs directory");
+			}
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
 		}

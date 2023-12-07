@@ -43,7 +43,7 @@ public class DungeonGenerator {
 				}
 			}
 		}
-		for (int i=0; i<5; i++) {
+		for (int i=0; i<50; i++) {
 			Point pos = level.findOpenTile();
 			Entity e = spawnLoot(level);
 			if (e == null) {
@@ -99,7 +99,10 @@ public class DungeonGenerator {
 			ItemType p = Game.itempedia.map.get(key);
 			if (p.level < 0) continue;
 			if (p.level >= minLevelAllowed && p.level <= maxLevelAllowed) {
-				allowedEntities.add(key);
+				// TODO cache this
+				for (int i = 0; i < p.frequency; i++) {
+					allowedEntities.add(key);
+				}
 			}
 		}
 		return allowedEntities;
@@ -127,13 +130,14 @@ public class DungeonGenerator {
 	}
 
 	public void generateBrogue(String key, int threat) {
-		Level level = new Brogue().generate();
+		Level level = new Brogue().generate(key);
+		// Remember to add the level to the map before generating it
+		levels.put(key, level);
 		level.threat = threat;
 		populate(level);
 
 		
 		
-		levels.put(key, level);
 	}
 	
 	public void generateFromFile(String key, String filename) {

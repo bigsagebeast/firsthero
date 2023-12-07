@@ -10,6 +10,8 @@ public class ItemCategory {
     public static ItemCategory CATEGORY_SHIELDS = new ItemCategory("Shields", "shields");
     public static ItemCategory CATEGORY_RANGED = new ItemCategory("Ranged Weapons", "rangedweapon");
     public static ItemCategory CATEGORY_AMMO = new ItemCategory("Ammunition", "ammunition");
+    public static ItemCategory CATEGORY_POTION = new ItemCategory("Potion", "potion");
+    public static ItemCategory CATEGORY_SCROLL = new ItemCategory("Scroll", "scroll");
     public static ItemCategory CATEGORY_FOOD = new ItemCategory("Food", "food");
     public static ItemCategory CATEGORY_GOLD = new ItemCategory("Gold", "gold");
 
@@ -22,6 +24,8 @@ public class ItemCategory {
         categories.add(CATEGORY_RANGED);
         categories.add(CATEGORY_AMMO);
         categories.add(CATEGORY_FOOD);
+        categories.add(CATEGORY_POTION);
+        categories.add(CATEGORY_SCROLL);
         categories.add(CATEGORY_GOLD);
     }
 

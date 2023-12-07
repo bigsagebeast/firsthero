@@ -114,10 +114,26 @@ public class Entity {
     }
 
     public String getVisibleName() {
+        ItemType it = getItemType();
+        if (it != null && it.identityHidden && !it.identified) {
+            return it.unidentifiedName;
+        }
         return name;
     }
 
     public String getVisiblePluralName() {
+        ItemType it = getItemType();
+        if (it != null && it.identityHidden && !it.identified) {
+            if (it.unidentifiedPluralName != null) {
+                return it.unidentifiedPluralName;
+            } else {
+                if (it.unidentifiedName.endsWith("s")) {
+                    return it.unidentifiedName + "es";
+                } else {
+                    return it.unidentifiedName + "s";
+                }
+            }
+        }
         if (pluralName != null) {
             return pluralName;
         } else {
@@ -179,7 +195,6 @@ public class Entity {
         }
         if (dead) {
             MoverLogic.createCorpse(Game.getLevel(), this);
-            Game.getLevel().removeEntity(this);
             destroy();
         }
     }
@@ -349,7 +364,7 @@ public class Entity {
 
             if (this == Game.getPlayerEntity()) {
                 // TODO announce with vis
-                Game.announce("You unequip the " + alreadyEquipped.name + ".");
+                Game.announce("You unequip the " + alreadyEquipped.getVisibleName() + ".");
             }
             body.putEquipment(alreadyEquippedBodyPart, null);
             acquireWithStacking(alreadyEquipped);
@@ -420,7 +435,23 @@ public class Entity {
         return true;
     }
 
+    public void identifyItem() {
+        ItemType it = getItemType();
+        if (it == null) {
+            throw new RuntimeException("Tried to identify a non-item");
+        }
+        if (!it.identityHidden || it.identified) {
+            return;
+        }
+        String preIdentified = getVisibleNameThe();
+        it.identified = true;
+        String postIdentified = getVisibleNameSingularOrSpecific();
+        Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
+    }
+
     public Entity acquireWithStacking(Entity target) {
+        target.containingLevel = null;
+        target.containingEntity = this.entityId;
         Entity stackedInto = null;
         for (int mergeTargetId : inventoryIds) {
             Entity mergeTarget = EntityTracker.get(mergeTargetId);
@@ -447,6 +478,37 @@ public class Entity {
                 this.getVisibleNameThe() + " drops you.",
                 this.getVisibleNameThe() + " drops " + target.getVisibleNameSingularOrSpecific(),
                 null);
+    }
+
+    public void quaffItem(Entity target) {
+        for (Proc p : this.procs) {
+            Boolean val = p.preDoQuaff(this, target);
+            if (val != null && !val) {
+                return;
+            }
+        }
+        for (Proc p : target.procs) {
+            Boolean val = p.preBeQuaffed(target, this);
+            if (val != null && !val) {
+                return;
+            }
+        }
+        Entity quaffedPotion = target;
+        if (target.getItem().quantity > 1) {
+            quaffedPotion = target.split(1);
+        }
+        Game.announceVis(this, null, "You quaff " + quaffedPotion.getVisibleNameThe() + ".",
+                null,
+                this.getVisibleNameThe() + " quaffs " + quaffedPotion.getVisibleNameSingularOrSpecific() + ".",
+                null);
+        for (Proc p : this.procs) {
+            p.postDoQuaff(this, quaffedPotion);
+        }
+        for (Proc p : target.procs) {
+            p.postBeQuaffed(quaffedPotion, this);
+        }
+        quaffedPotion.destroy();
+        getMover().setDelay(this, Game.ONE_TURN);
     }
 
     public int getNaturalWeaponDamage() {
@@ -594,14 +656,17 @@ public class Entity {
                 if (bp != null) {
                     container.body.putEquipment(bp, -1);
                 } else {
-                    throw new RuntimeException("Tried to destroy a " + name + " contained by " + container.name + " that wasn't in inventory or equipped");
+                    //throw new RuntimeException("Tried to destroy a " + name + " contained by " + container.name + " that wasn't in inventory or equipped");
                 }
             }
         } else if (containingLevel != null) {
             // TODO other levels
-            Game.getLevel().removeEntity(this);
+            if (!Game.dungeon.getLevel(containingLevel).getEntities().contains(this)) {
+                //throw new RuntimeException("Tried to destroy a " + name + " contained by a level, when it wasn't there!");
+            }
+            Game.dungeon.getLevel(containingLevel).removeEntity(this);
         } else {
-            System.out.println("DEBUG: Destroyed entity " + entityId + " (" + name + ") contained in no entity or level");
+            //System.out.println("DEBUG: Destroyed entity " + entityId + " (" + name + ") contained in no entity or level");
         }
 
         GameLoop.glyphEngine.destroyEntity(this);
