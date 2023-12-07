@@ -1,0 +1,14 @@
+{
+  "items": {
+    "scroll.tembor": {
+      "unidGroup": "scroll1",
+      "unidentifiedName": "scroll labeled TEMBOR",
+      "unidentifiedPluralName": "scrolls labeled TEMBOR",
+      "glyphName": "scroll.standard",
+      "palette": [
+        "tan",
+        "red"
+      ]
+    }
+  }
+}

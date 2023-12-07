@@ -1,4 +1,4 @@
-1 8
+1 9
 0 0 weapon.pitchfork
 0 1 weapon.longsword
 0 2 weapon.shortsword
@@ -7,3 +7,4 @@
 0 5 weapon.bow
 0 6 weapon.arrow
 0 7 potion.large
+0 8 scroll.standard

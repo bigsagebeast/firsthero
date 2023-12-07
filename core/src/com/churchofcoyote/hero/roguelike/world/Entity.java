@@ -497,8 +497,10 @@ public class Entity {
         if (!it.identityHidden || it.identified) {
             return;
         }
+        ProcItem pi = getItem();
         String preIdentified = getVisibleNameThe();
         it.identified = true;
+        pi.identified = true;
         String postIdentified = getVisibleNameSingularOrSpecific();
         Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
     }

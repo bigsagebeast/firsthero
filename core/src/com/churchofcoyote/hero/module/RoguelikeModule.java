@@ -212,6 +212,9 @@ public class RoguelikeModule extends Module {
 				case Keys.Q:
 					game.cmdQuaff();
 					break;
+				case Keys.R:
+					game.cmdRead();
+					break;
 				case Keys.I:
 					game.cmdInventory();
 					break;

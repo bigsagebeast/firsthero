@@ -275,6 +275,10 @@ public class Game {
 		inventory.doQuaff();
 	}
 
+	public void cmdRead() {
+		inventory.doRead();
+	}
+
 	public void cmdInventory() {
 		inventory.openInventory();
 	}

@@ -1,0 +1,16 @@
+{
+  "items": {
+    "scroll.identify": {
+      "idenGroup": "scroll1",
+      "name": "scroll of identify",
+      "pluralName": "scrolls of identify",
+      "category": "scroll",
+      "frequency": 10000,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.scroll.ProcScrollIdentify": {}
+      }
+    }
+  }
+}
