@@ -75,6 +75,11 @@ public class DialogueBox {
         return this;
     }
 
+    public DialogueBox withTitle(String title) {
+        titleText = title;
+        return this;
+    }
+
     public void addHeader(String text) {
         if (lines.size() > 0) {
             DialogueLine spacer = new DialogueLine();

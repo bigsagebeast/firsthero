@@ -278,6 +278,60 @@ public class Entity {
         return false;
     }
 
+    public boolean pickup(Entity target) {
+        boolean canBePickedUp = false;
+        for (Proc p : target.procs) {
+            Boolean attempt = p.preBePickedUp(target, this);
+            if (attempt == null) {
+                continue;
+            } else if (attempt == true) {
+                canBePickedUp = true;
+            } else {
+                return false;
+            }
+        }
+
+        if (!canBePickedUp) {
+            return false;
+        }
+
+        boolean canDoPickup = false;
+        for (Proc p : this.procs) {
+            Boolean attempt = p.preDoPickup(this, target);
+            if (attempt == null) {
+                continue;
+            } else if (attempt == true) {
+                canDoPickup = true;
+            } else {
+                return false;
+            }
+        }
+
+        if (!canDoPickup) {
+            return false;
+        }
+
+        Game.announceVis(this, target, "You pick up " + target.getVisibleNameThe() + ".",
+                "You are picked up by " + getVisibleNameThe() + ".",
+                this.getVisibleNameThe() + " picks up " + target.getVisibleNameThe() + ".",
+                null);
+
+        Game.getLevel().removeEntity(target);
+
+        target = acquireWithStacking(target);
+
+        Entity stackedInto = null;
+        for (Proc p : this.procs) {
+            p.postDoPickup(this, target);
+        }
+        // careful with this: if stacked, this operates on the entire stack
+        for (Proc p : target.procs) {
+            p.postBePickedUp(target, this);
+        }
+        return true;
+    }
+
+
     public boolean equip(Entity target, BodyPart bp)
     {
         ProcEquippable pe = target.getEquippable();
@@ -508,6 +562,37 @@ public class Entity {
             p.postBeQuaffed(quaffedPotion, this);
         }
         quaffedPotion.destroy();
+        getMover().setDelay(this, Game.ONE_TURN);
+    }
+
+    public void readItem(Entity target) {
+        for (Proc p : this.procs) {
+            Boolean val = p.preDoRead(this, target);
+            if (val != null && !val) {
+                return;
+            }
+        }
+        for (Proc p : target.procs) {
+            Boolean val = p.preBeRead(target, this);
+            if (val != null && !val) {
+                return;
+            }
+        }
+        Entity readScroll = target;
+        if (target.getItem().quantity > 1) {
+            readScroll = target.split(1);
+        }
+        Game.announceVis(this, null, "You read " + readScroll.getVisibleNameThe() + ".",
+                null,
+                this.getVisibleNameThe() + " reads " + readScroll.getVisibleNameSingularOrSpecific() + ".",
+                null);
+        for (Proc p : this.procs) {
+            p.postDoRead(this, readScroll);
+        }
+        for (Proc p : target.procs) {
+            p.postBeRead(readScroll, this);
+        }
+        readScroll.destroy();
         getMover().setDelay(this, Game.ONE_TURN);
     }
 

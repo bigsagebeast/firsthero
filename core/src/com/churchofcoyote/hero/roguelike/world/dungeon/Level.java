@@ -59,8 +59,7 @@ public class Level {
 				return;
 			}
 			Entity e = Game.bestiary.create(monsterKey, null);
-			e.pos = pos;
-			addEntity(e);
+			addEntityWithStacking(e, pos);
 		}
 	}
 
@@ -133,23 +132,16 @@ public class Level {
 	}
 
 	public List<Entity> getItemsOnTile(Point p) {
-		// TODO should we exclude entities that are also movers?
-		return getEntityStream().filter(e -> e.pos.equals(p) && e.getMover() == null).collect(Collectors.toList());
+		// TODO should we exclude entities that are also movers?  Is that even a thing?
+		// TODO This sortOrder should become a field on Entity
+		return getEntityStream().filter(e -> e.pos.equals(p) && e.getMover() == null)
+				.sorted(Comparator.comparing(e -> -e.getItemType().sortOrder)).collect(Collectors.toList());
 	}
 
 	public List<Entity> getMoversOnTile(Point p) {
 		return getEntityStream().filter(e -> e.pos.equals(p) && e.getMover() != null).collect(Collectors.toList());
 	}
 
-	/*
-	public List<Proc> getProcEntities() {
-		List<Proc> procEntities = new ArrayList<Proc>();
-		for (Entity e : getEntities()) {
-			procEntities.addAll(e.procs);
-		}
-		return procEntities;
-	}
-	 */
 	public List<EntityProc> getProcEntities() {
 		List<EntityProc> procEntities = new ArrayList<>();
 		for (Entity e : getEntities()) {
@@ -158,18 +150,6 @@ public class Level {
 			}
 		}
 		return procEntities;
-	}
-
-
-	// TODO deprecate
-	public void addEntity(Entity entity) {
-		entity.containingLevel = this.name;
-		entityIds.add(entity.entityId);
-		for (Proc p : entity.procs) {
-			if (p.hasAction() && p.nextAction < 0) {
-				p.clearDelay();
-			}
-		}
 	}
 
 	public Entity addEntityWithStacking(Entity entity, Point pos) {

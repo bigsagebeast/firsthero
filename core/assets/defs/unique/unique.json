@@ -30,6 +30,7 @@
       "name": "generic corpse (error)",
       "glyphName": "misc.corpse",
       "category": "food",
+      "sortOrder": 0,
       "stackable": false
     }
   }

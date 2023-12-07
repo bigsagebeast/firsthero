@@ -31,15 +31,13 @@ public class DungeonGenerator {
 			}
 			Point pos = level.findOpenTile();
 			Entity e = Game.bestiary.create(chosenMonster, null);
-			e.pos = pos;
-			level.addEntity(e);
+			level.addEntityWithStacking(e, pos);
 			int packSize = (int) (Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
 			for (int j = 1; j < packSize; j++) {
 				Point packSpawnPos = level.findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
 				if (packSpawnPos != null) {
 					Entity packmember = Game.bestiary.create(chosenMonster);
-					packmember.pos = packSpawnPos;
-					level.addEntity(packmember);
+					level.addEntityWithStacking(packmember, packSpawnPos);
 				}
 			}
 		}
@@ -210,8 +208,7 @@ public class DungeonGenerator {
 				creatureName = creatureSplit[3].replace("_", " ");
 			}
 			Entity c = Game.bestiary.create(phenotype, creatureName);
-			c.pos = new Point(x, y);
-			level.addEntity(c);
+			level.addEntityWithStacking(c, new Point(x, y));
 		}
 		
 		String transitionHeader = input.readLine();

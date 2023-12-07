@@ -20,6 +20,7 @@ public class Inventory {
         Entity playerEntity = Game.getPlayerEntity();
         DialogueBox box = new DialogueBox()
                 .withFooterClosableAndSelectable()
+                .withTitle("Select slot to wear or wield an item")
                 .withMargins(60, 60);
 
         for (BodyPart bp : Game.getPlayerEntity().body.getParts()) {
@@ -63,6 +64,7 @@ public class Inventory {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosableAndSelectable()
+                .withTitle("Select item to equip") // TODO show selected slot?
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat &&
@@ -96,6 +98,7 @@ public class Inventory {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
+                .withTitle("Select item to drop")
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
@@ -117,10 +120,41 @@ public class Inventory {
         }
     }
 
+
+    public void openFloorToGet() {
+        Collection<Entity> floorInventory = Game.getLevel().getItemsOnTile(Game.getPlayerEntity().pos);
+        DialogueBox box = new DialogueBox()
+                .withFooterClosable()
+                .withTitle("Select item to pick up")
+                .withMargins(60, 60);
+        for (ItemCategory cat : ItemCategory.categories) {
+            List<Entity> ents = floorInventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
+            if (ents.size() > 0) {
+                box.addHeader("*** " + cat.getName() + " ***");
+            }
+            for (Entity ent : ents) {
+                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+            }
+        }
+        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleFloorToGetResponse);
+    }
+
+    public void handleFloorToGetResponse(Object chosenEntity) {
+        Entity e = (Entity)chosenEntity;
+        if (e != null) {
+            if (!Game.getPlayerEntity().pickup(e)) {
+                Game.announce("You can't pick up " + e.getVisibleNameThe() + ".");
+            } else {
+                GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
+            }
+        }
+    }
+
     public void doQuaff() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
+                .withTitle("Select item to drink")
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
@@ -158,12 +192,55 @@ public class Inventory {
         }
     }
 
+    public void doRead() {
+        Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
+        DialogueBox box = new DialogueBox()
+                .withFooterClosable()
+                .withTitle("Select item to read")
+                .withMargins(60, 60);
+        for (ItemCategory cat : ItemCategory.categories) {
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
+            List<Entity> readableEnts = new ArrayList<>();
+            for (Entity ent : ents) {
+                boolean isReadable = false;
+                boolean notReadable = false;
+                for (Proc p : ent.procs) {
+                    Boolean readable = p.targetForRead(ent);
+                    if (readable == Boolean.FALSE) {
+                        notReadable = true;
+                    } else if (readable == Boolean.TRUE) {
+                        isReadable = true;
+                    }
+                }
+                if (isReadable && !notReadable) {
+                    readableEnts.add(ent);
+                }
+            }
+
+            if (readableEnts.size() > 0) {
+                box.addHeader("*** " + cat.getName() + " ***");
+            }
+            for (Entity ent : readableEnts) {
+                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+            }
+        }
+        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleRead);
+    }
+
+    public void handleRead(Object chosenEntity) {
+        Entity e = (Entity)chosenEntity;
+        if (e != null) {
+            Game.getPlayerEntity().readItem(e);
+        }
+    }
+
 
 
     public void openInventory() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
+                .withTitle("Inventory")
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());

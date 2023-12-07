@@ -136,6 +136,12 @@ public class Proc {
     public Boolean preDoQuaff(Entity entity, Entity target) { return null; }
     public void postDoQuaff(Entity entity, Entity target) { }
 
+    public Boolean targetForRead(Entity entity) { return null; }
+    public Boolean preBeRead(Entity entity, Entity actor) { return null; }
+    public void postBeRead(Entity entity, Entity actor) { }
+    public Boolean preDoRead(Entity entity, Entity target) { return null; }
+    public void postDoRead(Entity entity, Entity target) { }
+
     public void beDestroyed() {}
 
     public Proc clone() { return null; }

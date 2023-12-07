@@ -64,8 +64,7 @@ public class Game {
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
 		changeLevel(dungeon.getLevel("start"), new Point(31, 46));
-		level.addEntity(pitchfork);
-		pitchfork.pos = new Point(35, 43);
+		level.addEntityWithStacking(pitchfork, new Point(35, 43));
 		level = dungeon.getLevel("start");
 	}
 
@@ -112,8 +111,7 @@ public class Game {
 		level = nextLevel;
 		Game.time = 0;
 		Game.lastTurnProc = 0;
-		level.addEntity(player.getEntity());
-		player.getEntity().pos = playerPos;
+		level.addEntityWithStacking(player.getEntity(), playerPos);
 
 		GameLoop.glyphEngine.initializeLevel(level);
 		passTime(0);
@@ -199,59 +197,6 @@ public class Game {
 		turn();
 	}
 
-	public boolean pickup(Entity actor, Entity target) {
-		boolean canBePickedUp = false;
-		for (Proc p : target.procs) {
-			Boolean attempt = p.preBePickedUp(target, actor);
-			if (attempt == null) {
-				continue;
-			} else if (attempt == true) {
-				canBePickedUp = true;
-			} else {
-				return false;
-			}
-		}
-
-		if (!canBePickedUp) {
-			return false;
-		}
-
-		boolean canDoPickup = false;
-		for (Proc p : actor.procs) {
-			Boolean attempt = p.preDoPickup(actor, target);
-			if (attempt == null) {
-				continue;
-			} else if (attempt == true) {
-				canDoPickup = true;
-			} else {
-				return false;
-			}
-		}
-
-		if (!canDoPickup) {
-			return false;
-		}
-
-		announceVis(actor, target, "You pick up " + target.getVisibleNameThe() + ".",
-				"You are picked up by " + actor.getVisibleNameThe() + ".",
-				actor.getVisibleNameThe() + " picks up " + target.getVisibleNameThe() + ".",
-				null);
-
-		level.removeEntity(target);
-
-		target = actor.acquireWithStacking(target);
-
-		Entity stackedInto = null;
-		for (Proc p : actor.procs) {
-			p.postDoPickup(actor, target);
-		}
-		// careful with this: if stacked, this operates on the entire stack
-		for (Proc p : target.procs) {
-			p.postBePickedUp(target, actor);
-		}
-		return true;
-	}
-
 	public void cmdMoveLeft() {
 		playerCmdMoveBy(-1, 0);
 	}
@@ -304,11 +249,17 @@ public class Game {
 
 	public void cmdPickUp() {
 		List<Entity> itemsHere = level.getItemsOnTile(player.getEntity().pos);
-		for (Entity e : itemsHere) {
-			// TODO move this announce into pickup
-			if (!pickup(player.getEntity(), e)) {
-				announce("You can't pick up the " + e.getVisibleName() + ".");
+		if (itemsHere.isEmpty()) {
+			return;
+		}
+		if (itemsHere.size() == 1) {
+			if (!player.getEntity().pickup(itemsHere.get(0))) {
+				announce("You can't pick up " + itemsHere.get(0).getVisibleNameThe() + ".");
+			} else {
+				GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
 			}
+		} else {
+			inventory.openFloorToGet();
 		}
 	}
 

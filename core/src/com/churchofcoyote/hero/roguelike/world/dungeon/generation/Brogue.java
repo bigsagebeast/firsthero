@@ -129,8 +129,7 @@ public class Brogue {
             for (int j=0; j<level.getHeight(); j++) {
                 if (level.cell(i, j).terrain == doorway) {
                     Entity door = Game.itempedia.create("door");
-                    door.pos = new Point(i, j);
-                    level.addEntity(door);
+                    level.addEntityWithStacking(door, new Point(i, j));
                     if (Game.random.nextInt(2) == 0) {
                         ((ProcDoor)door.getProcByType(ProcDoor.class)).close(door);
                     } else {

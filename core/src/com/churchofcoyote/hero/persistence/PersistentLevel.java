@@ -70,7 +70,7 @@ public class PersistentLevel {
              */
             // TODO: Better way of tracking which entities are on-map and which are off?
             if (ent.pos != null) {
-                level.addEntity(ent);
+                level.addEntityWithStacking(ent, ent.pos);
             }
         }
 

@@ -8,6 +8,7 @@
         "tan",
         "brown"
       ],
+      "sortOrder": -1,
       "procs": {
         "environment.ProcDoor": {}
       }

@@ -28,6 +28,7 @@ public class ItemType {
     public int minCount = 1;
     public int maxCount = 1;
     public int frequency = 100;
+    public int sortOrder = 1;
     Set<Consumer<Entity>> setup = new HashSet<>();
     public List<LoadProc> procLoaders = new ArrayList<>();
 }
