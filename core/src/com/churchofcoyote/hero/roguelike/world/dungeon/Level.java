@@ -231,7 +231,7 @@ public class Level {
 		}
 		return false;
 	}
-	
+
 	public void clearTemp() {
 		for (LevelCell cell : allCells) {
 			cell.temp = null;
@@ -240,6 +240,22 @@ public class Level {
 
 	public Boolean withinBounds(int x, int y) {
 		return (x >= 0 && x < width && y >= 0 && y < height);
+	}
+
+	public Boolean withinBounds(Point p) {
+		return withinBounds(p.x, p.y);
+	}
+
+	public boolean obstructiveBesidesMovers(Point p) {
+		if (!cell[p.x][p.y].terrain.isPassable()) {
+			return true;
+		}
+		for (Entity e : getEntitiesOnTile(p)) {
+			if (e.getMover() == null && e.isObstructive()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Point findOpenTile() {

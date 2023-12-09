@@ -37,6 +37,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final PopupModule popupModule = new PopupModule();
 	public static final DialogueBoxModule dialogueBoxModule = new DialogueBoxModule();
 	public static final TargetingModule targetingModule = new TargetingModule();
+	public static final DirectionModule directionModule = new DirectionModule();
 	private List<Module> allModules = new ArrayList<Module>();
 	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
@@ -69,6 +70,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		allModules = new ArrayList<Module>();
 		allModules.add(popupModule);
 		allModules.add(dialogueBoxModule);
+		allModules.add(directionModule);
 		allModules.add(targetingModule);
 		allModules.add(introModule);
 		allModules.add(titleModule);

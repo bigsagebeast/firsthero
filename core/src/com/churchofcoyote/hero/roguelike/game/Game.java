@@ -16,6 +16,7 @@ import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponRanged;
 import com.churchofcoyote.hero.roguelike.world.proc.monster.ProcShooter;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
+import com.churchofcoyote.hero.util.Raycasting;
 
 import java.util.List;
 import java.util.Random;
@@ -290,39 +291,51 @@ public class Game {
 	public void cmdRegenerate() { startCaves(); }
 
 	public void cmdOpen() {
+		GameLoop.directionModule.begin(this::cmdOpenHandle);
+	}
+
+	public void cmdOpenHandle(Compass dir) {
+		if (dir == Compass.OTHER) {
+			Game.announce("Canceled.");
+			return;
+		}
 		boolean somethingToHandle = false;
-		for (Compass dir : Compass.points()) {
-			Point targetPoint = dir.from(player.getEntity().pos);
-			for (Entity target : level.getEntitiesOnTile(targetPoint)) {
-				if (target.tryOpen(player.getEntity())) {
-					somethingToHandle = true;
-				}
+		Point targetPoint = dir.from(player.getEntity().pos);
+		for (Entity target : level.getEntitiesOnTile(targetPoint)) {
+			if (target.tryOpen(player.getEntity())) {
+				somethingToHandle = true;
 			}
 		}
 		if (somethingToHandle) {
-			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
+			passTime(player.getEntity().moveCost);
 		} else {
-			announce("There's nothing to open.");
+			announce("There's nothing there to open.");
 		}
-
 	}
 
 	public void cmdClose() {
+		GameLoop.directionModule.begin(this::cmdCloseHandle);
+	}
+
+	public void cmdCloseHandle(Compass dir) {
+		if (dir == Compass.OTHER) {
+			Game.announce("Canceled.");
+			return;
+		}
 		boolean somethingToHandle = false;
-		for (Compass dir : Compass.points()) {
-			Point targetPoint = dir.from(player.getEntity().pos);
-			for (Entity target : level.getEntitiesOnTile(targetPoint)) {
-				if (target.tryClose(player.getEntity())) {
-					somethingToHandle = true;
-				}
+		Point targetPoint = dir.from(player.getEntity().pos);
+		for (Entity target : level.getEntitiesOnTile(targetPoint)) {
+			if (target.tryClose(player.getEntity())) {
+				somethingToHandle = true;
 			}
 		}
 		if (somethingToHandle) {
-			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
+			passTime(player.getEntity().moveCost);
 		} else {
-			announce("There's nothing to close.");
+			announce("There's nothing there to close.");
 		}
 	}
+
 
 	public static void cmdSave() {
 		Persistence.saveLevel(level);
@@ -331,6 +344,31 @@ public class Game {
 
 	public static void cmdLoad() {
 
+	}
+
+	public void cmdMagic() {
+		GameLoop.directionModule.begin(this::handleMagicDirection);
+	}
+
+	public void handleMagicDirection(Compass dir) {
+		if (dir == Compass.OTHER) {
+			announce("Cancelled.");
+			return;
+		}
+		List<Point> ray = Raycasting.createOrthogonalRay(level, getPlayerEntity().pos, dir);
+		if (ray.size() <= 1) {
+			announce("Nothing happens.");
+			passTime(ONE_TURN);
+		}
+		Point endpoint = ray.get(ray.size()-2);
+		List<Entity> targets = Raycasting.findAllMoversAlongRay(level, ray);
+		for (Entity target : targets) {
+			target.hurt(5);
+			announce("You zap " + target.getVisibleNameThe() + "!");
+		}
+
+		GameLoop.targetingModule.animate(ray.get(0), endpoint);
+		passTime(ONE_TURN);
 	}
 
 	public void cmdTarget() {

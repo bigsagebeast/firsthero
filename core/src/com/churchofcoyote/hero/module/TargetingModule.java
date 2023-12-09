@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 public class TargetingModule extends Module {
 
-    private static int ANIMATION_STEP_TIME = 1;
+    private static int ANIMATION_STEP_TIME = 2;
     private OperationMode operationMode;
     public TargetMode targetMode;
     public Point targetTile;
@@ -194,6 +194,9 @@ public class TargetingModule extends Module {
             return;
         }
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
+        while (animationStep < ray.size() && ray.get(animationStep) == null) {
+            animationStep++;
+        }
         lastAnimationStep = animationStep;
         if (animationStep >= ray.size()) {
             animationBlock.close();
@@ -204,12 +207,25 @@ public class TargetingModule extends Module {
 
         String symbol;
         // can we precalc this?  No, in case we change it to per-block
-        int deltaX = Math.abs(ray.get(0).x - ray.get(ray.size()-1).x);
-        int deltaY = Math.abs(ray.get(0).y - ray.get(ray.size()-1).y);
+        float deltaX = Math.abs(ray.get(0).x - ray.get(ray.size()-1).x);
+        float deltaY = Math.abs(ray.get(0).y - ray.get(ray.size()-1).y);
+        float signX = ray.get(0).x > ray.get(ray.size()-1).x ? 1 : -1;
+        float signY = ray.get(0).y > ray.get(ray.size()-1).y ? 1 : -1;
+        /*
         if (deltaX >= deltaY) {
             symbol = "-";
         } else {
             symbol = "|";
+        }
+         */
+        if (deltaX == 0 || deltaY / deltaX > 2) {
+            symbol = "|";
+        } else if (deltaY / deltaX < 0.5) {
+            symbol = "-";
+        } else if (signX != signY) {
+            symbol = "/";
+        } else {
+            symbol = "\\";
         }
         animationBlock.text = symbol;
 
