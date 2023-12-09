@@ -35,19 +35,27 @@ public class TargetingModule extends Module {
     private long animationStart;
     private int lastAnimationStep;
     private TextBlock animationBlock;
+    private Color animationColor;
+    private boolean stars; // TODO better way of handling this...
     private List<Point> ray;
 
     public TargetingModule() {
     }
 
-    public void animate(Point origin, Point target) {
+    public void animate(Point origin, Point target, Color color, boolean stars) {
         operationMode = OperationMode.ANIMATING;
         animationStart = -1;
         lastAnimationStep = -1;
+        animationColor = color;
+        this.stars = stars;
         ray = Fov.findRay(Game.getLevel(), origin, target, true);
-        animationBlock = new TextBlock("", UIManager.NAME_MAIN_WINDOW, 12, 0, 0, Color.WHITE);
+        animationBlock = new TextBlock("", UIManager.NAME_MAIN_WINDOW, 12, 0, 0, animationColor);
         GameLoop.uiEngine.addBlock(animationBlock);
         super.start();
+    }
+
+    public void animate(Point origin, Point target) {
+        animate(origin, target, Color.WHITE, false);
     }
 
     public void begin(TargetMode targetMode, Consumer<Point> handler) {
@@ -154,10 +162,16 @@ public class TargetingModule extends Module {
             } else {
                 int deltaX = Math.abs(origin.x - targetTile.x);
                 int deltaY = Math.abs(origin.y - targetTile.y);
-                if (deltaX >= deltaY) {
-                    symbol = "-";
-                } else {
+                float signX = ray.get(0).x > ray.get(ray.size()-1).x ? 1 : -1;
+                float signY = ray.get(0).y > ray.get(ray.size()-1).y ? 1 : -1;
+                if (deltaX == 0 || deltaY / deltaX > 2) {
                     symbol = "|";
+                } else if (deltaY / deltaX < 0.5) {
+                    symbol = "-";
+                } else if (signX != signY) {
+                    symbol = "/";
+                } else {
+                    symbol = "\\";
                 }
             }
             Color color = Color.GREEN;
@@ -202,6 +216,7 @@ public class TargetingModule extends Module {
             animationBlock.close();
             animationBlock = null;
             end();
+            GameLoop.roguelikeModule.game.turn();
             return;
         }
 
@@ -211,21 +226,18 @@ public class TargetingModule extends Module {
         float deltaY = Math.abs(ray.get(0).y - ray.get(ray.size()-1).y);
         float signX = ray.get(0).x > ray.get(ray.size()-1).x ? 1 : -1;
         float signY = ray.get(0).y > ray.get(ray.size()-1).y ? 1 : -1;
-        /*
-        if (deltaX >= deltaY) {
-            symbol = "-";
+        if (stars) {
+            symbol = "#";
         } else {
-            symbol = "|";
-        }
-         */
-        if (deltaX == 0 || deltaY / deltaX > 2) {
-            symbol = "|";
-        } else if (deltaY / deltaX < 0.5) {
-            symbol = "-";
-        } else if (signX != signY) {
-            symbol = "/";
-        } else {
-            symbol = "\\";
+            if (deltaX == 0 || deltaY / deltaX > 2) {
+                symbol = "|";
+            } else if (deltaY / deltaX < 0.5) {
+                symbol = "-";
+            } else if (signX != signY) {
+                symbol = "/";
+            } else {
+                symbol = "\\";
+            }
         }
         animationBlock.text = symbol;
 

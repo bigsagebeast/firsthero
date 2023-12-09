@@ -1,5 +1,6 @@
 package com.churchofcoyote.hero.roguelike.game;
 
+import com.churchofcoyote.hero.roguelike.spells.Spell;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponAmmo;
 import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponMelee;
@@ -94,15 +95,37 @@ public class CombatLogic {
 					actor.getVisibleNameWithQuantity() + " kills you.",
 					actor.getVisibleNameWithQuantity() + " kills " + target.getVisibleNameWithQuantity() + ".",
 					null);
-			actor.forEachProc((e, p) -> p.postDoHit(e, target, null));
-			target.forEachProc((e, p) -> p.postBeHit(e, actor, null));
-
 			actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
 			target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
 		}
 	}
 
-	// TODO split into trySwing, doHit, doMiss
+	// T if hits, F if dodged/resisted/etc
+	public static boolean castAttempt(Entity actor, Entity target, Spell spell) {
+		// No pre/post for being cast on, that's handled in the spell
+		if (Game.random.nextInt(5) == 0) {
+			spell.announceDodged(target, actor);
+			return false;
+		}
+		if (Game.random.nextInt(5) == 0) {
+			spell.announceResisted(target, actor);
+			return false;
+		}
+		return true;
+	}
+
+	public static void castDamage(Entity actor, Entity target, Spell spell, int rawDamage) {
+		// No pre/post for being cast on, that's handled in the spell
+		target.hurt(rawDamage);
+		if (target.hitPoints > 0) {
+			spell.announceHitWithoutKill(actor, target);
+		} else {
+			actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
+			target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
+			spell.announceHitWithKill(actor, target);
+		}
+	}
+
 	public static void shoot(Entity actor, Entity target, Entity tool, Entity ammo) {
 
 		Visibility vis = Game.getLevel().checkVis(Game.getPlayerEntity(), actor, target);
@@ -178,9 +201,6 @@ public class CombatLogic {
 					actor.getVisibleNameWithQuantity() + " kills you.",
 					actor.getVisibleNameWithQuantity() + " kills " + target.getVisibleNameWithQuantity() + ".",
 					null);
-			actor.forEachProc((e, p) -> p.postDoHit(e, target, ammo));
-			target.forEachProc((e, p) -> p.postBeHit(e, actor, ammo));
-
 			actor.forEachProc((e, p) -> p.postDoKill(e, target, ammo));
 			target.forEachProc((e, p) -> p.postBeKilled(e, actor, ammo));
 		}

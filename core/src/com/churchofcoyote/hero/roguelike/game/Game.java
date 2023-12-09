@@ -36,7 +36,8 @@ public class Game {
 	public static int ONE_TURN = 1000;
 
 	private Inventory inventory = new Inventory();
-	
+	private Spellbook spellbook = new Spellbook();
+
 	public Game(RoguelikeModule module) {
 		try {
 			BodyPlanpedia.initialize();
@@ -347,28 +348,7 @@ public class Game {
 	}
 
 	public void cmdMagic() {
-		GameLoop.directionModule.begin(this::handleMagicDirection);
-	}
-
-	public void handleMagicDirection(Compass dir) {
-		if (dir == Compass.OTHER) {
-			announce("Cancelled.");
-			return;
-		}
-		List<Point> ray = Raycasting.createOrthogonalRay(level, getPlayerEntity().pos, dir);
-		if (ray.size() <= 1) {
-			announce("Nothing happens.");
-			passTime(ONE_TURN);
-		}
-		Point endpoint = ray.get(ray.size()-2);
-		List<Entity> targets = Raycasting.findAllMoversAlongRay(level, ray);
-		for (Entity target : targets) {
-			target.hurt(5);
-			announce("You zap " + target.getVisibleNameThe() + "!");
-		}
-
-		GameLoop.targetingModule.animate(ray.get(0), endpoint);
-		passTime(ONE_TURN);
+		spellbook.openSpellbookToCast();
 	}
 
 	public void cmdTarget() {

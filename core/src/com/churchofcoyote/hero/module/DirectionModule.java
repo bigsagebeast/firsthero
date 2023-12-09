@@ -27,7 +27,10 @@ public class DirectionModule extends Module {
     }
 
     public void begin(Consumer<Compass> consumer) {
-        Game.announce("Select a direction, or space to cancel.");
+        begin("Select a direction, or space to cancel.", consumer);
+    }
+
+    public void begin(String message, Consumer<Compass> consumer) {
         this.consumer = consumer;
         super.start();
     }

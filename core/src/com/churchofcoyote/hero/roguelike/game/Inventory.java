@@ -125,6 +125,7 @@ public class Inventory {
     public void handleInventoryToDropResponse(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
+
             Game.getPlayerEntity().dropItem(e);
             GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
         }

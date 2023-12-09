@@ -15,5 +15,6 @@ public class ProcTimedEffects extends Proc {
                 healingTimer = 0;
             }
         }
+        entity.spellPoints = Math.min(entity.maxSpellPoints, entity.spellPoints+1);
     }
 }
