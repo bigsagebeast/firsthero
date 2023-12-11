@@ -41,6 +41,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final DialogueBoxModule dialogueBoxModule = new DialogueBoxModule();
 	public static final TargetingModule targetingModule = new TargetingModule();
 	public static final DirectionModule directionModule = new DirectionModule();
+	public static final StoryModule storyModule = new StoryModule();
 	private List<Module> allModules = new ArrayList<Module>();
 	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
@@ -75,6 +76,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		allModules = new ArrayList<Module>();
 		allModules.add(popupModule);
 		allModules.add(dialogueBoxModule);
+		allModules.add(storyModule);
 		allModules.add(directionModule);
 		allModules.add(targetingModule);
 		allModules.add(introModule);
@@ -140,6 +142,10 @@ public class GameLoop implements GameLogic, InputProcessor {
 		start = System.currentTimeMillis();
 		uiEngine.render(g, gState);
 		HeroGame.updateTimer("uie", System.currentTimeMillis() - start);
+		WindowEngine.setAllClean();
+		start = System.currentTimeMillis();
+		WindowEngine.render(g);
+		HeroGame.updateTimer("we", System.currentTimeMillis() - start);
 		g.endBatch();
 		start = System.currentTimeMillis();
 		effectEngine.render(g, gState);
@@ -148,10 +154,6 @@ public class GameLoop implements GameLogic, InputProcessor {
 		g.startBatch();
 	    textEngine.render(g, gState);
 		HeroGame.updateTimer("te", System.currentTimeMillis() - start);
-		WindowEngine.setAllClean();
-		start = System.currentTimeMillis();
-		WindowEngine.render(g);
-		HeroGame.updateTimer("we", System.currentTimeMillis() - start);
 	    g.endBatch();
 		HeroGame.updateTimer("all", System.currentTimeMillis() - startAll);
 	}

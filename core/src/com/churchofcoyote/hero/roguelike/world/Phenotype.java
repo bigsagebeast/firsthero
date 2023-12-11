@@ -34,5 +34,6 @@ public class Phenotype {
 	public int packSpawnArea = 3;
 	public int corpseSpawnPercent = 50;
 	public PaletteEntry corpseSpawnColors = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
+	public String chatPage;
 	Set<Consumer<Entity>> setup = new HashSet<>();
 }

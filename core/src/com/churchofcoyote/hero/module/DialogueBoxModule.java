@@ -67,7 +67,10 @@ public class DialogueBoxModule extends Module {
 
     @Override
     public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
-        return dialogueBox.keyDown(keycode, shift, ctrl, alt);
+        if (dialogueBox != null) {
+            return dialogueBox.keyDown(keycode, shift, ctrl, alt);
+        }
+        return false;
     }
 
 }

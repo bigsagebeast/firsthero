@@ -3,10 +3,10 @@ package com.churchofcoyote.hero.storymanager;
 import java.util.HashMap;
 
 public class StoryState {
-    public HashMap<String, Integer> intMap = new HashMap<>();
-    public HashMap<String, String> stringMap = new HashMap<>();
+    public static HashMap<String, Integer> intMap = new HashMap<>();
+    public static HashMap<String, String> stringMap = new HashMap<>();
 
-    public boolean compare(StoryComparator comparator) {
+    public static boolean compare(StoryComparator comparator) {
         try {
             if (comparator.op == StoryComparator.Operation.EXSTR) {
                 return stringMap.containsKey(comparator.variableA);
@@ -48,7 +48,7 @@ public class StoryState {
         }
     }
 
-    public void execute(StorySetter setter) {
+    public static void execute(StorySetter setter) {
         Integer intVal = null;
         String strVal = null;
         if (setter.value != null && setter.value.getClass().isAssignableFrom(Integer.class)) {

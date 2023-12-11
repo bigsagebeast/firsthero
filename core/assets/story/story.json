@@ -1,13 +1,26 @@
 {
   "pages": [
     {
-      "key": "page1",
-      "text": "page text",
+      "key": "intro.farmer.landing",
+      "text": "Ye have to fight off the goblins before they kill us all.",
       "links": [
         {
-          "nextPage": "page2",
-          "text": "next -->"
-
+          "nextPage": "intro.farmer.page2",
+          "text": "What can I do?"
+        },
+        {
+          "text": "Goodbye.",
+          "terminal": true
+        }
+      ]
+    },
+    {
+      "key": "intro.farmer.page2",
+      "text": "They took up residence in the caves to the north. Ye must fight with anything you can.",
+      "links": [
+        {
+          "text": "Goodbye.",
+          "terminal": true
         }
       ]
     }

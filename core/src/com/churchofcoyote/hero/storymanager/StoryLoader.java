@@ -57,7 +57,6 @@ public class StoryLoader {
                 }
 
                 book.add(storyPage);
-                System.out.println(storyPage);
             }
         } catch (IOException e) {
             // TODO setupexception

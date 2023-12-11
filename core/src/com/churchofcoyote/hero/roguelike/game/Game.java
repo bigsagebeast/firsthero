@@ -2,6 +2,8 @@ package com.churchofcoyote.hero.roguelike.game;
 
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.SetupException;
+import com.churchofcoyote.hero.glyphtile.EntityGlyph;
+import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.module.TargetingModule;
 import com.churchofcoyote.hero.persistence.Persistence;
@@ -292,7 +294,7 @@ public class Game {
 	public void cmdRegenerate() { startCaves(); }
 
 	public void cmdOpen() {
-		GameLoop.directionModule.begin("Open a door in what direction?", this::cmdOpenHandle);
+		GameLoop.directionModule.begin("Open or close a door in what direction?", this::cmdOpenHandle);
 	}
 
 	public void cmdOpenHandle(Compass dir) {
@@ -305,6 +307,8 @@ public class Game {
 		for (Entity target : level.getEntitiesOnTile(targetPoint)) {
 			if (target.tryOpen(player.getEntity())) {
 				somethingToHandle = true;
+			} else if (target.tryClose(player.getEntity())) {
+				somethingToHandle = true;
 			}
 		}
 		if (somethingToHandle) {
@@ -314,27 +318,30 @@ public class Game {
 		}
 	}
 
-	public void cmdClose() {
-		GameLoop.directionModule.begin("Close a door in what direction?", this::cmdCloseHandle);
+	public void cmdChat() {
+		GameLoop.directionModule.begin("Chat in what direction?", this::cmdChatHandle);
 	}
 
-	public void cmdCloseHandle(Compass dir) {
+	public void cmdChatHandle(Compass dir) {
 		if (dir == Compass.OTHER) {
 			Game.announce("Canceled.");
 			return;
 		}
-		boolean somethingToHandle = false;
 		Point targetPoint = dir.from(player.getEntity().pos);
 		for (Entity target : level.getEntitiesOnTile(targetPoint)) {
-			if (target.tryClose(player.getEntity())) {
-				somethingToHandle = true;
+			// TODO
+			if (target.getMover() != null) {
+				String chatPage = Bestiary.get(target.phenotypeName).chatPage;
+				if (chatPage == null) {
+					Game.announce(target.getVisibleNameThe() + " won't talk to you.");
+				} else {
+					GameLoop.storyModule.openStory(chatPage, "` " + target.getVisibleName(), EntityGlyph.getGlyph(target));
+				}
+				passTime(player.getEntity().moveCost);
+				return;
 			}
 		}
-		if (somethingToHandle) {
-			passTime(player.getEntity().moveCost);
-		} else {
-			announce("There's nothing there to close.");
-		}
+		Game.announce("There's nobody there.");
 	}
 
 

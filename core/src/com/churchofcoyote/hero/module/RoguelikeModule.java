@@ -222,7 +222,7 @@ public class RoguelikeModule extends Module {
 					game.cmdOpen();
 					break;
 				case Keys.C:
-					game.cmdClose();
+					game.cmdChat();
 					break;
 				case Keys.T:
 					game.cmdTarget();

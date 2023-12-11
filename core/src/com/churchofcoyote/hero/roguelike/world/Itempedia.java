@@ -23,25 +23,6 @@ public class Itempedia {
         door.setup.add((e) -> {e.addProc(new ProcDoor());});
         //map.put(door.keyName, door);
 
-        ItemType pitchfork = new ItemType();
-        pitchfork.keyName = "pitchfork";
-        pitchfork.name = "pitchfork";
-        //pitchfork.glyph = new Glyph('/', Color.LIGHT_GRAY);
-        pitchfork.glyphName = "weapon.pitchfork";
-        pitchfork.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE, Palette.COLOR_WHITE);
-        pitchfork.equipmentFor = BodyPart.TWO_HAND;
-        pitchfork.category = ItemCategory.CATEGORY_TWO_HANDED_WEAPONS;
-        pitchfork.level = -1;
-        pitchfork.setup.add((e) -> {e.addProc(new ProcPopupOnSeen("Pick up your weapon"));});
-        pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnStepOn("Press 'comma' to pick it up."));});
-        pitchfork.setup.add((e) -> {e.addProc(new ProcMessageOnPickup("Press 'w' to wield it."));});
-        pitchfork.setup.add((e) -> {
-            ProcWeaponMelee pw = new ProcWeaponMelee();
-            pw.averageDamage = 5;
-            pw.toHitBonus = 2;
-            e.addProc(pw);
-        });
-
         //map.put(pitchfork.keyName, pitchfork);
 
         ItemType shortsword = new ItemType();

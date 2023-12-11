@@ -207,6 +207,7 @@ public class Bestiary {
 		farmer.paletteEntry = new PaletteEntry(Palette.COLOR_YELLOW, Palette.COLOR_TAN, Palette.COLOR_BROWN);
 		farmer.experienceAwarded = 10;
 		farmer.threat = -1;
+		farmer.chatPage = "intro.farmer.landing";
 
 		map.put("player", pc);
 		map.put("goblin.lackey", goblinLackey);
