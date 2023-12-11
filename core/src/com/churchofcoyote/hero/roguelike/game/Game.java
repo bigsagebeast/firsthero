@@ -292,7 +292,7 @@ public class Game {
 	public void cmdRegenerate() { startCaves(); }
 
 	public void cmdOpen() {
-		GameLoop.directionModule.begin(this::cmdOpenHandle);
+		GameLoop.directionModule.begin("Open a door in what direction?", this::cmdOpenHandle);
 	}
 
 	public void cmdOpenHandle(Compass dir) {
@@ -315,7 +315,7 @@ public class Game {
 	}
 
 	public void cmdClose() {
-		GameLoop.directionModule.begin(this::cmdCloseHandle);
+		GameLoop.directionModule.begin("Close a door in what direction?", this::cmdCloseHandle);
 	}
 
 	public void cmdCloseHandle(Compass dir) {

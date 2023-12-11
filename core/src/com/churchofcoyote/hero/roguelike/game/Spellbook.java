@@ -24,9 +24,9 @@ public class Spellbook {
                 .withTitle("Select spell to cast")
                 .withMargins(60, 60);
         String format = "%-20s %-6s %-5s %-5s";
-        box.addHeader(String.format(format, "Name", "Type", "Range", "Cost"));
+        box.addHeader(String.format("  " + format, "Name", "Type", "Range", "Cost"));
         for (Spell spell : getSpells()) {
-            box.addItem(String.format(
+            box.addItem(String.format(format,
                     spell.getName(), spell.getTypeDescription(),
                     spell.getRange(Game.getPlayerEntity()), spell.getCost(Game.getPlayerEntity()))
                 , spell);

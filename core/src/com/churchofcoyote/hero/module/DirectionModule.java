@@ -31,6 +31,7 @@ public class DirectionModule extends Module {
     }
 
     public void begin(String message, Consumer<Compass> consumer) {
+        Game.announce(message);
         this.consumer = consumer;
         super.start();
     }
