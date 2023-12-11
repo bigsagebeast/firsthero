@@ -1,0 +1,15 @@
+{
+  "pages": [
+    {
+      "key": "page1",
+      "text": "page text",
+      "links": [
+        {
+          "nextPage": "page2",
+          "text": "next -->"
+
+        }
+      ]
+    }
+  ]
+}

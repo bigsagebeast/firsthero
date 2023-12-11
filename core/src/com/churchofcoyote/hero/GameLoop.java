@@ -21,6 +21,8 @@ import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
 import com.churchofcoyote.hero.module.*;
 import com.churchofcoyote.hero.roguelike.world.DefinitionLoader;
+import com.churchofcoyote.hero.storymanager.StoryBook;
+import com.churchofcoyote.hero.storymanager.StoryLoader;
 import com.churchofcoyote.hero.ui.UIManager;
 import com.churchofcoyote.hero.util.QueuedKeypress;
 
@@ -30,6 +32,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static TextEngine textEngine = new TextEngine();
 	EffectEngine effectEngine = new EffectEngine();
 	public static final GlyphEngine glyphEngine = new GlyphEngine();
+	public static final StoryBook storyBook = new StoryBook();
 
 	public static final IntroModule introModule = new IntroModule();
 	public static final TitleScreenModule titleModule = new TitleScreenModule();
@@ -62,6 +65,8 @@ public class GameLoop implements GameLogic, InputProcessor {
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
 		}
+
+		StoryLoader.createPages(storyBook, "story/story.json");
 
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.setVSync(false);
