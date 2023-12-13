@@ -81,10 +81,13 @@ public class Game {
 		pc.equip(shortbow, BodyPart.RANGED_WEAPON);
 		Entity arrow = itempedia.create("arrow", 100);
 		pc.equip(arrow, BodyPart.RANGED_AMMO);
+		Entity magicmap = itempedia.create("scroll.magic.map", 100);
+		pc.receiveItem(magicmap);
 		player.setEntityId(pc.entityId);
 		dungeon.generateBrogue("dungeon1", 0);
 		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
 		level = dungeon.getLevel("dungeon1");
+		/*
 		dungeon.generateBrogue("dungeon2", 1);
 		Level level2 = dungeon.getLevel("dungeon2");
 		dungeon.generateBrogue("dungeon3", 2);
@@ -101,6 +104,7 @@ public class Game {
 		level2.addTransition(new LevelTransition("up", upStairs2, "dungeon1", downStairs1));
 		level2.addTransition(new LevelTransition("down", downStairs2, "dungeon3", upStairs3));
 		level3.addTransition(new LevelTransition("up", upStairs3, "dungeon2", downStairs2));
+		 */
 	}
 
 	public void changeLevel(Level nextLevel, Point playerPos) {

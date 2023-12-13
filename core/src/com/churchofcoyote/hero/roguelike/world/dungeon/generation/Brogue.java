@@ -38,14 +38,15 @@ public class Brogue {
         doorway = Terrain.get("doorway");
         this.level = level;
         levelGrid = new Grid(level.getWidth(), level.getHeight());
+
+        for (int i=0; i<level.getWidth(); i++) {
+            for (int j=0; j<level.getHeight(); j++) {
+                levelGrid.cell[i][j] = level.cell(i, j);
+            }
+        }
     }
 
     public void generate() {
-        for (int i=0; i<40; i++) {
-            for (int j=0; j<40; j++) {
-                level.cell(i, j).terrain = wall;
-            }
-        }
 
         //Grid firstRoom = makeSymmetricalCross();
         Grid firstRoom = makeRectangularRoom();

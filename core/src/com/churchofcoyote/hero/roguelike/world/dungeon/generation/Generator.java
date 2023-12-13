@@ -17,8 +17,17 @@ public class Generator {
         floor = Terrain.get("dirt");
         doorway = Terrain.get("doorway");
 
-        Brogue brogue = new Brogue(level);
-        brogue.generate();
+        for (int i=0; i<width; i++) {
+            for (int j=0; j<height; j++) {
+                level.cell(i, j).terrain = wall;
+            }
+        }
+
+        RoomPacker roomPacker = new RoomPacker(level, 0, 0, 40, 20);
+        roomPacker.generate();
+
+        //Brogue brogue = new Brogue(level);
+        //brogue.generate();
 
         return level;
     }

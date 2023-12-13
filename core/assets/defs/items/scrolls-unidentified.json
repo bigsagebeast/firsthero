@@ -9,6 +9,16 @@
         "tan",
         "red"
       ]
+    },
+    "scroll.porgund": {
+      "unidGroup": "scroll1",
+      "unidentifiedName": "scroll labeled PORGUND",
+      "unidentifiedPluralName": "scrolls labeled PORGUND",
+      "glyphName": "scroll.standard",
+      "palette": [
+        "tan",
+        "darkgreen"
+      ]
     }
   }
 }

@@ -11,6 +11,18 @@
       "procs": {
         "item.scroll.ProcScrollIdentify": {}
       }
+    },
+    "scroll.magic.map": {
+      "idenGroup": "scroll1",
+      "name": "scroll of magic mapping",
+      "pluralName": "scrolls of magic mapping",
+      "category": "scroll",
+      "frequency": 300,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.scroll.ProcScrollMagicMap": {}
+      }
     }
   }
 }
