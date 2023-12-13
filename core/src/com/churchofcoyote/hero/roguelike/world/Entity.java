@@ -732,6 +732,9 @@ public class Entity {
         }
         if (newRoom != null) {
             newRoom.enter(this);
+            roomId = newRoom.roomId;
+        } else {
+            roomId = -1;
         }
     }
 

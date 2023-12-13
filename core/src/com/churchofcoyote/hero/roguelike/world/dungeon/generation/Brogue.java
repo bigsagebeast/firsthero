@@ -25,12 +25,14 @@ public class Brogue {
     private Grid levelGrid;
     private Random random = new Random();
 
-    private final int CIRCULAR_RADIUS_MIN = 2;
-    private final int CIRCULAR_RADIUS_MAX = 6;
+    private final int CIRCULAR_RADIUS_MIN = 3;
+    private final int CIRCULAR_RADIUS_MAX = 7;
 
     private Terrain wall;
     private Terrain floor;
     private Terrain doorway;
+
+    public List<Room> rooms = new ArrayList<>();
 
     public Brogue(Level level) {
         wall = Terrain.get("wall");
@@ -130,6 +132,10 @@ public class Brogue {
         for (int i=0; i<level.getWidth(); i++) {
             for (int j=0; j<level.getHeight(); j++) {
                 if (level.cell(i, j).terrain == doorway) {
+                    if (level.getItemsOnTile(new Point(i, j)).stream().anyMatch(item -> item.containsProc(ProcDoor.class))) {
+                        // TODO brogue should only add doors to its own doorways!
+                        continue;
+                    }
                     Entity door = Game.itempedia.create("door");
                     level.addEntityWithStacking(door, new Point(i, j));
                     if (Game.random.nextInt(2) == 0) {
@@ -158,6 +164,8 @@ public class Brogue {
         }
         // we already used room IDs for the next id that would be present in the list
         level.rooms.add(grid.room);
+        grid.room.centerPoint = new Point(grid.roomCenter.x + x, grid.roomCenter.y + y);
+        rooms.add(grid.room);
         for (int i=0; i<grid.width; i++) {
             for (int j=0; j<grid.height; j++) {
                 //if (grid.cell[i][j].temp != null) {
@@ -186,13 +194,14 @@ public class Brogue {
                 }
             }
         }
+        grid.roomCenter = new Point(1+radius, 1+radius);
         grid.markAllAdjacentToOpen();
         return grid;
     }
 
     private Grid makeRectangularRoom() {
-        int width = randomIntRange(3, 12);
-        int height = randomIntRange(3, 12);
+        int width = randomIntRange(4, 12);
+        int height = randomIntRange(4, 12);
         int roomId = level.rooms.size();
         Grid grid = new Grid(width+2, height+2);
         for (int i=1; i<width+1; i++) {
@@ -202,6 +211,7 @@ public class Brogue {
                 grid.cell[i][j].roomId = roomId;
             }
         }
+        grid.roomCenter = new Point(width/2, height/2);
         grid.markAllAdjacentToOpen();
         return grid;
     }
@@ -225,6 +235,7 @@ public class Brogue {
                 }
             }
         }
+        grid.roomCenter = new Point(majorWidth/2, minorWidth/2);
         grid.markAllAdjacentToOpen();
 
         return grid;
@@ -353,6 +364,7 @@ public class Brogue {
         public LevelCell[][] cell;
         public int width, height;
         public Room room;
+        public Point roomCenter;
         public Grid(int width, int height) {
             this.width = width;
             this.height = height;
@@ -367,7 +379,7 @@ public class Brogue {
                     cell[i][j].terrain = wall;
                 }
             }
-            room = new Room(RoomType.BROGUE_GENERIC);
+            room = new Room(RoomType.BROGUE_GENERIC, roomCenter);
         }
 
         public void markAllAdjacentToOpen() {
@@ -408,6 +420,7 @@ public class Brogue {
 
         public Grid grow(int margin) {
             Grid newGrid = new Grid(width+(margin*2), height+(margin*2));
+            newGrid.roomCenter = new Point(roomCenter.x+margin, roomCenter.y+margin);
             for (int i=0; i<width; i++) {
                 for (int j=0; j<height; j++) {
                     newGrid.cell[i+margin][j+margin] = cell[i][j];

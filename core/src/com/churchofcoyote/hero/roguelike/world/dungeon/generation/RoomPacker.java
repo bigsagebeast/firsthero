@@ -1,8 +1,12 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
+import com.churchofcoyote.hero.roguelike.world.dungeon.RoomType;
+import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
@@ -11,24 +15,36 @@ import java.util.HashMap;
 
 public class RoomPacker {
     private Terrain wall;
+    private Terrain uncarveable;
     private Terrain floor;
     private Terrain doorway;
-    private int maxRooms = 15;
+    private int maxRooms;
+    private int maxAttempts = 1000;
 
     private Level level;
-    public int x, y, width, height;
+    public ArrayList<Room> rooms = new ArrayList<>();
+    public int regionX, regionY, regionWidth, regionHeight;
     private ArrayList<PackRoom> packRooms = new ArrayList<>();
     private ArrayList<RoomSize> roomSizes = new ArrayList<>();
-    public RoomPacker(Level level, int x, int y, int width, int height) {
+    public RoomPacker(Level level, int regionX, int regionY, int regionWidth, int regionHeight,
+                      int maxRooms, Compass entrance) {
         wall = Terrain.get("wall");
         floor = Terrain.get("dirt");
         doorway = Terrain.get("doorway");
+        uncarveable = Terrain.get("uncarveable");
 
         this.level = level;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.regionX = regionX;
+        this.regionY = regionY;
+        this.regionWidth = regionWidth;
+        this.regionHeight = regionHeight;
+        this.maxRooms = maxRooms;
+
+        for (int x = regionX; x < regionX + regionWidth; x++) {
+            for (int y = regionY; y < regionY + regionHeight; y++) {
+                level.cell(x, y).terrain = uncarveable;
+            }
+        }
 
         roomSizes.add(new RoomSize(3, 3));
         roomSizes.add(new RoomSize(3, 5));
@@ -38,11 +54,14 @@ public class RoomPacker {
         roomSizes.add(new RoomSize(5, 7));
         roomSizes.add(new RoomSize(7, 5));
         roomSizes.add(new RoomSize(7, 7));
+
+        packRooms.add(makeInitialRoom(entrance));
+
+
     }
 
     public void generate() {
-        packRooms.add(makeInitialRoom());
-        for (int i=0; i<1000; i++) {
+        for (int i=0; i<maxAttempts; i++) {
             if (packRooms.size() >= maxRooms) {
                 break;
             }
@@ -84,6 +103,12 @@ public class RoomPacker {
                 if (intersected) {
                     continue;
                 }
+                Room room = new Room(RoomType.SUBDUNGEON_UNASSIGNED,
+                        new Point(nextRoom.x + nextRoom.width/2, nextRoom.y + nextRoom.height/2));
+                room.roomId = level.rooms.size();
+                nextRoom.room = room;
+                rooms.add(room);
+                level.rooms.add(room);
                 existingRoom.neighbors.put(nextRoom, true);
                 nextRoom.neighbors.put(existingRoom, true);
                 // only put the door down once - ignore it from the other direction
@@ -98,12 +123,21 @@ public class RoomPacker {
         for (PackRoom packRoom : packRooms) {
             for (int x = packRoom.x; x < packRoom.x + packRoom.width; x++) {
                 for (int y = packRoom.y; y < packRoom.y + packRoom.height; y++) {
-                    level.cell(x,y).terrain = floor;
+                    level.cell(x, y).terrain = floor;
+                    level.cell(x, y).roomId = packRoom.room.roomId;
                 }
             }
             for (RoomNode neighbor : packRoom.neighbors.keySet()) {
-                if (packRoom.neighbors.get(neighbor) && packRoom.doorLocation.get(neighbor) != null) {
-                    level.cell(packRoom.doorLocation.get(neighbor)).terrain = doorway;
+                Point doorLocation = packRoom.doorLocation.get(neighbor);
+                if (packRoom.neighbors.get(neighbor) && doorLocation != null) {
+                    level.cell(doorLocation).terrain = doorway;
+                    Entity door = Game.itempedia.create("door");
+                    level.addEntityWithStacking(door, doorLocation);
+                    if (Game.random.nextInt(4) != 0) {
+                        ((ProcDoor)door.getProcByType(ProcDoor.class)).close(door);
+                    } else {
+                        ((ProcDoor)door.getProcByType(ProcDoor.class)).open(door);
+                    }
                 }
             }
         }
@@ -123,18 +157,41 @@ public class RoomPacker {
         }
     }
 
-    private PackRoom makeInitialRoom() {
+
+
+    private PackRoom makeInitialRoom(Compass entrance) {
         PackRoom packRoom = new PackRoom();
         packRoom.x = 1;
         packRoom.y = 1;
         packRoom.width = 5;
         packRoom.height = 5;
+        switch (entrance) {
+            case NORTH:
+                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 1) + regionX + 1;
+                packRoom.y = regionY;
+                break;
+            case SOUTH:
+                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 1) + regionX + 1;
+                packRoom.y = regionY + regionHeight - packRoom.height;
+                break;
+            case WEST:
+                packRoom.x = regionX;
+                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 1) + regionY + 1;
+                break;
+            case EAST:
+                packRoom.x = regionX + regionWidth - packRoom.width;
+                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 1) + regionY + 1;
+                break;
+        }
+        Room room = new Room(RoomType.SUBDUNGEON_UNASSIGNED,
+                new Point(packRoom.x + packRoom.width/2, packRoom.y + packRoom.height/2));
+        room.roomId = level.rooms.size();
+        packRoom.room = room;
         return packRoom;
     }
 
-
     private boolean roomWithinBounds(PackRoom room) {
-        return room.x >= x + 1 && room.x + room.width < x + width - 1 && room.y >= y +1 && room.y + room.height < y + height - 1;
+        return room.x >= regionX + 1 && room.x + room.width < regionX + regionWidth - 1 && room.y >= regionY + 1 && room.y + room.height < regionY + regionHeight - 1;
     }
 
     private PackRoom expandFrom(int x, int y, Compass dir) {
