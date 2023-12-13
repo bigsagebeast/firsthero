@@ -10,6 +10,7 @@ import com.churchofcoyote.hero.roguelike.game.Dice;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Brogue;
+import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Generator;
 import com.churchofcoyote.hero.util.Point;
 
 public class DungeonGenerator {
@@ -131,7 +132,9 @@ public class DungeonGenerator {
 	}
 
 	public void generateBrogue(String key, int threat) {
-		Level level = new Brogue().generate(key);
+		Generator generator = new Generator();
+		Level level = generator.generate(key, 60, 60);
+		//Level level = new Brogue().generate(key);
 		// Remember to add the level to the map before generating it
 		levels.put(key, level);
 		level.threat = threat;
@@ -231,18 +234,8 @@ public class DungeonGenerator {
 			int toY = Integer.parseInt(transitionSplit[5]);
 			
 			if (transitionType.equals("up")) {
-				/*
-				if (level.cell(fromX, fromY).terrain.getGlyphForTile(fromX, fromY, 0).getSymbol() != '<') {
-					throw new RuntimeException("Invalid transition: no up-stair at " + fromX + ", " + fromY);
-				}
-				*/
 				level.addTransition(new LevelTransition("up", new Point(fromX, fromY), destination, new Point(toX, toY)));
 			} else if (transitionType.equals("down")) {
-				/*
-				if (level.cell(fromX, fromY).terrain.getGlyphForTile(fromX, fromY, 0).getSymbol() != '>') {
-					throw new RuntimeException("Invalid transition: no down-stair at " + fromX + ", " + fromY);
-				}
-				 */
 				level.addTransition(new LevelTransition("down", new Point(fromX, fromY), destination, new Point(toX, toY)));
 			} else {
 				throw new RuntimeException("Invalid transition type: " + transitionType);

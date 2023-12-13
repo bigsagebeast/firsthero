@@ -8,7 +8,7 @@ public class LevelCell {
 	public boolean explored;
 	public Object temp; // temporary storage for algorithms in progress
 	public Object astar; // temporary storage for astar calcs
-	public Room room;
+	public int roomId = -1;
 	
 	public LevelCell() {
 		light = 0;

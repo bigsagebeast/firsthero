@@ -101,8 +101,6 @@ public class Proc {
 
     public Boolean preBeOpened(Entity entity, Entity actor) { return null; }
     public void postBeOpened(Entity entity, Entity actor) { }
-    public Boolean preBeClosed(Entity entity, Entity actor) { return null; }
-    public void postBeClosed(Entity entity, Entity actor) { }
 
     public Boolean preBeLocked(Entity entity, Entity actor) { return null; }
     public void postBeLocked(Entity entity, Entity actor) { }

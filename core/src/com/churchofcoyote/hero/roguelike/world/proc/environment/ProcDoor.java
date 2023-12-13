@@ -14,6 +14,12 @@ public class ProcDoor extends ProcFeature {
 
     @Override
     public Boolean preBeOpened(Entity entity, Entity actor) {
+        return Boolean.TRUE;
+    }
+
+    /*
+    @Override
+    public Boolean preBeOpened(Entity entity, Entity actor) {
         if (!isOpen) {
             return Boolean.TRUE;
         }
@@ -29,19 +35,25 @@ public class ProcDoor extends ProcFeature {
         Game.announceVis(actor, null, "The door is already closed.", null, null, null);
         return Boolean.FALSE;
     }
+     */
 
     @Override
     public void postBeOpened(Entity entity, Entity actor) {
-        Game.announceVis(actor, null, "You open the door.", null, actor.getVisibleNameThe() + " opens the door.", "You hear a door being opened.");
-        open(entity);
+        if (isOpen) {
+            Game.announceVis(actor, null, "You close the door.", null, actor.getVisibleNameThe() + " closes the door.", "You hear a door being closed.");
+            close(entity);
+        } else {
+            Game.announceVis(actor, null, "You open the door.", null, actor.getVisibleNameThe() + " opens the door.", "You hear a door being opened.");
+            open(entity);
+        }
     }
-
+/*
     @Override
     public void postBeClosed(Entity entity, Entity actor) {
         Game.announceVis(actor, null, "You close the door.", null, actor.getVisibleNameThe() + " closes the door.", "You hear a door being closed.");
         close(entity);
     }
-
+*/
     @Override
     public Boolean isObstructive() {
         return !isOpen;

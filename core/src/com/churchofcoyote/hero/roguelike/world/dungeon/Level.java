@@ -26,6 +26,7 @@ public class Level {
 	private long lastWander = 0;
 	public long wanderRate = 50000;
 	public int maxForWander = DungeonGenerator.NUM_MONSTERS;
+	public List<Room> rooms = new ArrayList<>();
 	
 	public Level(String name, int width, int height) {
 		this.name = name;
@@ -156,6 +157,10 @@ public class Level {
 		entity.containingLevel = this.name;
 		entity.containingEntity = -1;
 		entity.pos = pos;
+		entity.roomId = cell(pos).roomId;
+		if (entity.roomId >= 0 && entity.getMover() != null) {
+			entity.changeRoom(null, rooms.get(entity.roomId));
+		}
 		Entity stackedInto = null;
 		for (Entity mergeTarget : getItemsOnTile(entity.pos)) {
 			if (entity.canStackWith(mergeTarget)) {

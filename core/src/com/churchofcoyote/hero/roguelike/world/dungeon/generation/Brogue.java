@@ -7,6 +7,8 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.LevelCell;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
+import com.churchofcoyote.hero.roguelike.world.dungeon.RoomType;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
@@ -30,21 +32,20 @@ public class Brogue {
     private Terrain floor;
     private Terrain doorway;
 
-    public Brogue() {
+    public Brogue(Level level) {
         wall = Terrain.get("wall");
         floor = Terrain.get("dirt");
         doorway = Terrain.get("doorway");
+        this.level = level;
+        levelGrid = new Grid(level.getWidth(), level.getHeight());
     }
 
-    public Level generate(String name) {
-        level = new Level(name, 60, 60);
+    public void generate() {
         for (int i=0; i<40; i++) {
             for (int j=0; j<40; j++) {
                 level.cell(i, j).terrain = wall;
             }
         }
-
-        levelGrid = new Grid(60, 60);
 
         //Grid firstRoom = makeSymmetricalCross();
         Grid firstRoom = makeRectangularRoom();
@@ -140,8 +141,6 @@ public class Brogue {
         }
 
         level.reinitialize();
-
-        return level;
     }
 
     private float randomFloatRange(float min, float max) {
@@ -156,6 +155,8 @@ public class Brogue {
         if (!level.withinBounds(x, y) || !level.withinBounds(x + grid.width-1, y + grid.height-1)) {
             throw new RuntimeException("Grid won't fit on level");
         }
+        // we already used room IDs for the next id that would be present in the list
+        level.rooms.add(grid.room);
         for (int i=0; i<grid.width; i++) {
             for (int j=0; j<grid.height; j++) {
                 //if (grid.cell[i][j].temp != null) {
@@ -170,6 +171,7 @@ public class Brogue {
     private Grid makeCircularRoom() {
         int radius = randomIntRange(CIRCULAR_RADIUS_MIN, CIRCULAR_RADIUS_MAX);
         Grid grid = new Grid(3 + (radius * 2), 3 + (radius * 2));
+        int roomId = level.rooms.size();
         int center = (1 + radius);
 
         for (int i=0; i<1+(radius*2); i++) {
@@ -177,6 +179,7 @@ public class Brogue {
                 if (((i-center)*(i-center))+((j-center)*(j-center)) < (radius*radius)) {
                     grid.cell[i][j].terrain = floor;
                     grid.cell[i][j].temp = Boolean.FALSE;
+                    grid.cell[i][j].roomId = roomId;
                 } else {
                     grid.cell[i][j].terrain = wall;
                 }
@@ -189,11 +192,13 @@ public class Brogue {
     private Grid makeRectangularRoom() {
         int width = randomIntRange(3, 12);
         int height = randomIntRange(3, 12);
+        int roomId = level.rooms.size();
         Grid grid = new Grid(width+2, height+2);
         for (int i=1; i<width+1; i++) {
             for (int j=1; j<height+1; j++) {
                 grid.cell[i][j].terrain = floor;
                 grid.cell[i][j].temp = Boolean.FALSE;
+                grid.cell[i][j].roomId = roomId;
             }
         }
         grid.markAllAdjacentToOpen();
@@ -207,6 +212,7 @@ public class Brogue {
             minorWidth--;
         }
         Grid grid = new Grid(majorWidth+2, majorWidth+2);
+        int roomId = level.rooms.size();
 
         for (int x=1; x<majorWidth-1; x++) {
             for (int y=1; y<majorWidth-1; y++) {
@@ -214,6 +220,7 @@ public class Brogue {
                     y >= (majorWidth / 2 - minorWidth / 2) && y < ((majorWidth + 1) / 2) + (minorWidth / 2)) {
                     grid.cell[x+1][y+1].terrain = floor;
                     grid.cell[x+1][y+1].temp = Boolean.FALSE;
+                    grid.cell[x+1][y+1].roomId = roomId;
                 }
             }
         }
@@ -344,6 +351,7 @@ public class Brogue {
     public class Grid {
         public LevelCell[][] cell;
         public int width, height;
+        public Room room;
         public Grid(int width, int height) {
             this.width = width;
             this.height = height;
@@ -358,6 +366,7 @@ public class Brogue {
                     cell[i][j].terrain = wall;
                 }
             }
+            room = new Room(RoomType.BROGUE_GENERIC);
         }
 
         public void markAllAdjacentToOpen() {

@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.MoverLogic;
 import com.churchofcoyote.hero.roguelike.game.Rank;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.roguelike.world.proc.item.ProcEquippable;
 import com.churchofcoyote.hero.roguelike.world.proc.item.ProcItem;
@@ -38,6 +39,7 @@ public class Entity {
 
     //public Glyph glyph;
     public Point pos;
+    public int roomId = -1;
 
     public List<Proc> procs = new ArrayList<>();
     public Collection<Integer> inventoryIds = new ArrayList<>();
@@ -261,6 +263,7 @@ public class Entity {
         return false;
     }
 
+    /*
     // returns 'true' if an attempt was made
     public boolean tryClose(Entity actor) {
         boolean canClose = false;
@@ -282,6 +285,7 @@ public class Entity {
         }
         return false;
     }
+     */
 
     public boolean pickup(Entity target) {
         boolean canBePickedUp = false;
@@ -719,6 +723,15 @@ public class Entity {
     public void forEachProc(BiConsumer<Entity, Proc> lambda) {
         for (Proc p : allProcsIncludingEquipmentAndInventory().collect(Collectors.toList())) {
             lambda.accept(this, p);
+        }
+    }
+
+    public void changeRoom(Room oldRoom, Room newRoom) {
+        if (oldRoom != null) {
+            oldRoom.leave(this);
+        }
+        if (newRoom != null) {
+            newRoom.enter(this);
         }
     }
 

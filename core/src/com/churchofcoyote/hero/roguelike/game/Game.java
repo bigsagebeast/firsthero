@@ -10,6 +10,7 @@ import com.churchofcoyote.hero.persistence.Persistence;
 import com.churchofcoyote.hero.persistence.PersistentProfile;
 import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.roguelike.world.proc.item.ProcItem;
@@ -307,8 +308,6 @@ public class Game {
 		for (Entity target : level.getEntitiesOnTile(targetPoint)) {
 			if (target.tryOpen(player.getEntity())) {
 				somethingToHandle = true;
-			} else if (target.tryClose(player.getEntity())) {
-				somethingToHandle = true;
 			}
 		}
 		if (somethingToHandle) {
@@ -536,11 +535,19 @@ public class Game {
 			return;
 		}
 	}
-	
-	private static void movePlayer(int tx, int ty) {
-		player.getEntity().pos = new Point(tx, ty);
 
-		List<Entity> items = level.getItemsOnTile(player.getEntity().pos);
+	private static void movePlayer(int tx, int ty) {
+		Point newPos = new Point(tx, ty);
+		player.getEntity().pos = newPos;
+		int oldRoomId = player.getEntity().roomId;
+		int newRoomId = level.cell(newPos).roomId;
+		if (player.getEntity().roomId != newRoomId) {
+			Room oldRoom = oldRoomId < 0 ? null : level.rooms.get(oldRoomId);
+			Room newRoom = newRoomId < 0 ? null : level.rooms.get(newRoomId);
+			player.getEntity().changeRoom(oldRoom, newRoom);
+		}
+
+		List<Entity> items = level.getItemsOnTile(newPos);
 		if (items.isEmpty()) {
 			return;
 		}
@@ -570,7 +577,15 @@ public class Game {
 	}
 	
 	private static void moveNpc(Entity actor, int tx, int ty) {
-		actor.pos = new Point(tx, ty);
+		Point newPos = new Point(tx, ty);
+		actor.pos = newPos;
+		int oldRoomId = actor.roomId;
+		int newRoomId = level.cell(newPos).roomId;
+		if (actor.roomId != newRoomId) {
+			Room oldRoom = oldRoomId < 0 ? null : level.rooms.get(oldRoomId);
+			Room newRoom = newRoomId < 0 ? null : level.rooms.get(newRoomId);
+			actor.changeRoom(oldRoom, newRoom);
+		}
 		for (Entity item : level.getItemsOnTile(actor.pos)) {
 			for (Proc p : item.procs) {
 				p.postBeSteppedOn(item, actor);
