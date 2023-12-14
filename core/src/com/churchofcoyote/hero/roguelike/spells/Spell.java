@@ -44,7 +44,11 @@ public abstract class Spell {
             Game.announce("You don't have enough SP for that spell.");
             return;
         }
+        /*
         GameLoop.directionModule.begin("Select a direction to cast " + getName() + ", or space to cancel.",
+                this::handlePlayerStartSpell);
+         */
+        GameLoop.directionModule.begin("Select a direction, or space to cancel.",
                 this::handlePlayerStartSpell);
     }
 

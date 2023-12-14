@@ -40,31 +40,36 @@ public class RoguelikeModule extends Module {
 	public static EquipmentWindow equipWindow;
 	public static HitPointWindow hitPointWindow;
 	public static ExperienceWindow experienceWindow;
+	public static StatBarWindow statBarWindow;
 
 	private boolean dirty = true;
 	
 	public static TextBlock topBorder = null;
-	
+
+	public void initialize() {
+		game = new Game(this);
+	}
+
 	@Override
 	public void start() {
 		super.start();
 
-		game = new Game(this);
 		mainWindow = new MainWindow();
 		announceWindow = new AnnounceWindow();
-		statsWindow = new StatsWindow();
 		equipWindow = new EquipmentWindow();
 		hitPointWindow = new HitPointWindow();
 		experienceWindow = new ExperienceWindow();
+		statBarWindow = new StatBarWindow();
 
 
 		announceWindow.addLine("Announcements:");
 
 		uiEngine.addBlock(announceWindow.getTextBlockParent());
-		uiEngine.addBlock(statsWindow.getTextBlockParent());
+//		uiEngine.addBlock(statsWindow.getTextBlockParent());
 		uiEngine.addBlock(equipWindow.getTextBlockParent());
 		uiEngine.addBlock(hitPointWindow.getTextBlockParent());
 		uiEngine.addBlock(experienceWindow.getTextBlockParent());
+		uiEngine.addBlock(statBarWindow.getTextBlockParent());
 	}
 	
 	
@@ -135,10 +140,10 @@ public class RoguelikeModule extends Module {
 		if (Game.getPlayerEntity() == null) {
 			return;
 		}
-		statsWindow.update();
 		equipWindow.update();
 		hitPointWindow.update();
 		experienceWindow.update();
+		statBarWindow.update();
 
 		Game.getLevel().updateVis();
 	}

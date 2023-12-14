@@ -162,7 +162,7 @@ public class Brogue {
         if (!level.withinBounds(x, y) || !level.withinBounds(x + grid.width-1, y + grid.height-1)) {
             throw new RuntimeException("Grid won't fit on level");
         }
-        // we already used room IDs for the next id that would be present in the list
+        grid.room.roomId = level.rooms.size();
         level.rooms.add(grid.room);
         grid.room.centerPoint = new Point(grid.roomCenter.x + x, grid.roomCenter.y + y);
         rooms.add(grid.room);

@@ -110,6 +110,11 @@ public class DialogueBox {
         lines.add(line);
     }
 
+    public void autoHeight() {
+        int textLine = lines.size();
+        height = (textLine * FONT_SIZE) + FOOTER_OFFSET_FROM_BOTTOM + 16; // TODO magic number
+    }
+
     public void compile(TextEngine textEngine) {
         lineParent = new TextBlock("", null, FONT_SIZE, 0, 0,
                 x + ITEM_OFFSET_FROM_LEFT, y + ITEM_OFFSET_FROM_TOP,

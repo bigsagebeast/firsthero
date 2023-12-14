@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.MoverLogic;
 import com.churchofcoyote.hero.roguelike.game.Rank;
+import com.churchofcoyote.hero.roguelike.game.Statblock;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.roguelike.world.proc.item.ProcEquippable;
@@ -71,6 +72,7 @@ public class Entity {
     public int naturalRangedWeaponToHit;
     public int naturalArmorClass;
     public int naturalArmorThickness;
+    public Statblock statblock = new Statblock(20);
 
     public int healingDelay = 3;
     public int healingRate = 1;

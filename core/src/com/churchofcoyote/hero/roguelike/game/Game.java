@@ -74,20 +74,13 @@ public class Game {
 		level = dungeon.getLevel("start");
 	}
 
-	public void startCaves() {
-		Entity pc = bestiary.create("player");
-		Entity dagger = itempedia.create("dagger");
-		pc.equip(dagger, BodyPart.PRIMARY_HAND);
-		Entity shortbow = itempedia.create("shortbow");
-		pc.equip(shortbow, BodyPart.RANGED_WEAPON);
-		Entity arrow = itempedia.create("arrow", 100);
-		pc.equip(arrow, BodyPart.RANGED_AMMO);
-		Entity magicmap = itempedia.create("scroll.magic.map", 100);
-		pc.receiveItem(magicmap);
+
+	public void handleStartCaves(Entity pc) {
 		player.setEntityId(pc.entityId);
 		dungeon.generateBrogue("dungeon1", 0);
 		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
 		level = dungeon.getLevel("dungeon1");
+		GameLoop.roguelikeModule.start();
 		/*
 		dungeon.generateBrogue("dungeon2", 1);
 		Level level2 = dungeon.getLevel("dungeon2");
@@ -106,6 +99,11 @@ public class Game {
 		level2.addTransition(new LevelTransition("down", downStairs2, "dungeon3", upStairs3));
 		level3.addTransition(new LevelTransition("up", upStairs3, "dungeon2", downStairs2));
 		 */
+	}
+
+	public void startCaves() {
+		CharacterBuilder cb = new CharacterBuilder(this::handleStartCaves);
+		cb.begin();
 	}
 
 	public void changeLevel(Level nextLevel, Point playerPos) {
