@@ -28,7 +28,7 @@ public class SpellMagicMissile extends Spell {
     @Override
     public void affectTarget(Entity actor, Entity target) {
         if (CombatLogic.castAttempt(actor, target, this)) {
-            CombatLogic.castDamage(actor, target, this, 8);
+            CombatLogic.castDamage(actor, target, this, 15);
         }
     }
 }

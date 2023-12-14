@@ -15,6 +15,8 @@ import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -58,6 +60,12 @@ public class TargetingModule extends Module {
         animate(origin, target, Color.WHITE, false);
     }
 
+    private double moverDistance(Entity mover) {
+        double distX = mover.pos.x - Game.getPlayerEntity().pos.x;
+        double distY = mover.pos.y - Game.getPlayerEntity().pos.y;
+        return Math.sqrt((distX * distX) + (distY * distY));
+    }
+
     public void begin(TargetMode targetMode, Consumer<Point> handler) {
         operationMode = OperationMode.TARGETING;
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
@@ -67,6 +75,9 @@ public class TargetingModule extends Module {
                 moversInLOS.add(mover);
             }
         }
+
+        Collections.sort(moversInLOS, Comparator.comparingDouble(entity -> moverDistance(entity)));
+
         if (!moversInLOS.isEmpty() && targetMode.trackMovers) {
             trackMoverIndex = 0;
             targetTile = moversInLOS.get(trackMoverIndex).pos;

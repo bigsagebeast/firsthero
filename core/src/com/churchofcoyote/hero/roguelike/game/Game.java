@@ -40,7 +40,7 @@ public class Game {
 	public static int ONE_TURN = 1000;
 
 	private Inventory inventory = new Inventory();
-	private Spellbook spellbook = new Spellbook();
+	public Spellbook spellbook = new Spellbook();
 
 	public Game(RoguelikeModule module) {
 		try {
@@ -404,15 +404,15 @@ public class Game {
 			shotEntity = rangedAmmo.split(1);
 		}
 
-		if (target != null && target != getPlayerEntity()) {
+		if (target != null) {
 			CombatLogic.shoot(player.getEntity(), target, rangedWeapon, shotEntity);
-			passTime(player.getEntity().moveCost);
 		}
 		if (lastShot) {
 			announce("You're out of " + shotEntity.getVisiblePluralName() + ".");
 		}
 
 		level.addEntityWithStacking(shotEntity, targetPoint);
+		passTime(player.getEntity().moveCost);
 		GameLoop.targetingModule.animate(getPlayerEntity().pos, targetPoint);
 	}
 

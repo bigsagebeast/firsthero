@@ -11,14 +11,21 @@ import java.util.List;
 
 public class Spellbook {
 
+    public List<Spell> spells = new ArrayList<>();
+
+    public void addSpell(Spell spell) {
+        spells.add(spell);
+    }
+
     public List<Spell> getSpells() {
-        ArrayList list = new ArrayList();
-        list.add(new SpellMagicMissile());
-        list.add(new SpellFirebeam());
-        return list;
+        return spells;
     }
 
     public void openSpellbookToCast() {
+        if (spells.isEmpty()) {
+            Game.announce("You don't know any spells");
+            return;
+        }
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select spell to cast")

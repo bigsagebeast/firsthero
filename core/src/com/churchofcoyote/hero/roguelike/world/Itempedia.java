@@ -170,6 +170,9 @@ public class Itempedia {
 
     public Entity create(String key, int quantity) {
         ItemType t = map.get(key);
+        if (t == null) {
+            throw new RuntimeException("Creating invalid item: " + key);
+        }
         if (!t.stackable) {
             throw new RuntimeException("Tried to create a stack of unstackable " + key);
         }

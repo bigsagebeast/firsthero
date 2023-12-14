@@ -29,7 +29,7 @@ public class SpellFirebeam extends Spell {
     @Override
     public void affectTarget(Entity actor, Entity target) {
         if (CombatLogic.castAttempt(actor, target, this)) {
-            CombatLogic.castDamage(actor, target, this, 5);
+            CombatLogic.castDamage(actor, target, this, 10);
         }
     }
 
