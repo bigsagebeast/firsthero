@@ -1,0 +1,59 @@
+{
+  "themes": {
+    "goblin.stronghold": {
+      "rooms": {
+        "goblin.treasureroom": {
+          "roomName": "Treasure Vault",
+          "roomDesc": "You enter a goblin treasure vault!",
+          "hardCap": 1,
+          "depth": 5,
+          "loops": "NEVER"
+        },
+        "goblin.throneroom": {
+          "roomName": "Throne Room",
+          "roomDesc": "You enter a dirty goblin throne room.",
+          "hardCap": 1,
+          "depth": 4,
+          "priority": 4,
+          "loops": "NEVER"
+        },
+        "goblin.entrance": {
+          "roomName": "Goblin Stronghold Entrance",
+          "roomDesc": "You step into a goblin stronghold.",
+          "depth": 0,
+          "loops": "OKAY"
+        },
+        "goblin.barracks": {
+          "roomName": "Goblin Barracks",
+          "roomDesc": "Tattered furs cover the ground.",
+          "depth": 1,
+          "loops": "OKAY"
+        },
+        "goblin.guardpost": {
+          "roomName": "Goblin Guard Post",
+          "roomDesc": "Poor barricades mark the entrance to this guard post.",
+          "depth": 2,
+          "loops": "PREFERRED"
+        },
+        "goblin.armory": {
+          "roomName": "Goblin Armory",
+          "roomDesc": "Broken and rusted scraps of metal litter this goblin armory.",
+          "depth": 3,
+          "loops": "OKAY"
+        },
+        "goblin.kitchen": {
+          "roomName": "Goblin Kitchen",
+          "roomDesc": "The stench of cooked carcasses surrounds you.",
+          "depth": 2,
+          "loops": "OKAY"
+        },
+        "goblin.chapel": {
+          "roomName": "Goblin Chapel",
+          "roomDesc": "Desecrated religious icons are painted on the walls.",
+          "depth": 2,
+          "loops": "OKAY"
+        }
+      }
+    }
+  }
+}

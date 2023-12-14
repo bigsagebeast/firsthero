@@ -32,7 +32,7 @@ public class Generator {
         RoomPacker roomPacker = new RoomPacker(level, 0, 0, 30, 20, 8, Compass.SOUTH);
         roomPacker.generate();
 
-        SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Theme.goblinTheme);
+        SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Themepedia.get("goblin.stronghold"));
         assigner.assign();
 
         Brogue brogue = new Brogue(level);

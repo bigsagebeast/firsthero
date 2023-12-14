@@ -6,28 +6,9 @@ import java.util.ArrayList;
 
 public class Theme {
     public ArrayList<ThemeRoom> rooms = new ArrayList<>();
+    public String key;
 
     public static Theme goblinTheme;
-
-    static {
-        goblinTheme = new Theme();
-        goblinTheme.add(new ThemeRoom(new RoomType("Throne Room", "You enter a goblin treasure vault!"),
-                "goblin.treasureroom", 1, 1, 5, 1.0f, ThemeLoopsPreferred.NEVER));
-        goblinTheme.add(new ThemeRoom(new RoomType("Throne Room", "You enter a dirty goblin throne room."),
-                "goblin.throneroom", 1, 1, 4, 4.0f, ThemeLoopsPreferred.NEVER));
-        goblinTheme.add(new ThemeRoom(new RoomType("Goblin Entrance", "You step into a goblin stronghold."),
-                "goblin.entrance", 1, 1, 0, 1.0f, ThemeLoopsPreferred.OKAY));
-        goblinTheme.add(new ThemeRoom(new RoomType("Goblin Barracks", "Tattered furs cover the ground."),
-                "goblin.barracks", 2, -1, 1, 1.0f, ThemeLoopsPreferred.OKAY));
-        goblinTheme.add(new ThemeRoom(new RoomType("Goblin Guard Post", "Poor barricades mark the entrances to this guard post."),
-                "goblin.guardpost", 2, -1, 2, 1.0f, ThemeLoopsPreferred.PREFERRED));
-        goblinTheme.add(new ThemeRoom(new RoomType("Goblin Armory", "Broken and rusted scraps of metal lean against the walls of this goblin armory."),
-                "goblin.armory", 2, -1, 3, 1.0f, ThemeLoopsPreferred.OKAY));
-        goblinTheme.add(new ThemeRoom(new RoomType("Goblin Kitchen", "The stench of cooked carcasses surrounds you."),
-                "goblin.kitchen", 1, -1, 2, 1.0f, ThemeLoopsPreferred.OKAY));
-        goblinTheme.add(new ThemeRoom(new RoomType("Goblin Chapel", "Desecrated religious icons are painted on the walls."),
-                "goblin.chapel", 1, 1, 2, 1.0f, ThemeLoopsPreferred.OKAY));
-    }
 
     public void add(ThemeRoom room) {
         rooms.add(room);
