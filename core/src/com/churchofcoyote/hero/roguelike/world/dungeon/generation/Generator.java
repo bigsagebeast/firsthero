@@ -32,6 +32,9 @@ public class Generator {
         RoomPacker roomPacker = new RoomPacker(level, 0, 0, 30, 20, 8, Compass.SOUTH);
         roomPacker.generate();
 
+        SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Theme.goblinTheme);
+        assigner.assign();
+
         Brogue brogue = new Brogue(level);
         brogue.generate();
 

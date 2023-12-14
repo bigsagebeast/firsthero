@@ -26,6 +26,7 @@ public class RoomPacker {
     public int regionX, regionY, regionWidth, regionHeight;
     private ArrayList<PackRoom> packRooms = new ArrayList<>();
     private ArrayList<RoomSize> roomSizes = new ArrayList<>();
+    public RoomNode firstNode;
     public RoomPacker(Level level, int regionX, int regionY, int regionWidth, int regionHeight,
                       int maxRooms, Compass entrance) {
         wall = Terrain.get("wall");
@@ -55,9 +56,9 @@ public class RoomPacker {
         roomSizes.add(new RoomSize(7, 5));
         roomSizes.add(new RoomSize(7, 7));
 
-        packRooms.add(makeInitialRoom(entrance));
-
-
+        PackRoom initialRoom = makeInitialRoom(entrance);
+        packRooms.add(initialRoom);
+        firstNode = initialRoom;
     }
 
     public void generate() {
@@ -187,6 +188,7 @@ public class RoomPacker {
                 new Point(packRoom.x + packRoom.width/2, packRoom.y + packRoom.height/2));
         room.roomId = level.rooms.size();
         packRoom.room = room;
+        level.rooms.add(room);
         return packRoom;
     }
 
