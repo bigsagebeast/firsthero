@@ -13,6 +13,7 @@ public class AnnounceWindow extends UIWindow {
 	private int windowHeight;
 	private int paraWidth;
 	private int allowedSpace = 10;
+	private int slack = 0;
 
 	List<String> lines = new ArrayList<String>();
 	List<TextBlock> lineBlocks = new ArrayList<TextBlock>();
@@ -50,6 +51,14 @@ public class AnnounceWindow extends UIWindow {
 			lineBlocks.get(0).close();
 			lineBlocks.remove(0);
 		}
+		parent.compile();
+	}
+
+	public void unannounce() {
+		lines.remove(lines.size() - 1);
+		lineBlocks.get(lineBlocks.size() - 1).close();
+		lineBlocks.remove(lineBlocks.size() - 1);
+		slack++;
 		parent.compile();
 	}
 	
@@ -92,9 +101,13 @@ public class AnnounceWindow extends UIWindow {
 		TextBlock lineBlock = new TextBlock("", null, RoguelikeModule.FONT_SIZE, 0, windowHeight-1, Color.WHITE);
 		TextBlock partialBlock = new TextBlock(thisLine, null, RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
 		lineBlock.addChild(partialBlock);
-		
-		for (TextBlock block : lineBlocks) {
-			block.y -= 1.0f;
+
+		if (slack > 0) {
+			slack--;
+		} else {
+			for (TextBlock block : lineBlocks) {
+				block.y -= 1.0f;
+			}
 		}
 		lineBlocks.add(lineBlock);
 		parent.addChild(lineBlock);

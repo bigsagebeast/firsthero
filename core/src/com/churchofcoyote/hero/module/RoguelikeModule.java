@@ -71,7 +71,10 @@ public class RoguelikeModule extends Module {
 	public void announce(String s) {
 		announceWindow.addLine(s);
 	}
-	
+
+	public void unannounce() {
+		announceWindow.unannounce();
+	}
 	
 	
 	private void process() {

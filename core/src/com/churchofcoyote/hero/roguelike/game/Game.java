@@ -21,6 +21,7 @@ import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 import com.churchofcoyote.hero.util.Raycasting;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -552,26 +553,31 @@ public class Game {
 		}
 
 		List<Entity> items = level.getItemsOnTile(newPos);
+		List<Entity> itemsToMention = new ArrayList<>(items);
+		itemsToMention.removeIf(e -> e.getItemType().hideWalkOver);
+
 		if (items.isEmpty()) {
 			return;
 		}
-		StringBuilder listString = new StringBuilder();
-		if (items.size() == 1 && items.get(0).getItem().quantity == 1) {
-			listString.append("There is ");
-		} else {
-			listString.append("There are ");
-		}
-		for (int i=0; i<items.size(); i++) {
-			listString.append(items.get(i).getVisibleNameSingularOrSpecific());
-			if (items.size() > 1 && i < items.size() - 2) {
-				listString.append(", ");
+		if (!itemsToMention.isEmpty()) {
+			StringBuilder listString = new StringBuilder();
+			if (itemsToMention.size() == 1 && items.get(0).getItem().quantity == 1) {
+				listString.append("There is ");
+			} else {
+				listString.append("There are ");
 			}
-			if (i == items.size() - 2) {
-				listString.append(" and ");
+			for (int i = 0; i < itemsToMention.size(); i++) {
+				listString.append(itemsToMention.get(i).getVisibleNameSingularOrSpecific());
+				if (itemsToMention.size() > 1 && i < itemsToMention.size() - 2) {
+					listString.append(", ");
+				}
+				if (i == itemsToMention.size() - 2) {
+					listString.append(" and ");
+				}
 			}
+			listString.append(" here.");
+			announce(listString.toString());
 		}
-		listString.append(" here.");
-		announce(listString.toString());
 
 		for (Entity item : items) {
 			for (Proc p : item.procs) {
@@ -645,6 +651,10 @@ public class Game {
 			return;
 		}
 		roguelikeModule.announce(s);
+	}
+
+	public static void unannounce() {
+		roguelikeModule.unannounce();
 	}
 	
 	public static void announceVis(Visibility vis, String actor, String target, String visible, String audible) {
