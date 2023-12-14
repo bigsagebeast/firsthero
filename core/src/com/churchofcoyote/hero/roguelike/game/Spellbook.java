@@ -23,7 +23,7 @@ public class Spellbook {
 
     public void openSpellbookToCast() {
         if (spells.isEmpty()) {
-            Game.announce("You don't know any spells");
+            Game.announce("You don't know any spells.");
             return;
         }
         DialogueBox box = new DialogueBox()

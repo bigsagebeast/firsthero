@@ -1,8 +1,6 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
-import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.roguelike.game.Game;
-import com.churchofcoyote.hero.roguelike.world.Bestiary;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
@@ -14,7 +12,6 @@ import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -379,7 +376,7 @@ public class Brogue {
                     cell[i][j].terrain = wall;
                 }
             }
-            room = new Room(RoomType.BROGUE_GENERIC, roomCenter);
+            room = new Room(RoomType.GENERIC, roomCenter);
         }
 
         public void markAllAdjacentToOpen() {

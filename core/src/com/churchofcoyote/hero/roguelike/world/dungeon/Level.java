@@ -97,6 +97,15 @@ public class Level {
 		}
 		return null;
 	}
+
+	public LevelTransition findTransitionTo(String toKey) {
+		for (LevelTransition transition : transitions) {
+			if (transition.toMap.equals(toKey)) {
+				return transition;
+			}
+		}
+		throw new RuntimeException("Failed to find 'to' transition when moving levels from " + toKey + " to " + name);
+	}
 	
 	public int getWidth() {
 		return width;

@@ -20,6 +20,10 @@ public class DungeonGenerator {
 	public Map<String, Level> levels = new HashMap<String, Level>();
 	
 	public Level getLevel(String key) {
+		if (!levels.containsKey(key)) {
+			generateClassic(key);
+		}
+
 		return levels.get(key);
 	}
 
@@ -131,17 +135,26 @@ public class DungeonGenerator {
 		return loot;
 	}
 
-	public void generateBrogue(String key, int threat) {
+	public void generateClassic(String key) {
+		String[] components = key.split("\\.");
+		if (components.length != 2) {
+			throw new RuntimeException("Invalid level name: " + key);
+		}
+		String dungeon = components[0];
+		int depth = Integer.valueOf(components[1]);
+
 		Generator generator = new Generator();
 		Level level = generator.generate(key, 60, 60);
-		//Level level = new Brogue().generate(key);
 		// Remember to add the level to the map before generating it
 		levels.put(key, level);
-		level.threat = threat;
+		level.threat = depth-1;
 		populate(level);
-
-		
-		
+		if (depth == 1) {
+			generator.addUpstairTo("out");
+		} else {
+			generator.addUpstairTo(dungeon + "." + (depth-1));
+		}
+		generator.addDownstairTo(dungeon + "." + (depth+1));
 	}
 	
 	public void generateFromFile(String key, String filename) {

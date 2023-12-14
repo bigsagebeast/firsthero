@@ -27,4 +27,8 @@ public class Room {
     public void leave(Entity actor) {
 
     }
+
+    public String toString() {
+        return "(" + roomId + ": " + roomType.roomName + ", visited=" + visited + ", center " + centerPoint + ")";
+    }
 }

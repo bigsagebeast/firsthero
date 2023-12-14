@@ -3,7 +3,6 @@ package com.churchofcoyote.hero.roguelike.game;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.glyphtile.EntityGlyph;
-import com.churchofcoyote.hero.glyphtile.GlyphEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.module.TargetingModule;
 import com.churchofcoyote.hero.persistence.Persistence;
@@ -19,7 +18,6 @@ import com.churchofcoyote.hero.roguelike.world.proc.item.ProcWeaponRanged;
 import com.churchofcoyote.hero.roguelike.world.proc.monster.ProcShooter;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
-import com.churchofcoyote.hero.util.Raycasting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +75,8 @@ public class Game {
 
 	public void handleStartCaves(Entity pc) {
 		player.setEntityId(pc.entityId);
-		dungeon.generateBrogue("dungeon1", 0);
-		changeLevel(dungeon.getLevel("dungeon1"), dungeon.getLevel("dungeon1").findOpenTile());
-		level = dungeon.getLevel("dungeon1");
+		dungeon.generateClassic("dungeon.1");
+		changeLevel("dungeon.1", "out");
 		GameLoop.roguelikeModule.start();
 		/*
 		dungeon.generateBrogue("dungeon2", 1);
@@ -117,6 +114,27 @@ public class Game {
 		}
 
 		level = nextLevel;
+		Game.time = 0;
+		Game.lastTurnProc = 0;
+		level.addEntityWithStacking(player.getEntity(), playerPos);
+
+		GameLoop.glyphEngine.initializeLevel(level);
+		passTime(0);
+	}
+
+	public void changeLevel(String toKey, String fromKey) {
+		if (level != null) {
+			for (EntityProc tuple : level.getProcEntities()) {
+				if (tuple.proc.hasAction()) {
+					tuple.proc.nextAction = tuple.proc.nextAction - Game.time;
+				}
+			}
+			level.removeEntity(player.getEntity());
+		}
+
+		Level nextLevel = dungeon.getLevel(toKey);
+		level = nextLevel;
+		Point playerPos = nextLevel.findTransitionTo(fromKey).loc;
 		Game.time = 0;
 		Game.lastTurnProc = 0;
 		level.addEntityWithStacking(player.getEntity(), playerPos);
@@ -241,8 +259,14 @@ public class Game {
 		LevelTransition transition = level.findTransition("up", player.getEntity().pos);
 		if (transition == null) {
 			announce("You can't go up here.");
+		} else if (transition.toMap == "out") {
+			announce("You can't leave the dungeon!");
 		} else {
-			changeLevel(Game.dungeon.getLevel(transition.destination), transition.arrival);
+			if (transition.arrival != null) {
+				changeLevel(Game.dungeon.getLevel(transition.toMap), transition.arrival);
+			} else {
+				changeLevel(transition.toMap, transition.fromMap);
+			}
 		}
 	}
 	
@@ -251,7 +275,11 @@ public class Game {
 		if (transition == null) {
 			announce("You can't go down here.");
 		} else {
-			changeLevel(Game.dungeon.getLevel(transition.destination), transition.arrival);
+			if (transition.arrival != null) {
+				changeLevel(Game.dungeon.getLevel(transition.toMap), transition.arrival);
+			} else {
+				changeLevel(transition.toMap, transition.fromMap);
+			}
 		}
 	}
 
