@@ -1,11 +1,15 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.roguelike.world.dungeon.RoomType;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ThemeRoom {
     // Depth: 0 is first room only. 5 is deepest room only.  1-4 are quartiles.
     // softCap is -1 for unlimited
     // hardCap doesn't permit -1
-    RoomType type;
+    public RoomType type;
     public String key;
     public int softCap;
     public int hardCap;

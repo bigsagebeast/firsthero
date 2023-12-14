@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 public class TargetingModule extends Module {
 
-    private static int ANIMATION_STEP_TIME = 2;
+    private static int ANIMATION_STEP_TIME = 1;
     private OperationMode operationMode;
     public TargetMode targetMode;
     public Point targetTile;

@@ -2,9 +2,12 @@ package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
+import com.churchofcoyote.hero.roguelike.world.dungeon.LevelCell;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Generator {
@@ -48,8 +51,26 @@ public class Generator {
 
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
-                if (level.cell(i, j).terrain == uncarveable) {
-                    level.cell(i, j).terrain = wall;
+                Point p = new Point(i, j);
+                LevelCell cell = level.cell(p);
+                int roomId = cell.roomId;
+                if (roomId > -1) {
+                    if (level.roomMap.get(roomId) == null) {
+                        level.roomMap.put(roomId, new ArrayList<>());
+                    }
+                    level.roomMap.get(roomId).add(p);
+                }
+
+                if (cell.terrain == uncarveable) {
+                    cell.terrain = wall;
+                }
+            }
+        }
+
+        for (Room room : level.rooms) {
+            if (room.roomType != null) {
+                for (SpecialSpawner spawner : room.roomType.spawners) {
+                    spawner.spawnInRoom(level, room.roomId);
                 }
             }
         }

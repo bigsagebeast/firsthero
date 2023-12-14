@@ -33,7 +33,14 @@
           "roomName": "Goblin Guard Post",
           "roomDesc": "Poor barricades mark the entrance to this guard post.",
           "depth": 2,
-          "loops": "PREFERRED"
+          "loops": "PREFERRED",
+          "spawn": [
+            {
+              "type": "mover",
+              "key": "goblin.lackey",
+              "quantity": 4
+            }
+          ]
         },
         "goblin.armory": {
           "roomName": "Goblin Armory",

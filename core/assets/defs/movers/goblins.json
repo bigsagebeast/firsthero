@@ -1,0 +1,47 @@
+{
+  "movers": {
+    "goblin.lackey": {
+      "name": "sea-withered goblin lackey",
+      "peaceful": false,
+      "hitPoints": 8,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.grunt",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "red",
+        "brown"
+      ],
+      "experienceAwarded": 10,
+      "threat": 1,
+      "naturalWeaponDamage": 4,
+      "naturalWeaponToHit": -2,
+      "naturalArmorClass": 2,
+      "tags": [
+        "goblin"
+      ]
+    },
+    "jackal.trained": {
+      "name": "trained jackal",
+      "peaceful": false,
+      "hitPoints": 6,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.canine",
+      "isManipulator": false,
+      "palette": [
+        "tan",
+        "brown",
+        "red"
+      ],
+      "experienceAwarded": 5,
+      "threat": 1,
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": -2,
+      "naturalArmorClass": 5,
+      "packSize": 4,
+      "packSpawnArea": 3
+    }
+  }
+}

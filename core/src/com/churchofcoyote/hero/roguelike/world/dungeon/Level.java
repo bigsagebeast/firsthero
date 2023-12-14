@@ -27,6 +27,7 @@ public class Level {
 	public long wanderRate = 50000;
 	public int maxForWander = DungeonGenerator.NUM_MONSTERS;
 	public List<Room> rooms = new ArrayList<>();
+	public Map<Integer, List<Point>> roomMap = new HashMap<>();
 	
 	public Level(String name, int width, int height) {
 		this.name = name;
@@ -284,6 +285,24 @@ public class Level {
 		return null;
 	}
 
+	// no movers on the tile
+	public Point findEmptyTileInRoom(int roomId) {
+		List<Point> points = roomMap.get(roomId);
+		if (points == null || points.isEmpty()) {
+			return null;
+		}
+
+		Collections.shuffle(points);
+		for (Point p : points) {
+			if (cell(p).terrain.isPassable()) { // should always be true...
+				if (getMoversOnTile(p).isEmpty()) {
+					return p;
+				}
+			}
+		}
+		return null;
+	}
+
 	public Point findSpawnTile(int distance) {
 		int playerPosX = Game.getPlayerEntity().pos.x;
 		int playerPosY = Game.getPlayerEntity().pos.y;
@@ -298,11 +317,15 @@ public class Level {
 			if (x > excludedXMin && x < excludedXMax &&	y > excludedYMin && y < excludedYMax) {
 				continue;
 			}
+			boolean foundMover = false;
 			if (cell[x][y].terrain.isPassable() && cell[x][y].visible() == false) {
 				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
 					if (e.getMover() != null) {
-						continue;
+						foundMover = true;
 					}
+				}
+				if (foundMover) {
+					continue;
 				}
 				return new Point(x, y);
 			}

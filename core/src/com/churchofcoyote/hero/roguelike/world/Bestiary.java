@@ -21,11 +21,9 @@ public class Bestiary {
 		Phenotype door = new Phenotype();
 
 		Phenotype pc = new Phenotype();
-		Phenotype goblinLackey = new Phenotype();
 		Phenotype goblinArcher = new Phenotype();
 		Phenotype goblinWarrior = new Phenotype();
 		Phenotype farmer = new Phenotype();
-		Phenotype jackalTrained = new Phenotype();
 		Phenotype wolf = new Phenotype();
 		Phenotype skeleton = new Phenotype();
 		Phenotype zombie = new Phenotype();
@@ -40,26 +38,11 @@ public class Bestiary {
 		pc.bodyPlan = "humanoid";
 		pc.glyphName = "player.farmer";
 		pc.isManipulator = true;
-		pc.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_YELLOW);
+		pc.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_YELLOW);
 		pc.threat = -1;
 		pc.naturalWeaponDamage = 3;
 		pc.naturalWeaponToHit = 0;
 		pc.naturalArmorClass = 7;
-
-		goblinLackey.name = "sea-withered goblin lackey";
-		goblinLackey.peaceful = false;
-		goblinLackey.hitPoints = 8;
-		goblinLackey.stats = Rank.C_MINUS;
-		goblinLackey.isMonster = true;
-		goblinLackey.bodyPlan = "humanoid";
-		goblinLackey.glyphName = "humanoid.goblin.grunt";
-		goblinLackey.isManipulator = true;
-		goblinLackey.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
-		goblinLackey.experienceAwarded = 10;
-		goblinLackey.threat = 1;
-		goblinLackey.naturalWeaponDamage = 4;
-		goblinLackey.naturalWeaponToHit = -2;
-		goblinLackey.naturalArmorClass = 2;
 
 		goblinWarrior.name = "sea-withered goblin warrior";
 		goblinWarrior.peaceful = false;
@@ -69,7 +52,7 @@ public class Bestiary {
 		goblinWarrior.bodyPlan = "humanoid";
 		goblinWarrior.glyphName = "humanoid.goblin.warrior";
 		goblinWarrior.isManipulator = true;
-		goblinWarrior.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		goblinWarrior.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
 		goblinWarrior.experienceAwarded = 20;
 		goblinWarrior.threat = 2;
 		goblinWarrior.naturalWeaponDamage = 6;
@@ -84,7 +67,7 @@ public class Bestiary {
 		goblinArcher.bodyPlan = "humanoid";
 		goblinArcher.glyphName = "humanoid.goblin.archer";
 		goblinArcher.isManipulator = true;
-		goblinArcher.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		goblinArcher.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
 		goblinArcher.experienceAwarded = 15;
 		goblinArcher.threat = 1;
 		goblinArcher.naturalWeaponDamage = 3;
@@ -94,25 +77,9 @@ public class Bestiary {
 		goblinArcher.naturalArmorClass = 0;
 		goblinArcher.setup.add(e -> {
 			e.addProc(new ProcShooter("arrow"));
-			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(10)));
+			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(4)));
 		});
 
-		jackalTrained.name = "trained jackal";
-		jackalTrained.peaceful = false;
-		jackalTrained.hitPoints = 6;
-		jackalTrained.stats = Rank.C_MINUS;
-		jackalTrained.isMonster = true;
-		jackalTrained.bodyPlan = "humanoid";
-		jackalTrained.glyphName = "animal.canine";
-		jackalTrained.isManipulator = false;
-		jackalTrained.paletteEntry = new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_BROWN, Palette.COLOR_RED);
-		jackalTrained.experienceAwarded = 5;
-		jackalTrained.threat = 1;
-		jackalTrained.naturalWeaponDamage = 3;
-		jackalTrained.naturalWeaponToHit = -2;
-		jackalTrained.naturalArmorClass = 5;
-		jackalTrained.packSize = 4;
-		jackalTrained.packSpawnArea = 3;
 
 		wolf.name = "wolf";
 		wolf.peaceful = false;
@@ -122,7 +89,7 @@ public class Bestiary {
 		wolf.bodyPlan = "humanoid";
 		wolf.glyphName = "animal.canine";
 		wolf.isManipulator = false;
-		wolf.paletteEntry = new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_WHITE, Palette.COLOR_RED);
+		wolf.palette = new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_WHITE, Palette.COLOR_RED);
 		wolf.experienceAwarded = 40;
 		wolf.threat = 3;
 		wolf.naturalWeaponDamage = 8;
@@ -138,7 +105,7 @@ public class Bestiary {
 		skeleton.bodyPlan = "humanoid";
 		skeleton.glyphName = "undead.skeleton";
 		skeleton.isManipulator = true;
-		skeleton.paletteEntry = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		skeleton.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
 		skeleton.experienceAwarded = 15;
 		skeleton.threat = 1;
 		skeleton.naturalWeaponDamage = 6;
@@ -153,7 +120,7 @@ public class Bestiary {
 		zombie.bodyPlan = "humanoid";
 		zombie.glyphName = "undead.zombie";
 		zombie.isManipulator = true;
-		zombie.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TAN);
+		zombie.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TAN);
 		zombie.experienceAwarded = 20;
 		zombie.moveCost = 2000;
 		zombie.threat = 2;
@@ -169,7 +136,7 @@ public class Bestiary {
 		fungusRed.bodyPlan = "humanoid";
 		fungusRed.glyphName = "plant.fungus";
 		fungusRed.isManipulator = false;
-		fungusRed.paletteEntry = new PaletteEntry(Palette.COLOR_RED, Palette.COLOR_TAN, Palette.COLOR_BROWN);
+		fungusRed.palette = new PaletteEntry(Palette.COLOR_RED, Palette.COLOR_TAN, Palette.COLOR_BROWN);
 		fungusRed.experienceAwarded = 15;
 		fungusRed.moveCost = 20000;
 		fungusRed.threat = 2;
@@ -186,7 +153,7 @@ public class Bestiary {
 		fungusGreenFunglet.bodyPlan = "humanoid";
 		fungusGreenFunglet.glyphName = "plant.fungus";
 		fungusGreenFunglet.isManipulator = false;
-		fungusGreenFunglet.paletteEntry = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_BROWN);
+		fungusGreenFunglet.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_BROWN);
 		fungusGreenFunglet.experienceAwarded = 5;
 		fungusGreenFunglet.moveCost = 20000;
 		fungusGreenFunglet.threat = 0;
@@ -204,16 +171,14 @@ public class Bestiary {
 		farmer.bodyPlan = "humanoid";
 		farmer.glyphName = "creature.humanoid";
 		farmer.isManipulator = true;
-		farmer.paletteEntry = new PaletteEntry(Palette.COLOR_YELLOW, Palette.COLOR_TAN, Palette.COLOR_BROWN);
+		farmer.palette = new PaletteEntry(Palette.COLOR_YELLOW, Palette.COLOR_TAN, Palette.COLOR_BROWN);
 		farmer.experienceAwarded = 10;
 		farmer.threat = -1;
 		farmer.chatPage = "intro.farmer.landing";
 
 		map.put("player", pc);
-		map.put("goblin.lackey", goblinLackey);
 		map.put("goblin.warrior", goblinWarrior);
 		map.put("goblin.archer", goblinArcher);
-		map.put("jackal.trained", jackalTrained);
 		map.put("wolf", wolf);
 		map.put("skeleton", skeleton);
 		map.put("zombie", zombie);
@@ -244,12 +209,11 @@ public class Bestiary {
 		e.divinePoints = p.divinePoints;
 		e.maxDivinePoints = p.divinePoints;
 		e.peaceful = p.peaceful;
-		//e.glyph = p.glyph;
 		e.stats = p.stats;
 		e.moveCost = p.moveCost;
 		e.body = new Body(p.bodyPlan);
 		e.glyphName = p.glyphName;
-		e.palette = p.paletteEntry;
+		e.palette = p.palette;
 		e.isManipulator = p.isManipulator;
 		e.experienceAwarded = p.experienceAwarded;
 		e.naturalWeaponDamage = p.naturalWeaponDamage;
@@ -262,6 +226,12 @@ public class Bestiary {
 			consumer.accept(e);
 		}
 		e.addProc(new ProcTimedEffects());
+
+		if (p.procLoaders != null) {
+			for (LoadProc loader : p.procLoaders) {
+				loader.apply(e);
+			}
+		}
 
 		if (key.equals("player")) {
 			e.addProc(new ProcPlayer());

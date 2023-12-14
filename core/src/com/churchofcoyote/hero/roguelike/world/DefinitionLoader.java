@@ -6,6 +6,7 @@ import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.world.dungeon.RoomType;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Theme;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.ThemeRoom;
+import com.churchofcoyote.hero.roguelike.world.dungeon.generation.SpecialSpawner;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Themepedia;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +35,10 @@ public class DefinitionLoader {
             JsonNode items = root.get("items");
             if (items != null) {
                 loadItems(items);
+            }
+            JsonNode movers = root.get("movers");
+            if (movers != null) {
+                loadMovers(movers);
             }
             JsonNode themes = root.get("themes");
             if (themes != null) {
@@ -96,6 +101,13 @@ public class DefinitionLoader {
                     }
                     itemType.palette = new PaletteEntry(paletteEntries.get(0), paletteEntries.get(1),
                             paletteEntries.get(2), paletteEntries.get(3));
+                } else if (fieldName == "tags") {
+                    if (!nodeField.isArray()) {
+                        throw new RuntimeException("Tags was not an array");
+                    }
+                    for (JsonNode entry : nodeField) {
+                        itemType.tags.add(entry.textValue());
+                    }
                 } else {
                     Field itemTypeField = ItemType.class.getDeclaredField(fieldName);
                     itemTypeField.setAccessible(true);
@@ -115,6 +127,74 @@ public class DefinitionLoader {
             Itempedia.map.put(itemName, itemType);
         }
     }
+
+
+    public static void loadMovers(JsonNode movers) throws NoSuchFieldException, IllegalAccessException, SetupException {
+        for (Iterator<String> moverNames = movers.fieldNames(); moverNames.hasNext(); ) {
+            String moverName = moverNames.next();
+            JsonNode moverNode = movers.get(moverName);
+            Phenotype phenotype = new Phenotype();
+            phenotype.key = moverName;
+
+            for (Iterator<String> defFieldName = moverNode.fieldNames(); defFieldName.hasNext(); ) {
+                String fieldName = defFieldName.next();
+                JsonNode nodeField = moverNode.get(fieldName);
+                if (fieldName == "procs") {
+                    for (Iterator<String> procNames = nodeField.fieldNames(); procNames.hasNext(); ) {
+                        String procName = procNames.next();
+                        HashMap<String, String> procFields = new HashMap<>();
+                        JsonNode procNameNode = nodeField.get(procName);
+                        for (Iterator<String> procField = procNameNode.fieldNames(); procField.hasNext(); ) {
+                            String procFieldName = procField.next();
+                            procFields.put(procFieldName, procNameNode.get(procFieldName).asText());
+                        }
+                        LoadProc procLoader = new LoadProc(procName, procFields);
+                        phenotype.procLoaders.add(procLoader);
+                    }
+                } else if (fieldName == "palette") {
+                    if (!nodeField.isArray()) {
+                        throw new RuntimeException("Palette was not an array");
+                    }
+                    ArrayList<Integer> paletteEntries = new ArrayList<>();
+                    for (JsonNode entry : nodeField) {
+                        if (Palette.stringMap.get(entry.textValue()) == null) {
+                            throw new SetupException("Unknown color in palette: " + entry.textValue() +
+                                    " for item: " + moverName);
+                        }
+                        paletteEntries.add(Palette.stringMap.get(entry.textValue()));
+                    }
+                    while (paletteEntries.size() < 4) {
+                        paletteEntries.add(Palette.COLOR_TRANSPARENT);
+                    }
+                    phenotype.palette = new PaletteEntry(paletteEntries.get(0), paletteEntries.get(1),
+                            paletteEntries.get(2), paletteEntries.get(3));
+                } else if (fieldName == "tags") {
+                    if (!nodeField.isArray()) {
+                        throw new RuntimeException("Tags was not an array");
+                    }
+                    for (JsonNode entry : nodeField) {
+                        phenotype.tags.add(entry.textValue());
+                    }
+                } else {
+                    Field phenotypeField = Phenotype.class.getDeclaredField(fieldName);
+                    phenotypeField.setAccessible(true);
+
+                    if (phenotypeField.getType().isAssignableFrom(String.class)) {
+                        phenotypeField.set(phenotype, nodeField.asText());
+                    } else if (phenotypeField.getType().isAssignableFrom(int.class) || phenotypeField.getType().isAssignableFrom(Integer.class)) {
+                        phenotypeField.set(phenotype, nodeField.asInt());
+                    } else if (phenotypeField.getType().isAssignableFrom(float.class) || phenotypeField.getType().isAssignableFrom(Float.class)) {
+                        phenotypeField.set(phenotype, Float.valueOf(nodeField.asText()));
+                    } else if (phenotypeField.getType().isAssignableFrom(boolean.class) || phenotypeField.getType().isAssignableFrom(Boolean.class)) {
+                        phenotypeField.set(phenotype, Boolean.valueOf(nodeField.asText()));
+                    }
+
+                }
+            }
+            Bestiary.map.put(moverName, phenotype);
+        }
+    }
+
 
 
     public static void loadThemes(JsonNode themes) throws NoSuchFieldException, IllegalAccessException, SetupException {
@@ -155,9 +235,39 @@ public class DefinitionLoader {
                     ThemeRoom themeRoom = new ThemeRoom(new RoomType(roomName, roomDescription), fieldName,
                             softCap, hardCap, depth, priority, loops);
                     theme.add(themeRoom);
+                    JsonNode spawn = roomNode.get("spawn");
+                    if (spawn != null) {
+                        if (!spawn.isArray()) {
+                            throw new RuntimeException("Spawn list was not an array");
+                        }
+                        for (JsonNode entry : spawn) {
+                            themeRoom.type.spawners.add(loadThemeRoomSpawner(entry));
+                        }
+                    }
                 }
             }
         }
+    }
+
+    public static SpecialSpawner loadThemeRoomSpawner(JsonNode node) {
+        SpecialSpawner spawner = new SpecialSpawner();
+        spawner.isMover = getAsString(node, "type", "item").equals("mover");
+        spawner.key = getAsString(node, "key", null);
+        spawner.levelModifier = getAsInt(node, "level", 0);
+        spawner.percentChance = getAsInt(node, "percent", 100);
+        spawner.quantity = getAsInt(node, "quantity", 1);
+        spawner.quantityMax = getAsInt(node, "quantityMax", -1);
+        JsonNode tags = node.get("tags");
+        if (tags != null) {
+            if (!tags.isArray()) {
+                throw new RuntimeException("Tags was not an array");
+            }
+            for (JsonNode entry : tags) {
+                spawner.tags.add(entry.textValue());
+            }
+        }
+
+        return spawner;
     }
 
     private static int getAsInt(JsonNode node, String key, int defaultValue) {

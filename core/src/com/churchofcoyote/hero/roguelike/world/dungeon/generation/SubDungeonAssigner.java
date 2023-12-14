@@ -33,7 +33,6 @@ public class SubDungeonAssigner {
 
     public HashMap<RoomAndTheme, Float> calculateScores() {
         HashMap<RoomAndTheme, Float> scores = new HashMap<>();
-        System.out.println();
         for (RoomNode node : allRooms) {
             if (node.room.roomType != RoomType.SUBDUNGEON_UNASSIGNED) {
                 continue;

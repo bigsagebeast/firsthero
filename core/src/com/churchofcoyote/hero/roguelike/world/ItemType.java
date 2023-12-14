@@ -16,7 +16,6 @@ public class ItemType {
     public String pluralName;
     public String unidentifiedName;
     public String unidentifiedPluralName;
-    //public Glyph glyph;
     public BodyPart equipmentFor;
     public String glyphName;
     public PaletteEntry palette;
@@ -31,4 +30,5 @@ public class ItemType {
     public int sortOrder = 1;
     Set<Consumer<Entity>> setup = new HashSet<>();
     public List<LoadProc> procLoaders = new ArrayList<>();
+    public List<String> tags = new ArrayList<>();
 }
