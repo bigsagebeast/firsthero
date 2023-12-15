@@ -22,6 +22,7 @@ import com.churchofcoyote.hero.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Game {
 	// current level
@@ -54,16 +55,18 @@ public class Game {
 
 	public void startIntro() {
 		Entity pc = bestiary.create("player");
+		player.setEntityId(pc.entityId);
 		Entity pitchfork = itempedia.create("pitchfork");
+		/*
 		Entity shortsword = itempedia.create("short sword");
 		Entity longsword = itempedia.create("longsword");
 		Entity dagger = itempedia.create("dagger");
-		Entity buckler = itempedia.create("buckler");
-		player.setEntityId(pc.entityId);
+		Entity buckler = itempedia.create("shield.buckler");
 		player.getEntity().receiveItem(shortsword);
 		player.getEntity().receiveItem(longsword);
 		player.getEntity().receiveItem(buckler);
 		player.getEntity().receiveItem(dagger);
+		 */
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
@@ -77,7 +80,9 @@ public class Game {
 		player.setEntityId(pc.entityId);
 		dungeon.generateClassic("dungeon.1");
 		changeLevel("dungeon.1", "out");
-		GameLoop.roguelikeModule.start();
+		if (!GameLoop.roguelikeModule.isRunning()) {
+			GameLoop.roguelikeModule.start();
+		}
 	}
 
 	public void startCaves() {
@@ -267,6 +272,7 @@ public class Game {
 
 	public void cmdPickUp() {
 		List<Entity> itemsHere = level.getItemsOnTile(player.getEntity().pos);
+		itemsHere = itemsHere.stream().filter(i -> !i.getItemType().isFeature).collect(Collectors.toList());
 		if (itemsHere.isEmpty()) {
 			return;
 		}

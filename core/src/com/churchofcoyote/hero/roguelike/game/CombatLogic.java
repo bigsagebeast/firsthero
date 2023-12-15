@@ -104,11 +104,11 @@ public class CombatLogic {
 	public static boolean castAttempt(Entity actor, Entity target, Spell spell) {
 		// No pre/post for being cast on, that's handled in the spell
 		if (Game.random.nextInt(5) == 0) {
-			spell.announceDodged(target, actor);
+			spell.announceDodged(actor, target);
 			return false;
 		}
 		if (Game.random.nextInt(5) == 0) {
-			spell.announceResisted(target, actor);
+			spell.announceResisted(actor, target);
 			return false;
 		}
 		return true;

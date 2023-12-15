@@ -3,6 +3,7 @@
     "door": {
       "name": "door",
       "glyphName": "terrain.door_closed",
+      "isFeature": true,
       "palette": [
         "white",
         "tan",

@@ -111,6 +111,7 @@ public class StatBarWindow extends UIWindow {
 		Entity entity = Game.getPlayerEntity();
 		Statblock statblock = entity.statblock;
 
+		levelDesc.text = Game.getLevel().getName();
 		if (entity.roomId < 0) {
 			roomDesc.text = "";
 		} else {

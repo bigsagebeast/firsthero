@@ -21,13 +21,27 @@
           "roomName": "Goblin Stronghold Entrance",
           "roomDesc": "You step into a goblin stronghold.",
           "depth": 0,
-          "loops": "OKAY"
+          "loops": "OKAY",
+          "spawn": [
+            {
+              "type": "mover",
+              "key": "goblin.lackey",
+              "quantity": 2
+            }
+          ]
         },
         "goblin.barracks": {
           "roomName": "Goblin Barracks",
           "roomDesc": "Tattered furs cover the ground.",
           "depth": 1,
-          "loops": "OKAY"
+          "loops": "OKAY",
+          "spawn": [
+            {
+              "type": "mover",
+              "key": "goblin.slinger",
+              "quantity": 2
+            }
+          ]
         },
         "goblin.guardpost": {
           "roomName": "Goblin Guard Post",
@@ -52,7 +66,14 @@
           "roomName": "Goblin Kitchen",
           "roomDesc": "The stench of cooked carcasses surrounds you.",
           "depth": 2,
-          "loops": "OKAY"
+          "loops": "OKAY",
+          "spawn": [
+            {
+              "type": "mover",
+              "key": "goblin.butcher",
+              "quantity": 1
+            }
+          ]
         },
         "goblin.chapel": {
           "roomName": "Goblin Chapel",

@@ -165,7 +165,7 @@
       ],
       "equipmentFor": "any hand",
       "category": "shields",
-      "level": 1,
+      "level": 2,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,

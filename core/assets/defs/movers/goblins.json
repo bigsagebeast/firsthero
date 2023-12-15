@@ -22,6 +22,29 @@
         "goblin"
       ]
     },
+    "goblin.butcher": {
+      "name": "goblin butcher",
+      "peaceful": false,
+      "hitPoints": 15,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.butcher",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "red",
+        "white"
+      ],
+      "experienceAwarded": 25,
+      "threat": 2,
+      "naturalWeaponDamage": 8,
+      "naturalWeaponToHit": -2,
+      "naturalArmorClass": 2,
+      "wandering": false,
+      "tags": [
+        "goblin"
+      ]
+    },
     "jackal.trained": {
       "name": "trained jackal",
       "peaceful": false,

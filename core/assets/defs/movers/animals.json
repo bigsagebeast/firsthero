@@ -1,0 +1,25 @@
+{
+  "movers": {
+    "horseshoe": {
+      "name": "horseshoe crab",
+      "peaceful": false,
+      "hitPoints": 10,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.horseshoe",
+      "isManipulator": false,
+      "palette": [
+        "yellow",
+        "red",
+        "brown"
+      ],
+      "experienceAwarded": 5,
+      "threat": 1,
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": -4,
+      "naturalArmorClass": 8,
+      "packSize": 1,
+      "packSpawnArea": 3
+    }
+  }
+}

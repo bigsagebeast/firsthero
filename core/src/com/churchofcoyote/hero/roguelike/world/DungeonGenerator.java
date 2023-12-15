@@ -78,8 +78,10 @@ public class DungeonGenerator {
 		for (String key : Game.bestiary.map.keySet()) {
 			Phenotype p = Game.bestiary.map.get(key);
 			if (p.peaceful) continue;
-			if (p.threat >= minThreatAllowed && p.threat <= maxThreatAllowed) {
-				allowedEntities.add(key);
+			if (p.wandering && p.threat >= minThreatAllowed && p.threat <= maxThreatAllowed) {
+				for (int i = 0; i < p.frequency; i++) {
+					allowedEntities.add(key);
+				}
 			}
 		}
 		return allowedEntities;
