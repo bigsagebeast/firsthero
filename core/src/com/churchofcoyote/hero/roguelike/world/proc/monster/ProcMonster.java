@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ProcMonster extends ProcMover {
     public Tactic tactic;
-    protected ProcMonster() {}
+    public ProcMonster() {}
     public ProcMonster(Tactic tactic) {
         this.tactic = tactic;
     }

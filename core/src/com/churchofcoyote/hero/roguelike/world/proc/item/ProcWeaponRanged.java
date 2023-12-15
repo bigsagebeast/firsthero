@@ -11,7 +11,7 @@ import com.churchofcoyote.hero.util.Util;
 
 public class ProcWeaponRanged extends Proc {
 
-    protected ProcWeaponRanged() { super(); }
+    public ProcWeaponRanged() { super(); }
     public ProcWeaponRanged(int averageDamage, int toHitBonus, int range, AmmoType ammoType) {
         this();
         this.averageDamage = averageDamage;

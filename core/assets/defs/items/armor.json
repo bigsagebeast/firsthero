@@ -136,6 +136,42 @@
           "armorThickness": 2
         }
       }
+    },
+    "armor.shield.buckler": {
+      "name": "buckler",
+      "glyphName": "shield.buckler",
+      "palette": [
+        "white",
+        "gray",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "shields",
+      "level": 1,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 2,
+          "armorThickness": 1
+        }
+      }
+    },
+    "armor.shield.metal": {
+      "name": "metal shield",
+      "glyphName": "shield.metal",
+      "palette": [
+        "white",
+        "gray",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "shields",
+      "level": 1,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 2,
+          "armorThickness": 2
+        }
+      }
     }
   }
 }

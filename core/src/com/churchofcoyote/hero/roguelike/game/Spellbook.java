@@ -5,20 +5,26 @@ import com.churchofcoyote.hero.dialogue.DialogueBox;
 import com.churchofcoyote.hero.roguelike.spells.Spell;
 import com.churchofcoyote.hero.roguelike.spells.SpellFirebeam;
 import com.churchofcoyote.hero.roguelike.spells.SpellMagicMissile;
+import com.churchofcoyote.hero.roguelike.world.Spellpedia;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Spellbook {
 
-    public List<Spell> spells = new ArrayList<>();
+    public List<String> spells = new ArrayList<>();
 
-    public void addSpell(Spell spell) {
-        spells.add(spell);
+    public void addSpell(String key) {
+        spells.add(key);
+    }
+
+    public boolean hasSpell(String key) {
+        return spells.contains(key);
     }
 
     public List<Spell> getSpells() {
-        return spells;
+        return spells.stream().map(k -> Spellpedia.get(k)).collect(Collectors.toList());
     }
 
     public void openSpellbookToCast() {

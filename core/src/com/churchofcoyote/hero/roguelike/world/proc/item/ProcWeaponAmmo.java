@@ -11,17 +11,19 @@ import com.churchofcoyote.hero.util.Util;
 
 public class ProcWeaponAmmo extends Proc {
 
-    protected ProcWeaponAmmo() { super(); }
-    public ProcWeaponAmmo(int averageDamage, int toHitBonus, AmmoType ammoType) {
+    public ProcWeaponAmmo() { super(); }
+    public ProcWeaponAmmo(int averageDamage, int toHitBonus, AmmoType ammoType, boolean canThrow) {
         this();
         this.averageDamage = averageDamage;
         this.toHitBonus = toHitBonus;
         this.ammoType = ammoType;
+        this.canThrow = canThrow;
     }
 
     public int averageDamage;
     public int toHitBonus;
     public AmmoType ammoType;
+    public boolean canThrow;
 
     public int averageDamage(Entity wielder) {
         return averageDamage;
@@ -84,7 +86,7 @@ public class ProcWeaponAmmo extends Proc {
 
     @Override
     public Proc clone() {
-        ProcWeaponAmmo pw = new ProcWeaponAmmo(averageDamage, toHitBonus, ammoType);
+        ProcWeaponAmmo pw = new ProcWeaponAmmo(averageDamage, toHitBonus, ammoType, canThrow);
         return pw;
     }
 }

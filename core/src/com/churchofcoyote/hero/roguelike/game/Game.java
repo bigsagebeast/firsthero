@@ -78,24 +78,6 @@ public class Game {
 		dungeon.generateClassic("dungeon.1");
 		changeLevel("dungeon.1", "out");
 		GameLoop.roguelikeModule.start();
-		/*
-		dungeon.generateBrogue("dungeon2", 1);
-		Level level2 = dungeon.getLevel("dungeon2");
-		dungeon.generateBrogue("dungeon3", 2);
-		Level level3 = dungeon.getLevel("dungeon3");
-		Point downStairs1 = level.findOpenTile();
-		level.cell(downStairs1).terrain = Terrain.get("downstair");
-		Point upStairs2 = level2.findOpenTile();
-		level2.cell(upStairs2).terrain = Terrain.get("upstair");
-		Point downStairs2 = level2.findOpenTile();
-		level2.cell(downStairs2).terrain = Terrain.get("downstair");
-		Point upStairs3 = level3.findOpenTile();
-		level3.cell(upStairs3).terrain = Terrain.get("upstair");
-		level.addTransition(new LevelTransition("down", downStairs1, "dungeon2", upStairs2));
-		level2.addTransition(new LevelTransition("up", upStairs2, "dungeon1", downStairs1));
-		level2.addTransition(new LevelTransition("down", downStairs2, "dungeon3", upStairs3));
-		level3.addTransition(new LevelTransition("up", upStairs3, "dungeon2", downStairs2));
-		 */
 	}
 
 	public void startCaves() {
@@ -132,11 +114,11 @@ public class Game {
 			level.removeEntity(player.getEntity());
 		}
 
+		Game.time = 0;
+		Game.lastTurnProc = 0;
 		Level nextLevel = dungeon.getLevel(toKey);
 		level = nextLevel;
 		Point playerPos = nextLevel.findTransitionTo(fromKey).loc;
-		Game.time = 0;
-		Game.lastTurnProc = 0;
 		level.addEntityWithStacking(player.getEntity(), playerPos);
 
 		GameLoop.glyphEngine.initializeLevel(level);
@@ -259,7 +241,7 @@ public class Game {
 		LevelTransition transition = level.findTransition("up", player.getEntity().pos);
 		if (transition == null) {
 			announce("You can't go up here.");
-		} else if (transition.toMap == "out") {
+		} else if (transition.toMap.equals("out")) {
 			announce("You can't leave the dungeon!");
 		} else {
 			if (transition.arrival != null) {

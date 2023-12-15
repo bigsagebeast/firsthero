@@ -1,1 +1,63 @@
-{}
+{
+  "items": {
+    "weapon.ammo.arrow": {
+      "name": "wooden arrow",
+      "glyphName": "weapon.arrow",
+      "palette": [
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "ammunition",
+      "category": "ammunition",
+      "minCount": 5,
+      "maxCount": 10,
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponAmmo": {
+          "averageDamage": 5,
+          "toHitBonus": 0,
+          "ammoType": "ARROW"
+        }
+      }
+    },
+    "weapon.ammo.rock": {
+      "name": "rock",
+      "frequency": 100,
+      "glyphName": "weapon.stone",
+      "palette": [
+        "gray"
+      ],
+      "equipmentFor": "ammunition",
+      "category": "ammunition",
+      "minCount": 5,
+      "maxCount": 10,
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponAmmo": {
+          "averageDamage": 3,
+          "toHitBonus": 0,
+          "ammoType": "STONE"
+        }
+      }
+    },
+    "weapon.ranged.sling": {
+      "name": "sling",
+      "frequency": 100,
+      "glyphName": "weapon.sling",
+      "palette": [
+        "brown"
+      ],
+      "equipmentFor": "ranged weapon",
+      "category": "rangedweapon",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponRanged": {
+          "averageDamage": 0,
+          "toHitBonus": 0,
+          "range": 6,
+          "ammoType": "STONE"
+        }
+      }
+    }
+  }
+}

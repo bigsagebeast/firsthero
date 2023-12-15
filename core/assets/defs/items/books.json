@@ -1,0 +1,50 @@
+{
+  "items": {
+    "book.unid.green": {
+      "unidGroup": "book1",
+      "unidentifiedName": "green spellbook",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "darkgreen",
+        "blue"
+      ]
+    },
+    "book.unid.red": {
+      "unidGroup": "book1",
+      "unidentifiedName": "red spellbook",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "red",
+        "white"
+      ]
+    },
+    "book.magicmissile": {
+      "idenGroup": "book1",
+      "name": "book of Magic Missile",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "magic missile"
+        }
+      }
+    },
+    "book.firebeam": {
+      "idenGroup": "book1",
+      "name": "book of Firebeam",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "firebeam"
+        }
+      }
+    }
+  }
+}

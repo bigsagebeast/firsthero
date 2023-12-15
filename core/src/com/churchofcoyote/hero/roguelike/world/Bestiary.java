@@ -69,16 +69,39 @@ public class Bestiary {
 		goblinArcher.isManipulator = true;
 		goblinArcher.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
 		goblinArcher.experienceAwarded = 15;
-		goblinArcher.threat = 1;
+		goblinArcher.threat = 2;
 		goblinArcher.naturalWeaponDamage = 3;
 		goblinArcher.naturalWeaponToHit = -2;
 		goblinArcher.naturalRangedWeaponDamage = 0;
 		goblinArcher.naturalRangedWeaponToHit = -1;
 		goblinArcher.naturalArmorClass = 0;
 		goblinArcher.setup.add(e -> {
-			e.addProc(new ProcShooter("arrow"));
+			e.addProc(new ProcShooter("weapon.ammo.arrow"));
 			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(4)));
 		});
+
+		Phenotype goblinSlinger = new Phenotype();
+		goblinSlinger.name = "sea-withered goblin slinger";
+		goblinSlinger.peaceful = false;
+		goblinSlinger.hitPoints = 8;
+		goblinSlinger.stats = Rank.C_MINUS;
+		goblinSlinger.isMonster = true;
+		goblinSlinger.bodyPlan = "humanoid";
+		goblinSlinger.glyphName = "humanoid.goblin.slinger";
+		goblinSlinger.isManipulator = true;
+		goblinSlinger.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		goblinSlinger.experienceAwarded = 15;
+		goblinSlinger.threat = 1;
+		goblinSlinger.naturalWeaponDamage = 3;
+		goblinSlinger.naturalWeaponToHit = -2;
+		goblinSlinger.naturalRangedWeaponDamage = 0;
+		goblinSlinger.naturalRangedWeaponToHit = -1;
+		goblinSlinger.naturalArmorClass = 0;
+		goblinSlinger.setup.add(e -> {
+			e.addProc(new ProcShooter("weapon.ammo.rock"));
+			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(6)));
+		});
+		map.put("goblin.slinger", goblinSlinger);
 
 
 		wolf.name = "wolf";

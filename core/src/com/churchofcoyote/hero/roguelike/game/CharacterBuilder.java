@@ -112,13 +112,13 @@ public class CharacterBuilder {
                 equip("armor.body.leather", BodyPart.TORSO);
                 equip("short sword", BodyPart.PRIMARY_HAND);
                 equip("shortbow", BodyPart.RANGED_WEAPON);
-                equip("arrow", BodyPart.RANGED_AMMO, 100);
+                equip("weapon.ammo.arrow", BodyPart.RANGED_AMMO, 30);
                 break;
             case "wizard":
                 equip("armor.body.whiterobe", BodyPart.TORSO);
                 equip("dagger", BodyPart.PRIMARY_HAND);
-                GameLoop.roguelikeModule.game.spellbook.addSpell(new SpellMagicMissile());
-                GameLoop.roguelikeModule.game.spellbook.addSpell(new SpellFirebeam());
+                GameLoop.roguelikeModule.game.spellbook.addSpell("magic missile");
+                GameLoop.roguelikeModule.game.spellbook.addSpell("firebeam");
                 break;
         }
     }

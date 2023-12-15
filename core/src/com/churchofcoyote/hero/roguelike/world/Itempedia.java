@@ -73,19 +73,6 @@ public class Itempedia {
         });
         map.put(dagger.keyName, dagger);
 
-        ItemType buckler = new ItemType();
-        buckler.keyName = "buckler";
-        buckler.name = "buckler";
-        buckler.glyphName = "armor.buckler";
-        buckler.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_GRAY, Palette.COLOR_WHITE);
-        buckler.equipmentFor = BodyPart.ANY_HAND;
-        buckler.category = ItemCategory.CATEGORY_SHIELDS;
-        buckler.level = 1;
-        buckler.setup.add((e) -> {
-            e.addProc(new ProcArmor(2, 0));
-        });
-        map.put(buckler.keyName, buckler);
-
         ItemType shortbow = new ItemType();
         shortbow.keyName = "shortbow";
         shortbow.name = "wooden shortbow";
@@ -98,21 +85,6 @@ public class Itempedia {
             e.addProc(new ProcWeaponRanged(0, 0, 10, AmmoType.ARROW));
         });
         map.put(shortbow.keyName, shortbow);
-
-        ItemType arrow = new ItemType();
-        arrow.keyName = "arrow";
-        arrow.name = "wooden arrow";
-        arrow.glyphName = "weapon.arrow";
-        arrow.palette = new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_WHITE);
-        arrow.equipmentFor = BodyPart.RANGED_AMMO;
-        arrow.category = ItemCategory.CATEGORY_AMMO;
-        arrow.level = 1;
-        arrow.minCount = 5;
-        arrow.maxCount = 10;
-        arrow.setup.add((e) -> {
-            e.addProc(new ProcWeaponAmmo(5, 0, AmmoType.ARROW));
-        });
-        map.put(arrow.keyName, arrow);
 
         ItemType gold = new ItemType();
         gold.keyName = "gold";

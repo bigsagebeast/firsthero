@@ -34,12 +34,18 @@ public class LoadProc {
             for (String fieldName : fields.keySet()) {
                 Field procField = clazz.getDeclaredField(fieldName);
                 procField.setAccessible(true);
-                if (procField.getType().isAssignableFrom(String.class)) {
+                if (procField.getType().isEnum()) {
+                    Class<? extends Enum> enumClass = (Class<? extends Enum>) procField.getType();
+                    Enum<?> enumValue = Enum.valueOf(enumClass, fields.get(fieldName));
+                    procField.set(proc, enumValue);
+                } else if (procField.getType().isAssignableFrom(String.class)) {
                     procField.set(proc, fields.get(fieldName));
                 } else if (procField.getType().isAssignableFrom(int.class) || procField.getType().isAssignableFrom(Integer.class)) {
                     procField.set(proc, Integer.valueOf(fields.get(fieldName)));
                 } else if (procField.getType().isAssignableFrom(float.class) || procField.getType().isAssignableFrom(Float.class)) {
                     procField.set(proc, Float.valueOf(fields.get(fieldName)));
+                } else {
+                    throw new RuntimeException("Couldn't identify field type for " + procName + "." + fieldName);
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
