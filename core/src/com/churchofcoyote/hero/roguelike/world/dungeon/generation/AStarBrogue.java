@@ -15,7 +15,7 @@ public class AStarBrogue {
 	private static PriorityQueue<AStarData> queue = new PriorityQueue<AStarData>();
 	private static AStarBrogue instance = new AStarBrogue();
 
-	public static List<Point> path(Brogue.Grid grid, Point origin, Point destination, boolean pathThroughWalls) {
+	public static List<Point> path(BrogueGrid grid, Point origin, Point destination, boolean pathThroughWalls) {
 		queue.clear();
 		for (int i=0; i<grid.width; i++) {
 			for (int j=0; j<grid.height; j++) {
@@ -59,7 +59,7 @@ public class AStarBrogue {
 		return retval;
 	}
 
-	private static void check(Brogue.Grid grid, AStarData next) {
+	private static void check(BrogueGrid grid, AStarData next) {
 		AStarData existing = (AStarData)grid.cell(next.location).astar;
 		if (existing == null) {
 			queue.add(next);

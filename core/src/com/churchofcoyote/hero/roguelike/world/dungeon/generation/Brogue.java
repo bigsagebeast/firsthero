@@ -19,7 +19,7 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class Brogue {
     private Level level;
-    private Grid levelGrid;
+    private BrogueGrid levelGrid;
     private Random random = new Random();
 
     private final int CIRCULAR_RADIUS_MIN = 3;
@@ -36,7 +36,7 @@ public class Brogue {
         floor = Terrain.get("dirt");
         doorway = Terrain.get("doorway");
         this.level = level;
-        levelGrid = new Grid(level.getWidth(), level.getHeight());
+        levelGrid = new BrogueGrid(level.getWidth(), level.getHeight());
 
         for (int i=0; i<level.getWidth(); i++) {
             for (int j=0; j<level.getHeight(); j++) {
@@ -48,25 +48,26 @@ public class Brogue {
     public void generate() {
 
         //Grid firstRoom = makeSymmetricalCross();
-        Grid firstRoom = makeRectangularRoom();
+        BrogueGrid firstRoom = makeRectangularRoom();
         pasteGrid(firstRoom, 20, 20);
 
         for (int rooms=0; rooms<50; rooms++) {
-            Grid room;
-            int type = random.nextInt(3);
+            BrogueGrid room;
+            int type = random.nextInt(4);
             if (type == 0) {
                 room = makeCircularRoom();
             } else if (type == 1) {
                 room = makeRectangularRoom();
-            } else {
+            } else if (type == 2) {
                 room = makeSymmetricalCross();
+            } else {
+                room = makeCavern();
             }
-
-            //room = makeRectangularRoom();
 
             if (random.nextInt(3) == 0) {
                 room = makeIntoHallwayRoom(room);
             }
+            room = room.shrink();
 
             boolean success = false;
             for (int i=0; i<10000; i++) {
@@ -155,7 +156,7 @@ public class Brogue {
         return min + random.nextInt(max - min + 1);
     }
 
-    private void pasteGrid(Grid grid, int x, int y) {
+    private void pasteGrid(BrogueGrid grid, int x, int y) {
         if (!level.withinBounds(x, y) || !level.withinBounds(x + grid.width-1, y + grid.height-1)) {
             throw new RuntimeException("Grid won't fit on level");
         }
@@ -174,9 +175,9 @@ public class Brogue {
         levelGrid.markAllAdjacentToOpen();
     }
 
-    private Grid makeCircularRoom() {
+    private BrogueGrid makeCircularRoom() {
         int radius = randomIntRange(CIRCULAR_RADIUS_MIN, CIRCULAR_RADIUS_MAX);
-        Grid grid = new Grid(3 + (radius * 2), 3 + (radius * 2));
+        BrogueGrid grid = new BrogueGrid(3 + (radius * 2), 3 + (radius * 2));
         int roomId = level.rooms.size();
         int center = (1 + radius);
 
@@ -196,11 +197,11 @@ public class Brogue {
         return grid;
     }
 
-    private Grid makeRectangularRoom() {
+    private BrogueGrid makeRectangularRoom() {
         int width = randomIntRange(4, 12);
         int height = randomIntRange(4, 12);
         int roomId = level.rooms.size();
-        Grid grid = new Grid(width+2, height+2);
+        BrogueGrid grid = new BrogueGrid(width+2, height+2);
         for (int i=1; i<width+1; i++) {
             for (int j=1; j<height+1; j++) {
                 grid.cell[i][j].terrain = floor;
@@ -213,13 +214,13 @@ public class Brogue {
         return grid;
     }
 
-    private Grid makeSymmetricalCross() {
+    private BrogueGrid makeSymmetricalCross() {
         int majorWidth = randomIntRange(7, 10);
         int minorWidth = randomIntRange(3, majorWidth-4);
         if (majorWidth % 2 != minorWidth % 2) {
             minorWidth--;
         }
-        Grid grid = new Grid(majorWidth+2, majorWidth+2);
+        BrogueGrid grid = new BrogueGrid(majorWidth+2, majorWidth+2);
         int roomId = level.rooms.size();
 
         for (int x=1; x<majorWidth-1; x++) {
@@ -238,7 +239,29 @@ public class Brogue {
         return grid;
     }
 
-    private Grid makeIntoHallwayRoom(Grid grid) {
+    private BrogueGrid makeCavern() {
+        int width=15;
+        int height=15;
+        boolean[][] gridBoolean = CellularAutomata.generateOutput(width, height, 0.45f, 4, 5, 4);
+        if (gridBoolean == null) {
+            throw new RuntimeException("Failed to generate cavern");
+        }
+        BrogueGrid grid = new BrogueGrid(width+2, height+2);
+        int roomId = level.rooms.size();
+        for (int i=0; i<width; i++) {
+            for (int j=0; j<height; j++) {
+                if (!gridBoolean[i][j]) {
+                    grid.cell[i + 1][j + 1].terrain = floor;
+                }
+                grid.cell[i+1][j+1].roomId = roomId;
+            }
+        }
+        grid.roomCenter = new Point((width/2)+1, (height/2)+1);
+        grid.markAllAdjacentToOpen();
+        return grid;
+    }
+
+    private BrogueGrid makeIntoHallwayRoom(BrogueGrid grid) {
         int hallwayLength = randomIntRange(3, 8);
         ArrayList<Point> validStartPoints = new ArrayList<>();
         ArrayList<Compass> validStartDirections = new ArrayList<>();
@@ -288,7 +311,7 @@ public class Brogue {
         return grid;
     }
 
-    private Point findValidOverlap(Grid grid, int x, int y) {
+    private Point findValidOverlap(BrogueGrid grid, int x, int y) {
         if (x < 0 || y < 0 || x+grid.width > levelGrid.width || y+grid.height > levelGrid.height) {
             throw new RuntimeException("Invalid grid check position");
         }
@@ -355,83 +378,5 @@ public class Brogue {
             }
         }
         return true;
-    }
-
-    public class Grid {
-        public LevelCell[][] cell;
-        public int width, height;
-        public Room room;
-        public Point roomCenter;
-        public Grid(int width, int height) {
-            this.width = width;
-            this.height = height;
-            if (width <= 0 || height <= 0) {
-                throw new RuntimeException("Undersized grid");
-            }
-            cell = new LevelCell[width][];
-            for (int i=0; i<width; i++) {
-                cell[i] = new LevelCell[height];
-                for (int j=0; j<height; j++) {
-                    cell[i][j] = new LevelCell();
-                    cell[i][j].terrain = wall;
-                }
-            }
-            room = new Room(RoomType.GENERIC, roomCenter);
-        }
-
-        public void markAllAdjacentToOpen() {
-            for (int i=0; i<width; i++) {
-                for (int j=0; j<height; j++) {
-                    int count = 0;
-                    boolean hasDiagonal = false;
-                    if (cell[i][j].temp == Boolean.FALSE) {
-                        continue;
-                    }
-                    if (cell[i][j].terrain.isPassable())
-                    {
-                        cell[i][j].temp = Boolean.FALSE;
-                        continue;
-                    }
-                    if (cell[i][j].terrain == wall) {
-                        for (Compass dir : Compass.diagonals()) {
-                            if (i + dir.getX() >= 0 && i + dir.getX() < width &&
-                                j + dir.getY() >= 0 && j + dir.getY() < height &&
-                                cell[i + dir.getX()][j + dir.getY()].terrain.isPassable()) {
-                                hasDiagonal = true;
-                            }
-                        }
-                        if (i - 1 >= 0 && cell[i - 1][j].terrain.isPassable()) count++;
-                        if (j - 1 >= 0 && cell[i][j - 1].terrain.isPassable()) count++;
-                        if (i + 1 < width && cell[i + 1][j].terrain.isPassable()) count++;
-                        if (j + 1 < height && cell[i][j + 1].terrain.isPassable()) count++;
-                    }
-                    if (count == 1) {
-                        cell[i][j].temp = Boolean.TRUE;
-                        //cell[i][j].terrain = Terrain.get("mountain");
-                    } else if (count > 1 || hasDiagonal) {
-                        cell[i][j].temp = Boolean.FALSE;
-                    }
-                }
-            }
-        }
-
-        public Grid grow(int margin) {
-            Grid newGrid = new Grid(width+(margin*2), height+(margin*2));
-            newGrid.roomCenter = new Point(roomCenter.x+margin, roomCenter.y+margin);
-            for (int i=0; i<width; i++) {
-                for (int j=0; j<height; j++) {
-                    newGrid.cell[i+margin][j+margin] = cell[i][j];
-                }
-            }
-            return newGrid;
-        }
-
-        public boolean contains(Point p) {
-            return p.x >= 0 && p.x < width && p.y >= 0 && p.y < height;
-        }
-
-        public LevelCell cell(Point p) {
-            return cell[p.x][p.y];
-        }
     }
 }

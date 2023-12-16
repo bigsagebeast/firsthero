@@ -105,8 +105,6 @@ public class CharacterBuilder {
                 equip("armor.body.chain", BodyPart.TORSO);
                 equip("armor.head.leatherhat", BodyPart.HEAD);
                 equip("longsword", BodyPart.PRIMARY_HAND);
-                //Entity magicmap = Game.itempedia.create("scroll.magic.map", 100);
-                //pcEntity.receiveItem(magicmap);
                 break;
             case "archer":
                 equip("armor.body.leather", BodyPart.TORSO);
@@ -121,6 +119,8 @@ public class CharacterBuilder {
                 GameLoop.roguelikeModule.game.spellbook.addSpell("firebeam");
                 break;
         }
+        Entity magicmap = Game.itempedia.create("scroll.magic.map", 100);
+        pcEntity.receiveItem(magicmap);
     }
 
     private void equip(String key, BodyPart bodyPart) {
