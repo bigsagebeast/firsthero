@@ -122,6 +122,9 @@ public class Generator {
 
     private Point findEmptyPointInRoom(Room room) {
         // TODO update this when changing upstair and downstair to features
+        if (!level.roomMap.containsKey(room.roomId)) {
+            throw new RuntimeException("Room id " + room.roomId + " is not in the room map");
+        }
         List<Point> points = level.roomMap.get(room.roomId).stream()
                 .filter(p -> level.getEntitiesOnTile(p).isEmpty())
                 .filter(p -> level.cell(p).terrain != Terrain.get("upstair"))

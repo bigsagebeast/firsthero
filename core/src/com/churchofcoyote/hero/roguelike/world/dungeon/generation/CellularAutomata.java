@@ -7,11 +7,11 @@ import java.util.Random;
 public class CellularAutomata {
     private Random random;
     int width, height;
-    boolean[][] cells;
+    AutomataStatus[][] cells;
     boolean[][] floodFill;
     private static final int tries = 100;
 
-    public static boolean[][] generateOutput(int width, int height, float initial, int birth, int survival, int runs, int minCount) {
+    public static AutomataStatus[][] generateOutput(int width, int height, float initial, int birth, int survival, int runs, int minCount) {
         for (int r=0; r<tries; r++) {
             CellularAutomata automata = new CellularAutomata(width, height);
             automata.fillInitial(initial);
@@ -29,8 +29,19 @@ public class CellularAutomata {
         this.width = width;
         this.height = height;
         random = new Random(); // TODO allow for stochastic generation by passing a seed
-        cells = generateGrid();
+        cells = generateStatus();
         floodFill = generateGrid();
+    }
+
+    public AutomataStatus[][] generateStatus() {
+        AutomataStatus[][] result = new AutomataStatus[width][];
+        for (int i=0; i<width; i++) {
+            result[i] = new AutomataStatus[height];
+            for (int j=0; j<height; j++) {
+                result[i][j] = AutomataStatus.RANDOM;
+            }
+        }
+        return result;
     }
 
     private boolean[][] generateGrid() {
@@ -44,23 +55,29 @@ public class CellularAutomata {
     public void fillInitial(float chance) {
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
-                cells[i][j] = random.nextFloat() < chance;
+                if (cells[i][j] == AutomataStatus.RANDOM) {
+                    cells[i][j] = random.nextFloat() < chance ? AutomataStatus.WALL : AutomataStatus.FLOOR;
+                }
             }
         }
     }
 
     public void iterate8Squares(int birth, int survival) {
-        boolean[][] nextGen = generateGrid();
+        AutomataStatus[][] nextGen = generateStatus();
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
                 int count = 0;
                 for (Compass dir : Compass.points()) {
-                    count += (!withinBounds(i+dir.getX(), j+dir.getY()) || cells[i+dir.getX()][j+dir.getY()]) ? 1 : 0;
+                    count += (!withinBounds(i+dir.getX(), j+dir.getY()) || cells[i+dir.getX()][j+dir.getY()].isWall) ? 1 : 0;
                 }
-                if (cells[i][j]) {
-                    nextGen[i][j] = count >= birth;
+                if (cells[i][j].isImmutable) {
+                    nextGen[i][j] = cells[i][j];
                 } else {
-                    nextGen[i][j] = count >= survival;
+                    if (cells[i][j].isWall) {
+                        nextGen[i][j] = count >= birth ? AutomataStatus.WALL : AutomataStatus.FLOOR;
+                    } else {
+                        nextGen[i][j] = count >= survival ? AutomataStatus.WALL : AutomataStatus.FLOOR;
+                    }
                 }
             }
         }
@@ -78,14 +95,14 @@ public class CellularAutomata {
         int startY = 0;
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
-                if (!cells[i][j]) {
+                if (!cells[i][j].isWall) {
                     // should make it stop iterating here
                     startX = i;
                     startY = j;
                 }
             }
         }
-        if (cells[startX][startY]) {
+        if (cells[startX][startY].isWall) {
             return false;
         }
 
@@ -94,7 +111,7 @@ public class CellularAutomata {
         int openCount = 0;
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
-                if (!cells[i][j]) {
+                if (!cells[i][j].isWall) {
                     openCount++;
                     if (!floodFill[i][j]) {
                         return false;
@@ -106,7 +123,7 @@ public class CellularAutomata {
     }
 
     private void recurseFlood(int x, int y) {
-        if (!withinBounds(x, y) || cells[x][y] || floodFill[x][y]) {
+        if (!withinBounds(x, y) || cells[x][y].isWall || floodFill[x][y]) {
             return;
         }
         floodFill[x][y] = true;

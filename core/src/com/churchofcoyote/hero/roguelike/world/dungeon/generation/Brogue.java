@@ -4,9 +4,7 @@ import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
-import com.churchofcoyote.hero.roguelike.world.dungeon.LevelCell;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
-import com.churchofcoyote.hero.roguelike.world.dungeon.RoomType;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
@@ -48,8 +46,11 @@ public class Brogue {
     public void generate() {
 
         //Grid firstRoom = makeSymmetricalCross();
-        BrogueGrid firstRoom = makeRectangularRoom();
-        pasteGrid(firstRoom, 20, 20);
+        //BrogueGrid firstRoom = makeRectangularRoom();
+        //pasteGrid(firstRoom, 20, 20);
+        BrogueGrid river = makeRiver();
+        //river = river.shrink();
+        pasteGrid(river, 35, 0);
 
         for (int rooms=0; rooms<50; rooms++) {
             BrogueGrid room;
@@ -241,7 +242,7 @@ public class Brogue {
     private BrogueGrid makeCavern() {
         int width = randomIntRange(7, 25);
         int height = randomIntRange(7, 25);
-        boolean[][] gridBoolean = CellularAutomata.generateOutput(width, height, 0.45f, 4, 5, 4, 20);
+        AutomataStatus[][] gridBoolean = CellularAutomata.generateOutput(width, height, 0.45f, 4, 5, 4, 20);
 
         /*
         CellularAutomata automata = new CellularAutomata(width, height);
@@ -264,7 +265,7 @@ public class Brogue {
         int roomId = level.rooms.size();
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
-                if (!gridBoolean[i][j]) {
+                if (!gridBoolean[i][j].isWall) {
                     grid.cell[i + 1][j + 1].terrain = floor;
                 }
                 grid.cell[i+1][j+1].roomId = roomId;
@@ -393,5 +394,86 @@ public class Brogue {
             }
         }
         return true;
+    }
+
+    private BrogueGrid makeRiver() {
+        int gridWidth = 20;
+        int riverLeftShore = 8;
+        int riverLeftShoreMin = 5;
+        int riverLeftShoreMax = 11;
+        int riverWidth = 5;
+        int riverWidthMin = 4;
+        int riverWidthMax = 6;
+        int riverBankWidth = 1;
+        int riverCavernWidth = 4;
+        BrogueGrid riverGrid = new BrogueGrid(gridWidth, levelGrid.height);
+        riverGrid.room.roomId = level.rooms.size();
+        CellularAutomata automata = new CellularAutomata(gridWidth, levelGrid.height);
+        automata.cells = automata.generateStatus();
+        for (int j=0; j<levelGrid.height; j++) {
+            switch (random.nextInt(4)) {
+                case 0:
+                    if (riverLeftShore > riverLeftShoreMin) {
+                        riverLeftShore--;
+                    }
+                    break;
+                case 1:
+                    if (riverLeftShore < riverLeftShoreMax) {
+                        riverLeftShore++;
+                    }
+                    break;
+            }
+            switch (random.nextInt(4)) {
+                case 0:
+                    if (riverWidth > riverWidthMin) {
+                        riverWidth--;
+                    }
+                    break;
+                case 1:
+                    if (riverWidth < riverWidthMax) {
+                        riverWidth++;
+                    }
+                    break;
+            }
+            int riverRightShore = riverLeftShore + riverWidth;
+            int riverLeftBank = riverLeftShore - riverBankWidth;
+            int riverRightBank = riverRightShore + riverBankWidth;
+            int riverLeftCavern = riverLeftBank - riverCavernWidth;
+            int riverRightCavern = riverRightBank + riverCavernWidth;
+            for (int i=0; i<riverGrid.width; i++) {
+                if (j == 0 || j == levelGrid.height - 1) {
+                    automata.cells[i][j] = AutomataStatus.ALWAYS_WALL;
+                } else {
+                    if (i >= riverLeftShore && i < riverRightShore) {
+                        automata.cells[i][j] = AutomataStatus.ALWAYS_FLOOR;
+                        riverGrid.cell[i][j].terrain = Terrain.get("floor");
+                    } else if (i >= riverLeftBank && i < riverRightBank) {
+                        automata.cells[i][j] = AutomataStatus.ALWAYS_FLOOR;
+                    } else if (i >= riverLeftCavern && i < riverRightCavern) {
+                        automata.cells[i][j] = AutomataStatus.RANDOM;
+                    } else {
+                        automata.cells[i][j] = AutomataStatus.ALWAYS_WALL;
+                    }
+                }
+            }
+        }
+        automata.fillInitial(.45f);
+        for (int i = 0; i < 4; i++) {
+            automata.iterate8Squares(4, 5);
+        }
+        for (int i=0; i<gridWidth; i++) {
+            for (int j=0; j<levelGrid.height; j++) {
+                riverGrid.cell[i][j].roomId = riverGrid.room.roomId;
+                if (riverGrid.cell[i][j].terrain == wall) {
+                    if (automata.cells[i][j].isWall) {
+                        riverGrid.cell[i][j].terrain = wall;
+                    } else {
+                        riverGrid.cell[i][j].terrain = floor;
+                    }
+                }
+            }
+        }
+        riverGrid.roomCenter = new Point(riverLeftShore + riverWidth / 2, levelGrid.height / 2);
+        return riverGrid;
     }
 }
