@@ -146,7 +146,7 @@ public class DungeonGenerator {
 		int depth = Integer.valueOf(components[1]);
 
 		Generator generator = new Generator();
-		Level level = generator.generate(key, 60, 60);
+		Level level = generator.generate(key, 60, 40);
 		// Remember to add the level to the map before generating it
 		levels.put(key, level);
 		level.threat = depth-1;

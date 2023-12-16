@@ -53,7 +53,7 @@ public class Brogue {
 
         for (int rooms=0; rooms<50; rooms++) {
             BrogueGrid room;
-            int type = random.nextInt(4);
+            int type = random.nextInt(8);
             if (type == 0) {
                 room = makeCircularRoom();
             } else if (type == 1) {
@@ -89,9 +89,9 @@ public class Brogue {
         digPaths(10, 100, 20, 10);
 
         for (int i=0; i<levelGrid.width; i++) {
-            for (int j=0; j<levelGrid.width; j++) {
+            for (int j=0; j<levelGrid.height; j++) {
                 if (levelGrid.cell[i][j].terrain == Terrain.get("grass")) {
-                    if (levelGrid.cell[i][j].temp == Boolean.TRUE) {
+                    if (levelGrid.cell[i][j].temp == CellMatching.EXTERIOR_VALID) {
                         boolean redundant = false;
                         for (Compass dir : Compass.orthogonal) {
                             Point p = new Point(i+dir.getX(), j+dir.getY());
@@ -111,9 +111,8 @@ public class Brogue {
             }
         }
 
-
         for (int i=0; i<levelGrid.width; i++) {
-            for (int j=0; j<levelGrid.width; j++) {
+            for (int j=0; j<levelGrid.height; j++) {
                 level.putCell(i, j, levelGrid.cell[i][j]);
             }
         }
@@ -185,7 +184,7 @@ public class Brogue {
             for (int j=0; j<1+(radius*2); j++) {
                 if (((i-center)*(i-center))+((j-center)*(j-center)) < (radius*radius)) {
                     grid.cell[i][j].terrain = floor;
-                    grid.cell[i][j].temp = Boolean.FALSE;
+                    grid.cell[i][j].temp = CellMatching.INTERIOR;
                     grid.cell[i][j].roomId = roomId;
                 } else {
                     grid.cell[i][j].terrain = wall;
@@ -205,7 +204,7 @@ public class Brogue {
         for (int i=1; i<width+1; i++) {
             for (int j=1; j<height+1; j++) {
                 grid.cell[i][j].terrain = floor;
-                grid.cell[i][j].temp = Boolean.FALSE;
+                grid.cell[i][j].temp = CellMatching.INTERIOR;
                 grid.cell[i][j].roomId = roomId;
             }
         }
@@ -228,7 +227,7 @@ public class Brogue {
                 if (x >= (majorWidth / 2 - minorWidth / 2) && x < ((majorWidth + 1) / 2) + (minorWidth / 2) ||
                     y >= (majorWidth / 2 - minorWidth / 2) && y < ((majorWidth + 1) / 2) + (minorWidth / 2)) {
                     grid.cell[x+1][y+1].terrain = floor;
-                    grid.cell[x+1][y+1].temp = Boolean.FALSE;
+                    grid.cell[x+1][y+1].temp = CellMatching.INTERIOR;
                     grid.cell[x+1][y+1].roomId = roomId;
                 }
             }
@@ -240,9 +239,24 @@ public class Brogue {
     }
 
     private BrogueGrid makeCavern() {
-        int width=15;
-        int height=15;
-        boolean[][] gridBoolean = CellularAutomata.generateOutput(width, height, 0.45f, 4, 5, 4);
+        int width = randomIntRange(7, 25);
+        int height = randomIntRange(7, 25);
+        boolean[][] gridBoolean = CellularAutomata.generateOutput(width, height, 0.45f, 4, 5, 4, 20);
+
+        /*
+        CellularAutomata automata = new CellularAutomata(width, height);
+        automata.fillInitial(.45f);
+        for (int i=0; i<(width/2); i++) {
+            for (int j=0; j<(height/2); j++) {
+                automata.cells[i][j] = true;
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            automata.iterate8Squares(4, 5);
+        }
+        boolean[][] gridBoolean = automata.cells;
+         */
+
         if (gridBoolean == null) {
             throw new RuntimeException("Failed to generate cavern");
         }
@@ -262,12 +276,12 @@ public class Brogue {
     }
 
     private BrogueGrid makeIntoHallwayRoom(BrogueGrid grid) {
-        int hallwayLength = randomIntRange(3, 8);
+        int hallwayLength = randomIntRange(2, 8);
         ArrayList<Point> validStartPoints = new ArrayList<>();
         ArrayList<Compass> validStartDirections = new ArrayList<>();
         for (int i=0; i<grid.width; i++) {
             for (int j=0; j<grid.height; j++) {
-                if (grid.cell[i][j].temp != Boolean.TRUE) continue;
+                if (grid.cell[i][j].temp != CellMatching.EXTERIOR_VALID) continue;
                 if (i - 1 >= 0 && grid.cell[i - 1][j].terrain != wall) { validStartPoints.add(new Point(i, j)); validStartDirections.add(Compass.EAST); }
                 if (j - 1 >= 0 && grid.cell[i][j - 1].terrain != wall) { validStartPoints.add(new Point(i, j)); validStartDirections.add(Compass.SOUTH); }
                 if (i + 1 < grid.width && grid.cell[i + 1][j].terrain != wall) { validStartPoints.add(new Point(i, j)); validStartDirections.add(Compass.WEST); }
@@ -279,8 +293,8 @@ public class Brogue {
         }
         for (int i=0; i<grid.width; i++) {
             for (int j = 0; j < grid.height; j++) {
-                if (grid.cell[i][j].temp == Boolean.TRUE) {
-                    grid.cell[i][j].temp = Boolean.FALSE;
+                if (grid.cell[i][j].temp == CellMatching.EXTERIOR_VALID) {
+                    grid.cell[i][j].temp = CellMatching.EXTERIOR_INVALID;
                 }
             }
         }
@@ -294,19 +308,20 @@ public class Brogue {
             int currentX = start.x + (dir.getX() * i);
             int currentY = start.y + (dir.getY() * i);
             grid.cell[currentX][currentY].terrain = floor;
-            if (grid.cell[currentX - 1][currentY].terrain == wall) { grid.cell[currentX - 1][currentY].temp = Boolean.FALSE; }
-            if (grid.cell[currentX][currentY - 1].terrain == wall) { grid.cell[currentX][currentY - 1].temp = Boolean.FALSE; }
-            if (grid.cell[currentX + 1][currentY].terrain == wall) { grid.cell[currentX + 1][currentY].temp = Boolean.FALSE; }
-            if (grid.cell[currentX][currentY + 1].terrain == wall) { grid.cell[currentX][currentY + 1].temp = Boolean.FALSE; }
+            grid.cell[currentX][currentY].temp = CellMatching.INTERIOR;
+            if (grid.cell[currentX - 1][currentY].terrain == wall) { grid.cell[currentX - 1][currentY].temp = CellMatching.EXTERIOR_INVALID; }
+            if (grid.cell[currentX][currentY - 1].terrain == wall) { grid.cell[currentX][currentY - 1].temp = CellMatching.EXTERIOR_INVALID; }
+            if (grid.cell[currentX + 1][currentY].terrain == wall) { grid.cell[currentX + 1][currentY].temp = CellMatching.EXTERIOR_INVALID; }
+            if (grid.cell[currentX][currentY + 1].terrain == wall) { grid.cell[currentX][currentY + 1].temp = CellMatching.EXTERIOR_INVALID; }
         }
         grid.cell[start.x][start.y].terrain = doorway;
         int finalX = start.x + ((hallwayLength-1) * dir.getX());
         int finalY = start.y + ((hallwayLength-1) * dir.getY());
 
-        if (grid.cell[finalX - 1][finalY].terrain == wall) { grid.cell[finalX - 1][finalY].temp = Boolean.TRUE; }
-        if (grid.cell[finalX][finalY - 1].terrain == wall) { grid.cell[finalX][finalY - 1].temp = Boolean.TRUE; }
-        if (grid.cell[finalX + 1][finalY].terrain == wall) { grid.cell[finalX + 1][finalY].temp = Boolean.TRUE; }
-        if (grid.cell[finalX][finalY + 1].terrain == wall) { grid.cell[finalX][finalY + 1].temp = Boolean.TRUE; }
+        if (grid.cell[finalX - 1][finalY].terrain == wall) { grid.cell[finalX - 1][finalY].temp = CellMatching.EXTERIOR_VALID; }
+        if (grid.cell[finalX][finalY - 1].terrain == wall) { grid.cell[finalX][finalY - 1].temp = CellMatching.EXTERIOR_VALID; }
+        if (grid.cell[finalX + 1][finalY].terrain == wall) { grid.cell[finalX + 1][finalY].temp = CellMatching.EXTERIOR_VALID; }
+        if (grid.cell[finalX][finalY + 1].terrain == wall) { grid.cell[finalX][finalY + 1].temp = CellMatching.EXTERIOR_VALID; }
 
         return grid;
     }
@@ -318,11 +333,11 @@ public class Brogue {
         ArrayList<Point> overlaps = new ArrayList<>();
         for (int i=0; i<grid.width; i++) {
             for (int j=0; j<grid.height; j++) {
-                if ((grid.cell[i][j].temp == Boolean.FALSE && level.cell(i+x, j+y).temp != null) ||
-                        (levelGrid.cell[i+x][j+y].temp == Boolean.FALSE && grid.cell[i][j].temp != null)) {
+                if ((grid.cell[i][j].temp == CellMatching.INTERIOR && level.cell(i+x, j+y).temp != null) ||
+                        (levelGrid.cell[i+x][j+y].temp == CellMatching.INTERIOR && grid.cell[i][j].temp != null)) {
                     return null;
                 }
-                else if (grid.cell[i][j].temp == Boolean.TRUE && levelGrid.cell[i+x][j+y].temp == Boolean.TRUE) {
+                else if (grid.cell[i][j].temp == CellMatching.EXTERIOR_VALID && levelGrid.cell[i+x][j+y].temp == CellMatching.EXTERIOR_VALID) {
                     overlaps.add(new Point(i+x,j+y));
                 }
             }

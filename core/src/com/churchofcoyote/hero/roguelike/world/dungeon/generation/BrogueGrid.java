@@ -43,12 +43,12 @@ public class BrogueGrid {
             for (int j=0; j<height; j++) {
                 int count = 0;
                 boolean hasDiagonal = false;
-                if (cell[i][j].temp == Boolean.FALSE) {
+                if (cell[i][j].temp == CellMatching.INTERIOR) {
                     continue;
                 }
                 if (cell[i][j].terrain.isPassable())
                 {
-                    cell[i][j].temp = Boolean.FALSE;
+                    cell[i][j].temp = CellMatching.INTERIOR;
                     continue;
                 }
                 if (cell[i][j].terrain == wall) {
@@ -65,10 +65,10 @@ public class BrogueGrid {
                     if (j + 1 < height && cell[i][j + 1].terrain.isPassable()) count++;
                 }
                 if (count == 1) {
-                    cell[i][j].temp = Boolean.TRUE;
+                    cell[i][j].temp = CellMatching.EXTERIOR_VALID;
                     //cell[i][j].terrain = Terrain.get("mountain");
                 } else if (count > 1 || hasDiagonal) {
-                    cell[i][j].temp = Boolean.FALSE;
+                    cell[i][j].temp = CellMatching.EXTERIOR_INVALID;
                 }
             }
         }

@@ -23,11 +23,11 @@ public class GlyphGrid {
 
 	@SuppressWarnings("unchecked")
 	private void initialize() {
-		glyph = new GlyphTile[height][];
-		glyphBackground = new ArrayList[height][];
-		for (int i=0; i<height; i++) {
-			glyph[i] = new GlyphTile[width];
-			glyphBackground[i] = new ArrayList[width];
+		glyph = new GlyphTile[width][];
+		glyphBackground = new ArrayList[width][];
+		for (int i=0; i<width; i++) {
+			glyph[i] = new GlyphTile[height];
+			glyphBackground[i] = new ArrayList[height];
 			for (int j=0; j<height; j++) {
 				glyphBackground[i][j] = new ArrayList<GlyphTile>();
 			}
@@ -36,8 +36,8 @@ public class GlyphGrid {
 	}
 	
 	public void clear() {
-		for (int i=0; i<height; i++) {
-			for (int j=0; j<width; j++) {
+		for (int i=0; i<width; i++) {
+			for (int j=0; j<height; j++) {
 				glyph[i][j] = GlyphTile.BLANK;
 			}
 		}

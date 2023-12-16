@@ -11,14 +11,14 @@ public class CellularAutomata {
     boolean[][] floodFill;
     private static final int tries = 100;
 
-    public static boolean[][] generateOutput(int width, int height, float initial, int birth, int survival, int runs) {
+    public static boolean[][] generateOutput(int width, int height, float initial, int birth, int survival, int runs, int minCount) {
         for (int r=0; r<tries; r++) {
             CellularAutomata automata = new CellularAutomata(width, height);
             automata.fillInitial(initial);
             for (int i = 0; i < runs; i++) {
                 automata.iterate8Squares(birth, survival);
             }
-            if (automata.testFlood()) {
+            if (automata.testFlood(minCount)) {
                 return automata.cells;
             }
         }
@@ -52,7 +52,7 @@ public class CellularAutomata {
     public void iterate8Squares(int birth, int survival) {
         boolean[][] nextGen = generateGrid();
         for (int i=0; i<width; i++) {
-            for (int j=0; j<width; j++) {
+            for (int j=0; j<height; j++) {
                 int count = 0;
                 for (Compass dir : Compass.points()) {
                     count += (!withinBounds(i+dir.getX(), j+dir.getY()) || cells[i+dir.getX()][j+dir.getY()]) ? 1 : 0;
@@ -71,7 +71,7 @@ public class CellularAutomata {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    private boolean testFlood() {
+    private boolean testFlood(int minCount) {
         // find starting open point
         floodFill = generateGrid();
         int startX = 0;
@@ -91,14 +91,18 @@ public class CellularAutomata {
 
         recurseFlood(startX, startY);
 
+        int openCount = 0;
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
-                if (!cells[i][j] && !floodFill[i][j]) {
-                    return false;
+                if (!cells[i][j]) {
+                    openCount++;
+                    if (!floodFill[i][j]) {
+                        return false;
+                    }
                 }
             }
         }
-        return true;
+        return (openCount >= minCount);
     }
 
     private void recurseFlood(int x, int y) {
