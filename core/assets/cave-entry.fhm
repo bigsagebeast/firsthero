@@ -2,7 +2,7 @@ V1
 TERRAIN 6
 . grass
 T tree
-, dirt
+, dot
 ^ mountain
 > downstair
 < upstair

@@ -232,7 +232,7 @@ public class DefinitionLoader {
                             loops = Theme.ThemeLoopsPreferred.OKAY;
                             break;
                     }
-                    ThemeRoom themeRoom = new ThemeRoom(new RoomType(roomName, roomDescription), fieldName,
+                    ThemeRoom themeRoom = new ThemeRoom(new RoomType(roomName, roomDescription, true), fieldName,
                             softCap, hardCap, depth, priority, loops);
                     theme.add(themeRoom);
                     JsonNode spawn = roomNode.get("spawn");

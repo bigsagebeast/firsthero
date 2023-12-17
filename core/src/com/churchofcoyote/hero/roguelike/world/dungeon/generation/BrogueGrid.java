@@ -16,11 +16,13 @@ public class BrogueGrid {
     private Terrain wall;
     private Terrain floor;
     private Terrain doorway;
+    private Terrain uncarveable;
 
     public BrogueGrid(int width, int height) {
         wall = Terrain.get("wall");
-        floor = Terrain.get("dirt");
+        floor = Terrain.get("dot");
         doorway = Terrain.get("doorway");
+        uncarveable = Terrain.get("uncarveable");
 
         this.width = width;
         this.height = height;
@@ -41,6 +43,10 @@ public class BrogueGrid {
     public void markAllAdjacentToOpen() {
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
+                if (cell[i][j].terrain == uncarveable) {
+                    cell[i][j].temp = CellMatching.EXTERIOR_INVALID;
+                    continue;
+                }
                 int count = 0;
                 boolean hasDiagonal = false;
                 if (cell[i][j].temp == CellMatching.INTERIOR) {
@@ -66,7 +72,6 @@ public class BrogueGrid {
                 }
                 if (count == 1) {
                     cell[i][j].temp = CellMatching.EXTERIOR_VALID;
-                    //cell[i][j].terrain = Terrain.get("mountain");
                 } else if (count > 1 || hasDiagonal) {
                     cell[i][j].temp = CellMatching.EXTERIOR_INVALID;
                 }
@@ -91,9 +96,9 @@ public class BrogueGrid {
         int topMargin = -1;
         int bottomMargin = -1;
         boolean found = false;
-        for (int x=0; x<width && !found; x++) {
+        for (int x=0; x<width; x++) {
             for (int y=0; y<height && !found; y++) {
-                if (cell[x][y].terrain == floor) {
+                if (cell[x][y].terrain.isPassable()) {
                     found = true;
                 }
             }
@@ -103,9 +108,9 @@ public class BrogueGrid {
             leftMargin++;
         }
         found = false;
-        for (int x=width-1; x>=0 && !found; x--) {
+        for (int x=width-1; x>=0; x--) {
             for (int y=0; y<height && !found; y++) {
-                if (cell[x][y].terrain == floor) {
+                if (cell[x][y].terrain.isPassable()) {
                     found = true;
                 }
             }
@@ -115,9 +120,9 @@ public class BrogueGrid {
             rightMargin++;
         }
         found = false;
-        for (int y=0; y<height && !found; y++) {
+        for (int y=0; y<height; y++) {
             for (int x=0; x<width && !found; x++) {
-                if (cell[x][y].terrain == floor) {
+                if (cell[x][y].terrain.isPassable()) {
                     found = true;
                 }
             }
@@ -127,9 +132,9 @@ public class BrogueGrid {
             topMargin++;
         }
         found = false;
-        for (int y=height-1; y>=0 && !found; y--) {
+        for (int y=height-1; y>=0; y--) {
             for (int x=0; x<width && !found; x++) {
-                if (cell[x][y].terrain == floor) {
+                if (cell[x][y].terrain.isPassable()) {
                     found = true;
                 }
             }

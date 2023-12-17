@@ -3,7 +3,7 @@ TERRAIN 6
 . grass
 # wall
 _ floor
-, dirt
+, dot
 > downstair
 < upstair
 MAP 60 60

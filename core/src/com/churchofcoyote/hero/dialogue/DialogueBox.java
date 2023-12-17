@@ -194,9 +194,15 @@ public class DialogueBox {
     }
 
     public void close() {
-        title.close();
-        footer.close();
-        lineParent.close();
+        if (title != null) {
+            title.close();
+        }
+        if (footer != null) {
+            footer.close();
+        }
+        if (lineParent != null) {
+            lineParent.close();
+        }
         closed = true;
     }
 

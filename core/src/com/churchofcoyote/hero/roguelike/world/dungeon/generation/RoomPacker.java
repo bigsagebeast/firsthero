@@ -30,7 +30,7 @@ public class RoomPacker {
     public RoomPacker(Level level, int regionX, int regionY, int regionWidth, int regionHeight,
                       int maxRooms, Compass entrance) {
         wall = Terrain.get("wall");
-        floor = Terrain.get("dirt");
+        floor = Terrain.get("dot");
         doorway = Terrain.get("doorway");
         uncarveable = Terrain.get("uncarveable");
 
@@ -168,20 +168,20 @@ public class RoomPacker {
         packRoom.height = 5;
         switch (entrance) {
             case NORTH:
-                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 1) + regionX + 1;
-                packRoom.y = regionY;
+                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 2) + regionX + 1;
+                packRoom.y = regionY + 1;
                 break;
             case SOUTH:
-                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 1) + regionX + 1;
-                packRoom.y = regionY + regionHeight - packRoom.height;
+                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 2) + regionX + 1;
+                packRoom.y = regionY + regionHeight - packRoom.height - 1;
                 break;
             case WEST:
-                packRoom.x = regionX;
-                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 1) + regionY + 1;
+                packRoom.x = regionX + 1;
+                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 2) + regionY + 1;
                 break;
             case EAST:
-                packRoom.x = regionX + regionWidth - packRoom.width;
-                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 1) + regionY + 1;
+                packRoom.x = regionX + regionWidth - packRoom.width - 1;
+                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 2) + regionY + 1;
                 break;
         }
         Room room = new Room(RoomType.SUBDUNGEON_UNASSIGNED,

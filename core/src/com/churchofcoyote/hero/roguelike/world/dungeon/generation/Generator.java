@@ -29,7 +29,7 @@ public class Generator {
 
         wall = Terrain.get("wall");
         uncarveable = Terrain.get("uncarveable");
-        floor = Terrain.get("dirt");
+        floor = Terrain.get("dot");
         doorway = Terrain.get("doorway");
 
         for (int i=0; i<width; i++) {
@@ -38,7 +38,7 @@ public class Generator {
             }
         }
 
-        RoomPacker roomPacker = new RoomPacker(level, 0, 0, 30, 20, 8, Compass.SOUTH);
+        RoomPacker roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.SOUTH);
         roomPacker.generate();
 
         SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Themepedia.get("goblin.stronghold"));
@@ -53,7 +53,6 @@ public class Generator {
                 level.cell(p).terrain = floor;
             }
         }
-
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
                 Point p = new Point(i, j);
@@ -65,7 +64,6 @@ public class Generator {
                     }
                     level.roomMap.get(roomId).add(p);
                 }
-
                 if (cell.terrain == uncarveable) {
                     cell.terrain = wall;
                 }
@@ -126,9 +124,8 @@ public class Generator {
             throw new RuntimeException("Room id " + room.roomId + " is not in the room map");
         }
         List<Point> points = level.roomMap.get(room.roomId).stream()
+                .filter(p -> level.cell(p).terrain.isSpawnable())
                 .filter(p -> level.getEntitiesOnTile(p).isEmpty())
-                .filter(p -> level.cell(p).terrain != Terrain.get("upstair"))
-                .filter(p -> level.cell(p).terrain != Terrain.get("downstair"))
                 .collect(Collectors.toList());
         if (points == null) {
             throw new RuntimeException("Failed to find an empty point in room " + room);

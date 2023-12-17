@@ -275,9 +275,10 @@ public class Level {
 
 	public Point findOpenTile() {
 		for (int i=0; i<10000; i++) {
+			// TODO not stochastic?
 			int x = Game.random.nextInt(width);
 			int y = Game.random.nextInt(height);
-			if (cell[x][y].terrain.isPassable()) {
+			if (cell[x][y].terrain.isPassable() && cell[x][y].terrain.isSpawnable()) {
 				boolean blockingEntity = false;
 				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
 					if (e.getMover() != null || e.isObstructive()) {

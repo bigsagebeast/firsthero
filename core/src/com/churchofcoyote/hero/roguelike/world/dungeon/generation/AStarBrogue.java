@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
@@ -16,6 +17,7 @@ public class AStarBrogue {
 	private static AStarBrogue instance = new AStarBrogue();
 
 	public static List<Point> path(BrogueGrid grid, Point origin, Point destination, boolean pathThroughWalls) {
+		Terrain uncarveable = Terrain.get("uncarveable");
 		queue.clear();
 		for (int i=0; i<grid.width; i++) {
 			for (int j=0; j<grid.height; j++) {
@@ -41,14 +43,17 @@ public class AStarBrogue {
 			for (Compass dir : Compass.orthogonal) {
 				Point newloc = dir.from(next.location);
 				float moveCost = 0f;
-				if (grid.contains(newloc) && (grid.cell(newloc).terrain.isPassable())) {
-					moveCost = 1.0f;
-				}
-				else if (grid.contains(newloc) && Compass.isOrthogonal(dir) && pathThroughWalls) {
-					if (grid.cell(newloc).temp == Boolean.TRUE) {
-						moveCost = 10.0f;
-					} else if (!grid.cell(newloc).terrain.isPassable()) {
-						moveCost = 10.0f;
+				if (grid.contains(newloc)) {
+					if (grid.cell(newloc).terrain == uncarveable) {
+						moveCost = 100000f;
+					} else if (grid.cell(newloc).terrain.isPassable()) {
+						moveCost = 1.0f;
+					} else if (Compass.isOrthogonal(dir) && pathThroughWalls) {
+						if (grid.cell(newloc).temp == Boolean.TRUE) {
+							moveCost = 10.0f;
+						} else if (!grid.cell(newloc).terrain.isPassable()) {
+							moveCost = 10.0f;
+						}
 					}
 				}
 				if (moveCost > 0f) {

@@ -24,14 +24,19 @@ public class Brogue {
     private final int CIRCULAR_RADIUS_MAX = 7;
 
     private Terrain wall;
-    private Terrain floor;
+    private Terrain terrainDot;
+    private Terrain terrainDirt1;
+    private Terrain terrainDirt2;
     private Terrain doorway;
 
     public List<Room> rooms = new ArrayList<>();
 
     public Brogue(Level level) {
         wall = Terrain.get("wall");
-        floor = Terrain.get("dirt");
+        terrainDot = Terrain.get("dot");
+        terrainDirt1 = Terrain.get("dirt1");
+        terrainDirt2 = Terrain.get("dirt2");
+
         doorway = Terrain.get("doorway");
         this.level = level;
         levelGrid = new BrogueGrid(level.getWidth(), level.getHeight());
@@ -41,6 +46,7 @@ public class Brogue {
                 levelGrid.cell[i][j] = level.cell(i, j);
             }
         }
+        levelGrid.markAllAdjacentToOpen();
     }
 
     public void generate() {
@@ -49,8 +55,16 @@ public class Brogue {
         //BrogueGrid firstRoom = makeRectangularRoom();
         //pasteGrid(firstRoom, 20, 20);
         BrogueGrid river = makeRiver();
-        //river = river.shrink();
-        pasteGrid(river, 35, 0);
+        river = river.shrink();
+        river.markAllAdjacentToOpen();
+        //pasteGrid(river, 21, 0);
+        for (int i=0; i<10000; i++) {
+            int x = randomIntRange(0, level.getWidth() - river.width);
+            if (!isObstructed(river, x, 0)) {
+                pasteGrid(river, x, 0);
+                break;
+            }
+        }
 
         for (int rooms=0; rooms<50; rooms++) {
             BrogueGrid room;
@@ -93,20 +107,24 @@ public class Brogue {
             for (int j=0; j<levelGrid.height; j++) {
                 if (levelGrid.cell[i][j].terrain == Terrain.get("grass")) {
                     if (levelGrid.cell[i][j].temp == CellMatching.EXTERIOR_VALID) {
+                        int adjacentTunnels = 0;
                         boolean redundant = false;
                         for (Compass dir : Compass.orthogonal) {
                             Point p = new Point(i+dir.getX(), j+dir.getY());
                             if (levelGrid.contains(p) && levelGrid.cell(p).terrain == Terrain.get("grass")) {
+                                adjacentTunnels++;
+                            }
+                            if (levelGrid.contains(p) && levelGrid.cell(p).terrain == doorway) {
                                 redundant = true;
                             }
                         }
-                        if (!redundant) {
+                        if (!redundant && adjacentTunnels <= 1) {
                             levelGrid.cell[i][j].terrain = doorway;
                         } else {
-                            levelGrid.cell[i][j].terrain = floor;
+                            levelGrid.cell[i][j].terrain = terrainDot;
                         }
                     } else {
-                        levelGrid.cell[i][j].terrain = floor;
+                        levelGrid.cell[i][j].terrain = terrainDot;
                     }
                 }
             }
@@ -184,7 +202,7 @@ public class Brogue {
         for (int i=0; i<1+(radius*2); i++) {
             for (int j=0; j<1+(radius*2); j++) {
                 if (((i-center)*(i-center))+((j-center)*(j-center)) < (radius*radius)) {
-                    grid.cell[i][j].terrain = floor;
+                    grid.cell[i][j].terrain = terrainDot;
                     grid.cell[i][j].temp = CellMatching.INTERIOR;
                     grid.cell[i][j].roomId = roomId;
                 } else {
@@ -204,7 +222,7 @@ public class Brogue {
         BrogueGrid grid = new BrogueGrid(width+2, height+2);
         for (int i=1; i<width+1; i++) {
             for (int j=1; j<height+1; j++) {
-                grid.cell[i][j].terrain = floor;
+                grid.cell[i][j].terrain = terrainDot;
                 grid.cell[i][j].temp = CellMatching.INTERIOR;
                 grid.cell[i][j].roomId = roomId;
             }
@@ -227,7 +245,7 @@ public class Brogue {
             for (int y=1; y<majorWidth-1; y++) {
                 if (x >= (majorWidth / 2 - minorWidth / 2) && x < ((majorWidth + 1) / 2) + (minorWidth / 2) ||
                     y >= (majorWidth / 2 - minorWidth / 2) && y < ((majorWidth + 1) / 2) + (minorWidth / 2)) {
-                    grid.cell[x+1][y+1].terrain = floor;
+                    grid.cell[x+1][y+1].terrain = terrainDot;
                     grid.cell[x+1][y+1].temp = CellMatching.INTERIOR;
                     grid.cell[x+1][y+1].roomId = roomId;
                 }
@@ -266,7 +284,7 @@ public class Brogue {
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
                 if (!gridBoolean[i][j].isWall) {
-                    grid.cell[i + 1][j + 1].terrain = floor;
+                    grid.cell[i + 1][j + 1].terrain = terrainDot;
                 }
                 grid.cell[i+1][j+1].roomId = roomId;
             }
@@ -308,7 +326,7 @@ public class Brogue {
         for (int i=0; i<hallwayLength; i++) {
             int currentX = start.x + (dir.getX() * i);
             int currentY = start.y + (dir.getY() * i);
-            grid.cell[currentX][currentY].terrain = floor;
+            grid.cell[currentX][currentY].terrain = terrainDot;
             grid.cell[currentX][currentY].temp = CellMatching.INTERIOR;
             if (grid.cell[currentX - 1][currentY].terrain == wall) { grid.cell[currentX - 1][currentY].temp = CellMatching.EXTERIOR_INVALID; }
             if (grid.cell[currentX][currentY - 1].terrain == wall) { grid.cell[currentX][currentY - 1].temp = CellMatching.EXTERIOR_INVALID; }
@@ -349,12 +367,27 @@ public class Brogue {
         return overlaps.get(random(overlaps.size()-1));
     }
 
+    private boolean isObstructed(BrogueGrid grid, int x, int y) {
+        if (x < 0 || y < 0 || x+grid.width > levelGrid.width || y+grid.height > levelGrid.height) {
+            throw new RuntimeException("Invalid grid check position");
+        }
+        for (int i=0; i<grid.width; i++) {
+            for (int j=0; j<grid.height; j++) {
+                if ((grid.cell[i][j].temp == CellMatching.INTERIOR && level.cell(i+x, j+y).temp != null) ||
+                        (levelGrid.cell[i+x][j+y].temp == CellMatching.INTERIOR && grid.cell[i][j].temp != null)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void digPaths(int wantedPaths, int allowedTries, int minDistance, int minSaved) {
         int successes = 0;
         int lastSuccess = 0;
         for (int i=0; i<allowedTries; i++) {
-            Point from = findRandomPassable();
-            Point to = findRandomPassable();
+            Point from = findRandomPassableInGenericRoom();
+            Point to = findRandomPassableInGenericRoom();
             boolean success = considerAndDig(from, to, minDistance, minSaved);
             if (success) {
                 successes++;
@@ -378,6 +411,17 @@ public class Brogue {
         return new Point(x, y);
     }
 
+    private Point findRandomPassableInGenericRoom() {
+        int x, y;
+        Room room;
+        do {
+            x = random.nextInt(levelGrid.width);
+            y = random.nextInt(levelGrid.height);
+            room = levelGrid.cell[x][y].roomId < 0 ? null : level.rooms.get(levelGrid.cell[x][y].roomId);
+        } while (!levelGrid.cell[x][y].terrain.isPassable() || room == null || room.roomType.specialCorridors);
+        return new Point(x, y);
+    }
+
     private boolean considerAndDig(Point from, Point to, int minDistance, int minSaved) {
         List<Point> passablePath = AStarBrogue.path(levelGrid, from, to, false);
         if (passablePath.size() < minDistance) {
@@ -397,10 +441,10 @@ public class Brogue {
     }
 
     private BrogueGrid makeRiver() {
-        int gridWidth = 20;
-        int riverLeftShore = 8;
-        int riverLeftShoreMin = 5;
-        int riverLeftShoreMax = 11;
+        int gridWidth = 24;
+        int riverLeftShore = 10;
+        int riverLeftShoreMin = 7;
+        int riverLeftShoreMax = 13;
         int riverWidth = 5;
         int riverWidthMin = 4;
         int riverWidthMax = 6;
@@ -441,14 +485,15 @@ public class Brogue {
             int riverLeftCavern = riverLeftBank - riverCavernWidth;
             int riverRightCavern = riverRightBank + riverCavernWidth;
             for (int i=0; i<riverGrid.width; i++) {
-                if (j == 0 || j == levelGrid.height - 1) {
+                if (j == 0 || j == riverGrid.height - 1) {
                     automata.cells[i][j] = AutomataStatus.ALWAYS_WALL;
                 } else {
                     if (i >= riverLeftShore && i < riverRightShore) {
                         automata.cells[i][j] = AutomataStatus.ALWAYS_FLOOR;
-                        riverGrid.cell[i][j].terrain = Terrain.get("floor");
+                        riverGrid.cell[i][j].terrain = Terrain.get("water");
                     } else if (i >= riverLeftBank && i < riverRightBank) {
                         automata.cells[i][j] = AutomataStatus.ALWAYS_FLOOR;
+                        riverGrid.cell[i][j].terrain = random.nextInt(2) == 0 ? terrainDirt1 : terrainDirt2;
                     } else if (i >= riverLeftCavern && i < riverRightCavern) {
                         automata.cells[i][j] = AutomataStatus.RANDOM;
                     } else {
@@ -468,7 +513,7 @@ public class Brogue {
                     if (automata.cells[i][j].isWall) {
                         riverGrid.cell[i][j].terrain = wall;
                     } else {
-                        riverGrid.cell[i][j].terrain = floor;
+                        riverGrid.cell[i][j].terrain = terrainDot;
                     }
                 }
             }

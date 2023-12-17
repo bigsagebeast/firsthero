@@ -1,4 +1,4 @@
-1 26
+1 44
 0 0 terrain.grass
 0 1 wall.stone:x
 0 2 wall.stone:n
@@ -25,3 +25,21 @@
 0 23 terrain.floor
 0 24 terrain.door_closed
 0 25 terrain.door_open
+0 26 terrain.water:x
+0 27 terrain.water:n
+0 28 terrain.water:w
+0 29 terrain.water:nw
+0 30 terrain.water:e
+0 31 terrain.water:ne
+0 32 terrain.water:we
+0 33 terrain.water:nwe
+0 34 terrain.water:s
+0 35 terrain.water:ns
+0 36 terrain.water:ws
+0 37 terrain.water:nws
+0 38 terrain.water:es
+0 39 terrain.water:nes
+0 40 terrain.water:wes
+0 41 terrain.water:nwes
+0 42 terrain.dirt1
+0 43 terrain.dirt2

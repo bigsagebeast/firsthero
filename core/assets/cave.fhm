@@ -1,6 +1,6 @@
 V1
 TERRAIN 4
-. dirt
+. dot
 @ wall
 > downstair
 < upstair
