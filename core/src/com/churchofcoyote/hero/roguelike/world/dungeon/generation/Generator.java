@@ -11,7 +11,6 @@ import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +69,7 @@ public class Generator {
             }
         }
 
-        List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC).collect(Collectors.toList());
+        List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_ROOM).collect(Collectors.toList());
         if (genericRooms.size() < 2) {
             throw new RuntimeException("Not enough rooms for an upstair and a downstair!");
         }
@@ -88,7 +87,7 @@ public class Generator {
 
     public void addUpstairTo(String levelKey) {
         Room stairRoom;
-        List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC).collect(Collectors.toList());
+        List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_ROOM).collect(Collectors.toList());
         if (genericRooms.isEmpty()) {
             System.out.println("Not enough rooms to generate a stair cleanly!");
             stairRoom = level.rooms.get(Game.random.nextInt(level.rooms.size()));
@@ -104,7 +103,7 @@ public class Generator {
 
     public void addDownstairTo(String levelKey) {
         Room stairRoom;
-        List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC).collect(Collectors.toList());
+        List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_ROOM).collect(Collectors.toList());
         if (genericRooms.isEmpty()) {
             System.out.println("Not enough rooms to generate a stair cleanly!");
             stairRoom = level.rooms.get(Game.random.nextInt(level.rooms.size()));

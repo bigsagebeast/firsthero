@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
+import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.EntityTracker;
 import com.churchofcoyote.hero.text.TextBlock;
@@ -139,6 +140,11 @@ public class Proc {
     public void postBeRead(Entity entity, Entity actor) { }
     public Boolean preDoRead(Entity entity, Entity target) { return null; }
     public void postDoRead(Entity entity, Entity target) { }
+
+    // Is this a valid target to draw an element from?  If null, ignore it.
+    public Element providesElement(Entity entity) { return null; }
+    // Attempt to draw up to 'max' charges.  Return the actual charges that were drawn.
+    public int drawElement(Entity entity, Entity actor, int requested) { return 0; }
 
     public void beDestroyed() {}
 

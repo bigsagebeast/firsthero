@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Visibility;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
+import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Fov;
 import com.churchofcoyote.hero.util.Point;
 
@@ -153,7 +154,7 @@ public class Level {
 		return getEntityStream().filter(e -> e.pos.equals(p) && e.getMover() != null).collect(Collectors.toList());
 	}
 
-	public List<EntityProc> getProcEntities() {
+	public List<EntityProc> getEntityProcs() {
 		List<EntityProc> procEntities = new ArrayList<>();
 		for (Entity e : getEntities()) {
 			for (Proc p : e.procs) {
@@ -271,6 +272,17 @@ public class Level {
 			}
 		}
 		return false;
+	}
+
+	public Collection<Point> surroundingTiles(Point p) {
+		return Compass.points().stream().map(dir -> dir.from(p))
+				.filter(this::withinBounds).collect(Collectors.toList());
+	}
+
+	public Collection<Point> surroundingAndCurrentTiles(Point p) {
+		Collection<Point> points = surroundingTiles(p);
+		points.add(p);
+		return points;
 	}
 
 	public Point findOpenTile() {

@@ -92,6 +92,10 @@ public class TextBlock implements GameLogic {
 		this(text, null, RoguelikeModule.FONT_SIZE, x, y, color);
 	}
 
+	public TextBlock(String text, int x, int y) {
+		this(text, x, y, Color.WHITE);
+	}
+
 	public TextBlock(String text, String frameBufferKey, Float fontSize,
 					 Float x, Float y, float pixelOffsetX, float pixelOffsetY,
 					 Color color,

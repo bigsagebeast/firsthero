@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
+import com.churchofcoyote.hero.roguelike.world.dungeon.RoomType;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
@@ -451,6 +452,7 @@ public class Brogue {
         int riverBankWidth = 1;
         int riverCavernWidth = 4;
         BrogueGrid riverGrid = new BrogueGrid(gridWidth, levelGrid.height);
+        riverGrid.room.roomType = RoomType.UNDERGROUND_RIVER;
         riverGrid.room.roomId = level.rooms.size();
         CellularAutomata automata = new CellularAutomata(gridWidth, levelGrid.height);
         automata.cells = automata.generateStatus();

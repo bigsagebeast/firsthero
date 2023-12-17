@@ -37,7 +37,7 @@ public class BrogueGrid {
                 cell[i][j].terrain = wall;
             }
         }
-        room = new Room(RoomType.GENERIC, roomCenter);
+        room = new Room(RoomType.GENERIC_ROOM, roomCenter);
     }
 
     public void markAllAdjacentToOpen() {

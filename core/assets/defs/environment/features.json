@@ -14,6 +14,27 @@
         "environment.ProcDoor": {}
       },
       "hideWalkOver": true
+    },
+    "moss": {
+      "name": "patch of moss",
+      "glyphName": "feature.moss",
+      "isFeature": true,
+      "palette": [
+        "darkgreen",
+        "lightgreen"
+      ],
+      "sortOrder": -1
+    },
+    "forge": {
+      "name": "forge",
+      "glyphName": "feature.forge",
+      "isFeature": true,
+      "palette": [
+        "tan",
+        "red",
+        "orange"
+      ],
+      "sortOrder": -1
     }
   }
 }

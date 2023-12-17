@@ -92,7 +92,7 @@ public class Game {
 
 	public void changeLevel(Level nextLevel, Point playerPos) {
 		if (level != null) {
-			for (EntityProc tuple : level.getProcEntities()) {
+			for (EntityProc tuple : level.getEntityProcs()) {
 				if (tuple.proc.hasAction()) {
 					tuple.proc.nextAction = tuple.proc.nextAction - Game.time;
 				}
@@ -111,7 +111,7 @@ public class Game {
 
 	public void changeLevel(String toKey, String fromKey) {
 		if (level != null) {
-			for (EntityProc tuple : level.getProcEntities()) {
+			for (EntityProc tuple : level.getEntityProcs()) {
 				if (tuple.proc.hasAction()) {
 					tuple.proc.nextAction = tuple.proc.nextAction - Game.time;
 				}
@@ -181,7 +181,7 @@ public class Game {
 			// maybe filtered by ones that have an 'act' or a 'turnPassed'
 			while (lastTurnProc + ONE_TURN < time) {
 				lastTurnProc += ONE_TURN;
-				for (EntityProc tuple : level.getProcEntities()) {
+				for (EntityProc tuple : level.getEntityProcs()) {
 					tuple.proc.turnPassed(tuple.entity);
 				}
 			}
@@ -189,7 +189,7 @@ public class Game {
 			long lowestTurn = -1;
 			long secondLowestTurn = -1;
 			EntityProc lowestProc = null;
-			for (EntityProc tuple : level.getProcEntities()) {
+			for (EntityProc tuple : level.getEntityProcs()) {
 				if (tuple.proc.nextAction != -1 && (lowestTurn == -1 || tuple.proc.nextAction < lowestTurn)) {
 					lowestTurn = tuple.proc.nextAction;
 					lowestProc = tuple;

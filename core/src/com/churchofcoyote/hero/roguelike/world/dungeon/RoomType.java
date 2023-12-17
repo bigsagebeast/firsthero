@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoomType {
-    public static RoomType GENERIC_UPSTAIR = new RoomType("Generic Room", "You enter a generic room.", false);
-    public static RoomType GENERIC_DOWNSTAIR = new RoomType("Generic Room", "You enter a generic room.", false);
-    public static RoomType GENERIC = new RoomType("Generic Room", "You enter a generic room.", false);
+    public static RoomType GENERIC_UPSTAIR = new RoomType("Generic Room", null, false);
+    public static RoomType GENERIC_DOWNSTAIR = new RoomType("Generic Room", null, false);
+    public static RoomType GENERIC_ROOM = new RoomType("Generic Room", null, false);
+    public static RoomType GENERIC_CAVERN = new RoomType("Generic Room", null, false);
+    public static RoomType UNDERGROUND_RIVER = new RoomType("Underground River", "You approach an underground river.", false);
     public static RoomType SUBDUNGEON_UNASSIGNED = new RoomType("UNASSIGNED SUBDUNGEON", "ERR: UNASSIGNED SUBDUNGEON ROOM", true);
 
     public String roomName;

@@ -18,7 +18,9 @@ public class Room {
     public void enter(Entity actor) {
         if (actor == Game.getPlayerEntity()) {
             if (!visited) {
-                Game.announce(roomType.entranceMessage);
+                if (roomType.entranceMessage != null) {
+                    Game.announce(roomType.entranceMessage);
+                }
             }
             visited = true;
         }

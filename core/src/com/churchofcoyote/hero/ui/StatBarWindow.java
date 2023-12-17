@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.game.Player;
 import com.churchofcoyote.hero.roguelike.game.Statblock;
+import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.text.TextBlock;
 
@@ -29,6 +31,8 @@ public class StatBarWindow extends UIWindow {
 	TextBlock tbStatAv;
 	TextBlock tbStatDr;
 	TextBlock tbStatDt;
+
+	TextBlock tbElementWater;
 
 	TextBlock tbNumHp;
 	TextBlock tbNumMaxHp;
@@ -58,6 +62,7 @@ public class StatBarWindow extends UIWindow {
 		tbStatAv = new TextBlock("20", 29, 0, Color.WHITE);
 		tbStatDr = new TextBlock("20", 5, 0, Color.WHITE);
 		tbStatDt = new TextBlock("20", 13, 0, Color.WHITE);
+		tbElementWater = new TextBlock("W 8/8", 0, 0, Color.CYAN);
 
 		statRows.add(new TextBlock("Character Name", 0, 0, Color.WHITE));
 		statRows.add(new TextBlock("", 0, 1, Color.WHITE));
@@ -79,21 +84,23 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(5).addChild(tbStatDt);
 
 		statRows.add(new TextBlock("HP:    /      SP:    /      DP:    /   ", 0, 6, Color.WHITE));
-		tbNumHp = new TextBlock("", 3, 0, Color.WHITE);
-		tbNumMaxHp = new TextBlock("", 8, 0, Color.WHITE);
-		tbNumSp = new TextBlock("", 17, 0, Color.WHITE);
-		tbNumMaxSp = new TextBlock("", 22, 0, Color.WHITE);
-		tbNumDp = new TextBlock("", 31, 0, Color.WHITE);
-		tbNumMaxDp = new TextBlock("", 36, 0, Color.WHITE);
+		tbNumHp = new TextBlock("", 3, 0);
+		tbNumMaxHp = new TextBlock("", 8, 0);
+		tbNumSp = new TextBlock("", 17, 0);
+		tbNumMaxSp = new TextBlock("", 22, 0);
+		tbNumDp = new TextBlock("", 31, 0);
+		tbNumMaxDp = new TextBlock("", 36, 0);
 		statRows.get(6).addChild(tbNumHp);
 		statRows.get(6).addChild(tbNumMaxHp);
 		statRows.get(6).addChild(tbNumSp);
 		statRows.get(6).addChild(tbNumMaxSp);
 		statRows.get(6).addChild(tbNumDp);
 		statRows.get(6).addChild(tbNumMaxDp);
+
 		statRows.add(new TextBlock("", 0, 7, Color.YELLOW));
 
-
+		statRows.add(new TextBlock("", 0, 8));
+		statRows.get(8).addChild(tbElementWater);
 
 		for (TextBlock statRow : statRows) {
 			parent.addChild(statRow);
@@ -109,6 +116,7 @@ public class StatBarWindow extends UIWindow {
 	@Override
 	public void update() {
 		Entity entity = Game.getPlayerEntity();
+		Player player = Game.getPlayer();
 		Statblock statblock = entity.statblock;
 
 		levelDesc.text = Game.getLevel().getName();
@@ -145,6 +153,10 @@ public class StatBarWindow extends UIWindow {
 		}
 
 		statRows.get(7).text = "Hungry";
+
+		if (player.maxElementCharges.get(Element.WATER) != null) {
+			tbElementWater.text = "W: " + player.currentElementCharges.get(Element.WATER) + "/" + player.maxElementCharges.get(Element.WATER);
+		}
 
 		WindowEngine.setDirty(UIManager.NAME_STATBOX);
 		parent.compile();
