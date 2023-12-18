@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.roguelike.game.CombatLogic;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.util.Compass;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
 public class SpellFirebeam extends Spell {
     @Override
     public TargetType getTargetType() {
-        return TargetType.LINE;
+        return TargetType.BEAM;
     }
 
     @Override
@@ -22,7 +23,7 @@ public class SpellFirebeam extends Spell {
 
     @Override
     public float getRange(Entity caster) {
-        return 5;
+        return 3;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class SpellFirebeam extends Spell {
     }
 
     @Override
-    public void affectTarget(Entity actor, Entity target) {
+    public void affectTarget(Entity actor, Entity target, Compass dir) {
         if (CombatLogic.castAttempt(actor, target, this)) {
             CombatLogic.castDamage(actor, target, this, 10);
         }

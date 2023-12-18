@@ -1,10 +1,14 @@
 package com.churchofcoyote.hero.roguelike.spells;
 
 import com.churchofcoyote.hero.roguelike.game.CombatLogic;
+import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.util.Compass;
 
-public class SpellMagicMissile extends Spell {
+import java.util.HashMap;
+import java.util.Map;
+
+public class SpellRootSpear extends Spell {
     @Override
     public TargetType getTargetType() {
         return TargetType.BOLT;
@@ -12,7 +16,7 @@ public class SpellMagicMissile extends Spell {
 
     @Override
     public String getName() {
-        return "Magic Missile";
+        return "Root Spear";
     }
 
     @Override
@@ -26,9 +30,16 @@ public class SpellMagicMissile extends Spell {
     }
 
     @Override
+    public Map<Element, Integer> getElementCost(Entity caster) {
+        HashMap<Element, Integer> cost = new HashMap<>();
+        cost.put(Element.PLANT, 2);
+        return cost;
+    }
+
+    @Override
     public void affectTarget(Entity actor, Entity target, Compass dir) {
         if (CombatLogic.castAttempt(actor, target, this)) {
-            CombatLogic.castDamage(actor, target, this, 10);
+            CombatLogic.castDamage(actor, target, this, 12);
         }
     }
 }

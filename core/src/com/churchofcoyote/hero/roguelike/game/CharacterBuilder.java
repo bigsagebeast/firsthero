@@ -117,10 +117,12 @@ public class CharacterBuilder {
                 equip("dagger", BodyPart.PRIMARY_HAND);
                 GameLoop.roguelikeModule.game.spellbook.addSpell("magic missile");
                 GameLoop.roguelikeModule.game.spellbook.addSpell("firebeam");
+                GameLoop.roguelikeModule.game.spellbook.addSpell("water blast");
+                GameLoop.roguelikeModule.game.spellbook.addSpell("root spear");
                 break;
         }
-        Entity magicmap = Game.itempedia.create("scroll.magic.map", 100);
-        pcEntity.receiveItem(magicmap);
+        //Entity magicmap = Game.itempedia.create("scroll.magic.map", 100);
+        //pcEntity.receiveItem(magicmap);
     }
 
     private void equip(String key, BodyPart bodyPart) {

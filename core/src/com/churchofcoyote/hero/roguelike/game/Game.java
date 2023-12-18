@@ -503,6 +503,21 @@ public class Game {
 		movePlayer(tx, ty);
 	}
 
+	public static boolean pushBy(Entity actor, int dx, int dy) {
+		int tx = actor.pos.x + dx;
+		int ty = actor.pos.y + dy;
+		if (!level.cell(tx, ty).terrain.isPassable()) {
+			return false;
+		}
+		for (Entity e : level.getEntitiesOnTile(new Point(tx, ty))) {
+			if (e.isObstructive()) {
+				return false;
+			}
+		}
+		moveNpc(actor, tx, ty);
+		return true;
+	}
+
 	public static void npcMoveBy(Entity actor, ProcMover pm, int dx, int dy) {
 		int tx = actor.pos.x + dx;
 		int ty = actor.pos.y + dy;

@@ -5,10 +5,12 @@ import com.churchofcoyote.hero.dialogue.DialogueBox;
 import com.churchofcoyote.hero.roguelike.spells.Spell;
 import com.churchofcoyote.hero.roguelike.spells.SpellFirebeam;
 import com.churchofcoyote.hero.roguelike.spells.SpellMagicMissile;
+import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Spellpedia;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Spellbook {
@@ -39,9 +41,16 @@ public class Spellbook {
         String format = "%-20s %-6s %-5s %-5s";
         box.addHeader(String.format("  " + format, "Name", "Type", "Range", "Cost"));
         for (Spell spell : getSpells()) {
+            Map<Element, Integer> elementCost = spell.getElementCost(Game.getPlayerEntity());
+            StringBuilder elementString = new StringBuilder();
+            for (Element element : elementCost.keySet()) {
+                for (int i=0; i<elementCost.get(element); i++) {
+                    elementString.append(element.symbol);
+                }
+            }
             box.addItem(String.format(format,
                     spell.getName(), spell.getTypeDescription(),
-                    spell.getRange(Game.getPlayerEntity()), spell.getCost(Game.getPlayerEntity()))
+                    spell.getRange(Game.getPlayerEntity()), spell.getCost(Game.getPlayerEntity()) + " " + elementString)
                 , spell);
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleSpellbookToCastResponse);

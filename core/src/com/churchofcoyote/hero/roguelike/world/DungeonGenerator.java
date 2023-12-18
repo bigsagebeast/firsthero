@@ -15,7 +15,7 @@ import com.churchofcoyote.hero.util.Point;
 
 public class DungeonGenerator {
 
-	public static final int NUM_MONSTERS = 10;
+	public static final int NUM_MONSTERS = 15;
 	public static final int NUM_ITEMS = 10;
 	public Map<String, Level> levels = new HashMap<String, Level>();
 	

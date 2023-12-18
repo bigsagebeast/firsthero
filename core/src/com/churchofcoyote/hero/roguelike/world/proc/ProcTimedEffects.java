@@ -12,9 +12,9 @@ public class ProcTimedEffects extends Proc {
         if (entity.getMover() != null) {
             if (++healingTimer >= entity.healingDelay) {
                 entity.heal(entity.healingRate);
+                entity.spellPoints = Math.min(entity.maxSpellPoints, entity.spellPoints+1);
                 healingTimer = 0;
             }
         }
-        entity.spellPoints = Math.min(entity.maxSpellPoints, entity.spellPoints+1);
     }
 }

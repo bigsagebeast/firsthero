@@ -17,10 +17,10 @@ public class Player {
 		maxElementCharges.put(Element.LIGHTNING, 8);
 		maxElementCharges.put(Element.FIRE, 8);
 		maxElementCharges.put(Element.PLANT, 8);
-		currentElementCharges.put(Element.WATER, 0);
-		currentElementCharges.put(Element.LIGHTNING, 0);
-		currentElementCharges.put(Element.FIRE, 0);
-		currentElementCharges.put(Element.PLANT, 0);
+		currentElementCharges.put(Element.WATER, 8);
+		currentElementCharges.put(Element.LIGHTNING, 8);
+		currentElementCharges.put(Element.FIRE, 8);
+		currentElementCharges.put(Element.PLANT, 8);
 	}
 
 	public boolean areElementsFull() {

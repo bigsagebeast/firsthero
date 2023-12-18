@@ -1,8 +1,6 @@
 package com.churchofcoyote.hero.roguelike.world;
 
-import com.churchofcoyote.hero.roguelike.spells.Spell;
-import com.churchofcoyote.hero.roguelike.spells.SpellFirebeam;
-import com.churchofcoyote.hero.roguelike.spells.SpellMagicMissile;
+import com.churchofcoyote.hero.roguelike.spells.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,6 +11,8 @@ public class Spellpedia {
     static {
         map.put("magic missile", new SpellMagicMissile());
         map.put("firebeam", new SpellFirebeam());
+        map.put("water blast", new SpellWaterBlast());
+        map.put("root spear", new SpellRootSpear());
     }
 
     public static Spell get(String key) {

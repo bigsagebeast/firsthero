@@ -9,16 +9,14 @@ import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 import com.churchofcoyote.hero.util.Raycasting;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.churchofcoyote.hero.roguelike.game.Game.announce;
 
 public abstract class Spell {
     public enum TargetType {
-        RAY("Ray"),
-        LINE("Line"),
+        BOLT("Bolt"),
+        BEAM("Beam"),
         MELEE("Melee"),
         BALL("Ball"),
         OTHER("OTHER");
@@ -41,12 +39,19 @@ public abstract class Spell {
 
     public abstract int getCost(Entity caster);
 
-    public Map<Element, Integer> getElementCost(Entity caster) { return null; }
+    public Map<Element, Integer> getElementCost(Entity caster) { return Collections.emptyMap(); }
 
     public void playerStartSpell() {
         if (Game.getPlayerEntity().spellPoints < getCost(Game.getPlayerEntity())) {
             Game.announce("You don't have enough SP for that spell.");
             return;
+        }
+        Map<Element, Integer> elementCost = getElementCost(Game.getPlayerEntity());
+        for (Element element : elementCost.keySet()) {
+            if (Game.getPlayer().currentElementCharges.get(element) < elementCost.get(element)) {
+                Game.announce("You don't have enough " + element.name + " charges for that.");
+                return;
+            }
         }
         /*
         GameLoop.directionModule.begin("Select a direction to cast " + getName() + ", or space to cancel.",
@@ -62,21 +67,25 @@ public abstract class Spell {
             return;
         }
         Game.getPlayerEntity().spellPoints -= getCost(Game.getPlayerEntity());
+        Map<Element, Integer> elementCost = getElementCost(Game.getPlayerEntity());
+        for (Element element : elementCost.keySet()) {
+            Game.getPlayer().changeCharges(element, -elementCost.get(element));
+        }
         castDirectionally(Game.getPlayerEntity(), dir);
     }
 
     public void castDirectionally(Entity caster, Compass dir) {
         caster.getMover().setDelay(caster, Game.ONE_TURN);
-        List<Point> ray = Raycasting.createOrthogonalRay(Game.getLevel(), caster.pos, dir);
+        List<Point> ray = Raycasting.createOrthogonalRay(Game.getLevel(), caster.pos, Math.round(getRange(caster)), dir);
         if (ray.size() <= 1) {
             announce("Nothing happens.");
             return;
         }
-        Point endpoint = ray.get(ray.size()-2);
+        Point endpoint = ray.get(ray.size() - 2);
         List<Entity> targets;
-        if (getTargetType() == TargetType.LINE) {
+        if (getTargetType() == TargetType.BEAM) {
             targets = Raycasting.findAllMoversAlongRay(Game.getLevel(), ray);
-        } else if (getTargetType() == TargetType.RAY) {
+        } else if (getTargetType() == TargetType.BOLT) {
             targets = Raycasting.findFirstMoversAlongRay(Game.getLevel(), ray);
             if (!targets.isEmpty()) {
                 endpoint = targets.get(0).pos;
@@ -89,12 +98,16 @@ public abstract class Spell {
         }
         GameLoop.targetingModule.animate(ray.get(0), endpoint, getAnimationColor(), isAnimationStars());
 
+        affectTargets(caster, targets, dir);
+    }
+
+    public void affectTargets(Entity caster, Collection<Entity> targets, Compass dir) {
         for (Entity target : targets) {
-            affectTarget(caster, target);
+            affectTarget(caster, target, dir);
         }
     }
 
-    public abstract void affectTarget(Entity caster, Entity target);
+    public abstract void affectTarget(Entity caster, Entity target, Compass dir);
 
     public Color getAnimationColor() {
         return Color.WHITE;

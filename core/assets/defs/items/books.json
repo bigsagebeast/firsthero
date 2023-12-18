@@ -20,6 +20,26 @@
         "white"
       ]
     },
+    "book.unid.orange": {
+      "unidGroup": "book1",
+      "unidentifiedName": "orange spellbook",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "orange",
+        "white"
+      ]
+    },
+    "book.unid.sparkling": {
+      "unidGroup": "book1",
+      "unidentifiedName": "sparkling spellbook",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "yellow",
+        "orange"
+      ]
+    },
     "book.magicmissile": {
       "idenGroup": "book1",
       "name": "book of Magic Missile",
@@ -43,6 +63,32 @@
       "procs": {
         "item.book.ProcBookSpell": {
           "spell": "firebeam"
+        }
+      }
+    },
+    "book.waterblast": {
+      "idenGroup": "book1",
+      "name": "book of Water Blast",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "water blast"
+        }
+      }
+    },
+    "book.rootspear": {
+      "idenGroup": "book1",
+      "name": "book of Root Spear",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "root spear"
         }
       }
     }

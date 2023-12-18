@@ -443,10 +443,10 @@ public class Brogue {
     }
 
     private BrogueGrid makeRiver() {
-        int gridWidth = 24;
-        int riverLeftShore = 10;
-        int riverLeftShoreMin = 7;
-        int riverLeftShoreMax = 13;
+        int gridWidth = 26;
+        int riverLeftShore = 11;
+        int riverLeftShoreMin = 8;
+        int riverLeftShoreMax = 14;
         int riverWidth = 5;
         int riverWidthMin = 4;
         int riverWidthMax = 6;

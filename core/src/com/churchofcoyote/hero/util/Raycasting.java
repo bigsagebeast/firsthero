@@ -9,10 +9,10 @@ import java.util.List;
 
 public class Raycasting {
     // Includes the terminating cell (wall, door, etc)
-    public static List<Point> createOrthogonalRay(Level level, Point origin, Compass direction) {
+    public static List<Point> createOrthogonalRay(Level level, Point origin, int range, Compass direction) {
         List<Point> ray = new ArrayList<>();
         Point p = direction.from(origin);
-        while (level.withinBounds(p)) {
+        while (level.withinBounds(p) && ray.size() < range) {
             ray.add(p);
             if (level.obstructiveBesidesMovers(p)) {
                 return ray;
