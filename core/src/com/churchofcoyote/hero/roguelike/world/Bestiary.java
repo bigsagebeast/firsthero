@@ -74,6 +74,7 @@ public class Bestiary {
 		goblinArcher.naturalWeaponToHit = -2;
 		goblinArcher.naturalRangedWeaponDamage = 0;
 		goblinArcher.naturalRangedWeaponToHit = -1;
+		goblinArcher.naturalRangedWeaponRange = 6;
 		goblinArcher.naturalArmorClass = 0;
 		goblinArcher.setup.add(e -> {
 			e.addProc(new ProcShooter("weapon.ammo.arrow"));
@@ -96,6 +97,7 @@ public class Bestiary {
 		goblinSlinger.naturalWeaponToHit = -2;
 		goblinSlinger.naturalRangedWeaponDamage = 0;
 		goblinSlinger.naturalRangedWeaponToHit = -1;
+		goblinSlinger.naturalRangedWeaponRange = 4;
 		goblinSlinger.naturalArmorClass = 0;
 		goblinSlinger.setup.add(e -> {
 			e.addProc(new ProcShooter("weapon.ammo.rock"));
@@ -243,6 +245,9 @@ public class Bestiary {
 		e.naturalWeaponToHit = p.naturalWeaponToHit;
 		e.naturalArmorClass = p.naturalArmorClass;
 		e.naturalArmorThickness = p.naturalArmorThickness;
+		e.naturalRangedWeaponDamage = p.naturalRangedWeaponDamage;
+		e.naturalRangedWeaponToHit = p.naturalRangedWeaponToHit;
+		e.naturalRangedWeaponRange = p.naturalRangedWeaponRange;
 
 		if (p.moveCost == 0) throw new RuntimeException("Bad move cost");
 		for (Consumer<Entity> consumer : p.setup) {

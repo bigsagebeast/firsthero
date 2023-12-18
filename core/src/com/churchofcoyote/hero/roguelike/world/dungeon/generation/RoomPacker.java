@@ -132,7 +132,7 @@ public class RoomPacker {
                 Point doorLocation = packRoom.doorLocation.get(neighbor);
                 if (packRoom.neighbors.get(neighbor) && doorLocation != null) {
                     level.cell(doorLocation).terrain = doorway;
-                    Entity door = Game.itempedia.create("door");
+                    Entity door = Game.itempedia.create("feature.door");
                     level.addEntityWithStacking(door, doorLocation);
                     if (Game.random.nextInt(4) != 0) {
                         ((ProcDoor)door.getProcByType(ProcDoor.class)).close(door);

@@ -179,7 +179,8 @@ public class GlyphEngine implements GameLogic {
                                 grid.addBackground(itemTile, x, y);
                             }
                         }
-                        else if (itemTiles.size() > 0 && level.cell(x, y).visible()) {
+                        // TODO: Figure out a better solution for displaying items that aren't presently visible?
+                        else if (itemTiles.size() > 0/* && level.cell(x, y).visible()*/) {
                             grid.put(itemTiles.get(0), x, y);
                             for (int i=1; i<itemTiles.size(); i++) {
                                 grid.addBackground(itemTiles.get(i), x, y);

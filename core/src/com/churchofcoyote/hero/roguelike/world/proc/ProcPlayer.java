@@ -1,6 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world.proc;
 
-import com.churchofcoyote.hero.roguelike.game.EntityProc;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
@@ -15,7 +14,7 @@ public class ProcPlayer extends ProcMover {
 
     @Override
     public void turnPassed(Entity entity) {
-        // TODO move this into "takes place every player action"
+        // TODO move this into "takes place every player action" instead of every 1000, in case the player is fast
         Terrain water = Terrain.get("water");
         if (!Game.getPlayer().areElementsFull()) {
             for (Point p : Game.getLevel().surroundingAndCurrentTiles(entity.pos)) {
@@ -28,7 +27,7 @@ public class ProcPlayer extends ProcMover {
                             if (missing > 0) {
                                 int retrieved = proc.drawElement(e, Game.getPlayerEntity(), missing);
                                 if (retrieved > 0) {
-                                    Game.announce("You draw " + retrieved + " " + element.name + " charges from " + e.getVisibleNameThe());
+                                    Game.announce("You draw " + retrieved + " " + element.name + " charge" + (retrieved == 1 ? "" : "s") + " from " + e.getVisibleNameThe() + ".");
                                     Game.getPlayer().changeCharges(element, retrieved);
                                 }
                             }
@@ -40,7 +39,7 @@ public class ProcPlayer extends ProcMover {
                 if (Game.getLevel().cell(p).terrain == water) {
                     int missing = Game.getPlayer().elementMissing(Element.WATER);
                     if (missing > 0) {
-                        Game.announce("You draw " + missing + " water charges from the water!");
+                        Game.announce("You draw " + missing + " water charge" + (missing == 1 ? "" : "s") + " from the water!");
                         Game.getPlayer().changeCharges(Element.WATER, missing);
                     }
                 }

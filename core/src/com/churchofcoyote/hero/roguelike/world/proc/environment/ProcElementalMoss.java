@@ -1,5 +1,6 @@
 package com.churchofcoyote.hero.roguelike.world.proc.environment;
 
+import com.churchofcoyote.hero.glyphtile.EntityGlyph;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.world.Element;
@@ -51,5 +52,6 @@ public class ProcElementalMoss extends Proc {
         } else {
             entity.palette = paletteGrown;
         }
+        EntityGlyph.updateEntity(entity);
     }
 }

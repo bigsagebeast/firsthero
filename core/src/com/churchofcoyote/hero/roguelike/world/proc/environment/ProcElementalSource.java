@@ -6,10 +6,15 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcElementalSource extends Proc {
     public Element element = null;
+    public String elementSymbol = null;
 
     @Override
     public Element providesElement(Entity entity) {
-        return element;
+        if (element != null) {
+            return element;
+        } else {
+            return Element.lookup(elementSymbol);
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.churchofcoyote.hero.roguelike.spells;
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
@@ -10,6 +11,7 @@ import com.churchofcoyote.hero.util.Raycasting;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static com.churchofcoyote.hero.roguelike.game.Game.announce;
 
@@ -38,6 +40,8 @@ public abstract class Spell {
     public abstract float getRange(Entity caster);
 
     public abstract int getCost(Entity caster);
+
+    public Map<Element, Integer> getElementCost(Entity caster) { return null; }
 
     public void playerStartSpell() {
         if (Game.getPlayerEntity().spellPoints < getCost(Game.getPlayerEntity())) {

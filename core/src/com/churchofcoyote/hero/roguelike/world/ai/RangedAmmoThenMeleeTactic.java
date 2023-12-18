@@ -26,7 +26,12 @@ public class RangedAmmoThenMeleeTactic extends Tactic {
 		if (ammo > 0 && pm.targetEntityId != EntityTracker.NONE) {
 			target = EntityTracker.get(pm.targetEntityId);
 		}
-		if (target != null && e.canSee(target)) {
+		// TODO range for equipped weapons, too
+		float distance = -1;
+		if (target != null) {
+			distance = e.pos.distance(target.pos);
+		}
+		if (target != null && e.canSee(target) && distance < e.naturalRangedWeaponRange) {
 			// maybe stand there instead of shooting
 			if (Math.random() < 0.5) {
 				pm.setDelay(e, e.getMoveCost());

@@ -1,6 +1,6 @@
 {
   "items": {
-    "door": {
+    "feature.door": {
       "name": "door",
       "glyphName": "terrain.door_closed",
       "isFeature": true,
@@ -9,13 +9,12 @@
         "tan",
         "brown"
       ],
-      "sortOrder": -1,
       "procs": {
         "environment.ProcDoor": {}
       },
       "hideWalkOver": true
     },
-    "moss": {
+    "feature.moss": {
       "name": "patch of moss",
       "glyphName": "feature.moss",
       "isFeature": true,
@@ -23,9 +22,11 @@
         "darkgreen",
         "lightgreen"
       ],
-      "sortOrder": -1
+      "procs": {
+        "environment.ProcElementalMoss": {}
+      }
     },
-    "forge": {
+    "feature.forge": {
       "name": "forge",
       "glyphName": "feature.forge",
       "isFeature": true,
@@ -34,7 +35,26 @@
         "red",
         "orange"
       ],
-      "sortOrder": -1
+      "procs": {
+        "environment.ProcElementalSource": {
+          "elementSymbol": "F"
+        }
+      }
+    },
+    "feature.campfire": {
+      "name": "campfire",
+      "glyphName": "feature.campfire",
+      "isFeature": true,
+      "palette": [
+        "tan",
+        "orange",
+        "yellow"
+      ],
+      "procs": {
+        "environment.ProcElementalSource": {
+          "elementSymbol": "F"
+        }
+      }
     }
   }
 }

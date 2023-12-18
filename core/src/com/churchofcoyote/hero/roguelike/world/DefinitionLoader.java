@@ -124,6 +124,10 @@ public class DefinitionLoader {
 
                 }
             }
+            // special handling
+            if (itemType.isFeature && itemType.sortOrder == 0) {
+                itemType.sortOrder = -1;
+            }
             Itempedia.map.put(itemName, itemType);
         }
     }

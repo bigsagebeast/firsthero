@@ -6,10 +6,12 @@ import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SpecialSpawner {
     public boolean isMover; // false = item
     public String key; // if omitted, find a random one by tags and level
+    public String rule; // 'floor' or 'wall' for spawning location
     public ArrayList<String> tags = new ArrayList<>(); // all tags must be present
     public int percentChance = 100; // pct chance to spawn at all
     public int levelModifier = 0; // modify dungeon level by this when attempting to spawn
@@ -21,29 +23,34 @@ public class SpecialSpawner {
             quantityMax = quantity;
         }
         int trueQuantity = quantity + Game.random.nextInt(quantityMax - quantity + 1);
+        List<Point> validLocations;
+        if (rule == null) {
+            validLocations = level.findEmptyTilesInRoom(roomId);
+        } else if (rule.equals("wall")) {
+            validLocations = level.getEmptyRoomMapAlongWall(roomId);
+        } else if (rule.equals("floor")) {
+            validLocations = level.getEmptyRoomMapOpenFloor(roomId);
+        } else {
+            throw new RuntimeException("Unknown spawning rule: " + rule);
+        }
+        if (trueQuantity > validLocations.size()) {
+            System.out.println("ERR: Couldn't find an empty tile for special spawning in room");
+            trueQuantity = validLocations.size();
+        }
         for (int i=0; i < trueQuantity; i++) {
             if (percentChance < Game.random.nextInt(100)) {
                 continue;
             }
-            Point p = level.findEmptyTileInRoom(roomId);
-            if (p == null) {
-                System.out.println("ERR: Couldn't find an empty tile for special spawning in room");
-                continue;
-            }
+            Point p = validLocations.remove(validLocations.size() - 1);
             Entity entity = null;
+            if (key == null) {
+                throw new RuntimeException("No entity key to spawn during special spawning");
+            }
             if (isMover) {
-                if (key != null) {
-                    entity = Game.bestiary.create(key);
-                } else {
-
-                }
+                entity = Game.bestiary.create(key);
             } else {
                 // item
-                if (key != null) {
-
-                } else {
-
-                }
+                entity = Game.itempedia.create(key);
             }
             if (entity == null) {
                 throw new RuntimeException("No entity to spawn during special spawning");

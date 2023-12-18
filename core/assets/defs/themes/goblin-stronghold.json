@@ -72,6 +72,11 @@
               "type": "mover",
               "key": "goblin.butcher",
               "quantity": 1
+            },
+            {
+              "rule": "floor",
+              "type": "item",
+              "key": "feature.campfire"
             }
           ]
         },

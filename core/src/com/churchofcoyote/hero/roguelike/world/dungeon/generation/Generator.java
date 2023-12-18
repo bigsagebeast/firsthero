@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.LevelTransition;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
@@ -69,6 +70,8 @@ public class Generator {
             }
         }
 
+        addFancyTiles();
+
         List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_ROOM).collect(Collectors.toList());
         if (genericRooms.size() < 2) {
             throw new RuntimeException("Not enough rooms for an upstair and a downstair!");
@@ -82,7 +85,61 @@ public class Generator {
             }
         }
 
+        // put moss in caverns if it can, anywhere if it can't
+        if (!retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_ROOM)) {
+            retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_ANY);
+        }
+        retryAddSpecialFeature(RoomType.FORGE, RoomType.GENERIC_ROOM);
+
         return level;
+    }
+
+    // this is mostly to get around addSpecialFeature picking a too-small room
+    public boolean retryAddSpecialFeature(RoomType roomType, RoomType replacing) {
+        int retries = 100;
+        for (int i=0; i<retries; i++) {
+            if (addSpecialFeature(roomType, replacing)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // returning 'false' should mean that no changes were committed
+    public boolean addSpecialFeature(RoomType roomType, RoomType replacing) {
+        List<Room> candidates = null;
+        if (replacing == RoomType.GENERIC_ANY) {
+            candidates = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_ROOM || r.roomType == RoomType.GENERIC_CAVERN).collect(Collectors.toList());
+        } else {
+            candidates = level.rooms.stream().filter(r -> r.roomType == replacing).collect(Collectors.toList());
+        }
+        if (candidates == null || candidates.isEmpty()) {
+            return false;
+        }
+        Collections.shuffle(candidates);
+        int roomId = candidates.get(0).roomId;
+
+        if (roomType == RoomType.FORGE) {
+            List<Point> openFloorTiles = level.getEmptyRoomMapOpenFloor(roomId);
+            if (openFloorTiles.isEmpty()) {
+                return false;
+            }
+            Point forgePoint = openFloorTiles.get(0);
+            Entity forge = Game.itempedia.create("feature.forge");
+            level.addEntityWithStacking(forge, forgePoint);
+            level.rooms.get(roomId).roomType = RoomType.FORGE;
+        } else if (roomType == RoomType.MOSSY) {
+            List<Point> wallFloorTiles = level.getEmptyRoomMapAlongWall(roomId);
+            Collections.shuffle(wallFloorTiles);
+            int mossyTiles = 4 + Game.random.nextInt(4);
+            for (int i = 0; i < mossyTiles && i < wallFloorTiles.size(); i++) {
+                level.addEntityWithStacking(Game.itempedia.create("feature.moss"), wallFloorTiles.get(i));
+            }
+            level.rooms.get(roomId).roomType = RoomType.MOSSY;
+        } else {
+            throw new RuntimeException("No handling rules for roomtype " + roomType.roomName == null ? "unnamed" : roomType.roomName);
+        }
+        return true;
     }
 
     public void addUpstairTo(String levelKey) {
@@ -130,5 +187,15 @@ public class Generator {
             throw new RuntimeException("Failed to find an empty point in room " + room);
         }
         return points.get(Game.random.nextInt(points.size()));
+    }
+
+    private void addFancyTiles() {
+        for (Room room : level.rooms) {
+            if (room.roomType == RoomType.GENERIC_CAVERN) {
+                for (Point p : level.getEmptyRoomMapAlongWall(room.roomId)) {
+                    level.cell(p).terrain = Game.random.nextInt(2) == 0 ? Terrain.get("dirt1") : Terrain.get("dirt2");
+                }
+            }
+        }
     }
 }

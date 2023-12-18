@@ -3,7 +3,11 @@ package com.churchofcoyote.hero.roguelike.spells;
 import com.badlogic.gdx.graphics.Color;
 import com.churchofcoyote.hero.roguelike.game.CombatLogic;
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpellFirebeam extends Spell {
     @Override
@@ -24,6 +28,13 @@ public class SpellFirebeam extends Spell {
     @Override
     public int getCost(Entity caster) {
         return 5;
+    }
+
+    @Override
+    public Map<Element, Integer> getElementCost(Entity caster) {
+        HashMap<Element, Integer> cost = new HashMap<>();
+        cost.put(Element.FIRE, 1);
+        return cost;
     }
 
     @Override

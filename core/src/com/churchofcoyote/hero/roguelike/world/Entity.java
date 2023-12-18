@@ -70,6 +70,7 @@ public class Entity {
     public int naturalWeaponToHit;
     public int naturalRangedWeaponDamage;
     public int naturalRangedWeaponToHit;
+    public int naturalRangedWeaponRange;
     public int naturalArmorClass;
     public int naturalArmorThickness;
     public Statblock statblock = new Statblock(20);

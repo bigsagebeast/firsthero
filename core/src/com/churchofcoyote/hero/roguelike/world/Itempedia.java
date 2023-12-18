@@ -15,15 +15,6 @@ public class Itempedia {
     public static Map<String, ItemType> map = new HashMap<String, ItemType>();
 
     public Itempedia() {
-        ItemType door = new ItemType();
-        door.keyName = "door";
-        door.name = "door";
-        door.glyphName = "terrain.door_closed";
-        door.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TAN, Palette.COLOR_BROWN);
-        door.setup.add((e) -> {e.addProc(new ProcDoor());});
-        //map.put(door.keyName, door);
-
-        //map.put(pitchfork.keyName, pitchfork);
 
         ItemType shortsword = new ItemType();
         shortsword.keyName = "short sword";

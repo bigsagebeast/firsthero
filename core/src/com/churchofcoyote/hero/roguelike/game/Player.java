@@ -14,7 +14,13 @@ public class Player {
 
 	public Player() {
 		maxElementCharges.put(Element.WATER, 8);
+		maxElementCharges.put(Element.LIGHTNING, 8);
+		maxElementCharges.put(Element.FIRE, 8);
+		maxElementCharges.put(Element.PLANT, 8);
 		currentElementCharges.put(Element.WATER, 0);
+		currentElementCharges.put(Element.LIGHTNING, 0);
+		currentElementCharges.put(Element.FIRE, 0);
+		currentElementCharges.put(Element.PLANT, 0);
 	}
 
 	public boolean areElementsFull() {

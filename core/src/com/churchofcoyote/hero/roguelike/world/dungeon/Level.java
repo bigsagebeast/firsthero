@@ -325,6 +325,25 @@ public class Level {
 		return null;
 	}
 
+	// no movers on the tile
+	public List<Point> findEmptyTilesInRoom(int roomId) {
+		List<Point> points = roomMap.get(roomId);
+		if (points == null || points.isEmpty()) {
+			return null;
+		}
+
+		ArrayList<Point> found = new ArrayList<>();
+		Collections.shuffle(points);
+		for (Point p : points) {
+			if (cell(p).terrain.isPassable()) { // should always be true...
+				if (getMoversOnTile(p).isEmpty()) {
+					found.add(p);
+				}
+			}
+		}
+		return found;
+	}
+
 	public Point findSpawnTile(int distance) {
 		int playerPosX = Game.getPlayerEntity().pos.x;
 		int playerPosY = Game.getPlayerEntity().pos.y;
@@ -372,5 +391,42 @@ public class Level {
 		return null;
 	}
 
+	public List<Point> getEmptyRoomMapOpenFloor(int roomId) {
+		ArrayList<Point> foundPoints = new ArrayList<>();
+		for (Point p : findEmptyTilesInRoom(roomId)) {
+			boolean isValid = true;
+			for (Point surrounding : surroundingTiles(p)) {
+				if (!cell(surrounding).terrain.isPassable()) {
+					isValid = false;
+				}
+			}
+			if (isValid) {
+				foundPoints.add(p);
+			}
+		}
+		return foundPoints;
+	}
+
+	public List<Point> getEmptyRoomMapAlongWall(int roomId) {
+		// TODO find a better way of hating doorways
+		Terrain doorway = Terrain.get("doorway");
+		ArrayList<Point> foundPoints = new ArrayList<>();
+		for (Point p : findEmptyTilesInRoom(roomId)) {
+			boolean isValid = false;
+			for (Point surrounding : surroundingTiles(p)) {
+				if (cell(surrounding).terrain == doorway) {
+					isValid = false;
+					break;
+				}
+				if (!cell(surrounding).terrain.isPassable()) {
+					isValid = true;
+				}
+			}
+			if (isValid) {
+				foundPoints.add(p);
+			}
+		}
+		return foundPoints;
+	}
 
 }

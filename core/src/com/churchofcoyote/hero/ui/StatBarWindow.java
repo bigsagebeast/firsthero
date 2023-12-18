@@ -33,6 +33,9 @@ public class StatBarWindow extends UIWindow {
 	TextBlock tbStatDt;
 
 	TextBlock tbElementWater;
+	TextBlock tbElementFire;
+	TextBlock tbElementLightning;
+	TextBlock tbElementPlant;
 
 	TextBlock tbNumHp;
 	TextBlock tbNumMaxHp;
@@ -63,6 +66,9 @@ public class StatBarWindow extends UIWindow {
 		tbStatDr = new TextBlock("20", 5, 0, Color.WHITE);
 		tbStatDt = new TextBlock("20", 13, 0, Color.WHITE);
 		tbElementWater = new TextBlock("W 8/8", 0, 0, Color.CYAN);
+		tbElementFire = new TextBlock("F 8/8", 8, 0, Color.RED);
+		tbElementLightning = new TextBlock("L 8/8", 16, 0, Color.YELLOW);
+		tbElementPlant = new TextBlock("P 8/8", 24, 0, Color.GREEN);
 
 		statRows.add(new TextBlock("Character Name", 0, 0, Color.WHITE));
 		statRows.add(new TextBlock("", 0, 1, Color.WHITE));
@@ -101,6 +107,9 @@ public class StatBarWindow extends UIWindow {
 
 		statRows.add(new TextBlock("", 0, 8));
 		statRows.get(8).addChild(tbElementWater);
+		statRows.get(8).addChild(tbElementFire);
+		statRows.get(8).addChild(tbElementLightning);
+		statRows.get(8).addChild(tbElementPlant);
 
 		for (TextBlock statRow : statRows) {
 			parent.addChild(statRow);
@@ -156,6 +165,9 @@ public class StatBarWindow extends UIWindow {
 
 		if (player.maxElementCharges.get(Element.WATER) != null) {
 			tbElementWater.text = "W: " + player.currentElementCharges.get(Element.WATER) + "/" + player.maxElementCharges.get(Element.WATER);
+			tbElementFire.text = "F: " + player.currentElementCharges.get(Element.FIRE) + "/" + player.maxElementCharges.get(Element.FIRE);
+			tbElementLightning.text = "L: " + player.currentElementCharges.get(Element.LIGHTNING) + "/" + player.maxElementCharges.get(Element.LIGHTNING);
+			tbElementPlant.text = "P: " + player.currentElementCharges.get(Element.PLANT) + "/" + player.maxElementCharges.get(Element.PLANT);
 		}
 
 		WindowEngine.setDirty(UIManager.NAME_STATBOX);

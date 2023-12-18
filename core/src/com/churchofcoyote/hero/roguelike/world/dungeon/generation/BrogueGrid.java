@@ -82,6 +82,7 @@ public class BrogueGrid {
     public BrogueGrid grow(int margin) {
         BrogueGrid newGrid = new BrogueGrid(width+(margin*2), height+(margin*2));
         newGrid.roomCenter = new Point(roomCenter.x+margin, roomCenter.y+margin);
+        newGrid.room = room;
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
                 newGrid.cell[i+margin][j+margin] = cell[i][j];
@@ -163,6 +164,7 @@ public class BrogueGrid {
                 newGrid.cell[i-leftMargin][j-topMargin] = cell[i][j];
             }
         }
+        newGrid.room = room;
         newGrid.roomCenter = new Point(roomCenter.x - leftMargin, roomCenter.y - topMargin);
         return newGrid;
     }

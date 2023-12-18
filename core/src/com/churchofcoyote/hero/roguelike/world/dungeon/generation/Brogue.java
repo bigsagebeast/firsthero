@@ -153,7 +153,7 @@ public class Brogue {
                         // TODO brogue should only add doors to its own doorways!
                         continue;
                     }
-                    Entity door = Game.itempedia.create("door");
+                    Entity door = Game.itempedia.create("feature.door");
                     level.addEntityWithStacking(door, new Point(i, j));
                     if (Game.random.nextInt(2) == 0) {
                         ((ProcDoor)door.getProcByType(ProcDoor.class)).close(door);
@@ -281,6 +281,7 @@ public class Brogue {
             throw new RuntimeException("Failed to generate cavern");
         }
         BrogueGrid grid = new BrogueGrid(width+2, height+2);
+        grid.room.roomType = RoomType.GENERIC_CAVERN;
         int roomId = level.rooms.size();
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
