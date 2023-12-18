@@ -274,6 +274,7 @@ public class Game {
 		List<Entity> itemsHere = level.getItemsOnTile(player.getEntity().pos);
 		itemsHere = itemsHere.stream().filter(i -> !i.getItemType().isFeature).collect(Collectors.toList());
 		if (itemsHere.isEmpty()) {
+			announce("There's nothing here to pick up.");
 			return;
 		}
 		if (itemsHere.size() == 1) {

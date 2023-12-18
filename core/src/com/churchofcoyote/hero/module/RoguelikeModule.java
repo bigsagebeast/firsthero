@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
+import com.churchofcoyote.hero.dialogue.DialogueBox;
 import com.churchofcoyote.hero.ui.*;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.MainWindow;
@@ -244,6 +245,8 @@ public class RoguelikeModule extends Module {
 				case Keys.M:
 					game.cmdMagic();
 					break;
+				case Keys.ENTER:
+					popupCommands();
 			}
 		}
 		if (shift) {
@@ -267,6 +270,82 @@ public class RoguelikeModule extends Module {
 		}
 		game.turn();
 		return true;
+	}
+
+	public void popupCommands() {
+		DialogueBox box = new DialogueBox()
+				.withMargins(60, 60)
+				.withTitle("Commands");
+		box.addItem("Keypad        Move or attack", null);
+		box.addItem("Keypad 5      Wait", "5");
+		box.addItem("c             Chat to an NPC", "c");
+		box.addItem("d             Drop an item", "d");
+		box.addItem("i             Check inventory", "i");
+		box.addItem("l             Look around", "l");
+		box.addItem("m             Cast a magic spell", "m");
+		box.addItem("o             Open or close a door", "o");
+		box.addItem("q             Quaff a potion", "q");
+		box.addItem("r             Read a scroll or book", "r");
+		box.addItem("t             Target ranged attack", "t");
+		box.addItem("w             Wear or wield", "w");
+		box.addItem(",             Pick up an item", ",");
+		box.addItem("<             Go up stairs", "<");
+		box.addItem(">             Go down stairs", ">");
+		box.autoHeight();
+		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handlePopupCommands);
+	}
+
+	public void handlePopupCommands(Object o) {
+		if (o == null) {
+			return;
+		}
+		String key = (String)o;
+		switch (key) {
+			case "5":
+				game.cmdWait();
+				break;
+			case "c":
+				game.cmdChat();
+				break;
+			case "d":
+				game.cmdDrop();
+				break;
+			case "i":
+				game.cmdInventory();
+				break;
+			case "l":
+				game.cmdLook();
+				break;
+			case "m":
+				game.cmdMagic();
+				break;
+			case "o":
+				game.cmdOpen();
+				break;
+			case "q":
+				game.cmdQuaff();
+				break;
+			case "r":
+				game.cmdRead();
+				break;
+			case "t":
+				game.cmdTarget();
+				break;
+			case "w":
+				game.cmdWield();
+				break;
+			case ",":
+				game.cmdPickUp();
+				break;
+			case "<":
+				game.cmdStairsUp();
+				break;
+			case ">":
+				game.cmdStairsDown();
+				break;
+			default:
+				break;
+		}
 	}
 
 	@Override
