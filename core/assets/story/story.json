@@ -23,6 +23,24 @@
           "terminal": true
         }
       ]
+    },
+    {
+      "key": "aurex.serifex.intro.landing",
+      "text": "You're a strange thing.  We haven't seen a new God appear since before the war.  Or are you one of the old ones?  In any case, my name is Serifex, and I bring fresh water to the Bodnam.",
+      "links": [
+        {
+          "text": "Serifex?  Fresh water?",
+          "nextPage": "aurex.serifex.intro.whoareyou"
+        },
+        {
+          "text": "The war?",
+          "nextPage": "aurex.serifex.intro.thewar"
+        },
+        {
+          "text": "Yes, I'm one of the old Gods... I think.",
+          "nextPage": "aurex.serifex.intro.iamhero"
+        }
+      ]
     }
   ]
 }

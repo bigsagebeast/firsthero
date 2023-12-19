@@ -59,22 +59,22 @@ public class Game {
 		Entity pc = bestiary.create("player");
 		player.setEntityId(pc.entityId);
 		Entity pitchfork = itempedia.create("pitchfork");
-		/*
-		Entity shortsword = itempedia.create("short sword");
-		Entity longsword = itempedia.create("longsword");
-		Entity dagger = itempedia.create("dagger");
-		Entity buckler = itempedia.create("shield.buckler");
-		player.getEntity().receiveItem(shortsword);
-		player.getEntity().receiveItem(longsword);
-		player.getEntity().receiveItem(buckler);
-		player.getEntity().receiveItem(dagger);
-		 */
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
 		changeLevel(dungeon.getLevel("start"), new Point(31, 46));
 		level.addEntityWithStacking(pitchfork, new Point(35, 43));
 		level = dungeon.getLevel("start");
+	}
+
+	public void startAurex() {
+		Entity pc = bestiary.create("player");
+		player.setEntityId(pc.entityId);
+		dungeon.generateFromFile("aurex", "aurex.fhm");
+		changeLevel(dungeon.getLevel("aurex"), new Point(107, 30));
+		if (!GameLoop.roguelikeModule.isRunning()) {
+			GameLoop.roguelikeModule.start();
+		}
 	}
 
 
@@ -491,10 +491,8 @@ public class Game {
 		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {
 			ProcMover targetMover = targetCreature.getMover();
-			if (targetMover.isPeacefulToPlayer()) {
-				announce("Moved into a " +
-						(targetMover.isPeacefulToPlayer() ? "peaceful" : "hostile") +
-						" creature (" + targetCreature.getVisibleNameWithQuantity() + ").");
+			if (targetMover.isPeacefulToPlayer(targetCreature)) {
+				announce("You bump into " + targetCreature.getVisibleNameWithQuantity() + ".");
 			} else {
 				Entity weaponPrimary = player.getEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
 				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
@@ -577,9 +575,9 @@ public class Game {
 
 		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {
-			if (targetCreature.getMover().isPeacefulToPlayer()) {
+			if (targetCreature.getMover().isPeacefulToPlayer(targetCreature)) {
 				announce("Was moved into by a " +
-						(targetCreature.getMover().isPeacefulToPlayer() ? "peaceful" : "hostile") +
+						(targetCreature.getMover().isPeacefulToPlayer(targetCreature) ? "peaceful" : "hostile") +
 						" creature (" + actor.getVisibleNameWithQuantity() + ").");
 			} else {
 				Entity weaponPrimary = actor.body.getEquipment(BodyPart.PRIMARY_HAND);

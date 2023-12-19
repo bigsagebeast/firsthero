@@ -1,0 +1,24 @@
+{
+  "movers": {
+    "god.serifex": {
+      "name": "Serifex, God of Fresh Water",
+      "peaceful": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.atsign",
+      "palette": [
+        "white"
+      ],
+      "chatPage": "aurex.serifex.intro.landing"
+    },
+    "god.loruch": {
+      "name": "Loruch, God of Trees",
+      "peaceful": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.atsign",
+      "palette": [
+        "lightgreen"
+      ],
+      "chatPage": "aurex.loruch.intro.landing"
+    }
+  }
+}

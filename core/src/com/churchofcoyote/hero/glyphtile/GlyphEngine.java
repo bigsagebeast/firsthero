@@ -15,6 +15,7 @@ import com.churchofcoyote.hero.ui.UIManager;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GlyphEngine implements GameLogic {
@@ -58,6 +59,7 @@ public class GlyphEngine implements GameLogic {
         loadGlyphFile("tiles/armor.gly");
         loadGlyphFile("tiles/misc.gly");
         loadGlyphFile("tiles/feature.gly");
+        loadGlyphFile("tiles/aurex.gly");
     }
 
     public void initializeLevel(Level level) {
@@ -108,14 +110,21 @@ public class GlyphEngine implements GameLogic {
         this.dirty = true;
     }
 
-    boolean matchesBlockType(int x, int y, String blockType) {
+    boolean matchesBlockType(int x, int y, String blockType, String[] matchingBlocks) {
         if (x < 0 || x >= level.getWidth() || y < 0 || y >= level.getHeight()) {
             return true;
         }
-        if (level.cell(x, y).terrain.getBlockCategory() == null) {
+        String blockCategory = level.cell(x, y).terrain.getBlockCategory();
+        if (blockCategory == null) {
             return false;
         }
-        return level.cell(x, y).terrain.getBlockCategory().equals(blockType);
+        if (blockCategory.equals(blockType)) {
+            return true;
+        }
+        if (matchingBlocks != null && Arrays.asList(matchingBlocks).contains(blockCategory)) {
+            return true;
+        }
+        return false;
     }
 
     private float tileWidth () {
@@ -150,13 +159,14 @@ public class GlyphEngine implements GameLogic {
                         Terrain t = level.cell(x, y).terrain;
                         GlyphTile[] blockGlyphs = terrainGlyph.getGlyphTile(t);
                         String blockCategory = t.getBlockCategory();
+                        String[] matchingBlocks = t.getMatchingBlocks();
                         int blockDirection = 0;
                         if (t.getBlockCategory() != null) {
                             blockDirection = BlockJoin.calculate(
-                                    matchesBlockType(x, y-1, blockCategory),
-                                    matchesBlockType(x-1, y, blockCategory),
-                                    matchesBlockType(x+1, y, blockCategory),
-                                    matchesBlockType(x, y+1, blockCategory)
+                                    matchesBlockType(x, y-1, blockCategory, matchingBlocks),
+                                    matchesBlockType(x-1, y, blockCategory, matchingBlocks),
+                                    matchesBlockType(x+1, y, blockCategory, matchingBlocks),
+                                    matchesBlockType(x, y+1, blockCategory, matchingBlocks)
                             );
                         }
                         GlyphTile terrainGlyph = blockGlyphs[blockDirection];

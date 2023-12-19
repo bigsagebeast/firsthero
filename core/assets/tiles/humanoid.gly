@@ -1,4 +1,4 @@
-1 8
+1 9
 0 0 player.farmer
 0 1 humanoid.goblin.grunt
 0 2 humanoid.goblin.warrior
@@ -7,3 +7,4 @@
 0 5 humanoid.goblin.archer
 0 6 humanoid.goblin.slinger
 0 7 humanoid.goblin.butcher
+0 8 humanoid.atsign

@@ -2,7 +2,6 @@ package com.churchofcoyote.hero.roguelike.world;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
@@ -16,10 +15,11 @@ public class Terrain {
 	private String glyphName;
 	private PaletteEntry paletteEntry;
 	private String blockCategory;
+	private String[] matchingBlocks;
 
 	public static Map<String, Terrain> map;
 	
-	public static Terrain BLANK = new Terrain("empty", "Empty.", false, false, "terrain.dot", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
+	public static Terrain BLANK = new Terrain("empty", "Empty.", false, false, "terrain.dot", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null, null);
 	
 	static {
 		// TODO: Load / initialize from...somewhere
@@ -40,13 +40,22 @@ public class Terrain {
 		addTerrain("downstair", "stairs leading down", true, false, "terrain.downstair", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT), null);
 
 		addTerrain("doorway", "a doorway", true, false, "terrain.door_open", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT, Palette.COLOR_BROWN), null);
+
+		addTerrain("aurex.cliffside.dirt", "a cliffside", true, false, "aurex.cliffside.dirt", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_BROWN, Palette.COLOR_SKYBLUE), "ground");
+		addTerrain("aurex.cliffside.grass", "a cliffside", true, false, "aurex.cliffside.grass", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_DARKGREEN, Palette.COLOR_SKYBLUE), "ground");
+		addTerrain("aurex.cliff", "a cliff", true, false, "aurex.cliff", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_DARKGREEN, Palette.COLOR_SKYBLUE), "cliff", new String[]{"ground"});
+		addTerrain("aurex.sky", "sky", true, false, "aurex.sky", new PaletteEntry(Palette.COLOR_SKYBLUE, Palette.COLOR_SKYBLUE, Palette.COLOR_SKYBLUE, Palette.COLOR_SKYBLUE), null);
+	}
+
+	public static void addTerrain(String name, String description, boolean passable, boolean spawnable, String glyphName, PaletteEntry paletteEntry, String blockCategory, String[] matchingBlocks) {
+		map.put(name, new Terrain(name, description, passable, spawnable, glyphName, paletteEntry, blockCategory, matchingBlocks));
 	}
 
 	public static void addTerrain(String name, String description, boolean passable, boolean spawnable, String glyphName, PaletteEntry paletteEntry, String blockCategory) {
-		map.put(name, new Terrain(name, description, passable, spawnable, glyphName, paletteEntry, blockCategory));
+		map.put(name, new Terrain(name, description, passable, spawnable, glyphName, paletteEntry, blockCategory, null));
 	}
 
-	public Terrain(String name, String description, boolean passable, boolean spawnable, String glyphName, PaletteEntry paletteEntry, String blockCategory) {
+	public Terrain(String name, String description, boolean passable, boolean spawnable, String glyphName, PaletteEntry paletteEntry, String blockCategory, String[] matchingBlocks) {
 		this.name = name;
 		this.paletteEntry = paletteEntry;
 		this.blockCategory = blockCategory;
@@ -54,6 +63,7 @@ public class Terrain {
 		this.description = description;
 		this.passable = passable;
 		this.spawnable = spawnable;
+		this.matchingBlocks = matchingBlocks;
 	}
 
 	public static Terrain get(String key) {
@@ -85,5 +95,7 @@ public class Terrain {
 	public String getBlockCategory() {
 		return blockCategory;
 	}
+
+	public String[] getMatchingBlocks() { return matchingBlocks; }
 	
 }

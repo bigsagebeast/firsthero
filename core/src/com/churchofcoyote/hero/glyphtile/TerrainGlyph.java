@@ -20,6 +20,9 @@ public class TerrainGlyph {
                 blockJoins = new GlyphTile[BlockJoin.SIZE];
                 for (int i=0; i<BlockJoin.SIZE; i++) {
                     BaseGlyph b = GlyphIndex.get(t.getGlyphName(), i);
+                    if (b == null) {
+                        throw new RuntimeException("Couldn't get glyph for " + t.getGlyphName() + ": " + i);
+                    }
                     blockJoins[i] = b.create(t.getPaletteEntry());
                 }
             }

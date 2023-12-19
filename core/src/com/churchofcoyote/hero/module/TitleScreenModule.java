@@ -81,19 +81,20 @@ public class TitleScreenModule extends Module {
 		options[0] = new TextBlock("  Continue", null, 14, 18, 29, Color.WHITE, 0f, 0f);
 		options[1] = new TextBlock("> New Game", null, 14, 18, 30, Color.YELLOW, 0f, 0f);
 		options[2] = new TextBlock("  Dungeon", null, 14, 18, 31, Color.WHITE, 0f, 0f);
-		options[3] = new TextBlock("  Watch Intro", null, 14, 18, 32, Color.WHITE, 0f, 0f);
-		options[4] = new TextBlock("  Quit", null, 14, 18, 33, Color.WHITE, 0f, 0f);
+		options[3] = new TextBlock("  Aurex", null, 14, 18, 32, Color.WHITE, 0f, 0f);
+		options[4] = new TextBlock("  Watch Intro", null, 14, 18, 33, Color.WHITE, 0f, 0f);
+		options[5] = new TextBlock("  Quit", null, 14, 18, 34, Color.WHITE, 0f, 0f);
 		updateOptions();
 		for (TextBlock tb : options) {
 			textEngine.addBlock(tb);
 		}
 	}
 	
-	public TextBlock[] options = new TextBlock[5];
+	public TextBlock[] options = new TextBlock[6];
 	int selectedOption = 1;
 	
 	private void updateOptions() {
-		for (int i=0; i<5; i++) {
+		for (int i=0; i<6; i++) {
 			if (selectedOption == i) {
 				options[i].text = "> " + options[i].text.substring(2);
 				if (i == 0) {
@@ -117,12 +118,12 @@ public class TitleScreenModule extends Module {
 		switch (keycode) {
 			case Keys.UP:
 			case Keys.NUMPAD_8:
-				selectedOption = (selectedOption + 4) % 5;
+				selectedOption = (selectedOption + 5) % 6;
 				updateOptions();
 				break;
 			case Keys.DOWN:
 				case Keys.NUMPAD_2:
-				selectedOption = (selectedOption + 1) % 5;
+				selectedOption = (selectedOption + 1) % 6;
 				updateOptions();
 				break;
 			case Keys.ENTER:
@@ -150,9 +151,15 @@ public class TitleScreenModule extends Module {
 					case 3:
 						IntroModule.musicResource.stop();
 						end();
-						GameLoop.introModule.start();
+						GameLoop.roguelikeModule.initialize();
+						GameLoop.roguelikeModule.game.startAurex();
 						break;
 					case 4:
+						IntroModule.musicResource.stop();
+						end();
+						GameLoop.introModule.start();
+						break;
+					case 5:
 						Gdx.app.exit();
 				}
 				break;

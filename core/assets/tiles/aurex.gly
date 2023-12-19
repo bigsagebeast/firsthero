@@ -1,0 +1,50 @@
+18 3
+000 0 aurex.cliffside.dirt:se # tan, brown, skyblue, skyblue
+000 1 aurex.cliffside.dirt:swe
+000 2 aurex.cliffside.dirt:sw
+001 0 aurex.cliffside.dirt:ens
+001 1 aurex.cliffside.dirt:nwes
+001 2 aurex.cliffside.dirt:wns
+002 0 aurex.cliffside.dirt:ne
+002 1 aurex.cliffside.dirt:new
+002 2 aurex.cliffside.dirt:nw
+003 0 aurex.cliffside.dirt:we
+003 1 aurex.cliffside.dirt:ns
+003 2 aurex.cliffside.dirt:n
+004 0 aurex.cliffside.dirt:w
+004 1 aurex.cliffside.dirt:e
+004 2 aurex.cliffside.dirt:s
+005 0 aurex.cliffside.dirt:x
+005 1 aurex.sky # skyblue, skyblue, skyblue, skyblue
+006 0 aurex.cliffside.grass:se # tan, green, skyblue, skyblue
+006 1 aurex.cliffside.grass:sew
+006 2 aurex.cliffside.grass:sw
+007 0 aurex.cliffside.grass:ens
+007 1 aurex.cliffside.grass:nwes
+007 2 aurex.cliffside.grass:wns
+008 0 aurex.cliffside.grass:ne
+008 1 aurex.cliffside.grass:new
+008 2 aurex.cliffside.grass:nw
+009 0 aurex.cliffside.grass:we
+009 1 aurex.cliffside.grass:ns
+009 2 aurex.cliffside.grass:n
+010 0 aurex.cliffside.grass:w
+010 1 aurex.cliffside.grass:e
+010 2 aurex.cliffside.grass:s
+011 0 aurex.cliffside.grass:x
+012 0 aurex.cliff:se # tan, green, skyblue, skyblue
+012 1 aurex.cliff:sew
+012 2 aurex.cliff:sw
+013 0 aurex.cliff:ens
+013 1 aurex.cliff:nwes
+013 2 aurex.cliff:wns
+014 0 aurex.cliff:ne
+014 1 aurex.cliff:new
+014 2 aurex.cliff:nw
+015 0 aurex.cliff:we
+015 1 aurex.cliff:ns
+015 2 aurex.cliff:n
+016 0 aurex.cliff:w
+016 1 aurex.cliff:e
+016 2 aurex.cliff:s
+017 0 aurex.cliff:x
