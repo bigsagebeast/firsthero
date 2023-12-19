@@ -10,6 +10,8 @@ public class Statblock {
     public int arc = 20; // arcanum
     public int ava = 20; // avatar
 
+    public int speed = 100;
+
     public int dr = 0; // defense rating
     public int dt = 0; // defense thickness
 

@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Player;
+import com.churchofcoyote.hero.roguelike.game.Satiation;
 import com.churchofcoyote.hero.roguelike.game.Statblock;
 import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
@@ -103,13 +104,13 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(6).addChild(tbNumDp);
 		statRows.get(6).addChild(tbNumMaxDp);
 
-		statRows.add(new TextBlock("", 0, 7, Color.YELLOW));
+		statRows.add(new TextBlock("", 0, 7));
+		statRows.get(7).addChild(tbElementWater);
+		statRows.get(7).addChild(tbElementFire);
+		statRows.get(7).addChild(tbElementLightning);
+		statRows.get(7).addChild(tbElementPlant);
 
-		statRows.add(new TextBlock("", 0, 8));
-		statRows.get(8).addChild(tbElementWater);
-		statRows.get(8).addChild(tbElementFire);
-		statRows.get(8).addChild(tbElementLightning);
-		statRows.get(8).addChild(tbElementPlant);
+		statRows.add(new TextBlock("", 0, 8, Color.YELLOW));
 
 		for (TextBlock statRow : statRows) {
 			parent.addChild(statRow);
@@ -161,7 +162,13 @@ public class StatBarWindow extends UIWindow {
 			tbNumHp.color = Color.RED;
 		}
 
-		statRows.get(7).text = "Hungry";
+		Satiation satiation = player.getSatiationStatus();
+		if (satiation.message != null) {
+			statRows.get(8).color = satiation.statusColor;
+			statRows.get(8).text = satiation.description;
+		} else {
+			statRows.get(8).text = "";
+		}
 
 		if (player.maxElementCharges.get(Element.WATER) != null) {
 			tbElementWater.text = "W: " + player.currentElementCharges.get(Element.WATER) + "/" + player.maxElementCharges.get(Element.WATER);

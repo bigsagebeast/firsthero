@@ -37,7 +37,6 @@ public class RoguelikeModule extends Module {
 
 	public static MainWindow mainWindow;
 	public static AnnounceWindow announceWindow;
-	public static StatsWindow statsWindow;
 	public static EquipmentWindow equipWindow;
 	public static HitPointWindow hitPointWindow;
 	public static ExperienceWindow experienceWindow;
@@ -172,9 +171,6 @@ public class RoguelikeModule extends Module {
 		GameLoop.glyphEngine.dirty();
 		if (!shift && !ctrl && !alt) {
 			switch (keycode) {
-				case Keys.A:
-					announceWindow.addLine("Adding an announcement line.");
-					break;
 				case Keys.LEFT:
 				case Keys.NUMPAD_4:
 					game.cmdMoveLeft();
@@ -215,14 +211,20 @@ public class RoguelikeModule extends Module {
 				case Keys.PERIOD:
 					game.cmdWait();
 					break;
-				case Keys.W:
-					game.cmdWield();
+				case Keys.C:
+					game.cmdChat();
 					break;
-				case Keys.Q:
-					game.cmdQuaff();
+				case Keys.D:
+					game.cmdDrop();
 					break;
-				case Keys.R:
-					game.cmdRead();
+				case Keys.E:
+					game.cmdEat();
+					break;
+				case Keys.L:
+					game.cmdLook();
+					break;
+				case Keys.M:
+					game.cmdMagic();
 					break;
 				case Keys.I:
 					game.cmdInventory();
@@ -230,20 +232,17 @@ public class RoguelikeModule extends Module {
 				case Keys.O:
 					game.cmdOpen();
 					break;
-				case Keys.C:
-					game.cmdChat();
+				case Keys.Q:
+					game.cmdQuaff();
+					break;
+				case Keys.R:
+					game.cmdRead();
 					break;
 				case Keys.T:
 					game.cmdTarget();
 					break;
-				case Keys.L:
-					game.cmdLook();
-					break;
-				case Keys.D:
-					game.cmdDrop();
-					break;
-				case Keys.M:
-					game.cmdMagic();
+				case Keys.W:
+					game.cmdWield();
 					break;
 				case Keys.ENTER:
 					popupCommands();
@@ -280,6 +279,7 @@ public class RoguelikeModule extends Module {
 		box.addItem("Keypad 5      Wait", "5");
 		box.addItem("c             Chat to an NPC", "c");
 		box.addItem("d             Drop an item", "d");
+		box.addItem("e             Eat something", "e");
 		box.addItem("i             Check inventory", "i");
 		box.addItem("l             Look around", "l");
 		box.addItem("m             Cast a magic spell", "m");
@@ -309,6 +309,9 @@ public class RoguelikeModule extends Module {
 				break;
 			case "d":
 				game.cmdDrop();
+				break;
+			case "e":
+				game.cmdEat();
 				break;
 			case "i":
 				game.cmdInventory();

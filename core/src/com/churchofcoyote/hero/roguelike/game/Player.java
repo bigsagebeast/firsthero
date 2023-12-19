@@ -11,6 +11,7 @@ public class Player {
 
 	public HashMap<Element, Integer> currentElementCharges = new HashMap<>();
 	public HashMap<Element, Integer> maxElementCharges = new HashMap<>();
+	public float satiation = Satiation.startingSatiation;
 
 	public Player() {
 		maxElementCharges.put(Element.WATER, 8);
@@ -48,6 +49,25 @@ public class Player {
 
 	public void changeCharges(Element element, int change) {
 		currentElementCharges.put(element, currentElementCharges.get(element) + change);
+	}
+
+	public Satiation getSatiationStatus() {
+		return Satiation.getStatus(satiation);
+	}
+
+	public void changeSatiation(float delta) {
+		// TODO death
+		Satiation before = getSatiationStatus();
+		satiation += delta;
+		if (satiation < Satiation.DEAD.topThreshold) {
+			satiation = Satiation.DEAD.topThreshold;
+		}
+		Satiation after = getSatiationStatus();
+		if (before != after) {
+			Game.announce(after.message);
+			// TODO update stat window
+			// TODO update a proc on the player
+		}
 	}
 
 	public void setEntityId(int entityId) {

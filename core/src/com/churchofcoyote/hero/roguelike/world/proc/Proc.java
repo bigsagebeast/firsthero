@@ -43,7 +43,7 @@ public class Proc {
         if (delay == 0 && entity != Game.getPlayerEntity()) {
             //throw new RuntimeException("Set delay of 0 for " + this.getClass() + " on " + entity.name);
         }
-        nextAction = Game.time + delay;
+        nextAction = Game.time + (delay * 100 / entity.statblock.speed);
     }
 
     public void initialize() {
@@ -57,6 +57,9 @@ public class Proc {
     }
 
     public void act(Entity entity) { }
+
+    // activates after something on the entity has taken an action
+    public void onAction(Entity entity) { }
 
     // activates every 1000
     public void turnPassed(Entity entity) { }
@@ -140,6 +143,10 @@ public class Proc {
     public void postBeRead(Entity entity, Entity actor) { }
     public Boolean preDoRead(Entity entity, Entity target) { return null; }
     public void postDoRead(Entity entity, Entity target) { }
+
+    public Boolean isEdible(Entity entity, Entity actor) { return null; }
+    public Boolean preBeEaten(Entity entity, Entity actor) { return null; }
+    public void postBeEaten(Entity entity, Entity actor) { }
 
     // Is this a valid target to draw an element from?  If null, ignore it.
     public Element providesElement(Entity entity) { return null; }

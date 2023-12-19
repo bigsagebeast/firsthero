@@ -161,6 +161,76 @@ public class Inventory {
         }
     }
 
+    public void openInventoryToEat() {
+        DialogueBox box = new DialogueBox()
+                .withFooterClosable()
+                .withTitle("Select item to eat")
+                .withMargins(60, 60);
+
+        List<Entity> floorFood = new ArrayList<>();
+        for (Entity item : Game.getLevel().getItemsOnTile(Game.getPlayerEntity().pos)) {
+            Boolean isThisItemEdible = null;
+            for (Proc proc : item.procs) {
+                Boolean isThisProcEdible = proc.isEdible(item, Game.getPlayerEntity());
+                if (isThisProcEdible == Boolean.TRUE && isThisItemEdible != Boolean.FALSE) {
+                    isThisItemEdible = Boolean.TRUE;
+                } else if (isThisProcEdible == Boolean.FALSE) {
+                    isThisItemEdible = Boolean.FALSE;
+                }
+            }
+            if (isThisItemEdible == Boolean.TRUE) {
+                floorFood.add(item);
+            }
+        }
+
+        List<Entity> inventoryFood = new ArrayList<>();
+        for (Entity item : Game.getPlayerEntity().getInventoryEntities()) {
+            Boolean isThisItemEdible = null;
+            for (Proc proc : item.procs) {
+                Boolean isThisProcEdible = proc.isEdible(item, Game.getPlayerEntity());
+                if (isThisProcEdible == Boolean.TRUE && isThisItemEdible != Boolean.FALSE) {
+                    isThisItemEdible = Boolean.TRUE;
+                } else if (isThisProcEdible == Boolean.FALSE) {
+                    isThisItemEdible = Boolean.FALSE;
+                }
+            }
+            if (isThisItemEdible == Boolean.TRUE) {
+                inventoryFood.add(item);
+            }
+        }
+
+        if (floorFood.size() > 0) {
+            for (ItemCategory cat : ItemCategory.categories) {
+                List<Entity> ents = floorFood.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
+                if (ents.size() > 0) {
+                    box.addHeader("*** " + cat.getName() + " (on floor) ***");
+                }
+                for (Entity ent : ents) {
+                    box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                }
+            }
+        }
+        if (inventoryFood.size() > 0) {
+            for (ItemCategory cat : ItemCategory.categories) {
+                List<Entity> ents = inventoryFood.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
+                if (ents.size() > 0) {
+                    box.addHeader("*** " + cat.getName() + " ***");
+                }
+                for (Entity ent : ents) {
+                    box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                }
+            }
+        }
+        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryToEatResponse);
+    }
+
+    public void handleInventoryToEatResponse(Object chosenEntity) {
+        Entity e = (Entity)chosenEntity;
+        if (e != null) {
+            Game.getPlayerEntity().eatItem(e);
+        }
+    }
+
     public void doQuaff() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()

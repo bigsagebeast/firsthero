@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.roguelike.world.proc;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.game.Player;
 import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
@@ -14,18 +15,29 @@ public class ProcPlayer extends ProcMover {
 
     @Override
     public void turnPassed(Entity entity) {
-        // TODO move this into "takes place every player action" instead of every 1000, in case the player is fast
+        Player player = Game.getPlayer();
+        Entity playerEntity = Game.getPlayerEntity();
+
+        float hungerRate = 5;
+        player.changeSatiation(-hungerRate);
+    }
+
+    @Override
+    public void onAction(Entity entity) {
+        Player player = Game.getPlayer();
+        Entity playerEntity = Game.getPlayerEntity();
+
         Terrain water = Terrain.get("water");
-        if (!Game.getPlayer().areElementsFull()) {
+        if (!player.areElementsFull()) {
             for (Point p : Game.getLevel().surroundingAndCurrentTiles(entity.pos)) {
                 // draw from entities
                 for (Entity e : Game.getLevel().getEntitiesOnTile(p)) {
                     for (Proc proc : e.procs) {
                         Element element = proc.providesElement(e);
                         if (element != null) {
-                            int missing = Game.getPlayer().elementMissing(element);
+                            int missing = player.elementMissing(element);
                             if (missing > 0) {
-                                int retrieved = proc.drawElement(e, Game.getPlayerEntity(), missing);
+                                int retrieved = proc.drawElement(e, playerEntity, missing);
                                 if (retrieved > 0) {
                                     Game.announce("You draw " + retrieved + " " + element.name + " charge" + (retrieved == 1 ? "" : "s") + " from " + e.getVisibleNameThe() + ".");
                                     Game.getPlayer().changeCharges(element, retrieved);

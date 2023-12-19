@@ -7,6 +7,7 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 public class ProcCorpse extends Proc {
 
     int age = 0;
+    int satiation = 500;
 
     public ProcCorpse() { super(); }
 
@@ -16,6 +17,19 @@ public class ProcCorpse extends Proc {
             entity.destroy();
             Game.announceVis(entity, entity, null, null,
                     "You see " + entity.getVisibleNameSingularOrVague() + " rot away.", null);
+        }
+    }
+
+    @Override
+    public Boolean isEdible(Entity entity, Entity actor) {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public void postBeEaten(Entity entity, Entity actor) {
+        // Can anything else eat?
+        if (actor == Game.getPlayerEntity()) {
+            Game.getPlayer().changeSatiation(satiation);
         }
     }
 }

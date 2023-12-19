@@ -576,6 +576,23 @@ public class Entity {
         getMover().setDelay(this, Game.ONE_TURN);
     }
 
+    public void eatItem(Entity target) {
+        for (Proc p : target.procs) {
+            Boolean result = p.preBeEaten(target, Game.getPlayerEntity());
+            if (result == Boolean.FALSE) {
+                break;
+            }
+        }
+
+        Game.announce("You eat " + ((Entity)target).getVisibleNameThe() + ".");
+
+        for (Proc p : target.procs) {
+            p.postBeEaten(target, Game.getPlayerEntity());
+        }
+        target.destroy();
+        getMover().setDelay(this, Game.ONE_TURN);
+    }
+
     public void readItem(Entity target) {
         for (Proc p : this.procs) {
             Boolean val = p.preDoRead(this, target);

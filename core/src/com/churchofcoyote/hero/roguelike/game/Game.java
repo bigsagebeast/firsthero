@@ -172,6 +172,14 @@ public class Game {
 	}
 	
 	public void turn() {
+
+		// at the start of the turn, the player has just acted
+		for (Proc p : Game.getPlayerEntity().procs) {
+			p.onAction(Game.getPlayerEntity());
+		}
+
+		// TODO maybe check state here?
+
 		while (true) {
 			roguelikeModule.setDirty();
 
@@ -202,6 +210,9 @@ public class Game {
 				break;
 			}
 			lowestProc.proc.act(lowestProc.entity);
+			for (Proc onActProc : lowestProc.entity.procs) {
+				onActProc.onAction(lowestProc.entity);
+			}
 		}
 	}
 
@@ -310,6 +321,14 @@ public class Game {
 
 	public void cmdDrop() {
 		inventory.openInventoryToDrop();
+	}
+
+	public void cmdEat() {
+		if (player.getSatiationStatus() == Satiation.STUFFED) {
+			announce("You are too stuffed to eat!");
+			return;
+		}
+		inventory.openInventoryToEat();
 	}
 
 	public void cmdRegenerate() { startCaves(); }
