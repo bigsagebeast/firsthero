@@ -42,6 +42,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final TargetingModule targetingModule = new TargetingModule();
 	public static final DirectionModule directionModule = new DirectionModule();
 	public static final StoryModule storyModule = new StoryModule();
+	public static final CutsceneModule cutsceneModule = new CutsceneModule();
 	private List<Module> allModules = new ArrayList<Module>();
 	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
@@ -74,6 +75,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		Module.setEngines(textEngine, uiEngine, effectEngine);
 		UIManager.resize(Graphics.width, Graphics.height);
 		allModules = new ArrayList<Module>();
+		allModules.add(cutsceneModule);
 		allModules.add(popupModule);
 		allModules.add(dialogueBoxModule);
 		allModules.add(storyModule);
@@ -136,6 +138,9 @@ public class GameLoop implements GameLogic, InputProcessor {
 
 		long startAll = System.currentTimeMillis();
 		long start = System.currentTimeMillis();
+		if (cutsceneModule.isRunning()) {
+			cutsceneModule.render(g, gState);
+		}
 	    g.startBatch();
 		glyphEngine.render(g, gState);
 		HeroGame.updateTimer("ge", System.currentTimeMillis() - start);
