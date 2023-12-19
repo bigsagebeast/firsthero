@@ -32,6 +32,7 @@ public class DialogueBox {
     private int lineOffset = 0;
     private int selection = -1;
     private Object finalValue = null;
+    private boolean cancelable = true;
 
     private TextBlock title;
     private TextBlock footer;
@@ -77,6 +78,11 @@ public class DialogueBox {
 
     public DialogueBox withTitle(String title) {
         titleText = title;
+        return this;
+    }
+
+    public DialogueBox withCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
         return this;
     }
 
@@ -215,7 +221,7 @@ public class DialogueBox {
     }
 
     public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
-        if (keycode == Input.Keys.SPACE) {
+        if (keycode == Input.Keys.SPACE && cancelable) {
             close();
         } else if (keycode == Input.Keys.UP || keycode == Input.Keys.NUMPAD_8) {
             selectPrevious();

@@ -1,6 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BodyPart {

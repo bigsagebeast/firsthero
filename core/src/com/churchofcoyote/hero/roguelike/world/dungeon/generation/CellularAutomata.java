@@ -1,7 +1,9 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.util.Compass;
+import com.churchofcoyote.hero.util.Point;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class CellularAutomata {
@@ -33,6 +35,32 @@ public class CellularAutomata {
         floodFill = generateGrid();
     }
 
+    // for randomly expanding a cell into its surroundings
+    public void iterateGrowth(float chance) {
+        ArrayList<Point> candidates = new ArrayList<>();
+        for (int i=0; i<width; i++) {
+            for (int j=0; j<height; j++) {
+                if (cells[i][j] == AutomataStatus.RANDOM) {
+                    boolean hasNeighbor = false;
+                    for (Compass dir : Compass.points()) {
+                        if (withinBounds(i+dir.getX(), j+dir.getY()) && cells[i+dir.getX()][j+dir.getY()] == AutomataStatus.TRUE) {
+                            hasNeighbor = true;
+                        }
+                    }
+                    if (hasNeighbor) {
+                        candidates.add(new Point(i, j));
+                    }
+                }
+            }
+        }
+        for (Point p : candidates) {
+            if (random.nextFloat() < chance) {
+                cells[p.x][p.y] = AutomataStatus.TRUE;
+            }
+        }
+    }
+
+
     public AutomataStatus[][] generateStatus() {
         AutomataStatus[][] result = new AutomataStatus[width][];
         for (int i=0; i<width; i++) {
@@ -56,7 +84,7 @@ public class CellularAutomata {
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
                 if (cells[i][j] == AutomataStatus.RANDOM) {
-                    cells[i][j] = random.nextFloat() < chance ? AutomataStatus.WALL : AutomataStatus.FLOOR;
+                    cells[i][j] = random.nextFloat() < chance ? AutomataStatus.TRUE : AutomataStatus.FALSE;
                 }
             }
         }
@@ -74,9 +102,9 @@ public class CellularAutomata {
                     nextGen[i][j] = cells[i][j];
                 } else {
                     if (cells[i][j].isWall) {
-                        nextGen[i][j] = count >= birth ? AutomataStatus.WALL : AutomataStatus.FLOOR;
+                        nextGen[i][j] = count >= birth ? AutomataStatus.TRUE : AutomataStatus.FALSE;
                     } else {
-                        nextGen[i][j] = count >= survival ? AutomataStatus.WALL : AutomataStatus.FLOOR;
+                        nextGen[i][j] = count >= survival ? AutomataStatus.TRUE : AutomataStatus.FALSE;
                     }
                 }
             }

@@ -4,7 +4,6 @@ import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.churchofcoyote.hero.roguelike.world.EntityTracker;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.fasterxml.jackson.annotation.*;
 

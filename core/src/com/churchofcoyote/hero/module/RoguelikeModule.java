@@ -279,7 +279,7 @@ public class RoguelikeModule extends Module {
 		box.addItem("Keypad 5      Wait", "5");
 		box.addItem("c             Chat to an NPC", "c");
 		box.addItem("d             Drop an item", "d");
-		box.addItem("e             Eat something", "e");
+		box.addItem("e             Eat something (including off the ground)", "e");
 		box.addItem("i             Check inventory", "i");
 		box.addItem("l             Look around", "l");
 		box.addItem("m             Cast a magic spell", "m");

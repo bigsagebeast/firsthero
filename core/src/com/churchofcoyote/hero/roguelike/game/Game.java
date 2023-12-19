@@ -10,6 +10,8 @@ import com.churchofcoyote.hero.persistence.PersistentProfile;
 import com.churchofcoyote.hero.roguelike.world.*;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
+import com.churchofcoyote.hero.roguelike.world.BodyPart;
+import com.churchofcoyote.hero.roguelike.world.enums.Satiation;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
 import com.churchofcoyote.hero.roguelike.world.proc.environment.ProcDoor;
 import com.churchofcoyote.hero.roguelike.world.proc.item.ProcItem;

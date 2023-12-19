@@ -168,20 +168,20 @@ public class RoomPacker {
         packRoom.height = 5;
         switch (entrance) {
             case NORTH:
-                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 2) + regionX + 1;
+                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 2) + regionX + (packRoom.width / 2);
                 packRoom.y = regionY + 1;
                 break;
             case SOUTH:
-                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 2) + regionX + 1;
+                packRoom.x = (Game.random.nextInt(1 + (regionWidth - packRoom.width) / 2) * 2 - 2) + regionX + (packRoom.width / 2);
                 packRoom.y = regionY + regionHeight - packRoom.height - 1;
                 break;
             case WEST:
                 packRoom.x = regionX + 1;
-                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 2) + regionY + 1;
+                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 2) + regionY + (packRoom.height / 2);
                 break;
             case EAST:
                 packRoom.x = regionX + regionWidth - packRoom.width - 1;
-                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 2) + regionY + 1;
+                packRoom.y = (Game.random.nextInt(1 + (regionHeight - packRoom.height) / 2) * 2 - 2) + regionY + (packRoom.height / 2);
                 break;
         }
         Room room = new Room(RoomType.SUBDUNGEON_UNASSIGNED,

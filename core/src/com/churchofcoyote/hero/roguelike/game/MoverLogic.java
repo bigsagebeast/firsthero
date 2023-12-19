@@ -17,7 +17,9 @@ public class MoverLogic {
         Entity newCorpse = Game.itempedia.create("misc.corpse");
         newCorpse.name = phenotype.name + " corpse";
         newCorpse.palette = phenotype.corpseSpawnColors;
-        newCorpse.addProc(new ProcCorpse());
+        ProcCorpse procCorpse = new ProcCorpse();
+        procCorpse.satiation = phenotype.size.corpseSatiation;
+        newCorpse.addProc(procCorpse);
         newCorpse.addProc(new ProcItem());
         level.addEntityWithStacking(newCorpse, entity.pos);
     }

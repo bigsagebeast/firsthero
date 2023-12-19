@@ -3,6 +3,7 @@ package com.churchofcoyote.hero.roguelike.world;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
 import com.churchofcoyote.hero.roguelike.game.Rank;
+import com.churchofcoyote.hero.roguelike.world.enums.BodySize;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,6 +40,7 @@ public class Phenotype {
 	public boolean wandering = true;
 	public int frequency = 100;
 	public int corpseSpawnPercent = 50;
+	public BodySize size = BodySize.MEDIUM;
 	public PaletteEntry corpseSpawnColors = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
 	public String chatPage;
 	Set<Consumer<Entity>> setup = new HashSet<>();

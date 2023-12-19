@@ -3,6 +3,7 @@ package com.churchofcoyote.hero.roguelike.game;
 import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.EntityTracker;
+import com.churchofcoyote.hero.roguelike.world.enums.Satiation;
 
 import java.util.HashMap;
 

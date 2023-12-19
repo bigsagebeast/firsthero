@@ -38,13 +38,15 @@ public class DungeonGenerator {
 				return;
 			}
 			Point pos = level.findOpenTile();
-			Entity e = Game.bestiary.create(chosenMonster, null);
+			Entity e = Game.bestiary.create(chosenMonster);
+			e.wanderer = true;
 			level.addEntityWithStacking(e, pos);
 			int packSize = (int) (Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
 			for (int j = 1; j < packSize; j++) {
 				Point packSpawnPos = level.findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
 				if (packSpawnPos != null) {
 					Entity packmember = Game.bestiary.create(chosenMonster);
+					packmember.wanderer = true;
 					level.addEntityWithStacking(packmember, packSpawnPos);
 				}
 			}

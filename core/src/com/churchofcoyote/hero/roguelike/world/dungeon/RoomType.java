@@ -18,6 +18,7 @@ public class RoomType {
 
     public static RoomType FORGE = new RoomType("Forge", "You enter the heat of an underground forge.");
     public static RoomType MOSSY = new RoomType(null, "Moss grows thick on the walls.");
+    public static RoomType UNDERGROUND_GROVE = new RoomType("Grove", "You approach an underground grove.");
 
     public String roomName;
     public String entranceMessage;

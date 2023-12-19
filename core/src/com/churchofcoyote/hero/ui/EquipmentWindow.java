@@ -1,7 +1,6 @@
 package com.churchofcoyote.hero.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.glyphtile.EntityGlyph;
 import com.churchofcoyote.hero.module.RoguelikeModule;

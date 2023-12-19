@@ -4,6 +4,7 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.dialogue.DialogueBox;
 import com.churchofcoyote.hero.glyphtile.EntityGlyph;
 import com.churchofcoyote.hero.roguelike.world.*;
+import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 import java.util.ArrayList;

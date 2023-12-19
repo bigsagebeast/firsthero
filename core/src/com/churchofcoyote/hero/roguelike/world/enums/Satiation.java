@@ -1,4 +1,4 @@
-package com.churchofcoyote.hero.roguelike.game;
+package com.churchofcoyote.hero.roguelike.world.enums;
 
 import com.badlogic.gdx.graphics.Color;
 
@@ -11,7 +11,7 @@ public enum Satiation {
     SATIATED("Satiated", Color.WHITE, 5000, "You are satiated."),
     STUFFED("Stuffed", Color.WHITE, 99999, "You are stuffed!");
 
-    public static int startingSatiation = 3000;
+    public static int startingSatiation = 3500;
     public String description;
     public Color statusColor;
     public int topThreshold;

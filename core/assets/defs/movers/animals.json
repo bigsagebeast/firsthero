@@ -19,7 +19,8 @@
       "naturalWeaponToHit": -4,
       "naturalArmorClass": 8,
       "packSize": 1,
-      "packSpawnArea": 3
+      "packSpawnArea": 3,
+      "size": "SMALL"
     }
   }
 }

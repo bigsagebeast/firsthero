@@ -6,8 +6,8 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcCorpse extends Proc {
 
-    int age = 0;
-    int satiation = 500;
+    public int age = 0;
+    public int satiation = 500;
 
     public ProcCorpse() { super(); }
 

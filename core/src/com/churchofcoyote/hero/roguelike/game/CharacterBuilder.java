@@ -2,8 +2,6 @@ package com.churchofcoyote.hero.roguelike.game;
 
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.dialogue.DialogueBox;
-import com.churchofcoyote.hero.roguelike.spells.SpellFirebeam;
-import com.churchofcoyote.hero.roguelike.spells.SpellMagicMissile;
 import com.churchofcoyote.hero.roguelike.world.BodyPart;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 
@@ -25,6 +23,7 @@ public class CharacterBuilder {
 
     private void selectRace() {
         DialogueBox box = new DialogueBox()
+                .withCancelable(false)
                 .withMargins(60, 60)
                 .withTitle("Select a race");
         box.addItem("Human     Well-rounded", "human");
@@ -39,6 +38,7 @@ public class CharacterBuilder {
 
     private void selectArchetype() {
         DialogueBox box = new DialogueBox()
+                .withCancelable(false)
                 .withMargins(60, 60)
                 .withTitle("Select an archetype");
         box.addItem("Warrior   High strength, armored", "warrior");
@@ -121,8 +121,8 @@ public class CharacterBuilder {
                 GameLoop.roguelikeModule.game.spellbook.addSpell("root spear");
                 break;
         }
-        //Entity magicmap = Game.itempedia.create("scroll.magic.map", 100);
-        //pcEntity.receiveItem(magicmap);
+        Entity magicmap = Game.itempedia.create("scroll.magic.map", 100);
+        pcEntity.receiveItem(magicmap);
     }
 
     private void equip(String key, BodyPart bodyPart) {

@@ -125,7 +125,7 @@ public class DefinitionLoader {
                 }
             }
             // special handling
-            if (itemType.isFeature && itemType.sortOrder == 0) {
+            if (itemType.isFeature && itemType.sortOrder == 1) {
                 itemType.sortOrder = -1;
             }
             Itempedia.map.put(itemName, itemType);
@@ -183,7 +183,11 @@ public class DefinitionLoader {
                     Field phenotypeField = Phenotype.class.getDeclaredField(fieldName);
                     phenotypeField.setAccessible(true);
 
-                    if (phenotypeField.getType().isAssignableFrom(String.class)) {
+                    if (phenotypeField.getType().isEnum()) {
+                        Class<? extends Enum> enumClass = (Class<? extends Enum>) phenotypeField.getType();
+                        Enum<?> enumValue = Enum.valueOf(enumClass, nodeField.asText());
+                        phenotypeField.set(phenotype, enumValue);
+                    } else if (phenotypeField.getType().isAssignableFrom(String.class)) {
                         phenotypeField.set(phenotype, nodeField.asText());
                     } else if (phenotypeField.getType().isAssignableFrom(int.class) || phenotypeField.getType().isAssignableFrom(Integer.class)) {
                         phenotypeField.set(phenotype, nodeField.asInt());

@@ -18,7 +18,7 @@ public class ProcPlayer extends ProcMover {
         Player player = Game.getPlayer();
         Entity playerEntity = Game.getPlayerEntity();
 
-        float hungerRate = 5;
+        float hungerRate = 2.5f;
         player.changeSatiation(-hungerRate);
     }
 

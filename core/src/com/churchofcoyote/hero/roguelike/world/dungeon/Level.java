@@ -53,7 +53,7 @@ public class Level {
 	public void timePassed(long time) {
 		if (lastWander + wanderRate < time) {
 			lastWander = time;
-			if (getMovers().size() > maxForWander) {
+			if (getMovers().stream().filter(e -> e.wanderer).count() > maxForWander) {
 				return;
 			}
 			String monsterKey = DungeonGenerator.getAllowedMonster(this);
@@ -61,7 +61,8 @@ public class Level {
 			if (pos == null || monsterKey == null) {
 				return;
 			}
-			Entity e = Game.bestiary.create(monsterKey, null);
+			Entity e = Game.bestiary.create(monsterKey);
+			e.wanderer = true;
 			addEntityWithStacking(e, pos);
 		}
 	}
@@ -427,6 +428,40 @@ public class Level {
 			}
 		}
 		return foundPoints;
+	}
+
+	public Point getRoomUpperLeft(int roomId) {
+		int x = Integer.MAX_VALUE;
+		int y = Integer.MAX_VALUE;
+		for (Point p : roomMap.get(roomId)) {
+			if (p.x < x) {
+				x = p.x;
+			}
+			if (p.y < y) {
+				y = p.y;
+			}
+		}
+		if (x < Integer.MAX_VALUE) {
+			return new Point(x, y);
+		}
+		return null;
+	}
+
+	public Point getRoomLowerRight(int roomId) {
+		int x = -1;
+		int y = -1;
+		for (Point p : roomMap.get(roomId)) {
+			if (p.x > x) {
+				x = p.x;
+			}
+			if (p.y > y) {
+				y = p.y;
+			}
+		}
+		if (x > -1) {
+			return new Point(x, y);
+		}
+		return null;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
+import com.churchofcoyote.hero.roguelike.world.Itempedia;
 import com.churchofcoyote.hero.roguelike.world.LevelTransition;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
@@ -34,11 +35,42 @@ public class Generator {
 
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
-                level.cell(i, j).terrain = wall;
+                if (i == 0 || j == 0 || i == width-1 || j == height-1) {
+                    level.cell(i, j).terrain = uncarveable;
+                } else {
+                    level.cell(i, j).terrain = wall;
+                }
             }
         }
 
-        RoomPacker roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.SOUTH);
+        RoomPacker roomPacker;
+        int coinflip = Game.random.nextInt(2);
+        switch (Game.random.nextInt(4)) {
+            case 0:
+                if (coinflip == 0)
+                    roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.SOUTH);
+                else
+                    roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.EAST);
+                break;
+            case 1:
+                if (coinflip == 0)
+                    roomPacker = new RoomPacker(level, 30, 1, 29, 19, 8, Compass.SOUTH);
+                else
+                    roomPacker = new RoomPacker(level, 30, 1, 29, 19, 8, Compass.WEST);
+                break;
+            case 2:
+                if (coinflip == 0)
+                    roomPacker = new RoomPacker(level, 1, 20, 29, 19, 8, Compass.NORTH);
+                else
+                    roomPacker = new RoomPacker(level, 1, 20, 29, 19, 8, Compass.EAST);
+                break;
+            default:
+                if (coinflip == 0)
+                    roomPacker = new RoomPacker(level, 30, 20, 29, 19, 8, Compass.NORTH);
+                else
+                    roomPacker = new RoomPacker(level, 30, 20, 29, 19, 8, Compass.WEST);
+                break;
+        }
         roomPacker.generate();
 
         SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Themepedia.get("goblin.stronghold"));
@@ -86,7 +118,8 @@ public class Generator {
         }
 
         // put moss in caverns if it can, anywhere if it can't
-        if (!retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_ROOM)) {
+        retryAddSpecialFeature(RoomType.UNDERGROUND_GROVE, RoomType.GENERIC_CAVERN);
+        if (!retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_CAVERN)) {
             retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_ANY);
         }
         retryAddSpecialFeature(RoomType.FORGE, RoomType.GENERIC_ROOM);
@@ -136,6 +169,48 @@ public class Generator {
                 level.addEntityWithStacking(Game.itempedia.create("feature.moss"), wallFloorTiles.get(i));
             }
             level.rooms.get(roomId).roomType = RoomType.MOSSY;
+        } else if (roomType == RoomType.UNDERGROUND_GROVE) {
+            List<Point> groveStarts = level.getEmptyRoomMapOpenFloor(roomId);
+            if (groveStarts.size() < 10) {
+                return false;
+            }
+            Collections.shuffle(groveStarts);
+            Point groveStart = groveStarts.get(0);
+            Point roomUpperLeft = level.getRoomUpperLeft(roomId);
+            Point roomLowerRight = level.getRoomLowerRight(roomId);
+            CellularAutomata growth = new CellularAutomata(
+                    roomLowerRight.x-roomUpperLeft.x+1, roomLowerRight.y-roomUpperLeft.y+1);
+            for (int i=0; i<growth.width; i++) {
+                for (int j=0; j<growth.height; j++) {
+                    if (level.cell(roomUpperLeft.x+i, roomUpperLeft.y+j).terrain.isPassable()) {
+                        growth.cells[i][j] = AutomataStatus.RANDOM;
+                    } else {
+                        growth.cells[i][j] = AutomataStatus.ALWAYS_FALSE;
+                    }
+                }
+            }
+            growth.cells[groveStart.x-roomUpperLeft.x][groveStart.y-roomUpperLeft.y] = AutomataStatus.TRUE;
+            for (int i=0; i<3; i++) {
+                growth.iterateGrowth(0.75f);
+            }
+            List<Point> grassCells = new ArrayList<>();
+            for (int i=0; i<growth.width; i++) {
+                for (int j=0; j<growth.height; j++) {
+                    if (growth.cells[i][j] == AutomataStatus.TRUE) {
+                        // TODO more varied grass types
+                        Point p = new Point(roomUpperLeft.x+i, roomUpperLeft.y+j);
+                        level.cell(p).terrain = Terrain.get("grass");
+                        grassCells.add(p);
+                    }
+                }
+            }
+            List<Point> validTreeCells = grassCells.stream().filter(groveStarts::contains).collect(Collectors.toList());
+            Collections.shuffle(validTreeCells);
+            for (int i=0; i<3 && i < validTreeCells.size(); i++) {
+                Entity tree = Game.itempedia.create("feature.tree");
+                level.addEntityWithStacking(tree, validTreeCells.get(i));
+            }
+            level.rooms.get(roomId).roomType = RoomType.UNDERGROUND_GROVE;
         } else {
             throw new RuntimeException("No handling rules for roomtype " + roomType.roomName == null ? "unnamed" : roomType.roomName);
         }

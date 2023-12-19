@@ -489,18 +489,18 @@ public class Brogue {
             int riverRightCavern = riverRightBank + riverCavernWidth;
             for (int i=0; i<riverGrid.width; i++) {
                 if (j == 0 || j == riverGrid.height - 1) {
-                    automata.cells[i][j] = AutomataStatus.ALWAYS_WALL;
+                    automata.cells[i][j] = AutomataStatus.ALWAYS_TRUE;
                 } else {
                     if (i >= riverLeftShore && i < riverRightShore) {
-                        automata.cells[i][j] = AutomataStatus.ALWAYS_FLOOR;
+                        automata.cells[i][j] = AutomataStatus.ALWAYS_FALSE;
                         riverGrid.cell[i][j].terrain = Terrain.get("water");
                     } else if (i >= riverLeftBank && i < riverRightBank) {
-                        automata.cells[i][j] = AutomataStatus.ALWAYS_FLOOR;
+                        automata.cells[i][j] = AutomataStatus.ALWAYS_FALSE;
                         riverGrid.cell[i][j].terrain = random.nextInt(2) == 0 ? terrainDirt1 : terrainDirt2;
                     } else if (i >= riverLeftCavern && i < riverRightCavern) {
                         automata.cells[i][j] = AutomataStatus.RANDOM;
                     } else {
-                        automata.cells[i][j] = AutomataStatus.ALWAYS_WALL;
+                        automata.cells[i][j] = AutomataStatus.ALWAYS_TRUE;
                     }
                 }
             }

@@ -55,6 +55,25 @@
           "elementSymbol": "F"
         }
       }
+    },
+    "feature.tree": {
+      "name": "tree",
+      "glyphName": "terrain.tree",
+      "isFeature": true,
+      "palette": [
+        "brown",
+        "darkgreen",
+        "lightgreen"
+      ],
+      "procs": {
+        "environment.ProcElementalSource": {
+          "elementSymbol": "P"
+        },
+        "environment.ProcObstructiveFeature": {
+          "obstructMovement": true,
+          "obstructVision": true
+        }
+      }
     }
   }
 }

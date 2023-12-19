@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -90,6 +89,9 @@ public class Entity {
 
     float visionRange = 15;
     float hearingRange = 30;
+
+    // to count the number of wandering monsters
+    public boolean wanderer;
 
     public String toString() {
         return name + " " + pos;

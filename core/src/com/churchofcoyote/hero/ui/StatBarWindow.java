@@ -5,7 +5,7 @@ import com.churchofcoyote.hero.engine.WindowEngine;
 import com.churchofcoyote.hero.module.RoguelikeModule;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Player;
-import com.churchofcoyote.hero.roguelike.game.Satiation;
+import com.churchofcoyote.hero.roguelike.world.enums.Satiation;
 import com.churchofcoyote.hero.roguelike.game.Statblock;
 import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
