@@ -18,16 +18,17 @@ public class Graphics {
 	private Texture fontTexture;
 	private BitmapFont font;
 	private Float defaultFontSize = 96f;
+	private static boolean fullscreen = false;
 
 	SpriteBatch currentSpriteBatch;
 	boolean batchInProgress = false;
 
-//	public static final int WIDTH = (12 * 110);
-//	public static final int HEIGHT = (12 * 62);
 	public static final int STARTING_WIDTH = 1920;
-	public static final int STARTING_HEIGHT = 1200;
+	public static final int STARTING_HEIGHT = 1080;
 	public static int width = STARTING_WIDTH;
 	public static int height = STARTING_HEIGHT;
+	public static int lastWindowedWidth = width;
+	public static int lastWindowedHeight = height;
 
 	public Graphics() {
 		cam = new OrthographicCamera();
@@ -37,7 +38,21 @@ public class Graphics {
 		fontTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 
+	public static void swapFullscreen() {
+		if (fullscreen) {
+			fullscreen = false;
+			Gdx.graphics.setWindowedMode(lastWindowedWidth, lastWindowedHeight);
+		} else {
+			fullscreen = true;
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		}
+	}
+
 	public void resize(int x, int y) {
+		if (!fullscreen) {
+			lastWindowedWidth = x;
+			lastWindowedHeight = y;
+		}
 		width = x;
 		height = y;
 		viewport = new FitViewport(width, height, cam);

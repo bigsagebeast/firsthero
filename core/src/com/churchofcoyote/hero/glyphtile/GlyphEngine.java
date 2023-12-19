@@ -256,10 +256,16 @@ public class GlyphEngine implements GameLogic {
             g.startBatch();
             HeroGame.updateTimer("gDrw", System.currentTimeMillis() - start);
         }
+        g.endBatch();
+        WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
         FrameBuffer fb = WindowEngine.get(UIManager.NAME_MAIN_WINDOW);
         fb.begin();
+        g.startBatch();
+        texRegion.flip(false, true);
         g.batch().draw(texRegion, 0, 0, size.x, size.y);
+        g.endBatch();
         fb.end();
+        g.startBatch();
     }
 
     public void destroyEntity(Entity e) {
