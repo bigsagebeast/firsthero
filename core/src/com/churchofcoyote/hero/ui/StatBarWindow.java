@@ -81,7 +81,7 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(3).addChild(tbStatTo);
 		statRows.get(3).addChild(tbStatDx);
 		statRows.get(3).addChild(tbStatAg);
-		statRows.add(new TextBlock("Per:    Wis:    Arc:    Ava:    ", 0, 4, Color.WHITE));
+		statRows.add(new TextBlock("Per:    Wil:    Arc:    Ava:    ", 0, 4, Color.WHITE));
 		statRows.get(4).addChild(tbStatPe);
 		statRows.get(4).addChild(tbStatWi);
 		statRows.get(4).addChild(tbStatAr);

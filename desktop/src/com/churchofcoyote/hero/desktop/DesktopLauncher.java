@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setWindowedMode(Graphics.width, Graphics.height);
 		config.setWindowSizeLimits(UIManager.MIN_RESIZE_X, UIManager.MIN_RESIZE_Y, -1, -1);
+		//config.setMaximized(true);
 		new Lwjgl3Application(new HeroGame(), config);
 	}
 }

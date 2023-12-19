@@ -164,7 +164,11 @@ public class GameLoop implements GameLogic, InputProcessor {
 		boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
 		boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
 		boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
-		queuedKeyDown.add(new QueuedKeypress(keycode, shift, ctrl, alt));
+		if (alt && keycode == Input.Keys.ENTER) {
+			Graphics.swapFullscreen();
+		} else {
+			queuedKeyDown.add(new QueuedKeypress(keycode, shift, ctrl, alt));
+		}
 		return false;
 	}
 
