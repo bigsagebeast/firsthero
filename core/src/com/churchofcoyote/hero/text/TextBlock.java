@@ -276,7 +276,12 @@ public class TextBlock implements GameLogic {
 					buffer.dispose();
 				}
 				g.endBatch();
-				buffer = new FrameBuffer(Format.RGBA8888, Graphics.width, Graphics.height, false);
+				try {
+					buffer = new FrameBuffer(Format.RGBA8888, Graphics.width, Graphics.height, false);
+				} catch (Exception e) {
+					buffer = null;
+					return;
+				}
 				texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Graphics.width, Graphics.height);
 				//texRegion.flip(false, true);
 				

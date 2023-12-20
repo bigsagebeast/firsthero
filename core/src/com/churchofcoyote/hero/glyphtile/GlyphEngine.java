@@ -241,7 +241,9 @@ public class GlyphEngine implements GameLogic {
             try {
                 buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Graphics.width, Graphics.height, false);
             } catch (Exception e) {
-                throw new RuntimeException(e.getMessage() + " (width: " + Graphics.width + ", height: " + Graphics.height + ")", e);
+                //throw new RuntimeException(e.getMessage() + " (width: " + Graphics.width + ", height: " + Graphics.height + ")", e);
+                buffer = null;
+                return;
             }
             texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, size.x, size.y);
 

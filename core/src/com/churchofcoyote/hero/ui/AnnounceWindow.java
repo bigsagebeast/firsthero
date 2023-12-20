@@ -35,6 +35,13 @@ public class AnnounceWindow extends UIWindow {
 		parent.compile();
 	}
 
+	@Override
+	public void close() {
+		if (parent != null) {
+			parent.close();
+		}
+	}
+
 	public void addLine(String line) {
 		WindowEngine.setDirty(UIManager.NAME_ANNOUNCEMENTS);
 		if (line.isEmpty()) {

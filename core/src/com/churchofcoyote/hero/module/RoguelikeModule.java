@@ -71,7 +71,17 @@ public class RoguelikeModule extends Module {
 		uiEngine.addBlock(experienceWindow.getTextBlockParent());
 		uiEngine.addBlock(statBarWindow.getTextBlockParent());
 	}
-	
+
+	@Override
+	public void end() {
+		super.end();
+		//mainWindow.close();
+		announceWindow.close();
+		equipWindow.close();
+		hitPointWindow.close();
+		experienceWindow.close();
+		statBarWindow.close();
+	}
 	
 	public void announce(String s) {
 		announceWindow.addLine(s);

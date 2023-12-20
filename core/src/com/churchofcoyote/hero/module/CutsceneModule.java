@@ -31,16 +31,6 @@ public class CutsceneModule extends Module {
 
 	public CutsceneModule() {
 		scene = new Scene();
-		scene.artFile = "art/Nemesis-kneeling.png";
-		scene.secondsBeforeFade = 1.0f;
-		scene.fadeTime = 1.0f;
-		scene.letterTime = 0.05f;
-		scene.text.add("My dearest sibling, let me tell you a story.@");
-		scene.text.add("It's called, \"The farmboy who repelled the invaders\".@");
-		scene.text.add("It's a small story, one told to children, back when");
-		scene.text.add("the Bodnam still told stories, back in the Old King's");
-		scene.text.add("era, before the worlds turned grey.@");
-		scene.text.add("                                          [Enter]");
 	}
 	
 	@Override
@@ -80,10 +70,42 @@ public class CutsceneModule extends Module {
 
 		needInit = false;
 	}
-	
+
+	public void loadIntro1() {
+		scene.artFile = "art/Nemesis-kneeling.png";
+		scene.secondsBeforeFade = 1.0f;
+		scene.fadeTime = 1.0f;
+		scene.letterTime = 0.05f;
+		scene.text.clear();
+		scene.text.add("My dearest sibling, let me tell you a story.@");
+		scene.text.add("It's called, \"The farmboy who repelled the invaders\".@");
+		scene.text.add("It's a small story, one told to children, back when");
+		scene.text.add("the Bodnam still told stories, back in the Old King's");
+		scene.text.add("era, before the worlds turned grey.@");
+		scene.text.add("                                          [Enter]");
+	}
+
+	public void loadIntro2() {
+		String playerName = "(YOUR NAME)";
+		scene.artFile = "art/Nemesis-kneeling.png";
+		scene.secondsBeforeFade = 1.0f;
+		scene.fadeTime = 1.0f;
+		scene.letterTime = 0.05f;
+		scene.text.clear();
+		scene.text.add("And so, the farmboy prayed to " + playerName + ",@");
+		scene.text.add("first and last to take up the sword. It's such a");
+		scene.text.add("small story, I'm not even in it! But this one");
+		scene.text.add("happened, you know. In a world not so far away. Your");
+		scene.text.add("light is still here, isn't it?@@");
+		scene.text.add("");
+		scene.text.add("Please... Come back to us.@");
+		scene.text.add("                                          [Enter]");
+	}
+
 	@Override
 	public void end() {
 		textEngine.purge();
+		GameLoop.flowModule.start();
 		super.end();
 	}
 	
@@ -97,7 +119,6 @@ public class CutsceneModule extends Module {
 		if (keycode == Keys.ENTER) {
 			if (lastSeconds > letterEndTime) {
 				end();
-				GameLoop.titleModule.start();
 			}
 		}
 		return true;

@@ -73,4 +73,10 @@ public abstract class ProgressWindow extends UIWindow {
             sb.append("#");
         return sb.toString();
     }
+
+    @Override
+    public void close() {
+        parentBlock.close();
+    }
+
 }

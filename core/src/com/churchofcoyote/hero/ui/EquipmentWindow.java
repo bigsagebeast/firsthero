@@ -76,4 +76,9 @@ public class EquipmentWindow extends UIWindow {
 		}
 		parent.compile();
 	}
+
+	@Override
+	public void close() {
+		parent.close();
+	}
 }

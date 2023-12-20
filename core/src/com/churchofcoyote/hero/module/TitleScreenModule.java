@@ -7,7 +7,7 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
-import com.churchofcoyote.hero.logic.TextEngine;
+import com.churchofcoyote.hero.roguelike.game.Profile;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.text.effect.TextEffectGranularity;
 import com.churchofcoyote.hero.text.effect.TextEffectJitter;
@@ -139,9 +139,8 @@ public class TitleScreenModule extends Module {
 					case 1:
 						IntroModule.musicResource.stop();
 						end();
-						GameLoop.roguelikeModule.initialize();
-						GameLoop.roguelikeModule.start();
-						GameLoop.roguelikeModule.game.startIntro();
+						Profile.setString("mode", "newGameIntroQuest");
+						GameLoop.flowModule.start();
 						break;
 					case 2:
 						IntroModule.musicResource.stop();
@@ -158,7 +157,8 @@ public class TitleScreenModule extends Module {
 					case 4:
 						IntroModule.musicResource.stop();
 						end();
-						GameLoop.cutsceneModule.start();
+						Profile.setString("mode", "newGameCutscene1");
+						GameLoop.flowModule.start();
 						break;
 					case 5:
 						IntroModule.musicResource.stop();

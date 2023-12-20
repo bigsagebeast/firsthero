@@ -180,4 +180,10 @@ public class StatBarWindow extends UIWindow {
 		WindowEngine.setDirty(UIManager.NAME_STATBOX);
 		parent.compile();
 	}
+
+	@Override
+	public void close() {
+		parent.close();
+	}
+
 }

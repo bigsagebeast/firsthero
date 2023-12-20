@@ -43,6 +43,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final DirectionModule directionModule = new DirectionModule();
 	public static final StoryModule storyModule = new StoryModule();
 	public static final CutsceneModule cutsceneModule = new CutsceneModule();
+	public static final FlowModule flowModule = new FlowModule();
 	private List<Module> allModules = new ArrayList<Module>();
 	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
@@ -75,6 +76,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		Module.setEngines(textEngine, uiEngine, effectEngine);
 		UIManager.resize(Graphics.width, Graphics.height);
 		allModules = new ArrayList<Module>();
+		allModules.add(flowModule);
 		allModules.add(cutsceneModule);
 		allModules.add(popupModule);
 		allModules.add(dialogueBoxModule);
@@ -142,14 +144,18 @@ public class GameLoop implements GameLogic, InputProcessor {
 			cutsceneModule.render(g, gState);
 		}
 	    g.startBatch();
-		glyphEngine.render(g, gState);
+		if (roguelikeModule.isRunning()) {
+			glyphEngine.render(g, gState);
+		}
 		HeroGame.updateTimer("ge", System.currentTimeMillis() - start);
 		start = System.currentTimeMillis();
 		uiEngine.render(g, gState);
 		HeroGame.updateTimer("uie", System.currentTimeMillis() - start);
 		WindowEngine.setAllClean();
 		start = System.currentTimeMillis();
-		WindowEngine.render(g);
+		if (roguelikeModule.isRunning()) {
+			WindowEngine.render(g);
+		}
 		HeroGame.updateTimer("we", System.currentTimeMillis() - start);
 		g.endBatch();
 		start = System.currentTimeMillis();

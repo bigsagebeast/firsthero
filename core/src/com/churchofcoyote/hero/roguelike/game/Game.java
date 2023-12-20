@@ -66,7 +66,8 @@ public class Game {
 		changeLevel(dungeon.getLevel("start"), new Point(26, 27));
 		level.addEntityWithStacking(pitchfork, new Point(29, 24));
 		level = dungeon.getLevel("start");
-		level.addEntityWithStacking(itempedia.create("feature.intro.altar"), new Point(15, 22));
+		Level cave = dungeon.getLevel("cave");
+		cave.addEntityWithStacking(itempedia.create("feature.intro.altar"), new Point(4, 3));
 		level.finalize();
 	}
 
@@ -113,6 +114,7 @@ public class Game {
 		level.addEntityWithStacking(player.getEntity(), playerPos);
 
 		GameLoop.glyphEngine.initializeLevel(level);
+		level.finalize();
 		passTime(0);
 	}
 
@@ -132,6 +134,7 @@ public class Game {
 		level = nextLevel;
 		Point playerPos = nextLevel.findTransitionTo(fromKey).loc;
 		level.addEntityWithStacking(player.getEntity(), playerPos);
+		level.finalize();
 
 		GameLoop.glyphEngine.initializeLevel(level);
 		passTime(0);
@@ -140,6 +143,7 @@ public class Game {
 	public void changeLevel(Level nextLevel) {
 		level = nextLevel;
 		GameLoop.glyphEngine.initializeLevel(level);
+		level.finalize();
 		passTime(0);
 	}
 

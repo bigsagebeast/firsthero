@@ -17,10 +17,12 @@ public class PopupModule extends Module {
     private GfxRectBorder background2;
     private float margin = 10f;
     private boolean displayingPopup = false;
+    private Runnable runOnCompletion;
 
     List<PopupOrder> orders = new ArrayList<PopupOrder>();
 
     public void handleOrder(PopupOrder order) {
+        runOnCompletion = order.runOnCompletion;
         displayingPopup = true;
         if (order.entity != null) {
             GfxMovingCircle trackingCircle = new GfxMovingCircle(order.entity,
@@ -62,12 +64,20 @@ public class PopupModule extends Module {
         this.start();
     }
 
+    public void createPopup(String text, float time, Entity entity, float shrinkTime, Runnable runOnCompletion) {
+        orders.add(new PopupOrder(text, time, entity, shrinkTime, runOnCompletion));
+        this.start();
+    }
+
     @Override
     public void update(GameState state) {
         if (displayingPopup && state.getSeconds() > endTime && this.isRunning()) {
             background1.active = false;
             background2.active = false;
             displayingPopup = false;
+            if (runOnCompletion != null) {
+                runOnCompletion.run();
+            }
         }
         if (!this.displayingPopup && orders.size() > 0) {
             PopupOrder order = orders.get(0);
@@ -89,6 +99,7 @@ public class PopupModule extends Module {
     }
 
     public class PopupOrder {
+        public Runnable runOnCompletion;
         public PopupOrder(String text, float time) {
             this.text = text;
             this.time = time;
@@ -99,6 +110,14 @@ public class PopupModule extends Module {
             this.time = time;
             this.entity = entity;
             this.shrinkTime = shrinkTime;
+        }
+        public PopupOrder(String text, float time, Entity entity, float shrinkTime, Runnable runOnCompletion)
+        {
+            this.text = text;
+            this.time = time;
+            this.entity = entity;
+            this.shrinkTime = shrinkTime;
+            this.runOnCompletion = runOnCompletion;
         }
         String text;
         float time;
