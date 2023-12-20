@@ -7,6 +7,7 @@ public class GlyphGrid {
 
 	private GlyphTile[][] glyph;
 	private ArrayList<GlyphTile>[][] glyphBackground;
+	private float[][] jitter;
 
 	// used by rendering engine
 	private boolean dirty = true;
@@ -25,9 +26,11 @@ public class GlyphGrid {
 	private void initialize() {
 		glyph = new GlyphTile[width][];
 		glyphBackground = new ArrayList[width][];
+		jitter = new float[width][];
 		for (int i=0; i<width; i++) {
 			glyph[i] = new GlyphTile[height];
 			glyphBackground[i] = new ArrayList[height];
+			jitter[i] = new float[height];
 			for (int j=0; j<height; j++) {
 				glyphBackground[i][j] = new ArrayList<GlyphTile>();
 			}
@@ -48,6 +51,17 @@ public class GlyphGrid {
 			return GlyphTile.BLANK;
 		}
 		return glyph[x][y];
+	}
+
+	public void setJitter(int x, int y, float val) {
+		jitter[x][y] = val;
+	}
+
+	public float getJitter(int x, int y) {
+		if (x < 0 || y < 0 || x >= width || y >= height) {
+			return 0;
+		}
+		return jitter[x][y];
 	}
 	
 	public void put(GlyphTile g, int x, int y) {

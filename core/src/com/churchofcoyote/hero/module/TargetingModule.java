@@ -175,6 +175,7 @@ public class TargetingModule extends Module {
                 int deltaY = Math.abs(origin.y - targetTile.y);
                 float signX = ray.get(0).x > ray.get(ray.size()-1).x ? 1 : -1;
                 float signY = ray.get(0).y > ray.get(ray.size()-1).y ? 1 : -1;
+                // TODO it's giving angles along the wrong places
                 if (deltaX == 0 || deltaY / deltaX > 2) {
                     symbol = "|";
                 } else if (deltaY / deltaX < 0.5) {
@@ -191,7 +192,7 @@ public class TargetingModule extends Module {
             }
 
             // TODO better font centering calculation
-            TextBlock tb = new TextBlock(symbol, null,
+            TextBlock tb = new TextBlock(symbol, UIManager.NAME_MAIN_WINDOW,
                     fontSize,
                     0, 0, centerPixel.x - (fontSize / 3), centerPixel.y - (fontSize / 3),
                     color);

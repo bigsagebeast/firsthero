@@ -29,7 +29,7 @@ public class PopupModule extends Module {
         }
 
         TextBlock popupBlock = new TextBlock(order.text, null,
-                36, 10, 5, Color.GRAY, 0f, 0f).fade(order.time-1, order.time);
+                36, 10, 5, Color.CYAN, 0f, 0f).fade(order.time-1, order.time);
         textEngine.addBlock(popupBlock);
 
         background1 = new GfxRectFilled(Color.BLACK,

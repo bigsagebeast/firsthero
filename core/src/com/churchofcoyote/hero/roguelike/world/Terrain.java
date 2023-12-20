@@ -29,6 +29,7 @@ public class Terrain {
 		addTerrain("dot", "dirt", true, true, "terrain.dot", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
 		addTerrain("dirt1", "dirt", true, true, "terrain.dirt1", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
 		addTerrain("dirt2", "dirt", true, true, "terrain.dirt2", new PaletteEntry(Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
+		addTerrain("farmland", "farmland", true, true, "terrain.farmland", new PaletteEntry(Palette.COLOR_TAN), null);
 		addTerrain("water", "water", true, false, "terrain.water", new PaletteEntry(Palette.COLOR_BLUE, Palette.COLOR_CERULEAN, Palette.COLOR_CYAN, Palette.COLOR_TRANSPARENT), "water");
 		addTerrain("grass", "grass", true, true, "terrain.grass", new PaletteEntry(Palette.COLOR_LIGHTGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_CHARTREUSE, Palette.COLOR_TRANSPARENT), null);
 		addTerrain("wall", "a wall", false, false, "wall.stone", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_TAN, Palette.COLOR_TRANSPARENT), "wall");

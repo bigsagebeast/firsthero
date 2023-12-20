@@ -22,6 +22,7 @@ import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -62,9 +63,11 @@ public class Game {
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.generateFromFile("cave", "cave.fhm");
-		changeLevel(dungeon.getLevel("start"), new Point(31, 46));
-		level.addEntityWithStacking(pitchfork, new Point(35, 43));
+		changeLevel(dungeon.getLevel("start"), new Point(26, 27));
+		level.addEntityWithStacking(pitchfork, new Point(29, 24));
 		level = dungeon.getLevel("start");
+		level.addEntityWithStacking(itempedia.create("feature.intro.altar"), new Point(15, 22));
+		level.finalize();
 	}
 
 	public void startAurex() {
@@ -72,6 +75,7 @@ public class Game {
 		player.setEntityId(pc.entityId);
 		dungeon.generateFromFile("aurex", "aurex.fhm");
 		changeLevel(dungeon.getLevel("aurex"), new Point(107, 30));
+		level.finalize();
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			GameLoop.roguelikeModule.start();
 		}
@@ -82,6 +86,7 @@ public class Game {
 		player.setEntityId(pc.entityId);
 		dungeon.generateClassic("dungeon.1");
 		changeLevel("dungeon.1", "out");
+		level.finalize();
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			GameLoop.roguelikeModule.start();
 		}
@@ -416,6 +421,27 @@ public class Game {
 		GameLoop.targetingModule.begin(tm, this::handleTarget);
 	}
 
+	public void cmdPray() {
+		boolean prayingAtProc = false;
+		for (Entity e : getLevel().getEntitiesOnTile(getPlayerEntity().pos)) {
+			for (Proc p : e.procs) {
+				Boolean canPray = p.canPrayAt(e, getPlayerEntity());
+				if (canPray == Boolean.TRUE) {
+					prayingAtProc = true;
+					p.prayAt(e, getPlayerEntity());
+					break;
+				}
+			}
+			if (prayingAtProc) {
+				// only pray at the first prayable proc we find
+				break;
+			}
+		}
+		if (!prayingAtProc) {
+			Game.announce("You pray.  Nothing happens yet.");
+		}
+	}
+
 	public void handleTarget(Point targetPoint) {
 		if (targetPoint == null) {
 			announce("Cancelled.");
@@ -593,6 +619,7 @@ public class Game {
 	private static void movePlayer(int tx, int ty) {
 		Point newPos = new Point(tx, ty);
 		player.getEntity().pos = newPos;
+
 		int oldRoomId = player.getEntity().roomId;
 		int newRoomId = level.cell(newPos).roomId;
 		if (player.getEntity().roomId != newRoomId) {

@@ -250,14 +250,17 @@ public class RoguelikeModule extends Module {
 		}
 		if (shift) {
 			switch (keycode) {
+				case Keys.L:
+					game.cmdLoad();
+					break;
+				case Keys.P:
+					game.cmdPray();
+					break;
 				case Keys.R:
 					game.cmdRegenerate();
 					break;
 				case Keys.S:
 					game.cmdSave();
-					break;
-				case Keys.L:
-					game.cmdLoad();
 					break;
 				case Keys.PERIOD:
 					game.cmdStairsDown();
@@ -291,6 +294,7 @@ public class RoguelikeModule extends Module {
 		box.addItem(",             Pick up an item", ",");
 		box.addItem("<             Go up stairs", "<");
 		box.addItem(">             Go down stairs", ">");
+		box.addItem("P             Pray", "P");
 		box.autoHeight();
 		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handlePopupCommands);
 	}
@@ -345,6 +349,9 @@ public class RoguelikeModule extends Module {
 				break;
 			case ">":
 				game.cmdStairsDown();
+				break;
+			case "P":
+				game.cmdPray();
 				break;
 			default:
 				break;

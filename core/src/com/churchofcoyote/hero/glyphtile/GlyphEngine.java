@@ -198,6 +198,8 @@ public class GlyphEngine implements GameLogic {
                         } else {
                             grid.put(terrainGlyph, x, y);
                         }
+
+                        grid.setJitter(x, y, level.getJitterAt(new Point(x, y)));
                     }
                 }
             }
@@ -236,7 +238,11 @@ public class GlyphEngine implements GameLogic {
             if (buffer != null) {
                 buffer.dispose();
             }
-            buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Graphics.width, Graphics.height, false);
+            try {
+                buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Graphics.width, Graphics.height, false);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage() + " (width: " + Graphics.width + ", height: " + Graphics.height + ")", e);
+            }
             texRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, size.x, size.y);
 
             g.endBatch();
@@ -245,16 +251,25 @@ public class GlyphEngine implements GameLogic {
 
             for (int x = -2; x < widthInTiles+2; x++) {
                 for (int y = -2; y < heightInTiles+2; y++) {
-                    int tileX = x + offsetX - widthInTiles;
-                    int tileY = y + offsetY - heightInTiles;
                     if (grid.withinBounds((int)(x + offsetX - widthInTiles/2), (int)(y + offsetY - heightInTiles/2))) {
                         // TODO background
                         GlyphTile glyph = grid.get((int)(x + offsetX - widthInTiles/2), (int)(y + offsetY - heightInTiles/2));
                         if (glyph != null) {
-                            Texture drawTexture = level.cell((int)(x + offsetX - widthInTiles/2), (int)(y + offsetY - heightInTiles/2)).visible() ? glyph.texture : glyph.grayTexture;
+                            int cellX = (int)(x + offsetX - widthInTiles/2);
+                            int cellY = (int)(y + offsetY - heightInTiles/2);
+                            float jitterPotential = grid.getJitter(cellX, cellY);
+                            int jitterX = 0, jitterY = 0;
+                            if (jitterPotential > 0.0f) {
+                                float jitterPower = 0.1f;
+                                double jitterMagnitude = Math.pow(Game.random.nextFloat() * jitterPotential, jitterPower);
+                                double angle = Game.random.nextFloat() * 2 * Math.PI;
+                                jitterX = (int) (jitterMagnitude * Math.cos(angle));
+                                jitterY = (int) (jitterMagnitude * Math.sin(angle));
+                            }
+                            Texture drawTexture = level.cell(cellX, cellY).visible() ? glyph.texture : glyph.grayTexture;
                             g.batch().draw(drawTexture,
-                                    RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH * zoom + marginX,
-                                    RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT * zoom + marginY,
+                                    RENDER_OFFSET_X + x * GlyphEngine.GLYPH_WIDTH * zoom + marginX + jitterX,
+                                    RENDER_OFFSET_Y + y * GlyphEngine.GLYPH_HEIGHT * zoom + marginY + jitterY,
                                     GlyphEngine.GLYPH_WIDTH * zoom, GlyphEngine.GLYPH_HEIGHT * zoom);
                         }
                     }
@@ -288,7 +303,9 @@ public class GlyphEngine implements GameLogic {
     }
 
     public float getTileCenterPixelY(int x, int y) {
-        return (y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y;
+        // TODO what is this extra offset???
+        float extraOffset = -30f;
+        return (y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y + extraOffset;
     }
 
     public Point getTileCenterPixel(Point p) {
@@ -297,9 +314,11 @@ public class GlyphEngine implements GameLogic {
     }
 
     public Point getTileCenterPixelInWindow(Point p) {
+        // TODO what is this extra offset???
+        float extraOffset = -30f;
         Point windowOffset = WindowEngine.getOffset(UIManager.NAME_MAIN_WINDOW);
         return new Point((int)((p.x - leftTile() + 0.5f) * tileWidth() + marginX + RENDER_OFFSET_X + windowOffset.x),
-                (int)((p.y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y + windowOffset.y));
+                (int)((p.y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y + windowOffset.y + extraOffset));
     }
 
     public float getTilePixelX(int x, int y) {

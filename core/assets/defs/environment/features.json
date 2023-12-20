@@ -74,6 +74,19 @@
           "obstructVision": true
         }
       }
+    },
+    "feature.altar": {
+      "name": "altar",
+      "glyphName": "feature.altar",
+      "isFeature": true,
+      "palette": [
+        "gray",
+        "purple",
+        "pink"
+      ],
+      "procs": {
+        "environment.ProcAltar": { }
+      }
     }
   }
 }

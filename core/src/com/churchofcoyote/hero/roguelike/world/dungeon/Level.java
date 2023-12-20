@@ -29,6 +29,7 @@ public class Level {
 	public int maxForWander = DungeonGenerator.NUM_MONSTERS;
 	public List<Room> rooms = new ArrayList<>();
 	public Map<Integer, List<Point>> roomMap = new HashMap<>();
+	public Map<Point, Float> jitters = new HashMap<>();
 	
 	public Level(String name, int width, int height) {
 		this.name = name;
@@ -85,6 +86,11 @@ public class Level {
 				allCells[(x*height) + y] = cell[x][y];
 			}
 		}
+	}
+
+	// call after the level is all set up
+	public void finalize() {
+		recalculateJitter();
 	}
 	
 	public void addTransition(LevelTransition transition) {
@@ -464,4 +470,30 @@ public class Level {
 		return null;
 	}
 
+	public float getJitterAt(Point p) {
+		if (!withinBounds(p)) {
+			return 0f;
+		}
+		float diminishPower = 0.7f;
+		float floor = 0.3f;
+		float totalJitter = 0f;
+		for (Point jitterPoint : jitters.keySet()) {
+			float distance = p.distance(jitterPoint);
+			totalJitter += jitters.get(jitterPoint) * Math.pow(diminishPower, distance);
+		}
+		if (totalJitter > floor) {
+			return totalJitter;
+		}
+		return 0f;
+	}
+
+	public void recalculateJitter() {
+		jitters.clear();
+		for (EntityProc ep : getEntityProcs()) {
+			Float jitter = ep.proc.getJitter(ep.entity);
+			if (jitter != null) {
+				jitters.put(ep.entity.pos, jitter);
+			}
+		}
+	}
 }

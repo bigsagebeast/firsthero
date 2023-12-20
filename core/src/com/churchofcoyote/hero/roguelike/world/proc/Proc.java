@@ -147,12 +147,22 @@ public class Proc {
     public Boolean preBeEaten(Entity entity, Entity actor) { return null; }
     public void postBeEaten(Entity entity, Entity actor) { }
 
+    // null actor = can you even consider it?  For precalculating a list
+    public Boolean canPrayAt(Entity entity, Entity actor) { return null; }
+    public void prayAt(Entity entity, Entity actor) { }
+
+    // null actor and target = can you even consider it?  For precalculating a list
+    public Boolean canOfferAt(Entity entity, Entity actor, Entity target) { return null; }
+    public void offerAt(Entity entity, Entity actor, Entity target) { }
+
     // Is this a valid target to draw an element from?  If null, ignore it.
     public Element providesElement(Entity entity) { return null; }
     // Attempt to draw up to 'max' charges.  Return the actual charges that were drawn.
     public int drawElement(Entity entity, Entity actor, int requested) { return 0; }
 
     public void beDestroyed() {}
+
+    public Float getJitter(Entity entity) { return null; }
 
     public Proc clone() { return null; }
 }

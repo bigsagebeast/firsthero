@@ -32,6 +32,19 @@
       "category": "food",
       "sortOrder": 0,
       "stackable": false
+    },
+    "feature.intro.altar": {
+      "name": "altar",
+      "glyphName": "feature.altar",
+      "isFeature": true,
+      "palette": [
+        "gray",
+        "purple",
+        "pink"
+      ],
+      "procs": {
+        "unique.ProcIntroAltar": { }
+      }
     }
   }
 }

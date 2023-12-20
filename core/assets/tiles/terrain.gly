@@ -1,4 +1,4 @@
-1 44
+1 45
 0 0 terrain.grass
 0 1 wall.stone:x
 0 2 wall.stone:n
@@ -43,3 +43,4 @@
 0 41 terrain.water:nwes
 0 42 terrain.dirt1
 0 43 terrain.dirt2
+0 44 terrain.farmland
