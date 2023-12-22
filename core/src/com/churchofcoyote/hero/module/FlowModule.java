@@ -26,8 +26,14 @@ public class FlowModule extends Module {
                 GameLoop.cutsceneModule.start();
                 break;
             case "newGameAurexFirstVisit":
+                GameLoop.roguelikeModule.initialize();
                 GameLoop.roguelikeModule.start();
                 GameLoop.roguelikeModule.game.startAurex();
+                break;
+            case "enterWorld":
+                GameLoop.roguelikeModule.initialize();
+                GameLoop.roguelikeModule.start();
+                GameLoop.roguelikeModule.game.startCaves();
                 break;
         }
         end();

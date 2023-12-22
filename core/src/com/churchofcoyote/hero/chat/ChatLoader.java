@@ -1,4 +1,4 @@
-package com.churchofcoyote.hero.storymanager;
+package com.churchofcoyote.hero.chat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,17 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class StoryLoader {
+public class ChatLoader {
     // Load text from files
     // Turn text into StoryPage
 
-    public static StoryPage createPage(StoryBook book, String text) {
-        StoryPage page = new StoryPage();
+    public static ChatPage createPage(ChatBook book, String text) {
+        ChatPage page = new ChatPage();
 
         ObjectMapper om = new ObjectMapper();
 
         try {
-            page = om.readValue(text, StoryPage.class);
+            page = om.readValue(text, ChatPage.class);
             book.put(page.key, page);
         } catch (JsonProcessingException e) {
             // TODO setupexception
@@ -30,7 +30,7 @@ public class StoryLoader {
         return page;
     }
 
-    public static void createPages(StoryBook book, String filePath) {
+    public static void createPages(ChatBook book, String filePath) {
         ObjectMapper om = new ObjectMapper();
         try {
             Map<String, List<Map<String, Object>>> jsonMap = om.readValue(
@@ -43,20 +43,20 @@ public class StoryLoader {
 
             // Now you can work with the list of StoryPage objects
             for (Map<String, Object> pageMap : pagesList) {
-                StoryPage storyPage = om.convertValue(pageMap, StoryPage.class);
+                ChatPage chatPage = om.convertValue(pageMap, ChatPage.class);
 
                 // Explicitly deserialize the "links" field as a list of StoryLink objects
                 List<Map<String, Object>> linksList = (List<Map<String, Object>>) pageMap.get("links");
                 if (linksList != null) {
-                    List<StoryLink> storyLinks = new ArrayList<>();
+                    List<ChatLink> chatLinks = new ArrayList<>();
                     for (Map<String, Object> linkMap : linksList) {
-                        StoryLink storyLink = om.convertValue(linkMap, StoryLink.class);
-                        storyLinks.add(storyLink);
+                        ChatLink chatLink = om.convertValue(linkMap, ChatLink.class);
+                        chatLinks.add(chatLink);
                     }
-                    storyPage.links = storyLinks;
+                    chatPage.links = chatLinks;
                 }
 
-                book.add(storyPage);
+                book.add(chatPage);
             }
         } catch (IOException e) {
             // TODO setupexception

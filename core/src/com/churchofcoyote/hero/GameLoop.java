@@ -21,8 +21,8 @@ import com.churchofcoyote.hero.logic.EffectEngine;
 import com.churchofcoyote.hero.logic.TextEngine;
 import com.churchofcoyote.hero.module.*;
 import com.churchofcoyote.hero.roguelike.world.DefinitionLoader;
-import com.churchofcoyote.hero.storymanager.StoryBook;
-import com.churchofcoyote.hero.storymanager.StoryLoader;
+import com.churchofcoyote.hero.chat.ChatBook;
+import com.churchofcoyote.hero.chat.ChatLoader;
 import com.churchofcoyote.hero.ui.UIManager;
 import com.churchofcoyote.hero.util.QueuedKeypress;
 
@@ -32,7 +32,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static TextEngine textEngine = new TextEngine();
 	EffectEngine effectEngine = new EffectEngine();
 	public static final GlyphEngine glyphEngine = new GlyphEngine();
-	public static final StoryBook storyBook = new StoryBook();
+	public static final ChatBook CHAT_BOOK = new ChatBook();
 
 	public static final IntroModule introModule = new IntroModule();
 	public static final TitleScreenModule titleModule = new TitleScreenModule();
@@ -41,9 +41,10 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final DialogueBoxModule dialogueBoxModule = new DialogueBoxModule();
 	public static final TargetingModule targetingModule = new TargetingModule();
 	public static final DirectionModule directionModule = new DirectionModule();
-	public static final StoryModule storyModule = new StoryModule();
+	public static final ChatModule CHAT_MODULE = new ChatModule();
 	public static final CutsceneModule cutsceneModule = new CutsceneModule();
 	public static final FlowModule flowModule = new FlowModule();
+	public static final TextEntryModule textEntryModule = new TextEntryModule();
 	private List<Module> allModules = new ArrayList<Module>();
 	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
@@ -69,23 +70,24 @@ public class GameLoop implements GameLogic, InputProcessor {
 			throw new RuntimeException(e);
 		}
 
-		StoryLoader.createPages(storyBook, "story/story.json");
+		ChatLoader.createPages(CHAT_BOOK, "story/story.json");
 
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.setVSync(false);
 		Module.setEngines(textEngine, uiEngine, effectEngine);
 		UIManager.resize(Graphics.width, Graphics.height);
 		allModules = new ArrayList<Module>();
-		allModules.add(flowModule);
+		allModules.add(textEntryModule);
 		allModules.add(cutsceneModule);
 		allModules.add(popupModule);
 		allModules.add(dialogueBoxModule);
-		allModules.add(storyModule);
+		allModules.add(CHAT_MODULE);
 		allModules.add(directionModule);
 		allModules.add(targetingModule);
 		allModules.add(introModule);
 		allModules.add(titleModule);
 		allModules.add(roguelikeModule);
+		allModules.add(flowModule);
 
 		introModule.start();
 	}

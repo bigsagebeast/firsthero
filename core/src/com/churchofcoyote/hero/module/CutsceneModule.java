@@ -9,6 +9,7 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
+import com.churchofcoyote.hero.roguelike.game.Profile;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.text.effect.TextEffectGranularity;
 
@@ -87,6 +88,9 @@ public class CutsceneModule extends Module {
 
 	public void loadIntro2() {
 		String playerName = "(YOUR NAME)";
+		if (Profile.getString("name") != null) {
+			playerName = Profile.getString("name");
+		}
 		scene.artFile = "art/Nemesis-kneeling.png";
 		scene.secondsBeforeFade = 1.0f;
 		scene.fadeTime = 1.0f;
@@ -95,8 +99,8 @@ public class CutsceneModule extends Module {
 		scene.text.add("And so, the farmboy prayed to " + playerName + ",@");
 		scene.text.add("first and last to take up the sword. It's such a");
 		scene.text.add("small story, I'm not even in it! But this one");
-		scene.text.add("happened, you know. In a world not so far away. Your");
-		scene.text.add("light is still here, isn't it?@@");
+		scene.text.add("happened, you know. In a world not so far away.@");
+		scene.text.add("Your light is still here, isn't it?@@");
 		scene.text.add("");
 		scene.text.add("Please... Come back to us.@");
 		scene.text.add("                                          [Enter]");

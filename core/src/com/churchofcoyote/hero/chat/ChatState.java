@@ -1,22 +1,22 @@
-package com.churchofcoyote.hero.storymanager;
+package com.churchofcoyote.hero.chat;
 
 import java.util.HashMap;
 
-public class StoryState {
+public class ChatState {
     public static HashMap<String, Integer> intMap = new HashMap<>();
     public static HashMap<String, String> stringMap = new HashMap<>();
 
-    public static boolean compare(StoryComparator comparator) {
+    public static boolean compare(ChatComparator comparator) {
         try {
-            if (comparator.op == StoryComparator.Operation.EXSTR) {
+            if (comparator.op == ChatComparator.Operation.EXSTR) {
                 return stringMap.containsKey(comparator.variableA);
-            } else if (comparator.op == StoryComparator.Operation.NEXSTR) {
+            } else if (comparator.op == ChatComparator.Operation.NEXSTR) {
                 return !stringMap.containsKey(comparator.variableA);
-            } else if (comparator.op == StoryComparator.Operation.EX) {
+            } else if (comparator.op == ChatComparator.Operation.EX) {
                 return intMap.containsKey(comparator.variableA);
-            } else if (comparator.op == StoryComparator.Operation.NEX) {
+            } else if (comparator.op == ChatComparator.Operation.NEX) {
                 return !intMap.containsKey(comparator.variableA);
-            } else if (comparator.op == StoryComparator.Operation.EQSTR || comparator.op == StoryComparator.Operation.NESTR) {
+            } else if (comparator.op == ChatComparator.Operation.EQSTR || comparator.op == ChatComparator.Operation.NESTR) {
                 String a, b;
                 if (comparator.variableA != null) {
                     a = stringMap.get(comparator.variableA);
@@ -44,11 +44,11 @@ public class StoryState {
                 return comparator.op.operate(a, b);
             }
         } catch (Exception e) {
-            throw new StoryException(e);
+            throw new ChatException(e);
         }
     }
 
-    public static void execute(StorySetter setter) {
+    public static void execute(ChatSetter setter) {
         Integer intVal = null;
         String strVal = null;
         if (setter.value != null && setter.value.getClass().isAssignableFrom(Integer.class)) {
@@ -59,7 +59,7 @@ public class StoryState {
         switch (setter.op) {
             case ADDINT:
                 if (intVal == null) {
-                    throw new StoryException("Not an integer: " + setter.toString());
+                    throw new ChatException("Not an integer: " + setter.toString());
                 }
                 if (!intMap.containsKey(setter.var)) {
                     intMap.put(setter.var, 0);
@@ -68,7 +68,7 @@ public class StoryState {
                 break;
             case SUBINT:
                 if (intVal == null) {
-                    throw new StoryException("Not an integer: " + setter.toString());
+                    throw new ChatException("Not an integer: " + setter.toString());
                 }
                 if (!intMap.containsKey(setter.var)) {
                     intMap.put(setter.var, 0);
@@ -77,7 +77,7 @@ public class StoryState {
                 break;
             case SETINT:
                 if (intVal == null) {
-                    throw new StoryException("Not an integer: " + setter.toString());
+                    throw new ChatException("Not an integer: " + setter.toString());
                 }
                 intMap.put(setter.var, intVal);
                 break;
@@ -86,7 +86,7 @@ public class StoryState {
                 break;
             case SETSTR:
                 if (strVal == null) {
-                    throw new StoryException("Not a string: " + setter.toString());
+                    throw new ChatException("Not a string: " + setter.toString());
                 }
                 stringMap.put(setter.var, strVal);
                 break;

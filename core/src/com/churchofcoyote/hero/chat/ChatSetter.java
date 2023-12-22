@@ -1,6 +1,6 @@
-package com.churchofcoyote.hero.storymanager;
+package com.churchofcoyote.hero.chat;
 
-public class StorySetter {
+public class ChatSetter {
     public enum Operation {
         SETSTR,
         REMSTR,

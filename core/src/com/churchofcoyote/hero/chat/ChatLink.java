@@ -1,14 +1,14 @@
-package com.churchofcoyote.hero.storymanager;
+package com.churchofcoyote.hero.chat;
 
 import java.util.ArrayList;
 
-public class StoryLink {
+public class ChatLink {
     public String text;
     public String nextPage = "";
     public boolean terminal = false;
 
-    public ArrayList<StoryComparator> tests = new ArrayList<>();
-    public ArrayList<StorySetter> setters = new ArrayList<>();
+    public ArrayList<ChatComparator> tests = new ArrayList<>();
+    public ArrayList<ChatSetter> setters = new ArrayList<>();
 
     public Object[] codeArgs;
     public String codeClass;
@@ -27,14 +27,14 @@ public class StoryLink {
         sb.append("\"");
         if (!tests.isEmpty()) {
             sb.append(" Tests: [");
-            for (StoryComparator test : tests) {
+            for (ChatComparator test : tests) {
                 sb.append(test.toString());
             }
             sb.append("]");
         }
         if (!tests.isEmpty()) {
             sb.append(" Setters: [");
-            for (StorySetter setter : setters) {
+            for (ChatSetter setter : setters) {
                 sb.append(setter.toString());
             }
             sb.append("]");

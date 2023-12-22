@@ -1,11 +1,11 @@
-package com.churchofcoyote.hero.storymanager;
+package com.churchofcoyote.hero.chat;
 
 import java.util.List;
 
-public class StoryPage {
+public class ChatPage {
     public String key;
     public String text;
-    public List<StoryLink> links;
+    public List<ChatLink> links;
     public boolean auto;
 
     public String toString() {
@@ -15,7 +15,7 @@ public class StoryPage {
             sb.append(" AUTO");
         }
         if (links != null) {
-            for (StoryLink link : links) {
+            for (ChatLink link : links) {
                 sb.append(" ");
                 sb.append(link.toString());
             }

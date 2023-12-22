@@ -22,7 +22,7 @@
         },
         "item.ProcWeaponMelee": {
           "averageDamage": 5,
-          "toHitBonus": 2
+          "toHitBonus": 20
         }
       }
     },

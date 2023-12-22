@@ -1,6 +1,6 @@
-package com.churchofcoyote.hero.storymanager;
+package com.churchofcoyote.hero.chat;
 
-public class StoryComparator {
+public class ChatComparator {
     public Operation op;
     public String variableA;
     public String variableB;

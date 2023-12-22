@@ -7,6 +7,7 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
+import com.churchofcoyote.hero.dialogue.TextEntryBox;
 import com.churchofcoyote.hero.roguelike.game.Profile;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.text.effect.TextEffectGranularity;
@@ -137,10 +138,13 @@ public class TitleScreenModule extends Module {
 						GameLoop.roguelikeModule.game.load();
 						break;
 					case 1:
+						requestName();
+						/*
 						IntroModule.musicResource.stop();
 						end();
 						Profile.setString("mode", "newGameIntroQuest");
 						GameLoop.flowModule.start();
+						 */
 						break;
 					case 2:
 						IntroModule.musicResource.stop();
@@ -188,6 +192,26 @@ public class TitleScreenModule extends Module {
 	@Override
 	public void render(Graphics g, GraphicsState gState) {
 		// TODO Auto-generated method stub
+
+	}
+
+	private void requestName() {
+		IntroModule.musicResource.stop();
+		end();
+
+		TextEntryBox box = new TextEntryBox()
+				.withTitle("Name yourself, God of Heroes!")
+				.withMargins(60, 60);
+		box.autoHeight();
+		GameLoop.textEntryModule.openTextEntryBox(box, this::handleEnterName);
+
+	}
+
+	private void handleEnterName(String name) {
+
+		Profile.setString("name", name);
+		Profile.setString("mode", "newGameCutscene1");
+		GameLoop.flowModule.start();
 
 	}
 

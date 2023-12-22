@@ -87,6 +87,20 @@
       "procs": {
         "environment.ProcAltar": { }
       }
+    },
+    "feature.worldportal": {
+      "name": "world portal",
+      "glyphName": "feature.worldportal",
+      "isFeature": true,
+      "palette": [
+        "orange",
+        "white",
+        "darkgreen",
+        "blue"
+      ],
+      "procs": {
+        "environment.ProcWorldPortal": { }
+      }
     }
   }
 }

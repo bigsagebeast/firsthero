@@ -49,4 +49,4 @@ CREATURES 2
 farmer 24 28 Farmer_husband
 farmer 28 29 Farmer_wife
 TRANSITIONS 1
-down 24 0 cave-entry 30 59
+down 24 0 cave-entry 21 34

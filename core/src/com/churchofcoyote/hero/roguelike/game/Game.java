@@ -22,7 +22,6 @@ import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Point;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -32,28 +31,38 @@ public class Game {
 	private static Level level;
 	private static Player player = new Player();
 	public static RoguelikeModule roguelikeModule;
-	public static DungeonGenerator dungeon = new DungeonGenerator();
-	public static Bestiary bestiary = new Bestiary();
-	public static Itempedia itempedia = new Itempedia();
-	public static UnidMapping unidMapping = new UnidMapping();
+	public static final DungeonGenerator dungeon = new DungeonGenerator();
+	public static final Bestiary bestiary = new Bestiary();
+	public static final Itempedia itempedia = new Itempedia();
+	public static final UnidMapping unidMapping = new UnidMapping();
 	public static long time = 0;
 	public static long lastTurnProc = 0;
 	public static Random random = new Random();
-	public static int ONE_TURN = 1000;
+	public static final int ONE_TURN = 1000;
+	public static boolean initialized = false;
 
 	private Inventory inventory = new Inventory();
 	public Spellbook spellbook = new Spellbook();
 
 	public Game(RoguelikeModule module) {
-		try {
-			BodyPlanpedia.initialize();
-			unidMapping.scan();
-			unidMapping.randomize();
-			unidMapping.apply();
-		} catch (SetupException e) {
-			throw new RuntimeException(e);
-		}
 		Game.roguelikeModule = module;
+		initialize();
+	}
+
+	public void initialize() {
+		time = 0;
+		lastTurnProc = 0;
+		if (!initialized) {
+			initialized = true;
+			try {
+				BodyPlanpedia.initialize();
+				unidMapping.scan();
+				unidMapping.randomize();
+				unidMapping.apply();
+			} catch (SetupException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	public void startIntro() {
@@ -76,6 +85,7 @@ public class Game {
 		player.setEntityId(pc.entityId);
 		dungeon.generateFromFile("aurex", "aurex.fhm");
 		changeLevel(dungeon.getLevel("aurex"), new Point(107, 30));
+		level.addEntityWithStacking(itempedia.create("feature.worldportal"), new Point(105, 30));
 		level.finalize();
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			GameLoop.roguelikeModule.start();
@@ -384,7 +394,7 @@ public class Game {
 				if (chatPage == null) {
 					Game.announce(target.getVisibleNameThe() + " won't talk to you.");
 				} else {
-					GameLoop.storyModule.openStory(chatPage, "` " + target.getVisibleName(), EntityGlyph.getGlyph(target));
+					GameLoop.CHAT_MODULE.openStory(chatPage, "` " + target.getVisibleName(), EntityGlyph.getGlyph(target));
 				}
 				passTime(player.getEntity().moveCost);
 				return;

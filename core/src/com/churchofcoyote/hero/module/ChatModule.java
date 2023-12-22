@@ -9,15 +9,14 @@ import com.churchofcoyote.hero.dialogue.StoryBox;
 import com.churchofcoyote.hero.gfx.GfxRectBorder;
 import com.churchofcoyote.hero.gfx.GfxRectFilled;
 import com.churchofcoyote.hero.glyphtile.GlyphTile;
-import com.churchofcoyote.hero.storymanager.StoryBook;
-import com.churchofcoyote.hero.storymanager.StoryException;
-import com.churchofcoyote.hero.storymanager.StoryLink;
-import com.churchofcoyote.hero.storymanager.StoryPage;
+import com.churchofcoyote.hero.chat.ChatBook;
+import com.churchofcoyote.hero.chat.ChatLink;
+import com.churchofcoyote.hero.chat.ChatPage;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public class StoryModule extends Module {
+public class ChatModule extends Module {
     private float endTime;
     private GfxRectFilled background1;
     private GfxRectBorder background2;
@@ -28,7 +27,7 @@ public class StoryModule extends Module {
 
     private String titleText;
     private GlyphTile titleGlyph;
-    ArrayList<StoryLink> validLinks = new ArrayList<>();
+    ArrayList<ChatLink> validLinks = new ArrayList<>();
 
     public void openStory(String key, String titleText, GlyphTile titleGlyph) {
         this.titleText = titleText;
@@ -38,7 +37,7 @@ public class StoryModule extends Module {
     }
 
     private void openPage(String key) {
-        StoryPage page = StoryBook.get(key);
+        ChatPage page = ChatBook.get(key);
 
         if (page == null) {
             // TODO debug message?
@@ -47,7 +46,7 @@ public class StoryModule extends Module {
             return;
         }
         validLinks.clear();
-        for (StoryLink link : page.links) {
+        for (ChatLink link : page.links) {
             // filter out links that don't meet the conditions
             // 'auto' pages are usually the landing pages, and redirect to real pages based on story flags
             if (page.auto) {
@@ -68,7 +67,7 @@ public class StoryModule extends Module {
                 .withTitle(titleText, titleGlyph)
                 .withText(page.text);
 
-        for (StoryLink link : validLinks) {
+        for (ChatLink link : validLinks) {
             storyBox.addLink(link.text);
         }
 
@@ -105,7 +104,7 @@ public class StoryModule extends Module {
     public void update(GameState state) {
         if (storyBox.isClosed()) {
 
-            StoryLink link = validLinks.get(storyBox.getSelection());
+            ChatLink link = validLinks.get(storyBox.getSelection());
             if (link.terminal) {
                 terminate();
                 storyBox = null;

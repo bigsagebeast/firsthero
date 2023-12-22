@@ -174,6 +174,9 @@ public class DungeonGenerator {
 			if (version.equals("V1")) {
 				levels.put(key, generateFromDataV1(key, input));
 				return;
+			} else if (version.equals("V2")) {
+				levels.put(key, generateFromDataV2(key, input));
+				return;
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to read dungeon data", e);
@@ -213,7 +216,7 @@ public class DungeonGenerator {
 				level.cell(x, y).terrain = cellTerrain;
 			}
 		}
-		
+
 		String creatureHeader = input.readLine();
 		String[] creatureHeaderSplit = creatureHeader.split(" ");
 		if (creatureHeaderSplit.length != 2 || !creatureHeaderSplit[0].equals("CREATURES")) {
@@ -233,7 +236,7 @@ public class DungeonGenerator {
 			Entity c = Game.bestiary.create(phenotype, creatureName);
 			level.addEntityWithStacking(c, new Point(x, y));
 		}
-		
+
 		String transitionHeader = input.readLine();
 		String[] transitionHeaderSplit = transitionHeader.split(" ");
 		if (transitionHeaderSplit.length != 2 || !transitionHeaderSplit[0].equals("TRANSITIONS")) {
@@ -249,7 +252,133 @@ public class DungeonGenerator {
 			String destination = transitionSplit[3];
 			int toX = Integer.parseInt(transitionSplit[4]);
 			int toY = Integer.parseInt(transitionSplit[5]);
-			
+
+			if (transitionType.equals("up")) {
+				level.addTransition(new LevelTransition("up", new Point(fromX, fromY), destination, new Point(toX, toY)));
+			} else if (transitionType.equals("down")) {
+				level.addTransition(new LevelTransition("down", new Point(fromX, fromY), destination, new Point(toX, toY)));
+			} else {
+				throw new RuntimeException("Invalid transition type: " + transitionType);
+			}
+		}
+		return level;
+	}
+
+
+	public Level generateFromDataV2(String name, BufferedReader input) throws IOException {
+		String terrainHeader = input.readLine();
+		String[] terrainSplit = terrainHeader.split(" ");
+		if (terrainSplit.length != 2 || !terrainSplit[0].equals("TERRAIN")) {
+			throw new RuntimeException("Invalid format: terrain header");
+		}
+		int terrainCount = Integer.parseInt(terrainSplit[1]);
+		Map<String, Terrain> terrainMap = new HashMap<String, Terrain>();
+		for (int i=0; i<terrainCount; i++) {
+			String terrainString = input.readLine();
+			String mapFrom = terrainString.substring(0, 1);
+			String terrainName = terrainString.substring(2);
+			Terrain mapTo = Terrain.map.get(terrainName);
+			terrainMap.put(mapFrom, mapTo);
+		}
+
+		String mapHeader = input.readLine();
+		if (!mapHeader.equals("MAP")) {
+			throw new RuntimeException("Invalid format: map header");
+		}
+		List<String> mapChunks = new ArrayList<>();
+		String lastString = input.readLine();
+		while (!lastString.equals("END")) {
+			mapChunks.add(lastString);
+			lastString = input.readLine();
+		}
+		int width = mapChunks.get(0).length();
+		int height = mapChunks.size();
+		Level level = new Level(name, width, height);
+
+		for (int y=0; y<height; y++) {
+			String row = mapChunks.get(y);
+			for (int x=0; x<width; x++) {
+				Terrain cellTerrain = terrainMap.get(row.substring(x, x+1));
+				level.cell(x, y).terrain = cellTerrain;
+			}
+		}
+
+		HashMap<String, String> creatureTypes = new HashMap<>();
+		String creatureHeader = input.readLine();
+		if (!creatureHeader.equals("CREATURES")) {
+			throw new RuntimeException("Invalid format: creature header");
+		}
+		lastString = input.readLine();
+		while (!lastString.equals("END")) {
+			String[] creatureSplit = lastString.split(" ");
+			if (creatureSplit.length != 2) {
+				throw new RuntimeException("Invalid format: creature string");
+			}
+			creatureTypes.put(creatureSplit[0], creatureSplit[1]);
+			lastString = input.readLine();
+		}
+
+		HashMap<String, String> itemTypes = new HashMap<>();
+		String itemHeader = input.readLine();
+		if (!itemHeader.equals("ITEMS")) {
+			throw new RuntimeException("Invalid format: creature header");
+		}
+		lastString = input.readLine();
+		while (!lastString.equals("END")) {
+			String[] itemSplit = lastString.split(" ");
+			if (itemSplit.length != 2) {
+				throw new RuntimeException("Invalid format: item string");
+			}
+			itemTypes.put(itemSplit[0], itemSplit[1]);
+			lastString = input.readLine();
+		}
+
+		String entityMapHeader = input.readLine();
+		if (!entityMapHeader.equals("ENTITYMAP")) {
+			throw new RuntimeException("Invalid format: creature map header");
+		}
+
+		List<String> creatureChunks = new ArrayList<>();
+		lastString = input.readLine();
+		while (!lastString.equals("END")) {
+			creatureChunks.add(lastString);
+			lastString = input.readLine();
+		}
+
+		for (int y=0; y<height; y++) {
+			String row = creatureChunks.get(y);
+			for (int x=0; x<width; x++) {
+				String phenotype = creatureTypes.get(row.substring(x, x+1));
+				String itemType = itemTypes.get(row.substring(x, x+1));
+				if (phenotype != null) {
+					Entity creature = Game.bestiary.create(phenotype, null);
+					level.addEntityWithStacking(creature, new Point(x, y));
+				}
+				if (itemType != null) {
+					Entity item = Game.itempedia.create(itemType, null);
+					level.addEntityWithStacking(item, new Point(x, y));
+				}
+
+			}
+		}
+
+
+		String transitionHeader = input.readLine();
+		String[] transitionHeaderSplit = transitionHeader.split(" ");
+		if (transitionHeaderSplit.length != 2 || !transitionHeaderSplit[0].equals("TRANSITIONS")) {
+			throw new RuntimeException("Invalid format: transitions header");
+		}
+		int transitionCount = Integer.parseInt(transitionHeaderSplit[1]);
+		for (int i=0; i < transitionCount; i++) {
+			String transitionString = input.readLine();
+			String[] transitionSplit = transitionString.split(" ");
+			String transitionType = transitionSplit[0];
+			int fromX = Integer.parseInt(transitionSplit[1]);
+			int fromY = Integer.parseInt(transitionSplit[2]);
+			String destination = transitionSplit[3];
+			int toX = Integer.parseInt(transitionSplit[4]);
+			int toY = Integer.parseInt(transitionSplit[5]);
+
 			if (transitionType.equals("up")) {
 				level.addTransition(new LevelTransition("up", new Point(fromX, fromY), destination, new Point(toX, toY)));
 			} else if (transitionType.equals("down")) {
