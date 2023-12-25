@@ -87,4 +87,18 @@ public enum Compass {
 	public static Compass randomDirection() {
 		return points.get(random.nextInt(8));
 	}
+
+	public static Compass findDir(Point from, Point to) {
+		int deltaX = to.x - from.x;
+		int deltaY = to.y - from.y;
+		if (deltaX > 0 && deltaY == 0) return Compass.EAST;
+		if (deltaX > 0 && deltaY == deltaX) return Compass.SOUTH_EAST;
+		if (deltaX == 0 && deltaY > 0) return Compass.SOUTH;
+		if (deltaX < 0 && deltaY == -deltaX) return Compass.SOUTH_WEST;
+		if (deltaX < 0 && deltaY == 0) return Compass.WEST;
+		if (deltaX < 0 && deltaY == deltaX) return Compass.NORTH_WEST;
+		if (deltaX == 0 && deltaY < 0) return Compass.NORTH;
+		if (deltaX > 0 && deltaY == -deltaX) return Compass.NORTH_EAST;
+		return null;
+	}
 }

@@ -51,9 +51,9 @@ public class CombatLogic {
 
 			if (damage == 0 && actor.naturalWeaponDamage == 0) {
 				Game.announceVis(vis,
-						"You touch " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
-						actor.getVisibleNameWithQuantity() + " touches you" + withWeaponString + ".",
-						actor.getVisibleNameWithQuantity() + " touches " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
+						"You touch " + target.getVisibleNameThe() + withWeaponString + ".",
+						actor.getVisibleNameThe() + " touches you" + withWeaponString + ".",
+						actor.getVisibleNameThe() + " touches " + target.getVisibleNameThe() + withWeaponString + ".",
 						null);
 				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
 				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
@@ -61,28 +61,22 @@ public class CombatLogic {
 				// TODO: Damage type indicators instead of 'hit', for example 'slash' and 'crush'
 				// TODO: Resistance and weakly modifiers, like "you stab the skeleton moderately" or "you crush the skeleton powerfully"
 				Game.announceVis(vis,
-						"You hit " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
-						actor.getVisibleNameWithQuantity() + " hits you" + withWeaponString + ".",
-						actor.getVisibleNameWithQuantity() + " hits " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
+						"You hit " + target.getVisibleNameThe() + withWeaponString + ".",
+						actor.getVisibleNameThe() + " hits you" + withWeaponString + ".",
+						actor.getVisibleNameThe() + " hits " + target.getVisibleNameThe() + withWeaponString + ".",
 						null);
 				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
 				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
 			}
-			//Game.announce("(" + damage + " damage.)");
 		} else {
 			Game.announceVis(vis,
-					"You miss " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
-					actor.getVisibleNameWithQuantity() + " misses you" + withWeaponString + ".",
-					actor.getVisibleNameWithQuantity() + " misses " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
+					"You miss " + target.getVisibleNameThe() + withWeaponString + ".",
+					actor.getVisibleNameThe() + " misses you" + withWeaponString + ".",
+					actor.getVisibleNameThe() + " misses " + target.getVisibleNameThe() + withWeaponString + ".",
 					null);
 
 			actor.forEachProc((e, p) -> p.postDoMiss(e, target, tool));
 			target.forEachProc((e, p) -> p.postBeMissed(e, actor, tool));
-
-			/*
-			Game.feelMsg(target, "The " + actor.getVisibleName(Game.getPlayer()) + " misses you.");
-			Game.feelMsg(actor, "You miss the " + target.getVisibleName(Game.getPlayer()) + ".");
-			*/
 		}
 
 		// TODO make use of the flag...
@@ -91,9 +85,9 @@ public class CombatLogic {
 			// TODO does pre kill make sense?
 
 			Game.announceVis(vis,
-					"You kill " + target.getVisibleNameWithQuantity() + ".",
-					actor.getVisibleNameWithQuantity() + " kills you.",
-					actor.getVisibleNameWithQuantity() + " kills " + target.getVisibleNameWithQuantity() + ".",
+					"You kill " + target.getVisibleNameThe() + ".",
+					actor.getVisibleNameThe() + " kills you.",
+					actor.getVisibleNameThe() + " kills " + target.getVisibleNameThe() + ".",
 					null);
 			actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
 			target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
@@ -169,17 +163,17 @@ public class CombatLogic {
 			}
 
 			Game.announceVis(vis,
-					"You hit " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
-					actor.getVisibleNameWithQuantity() + " hits you" + withWeaponString + ".",
-					actor.getVisibleNameWithQuantity() + " hits " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
+					"You hit " + target.getVisibleNameThe() + withWeaponString + ".",
+					actor.getVisibleNameThe() + " hits you" + withWeaponString + ".",
+					actor.getVisibleNameThe() + " hits " + target.getVisibleNameThe() + withWeaponString + ".",
 					null);
 			actor.forEachProc((e, p) -> p.postDoShoot(e, target, null));
 			target.forEachProc((e, p) -> p.postBeShot(e, actor, null));
 		} else {
 			Game.announceVis(vis,
-					"You miss " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
-					actor.getVisibleNameWithQuantity() + " misses you" + withWeaponString + ".",
-					actor.getVisibleNameWithQuantity() + " misses " + target.getVisibleNameWithQuantity() + withWeaponString + ".",
+					"You miss " + target.getVisibleNameThe() + withWeaponString + ".",
+					actor.getVisibleNameThe() + " misses you" + withWeaponString + ".",
+					actor.getVisibleNameThe() + " misses " + target.getVisibleNameThe() + withWeaponString + ".",
 					null);
 
 			actor.forEachProc((e, p) -> p.postDoMiss(e, target, null));
@@ -197,9 +191,9 @@ public class CombatLogic {
 			// TODO does pre kill make sense?
 
 			Game.announceVis(vis,
-					"You kill " + target.getVisibleNameWithQuantity() + ".",
-					actor.getVisibleNameWithQuantity() + " kills you.",
-					actor.getVisibleNameWithQuantity() + " kills " + target.getVisibleNameWithQuantity() + ".",
+					"You kill " + target.getVisibleNameThe() + ".",
+					actor.getVisibleNameThe() + " kills you.",
+					actor.getVisibleNameThe() + " kills " + target.getVisibleNameThe() + ".",
 					null);
 			actor.forEachProc((e, p) -> p.postDoKill(e, target, ammo));
 			target.forEachProc((e, p) -> p.postBeKilled(e, actor, ammo));

@@ -76,6 +76,7 @@ public abstract class Spell {
 
     public void castDirectionally(Entity caster, Compass dir) {
         caster.getMover().setDelay(caster, Game.ONE_TURN);
+        announceCast(caster, null);
         List<Point> ray = Raycasting.createOrthogonalRay(Game.getLevel(), caster.pos, Math.round(getRange(caster)), dir);
         if (ray.size() <= 1) {
             announce("Nothing happens.");
@@ -115,6 +116,12 @@ public abstract class Spell {
 
     public boolean isAnimationStars() {
         return false;
+    }
+
+    public void announceCast(Entity caster, Entity target) {
+        Game.announceVis(caster, null, "You cast " + getName() + ".",
+                null,
+                caster.getVisibleNameThe() + " casts " + getName() + ".", "You hear someone muttering.");
     }
 
     public void announceDodged(Entity caster, Entity target) {

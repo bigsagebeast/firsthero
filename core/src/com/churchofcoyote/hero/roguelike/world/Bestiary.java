@@ -1,5 +1,6 @@
 package com.churchofcoyote.hero.roguelike.world;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -10,7 +11,9 @@ import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Rank;
 import com.churchofcoyote.hero.roguelike.world.ai.ChaseAndMeleeTactic;
 import com.churchofcoyote.hero.roguelike.world.ai.RangedAmmoThenMeleeTactic;
+import com.churchofcoyote.hero.roguelike.world.ai.TacticBeamAndCharge;
 import com.churchofcoyote.hero.roguelike.world.proc.*;
+import com.churchofcoyote.hero.roguelike.world.proc.monster.ProcCaster;
 import com.churchofcoyote.hero.roguelike.world.proc.monster.ProcMonster;
 import com.churchofcoyote.hero.roguelike.world.proc.monster.ProcShooter;
 
@@ -201,6 +204,25 @@ public class Bestiary {
 		farmer.threat = -1;
 		farmer.chatPage = "intro.farmer.landing";
 
+		Phenotype sparkSprite = new Phenotype();
+		sparkSprite.name = "spark sprite";
+		sparkSprite.hitPoints = 5;
+		sparkSprite.isMonster = true;
+		sparkSprite.bodyPlan = "humanoid";
+		sparkSprite.isManipulator = true;
+		sparkSprite.glyphName = "humanoid.sprite";
+		sparkSprite.palette = new PaletteEntry(Palette.COLOR_YELLOW, Palette.COLOR_PURPLE, Palette.COLOR_CHARTREUSE);
+		sparkSprite.experienceAwarded = 15;
+		sparkSprite.threat = 2;
+		sparkSprite.naturalWeaponDamage = 4;
+		sparkSprite.naturalWeaponToHit = 2;
+		sparkSprite.naturalArmorClass = 0;
+		sparkSprite.setup.add(e -> {
+			e.addProc(new ProcCaster(new String[] {"monster spark weak"}));
+			e.addProc(new ProcMonster(new TacticBeamAndCharge()));
+		});
+		map.put("sprite.spark", sparkSprite);
+
 		map.put("player", pc);
 		map.put("goblin.warrior", goblinWarrior);
 		map.put("goblin.archer", goblinArcher);
@@ -266,12 +288,10 @@ public class Bestiary {
 		}
 		else if (p.isMonster && e.getProcByType(ProcMonster.class) == null) {
 			e.addProc(new ProcMonster(new ChaseAndMeleeTactic()));
-			//e.addProc(new PropPopupOnSeen(e, "It's a monster!"));
 		} else {
 			ProcMover pm = new ProcMover();
 			pm.setDelay(e, Game.random.nextInt(e.moveCost));
 			e.addProc(pm);
-			//e.addProc(new PropPopupOnSeen(e, "It's a creature!"));
 		}
 
 		return e;

@@ -13,6 +13,7 @@ public class Spellpedia {
         map.put("firebeam", new SpellFirebeam());
         map.put("water blast", new SpellWaterBlast());
         map.put("root spear", new SpellRootSpear());
+        map.put("monster spark weak", new SpellMonsterSparkWeak());
     }
 
     public static Spell get(String key) {

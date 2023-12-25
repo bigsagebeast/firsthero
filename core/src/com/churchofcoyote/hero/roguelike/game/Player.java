@@ -49,7 +49,11 @@ public class Player {
 	}
 
 	public void changeCharges(Element element, int change) {
-		currentElementCharges.put(element, currentElementCharges.get(element) + change);
+		currentElementCharges.put(element, Math.min(currentElementCharges.get(element) + change, maxElementCharges.get(element)));
+	}
+
+	public void fillCharges(Element element) {
+		currentElementCharges.put(element, maxElementCharges.get(element));
 	}
 
 	public Satiation getSatiationStatus() {
@@ -81,5 +85,46 @@ public class Player {
 
 	public boolean isEntity(Entity e) {
 		return entityId == e.entityId;
+	}
+
+
+
+	public void gainStatElement(Element element, int num, int max) {
+		int maxCharges = maxElementCharges.get(element);
+		if (maxCharges < max) {
+			int newMax = Math.min(max, maxCharges + num);
+			maxElementCharges.put(element, newMax);
+			switch (element) {
+				case FIRE:
+					Game.announce("You feel hot!");
+					break;
+				case WATER:
+					Game.announce("Your mind flows!");
+					break;
+				case LIGHTNING:
+					Game.announce("You feel tingly!");
+					break;
+				case PLANT:
+					Game.announce("You feel rooted!");
+					break;
+			}
+		} else {
+			switch (element) {
+				case FIRE:
+					Game.announce("You feel warm.");
+					break;
+				case WATER:
+					Game.announce("You feel a gentle flow.");
+					break;
+				case LIGHTNING:
+					Game.announce("You feel a mild tingle.");
+					break;
+				case PLANT:
+					Game.announce("Your feet feel steady.");
+					break;
+			}
+		}
+		fillCharges(element);
+
 	}
 }
