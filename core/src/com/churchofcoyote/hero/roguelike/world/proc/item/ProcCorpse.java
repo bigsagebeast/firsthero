@@ -5,13 +5,21 @@ import com.churchofcoyote.hero.roguelike.world.Element;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class ProcCorpse extends Proc {
 
     public int age = 0;
     public int satiation = 500;
-    public String eatMessage;
+    public String corpseMessage;
+    public String corpseMethod;
 
     public ProcCorpse() { super(); }
+    public ProcCorpse(String corpseMessage, String corpseMethod) {
+        this.corpseMessage = corpseMessage;
+        this.corpseMethod = corpseMethod;
+    }
 
     public void turnPassed(Entity entity) {
         age++;
@@ -29,8 +37,18 @@ public class ProcCorpse extends Proc {
 
     @Override
     public void postBeEaten(Entity entity, Entity actor) {
-        if (eatMessage != null) {
-            Game.announce(eatMessage);
+        if (corpseMessage != null) {
+            Game.announce(corpseMessage);
+        }
+        if (corpseMethod != null) {
+            try {
+                Method method = ProcCorpse.class.getDeclaredMethod(corpseMethod, Entity.class, Entity.class);
+                method.invoke(this, entity, actor);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException("Unknown corpse method " + corpseMethod);
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
         // Can anything else eat?
         if (actor == Game.getPlayerEntity()) {
@@ -38,7 +56,19 @@ public class ProcCorpse extends Proc {
         }
     }
 
+    public void gainFireSmall(Entity entity, Entity actor) {
+        Game.getPlayer().gainStatElement(Element.FIRE, 1, 6);
+    }
+
+    public void gainWaterSmall(Entity entity, Entity actor) {
+        Game.getPlayer().gainStatElement(Element.WATER, 1, 6);
+    }
+
     public void gainElectricSmall(Entity entity, Entity actor) {
         Game.getPlayer().gainStatElement(Element.LIGHTNING, 1, 6);
+    }
+
+    public void gainPlantSmall(Entity entity, Entity actor) {
+        Game.getPlayer().gainStatElement(Element.PLANT, 1, 6);
     }
 }

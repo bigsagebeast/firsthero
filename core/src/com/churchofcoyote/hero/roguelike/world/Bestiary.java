@@ -1,6 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -34,8 +33,8 @@ public class Bestiary {
 		Phenotype fungusGreenFunglet = new Phenotype();
 
 		pc.name = "yourself";
-		pc.hitPoints = 20;
-		pc.spellPoints = 20;
+		pc.hitPoints = 0; // calculated based on stats
+		pc.spellPoints = 0;
 		pc.stats = Rank.B_PLUS;
 		pc.isMonster = false;
 		pc.bodyPlan = "humanoid";
@@ -99,7 +98,7 @@ public class Bestiary {
 		goblinSlinger.naturalWeaponDamage = 3;
 		goblinSlinger.naturalWeaponToHit = -2;
 		goblinSlinger.naturalRangedWeaponDamage = 0;
-		goblinSlinger.naturalRangedWeaponToHit = -1;
+		goblinSlinger.naturalRangedWeaponToHit = -4;
 		goblinSlinger.naturalRangedWeaponRange = 4;
 		goblinSlinger.naturalArmorClass = 0;
 		goblinSlinger.setup.add(e -> {
@@ -204,6 +203,7 @@ public class Bestiary {
 		farmer.threat = -1;
 		farmer.chatPage = "intro.farmer.landing";
 
+		/*
 		Phenotype sparkSprite = new Phenotype();
 		sparkSprite.name = "spark sprite";
 		sparkSprite.hitPoints = 5;
@@ -217,11 +217,14 @@ public class Bestiary {
 		sparkSprite.naturalWeaponDamage = 4;
 		sparkSprite.naturalWeaponToHit = 2;
 		sparkSprite.naturalArmorClass = 0;
+		sparkSprite.corpseMethod = "gainElectricSmall";
 		sparkSprite.setup.add(e -> {
 			e.addProc(new ProcCaster(new String[] {"monster spark weak"}));
 			e.addProc(new ProcMonster(new TacticBeamAndCharge()));
 		});
 		map.put("sprite.spark", sparkSprite);
+
+		 */
 
 		map.put("player", pc);
 		map.put("goblin.warrior", goblinWarrior);
@@ -287,7 +290,14 @@ public class Bestiary {
 			e.addProc(new ProcPlayer());
 		}
 		else if (p.isMonster && e.getProcByType(ProcMonster.class) == null) {
-			e.addProc(new ProcMonster(new ChaseAndMeleeTactic()));
+			//e.addProc(new ProcMonster(new ChaseAndMeleeTactic()));
+			ProcMonster pm = new ProcMonster();
+			e.addProc(pm);
+			if (p.tacticLoader != null) {
+				p.tacticLoader.apply(e);
+			} else {
+				pm.tactic = new ChaseAndMeleeTactic();
+			}
 		} else {
 			ProcMover pm = new ProcMover();
 			pm.setDelay(e, Game.random.nextInt(e.moveCost));

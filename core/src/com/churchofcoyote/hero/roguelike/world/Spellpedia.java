@@ -14,6 +14,9 @@ public class Spellpedia {
         map.put("water blast", new SpellWaterBlast());
         map.put("root spear", new SpellRootSpear());
         map.put("monster spark weak", new SpellMonsterSparkWeak());
+        map.put("monster fire weak", new SpellMonsterFireWeak());
+        map.put("monster water weak", new SpellMonsterWaterWeak());
+        map.put("monster plant weak", new SpellMonsterPlantWeak());
     }
 
     public static Spell get(String key) {

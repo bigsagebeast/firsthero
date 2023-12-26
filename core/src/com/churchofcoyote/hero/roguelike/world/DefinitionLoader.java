@@ -155,6 +155,19 @@ public class DefinitionLoader {
                         LoadProc procLoader = new LoadProc(procName, procFields);
                         phenotype.procLoaders.add(procLoader);
                     }
+                } else if (fieldName == "tactic") {
+                    HashMap<String, String> tacticFields = new HashMap<>();
+                    String tacticName = null;
+                    for (Iterator<String> tacticField = nodeField.fieldNames(); tacticField.hasNext(); ) {
+                        String tacticFieldName = tacticField.next();
+                        if (tacticFieldName.equals("name")) {
+                            tacticName = nodeField.get(tacticFieldName).asText();
+                        } else {
+                            tacticFields.put(tacticFieldName, nodeField.get(tacticFieldName).asText());
+                        }
+                    }
+                    LoadTactic tacticLoader = new LoadTactic(tacticName, tacticFields);
+                    phenotype.tacticLoader = tacticLoader;
                 } else if (fieldName == "palette") {
                     if (!nodeField.isArray()) {
                         throw new RuntimeException("Palette was not an array");
@@ -195,8 +208,13 @@ public class DefinitionLoader {
                         phenotypeField.set(phenotype, Float.valueOf(nodeField.asText()));
                     } else if (phenotypeField.getType().isAssignableFrom(boolean.class) || phenotypeField.getType().isAssignableFrom(Boolean.class)) {
                         phenotypeField.set(phenotype, Boolean.valueOf(nodeField.asText()));
+                    } else if (phenotypeField.getType().isArray() && phenotypeField.getType().getComponentType().isAssignableFrom(String.class)) {
+                        ArrayList<String> stringList = new ArrayList<>();
+                        for (JsonNode elementNode : nodeField) {
+                            stringList.add(elementNode.asText());
+                        }
+                        phenotypeField.set(phenotype, stringList.toArray());
                     }
-
                 }
             }
             Bestiary.map.put(moverName, phenotype);

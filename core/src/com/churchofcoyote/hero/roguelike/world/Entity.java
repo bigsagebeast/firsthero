@@ -60,7 +60,7 @@ public class Entity {
     public int maxDivinePoints;
     public boolean peaceful = false;
     public int experience = 0;
-    public int experienceToNext = 40;
+    public int experienceToNext = 100;
     public int experienceAwarded = 0;
     public int level = 1;
     public int moveCost = 1000;
@@ -76,6 +76,7 @@ public class Entity {
 
     public int healingDelay = 3;
     public int healingRate = 1;
+    public int spRegenDelay = 0;
 
     public String phenotypeName;
     public String glyphName;
@@ -861,5 +862,17 @@ public class Entity {
         return other;
     }
 
-
+    public void recalculateSecondaryStats() {
+        int effectiveLevel = level == 0 ? 0 : level + 2;
+        int newMaxHitPoints = (int)(Bestiary.get(phenotypeName).hitPoints + (effectiveLevel * statblock.hitPointsPerLevel()));
+        int newMaxSpellPoints = (int)(Bestiary.get(phenotypeName).spellPoints + (effectiveLevel * statblock.spellPointsPerLevel()));
+        int deltaHitPoints = newMaxHitPoints - maxHitPoints;
+        int deltaSpellPoints = newMaxSpellPoints - maxSpellPoints;
+        maxHitPoints += deltaHitPoints;
+        maxSpellPoints += deltaSpellPoints;
+        hitPoints = Math.max(hitPoints + deltaHitPoints, newMaxHitPoints);
+        spellPoints = Math.max(spellPoints + deltaSpellPoints, newMaxSpellPoints);
+        healingDelay = 300 / maxHitPoints;
+        spRegenDelay = 100 / maxSpellPoints;
+    }
 }

@@ -57,6 +57,8 @@ public class Level {
 			if (getMovers().stream().filter(e -> e.wanderer).count() > maxForWander) {
 				return;
 			}
+			int maxThreat = (Game.getPlayerEntity().level / 2) + Game.getLevel().threat;
+			int minThreat = maxThreat / 2;
 			String monsterKey = DungeonGenerator.getAllowedMonster(this);
 			Point pos = findSpawnTile(10);
 			if (pos == null || monsterKey == null) {

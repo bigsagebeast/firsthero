@@ -12,6 +12,8 @@ public class ProcCaster extends Proc {
     public String[] spellNames;
     public ArrayList<Spell> spells;
 
+    public ProcCaster() {}
+
     public ProcCaster(String[] spellNames) {
         this.spellNames = spellNames;
     }

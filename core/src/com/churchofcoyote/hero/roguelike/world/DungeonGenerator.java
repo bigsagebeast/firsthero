@@ -9,6 +9,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.churchofcoyote.hero.roguelike.game.Dice;
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
+import com.churchofcoyote.hero.roguelike.world.dungeon.Room;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Brogue;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Generator;
 import com.churchofcoyote.hero.util.Point;
@@ -17,6 +18,7 @@ public class DungeonGenerator {
 
 	public static final int NUM_MONSTERS = 15;
 	public static final int NUM_ITEMS = 10;
+	public static final int SPAWN_CHANCE_PER_ROOM = 50;
 	public Map<String, Level> levels = new HashMap<String, Level>();
 	
 	public Level getLevel(String key) {
@@ -31,6 +33,7 @@ public class DungeonGenerator {
 		if (level.threat < 0) {
 			return;
 		}
+		/*
 		for (int i = 0; i < NUM_MONSTERS; i++) {
 			String chosenMonster = getAllowedMonster(level);
 			if (chosenMonster == null) {
@@ -48,6 +51,30 @@ public class DungeonGenerator {
 					Entity packmember = Game.bestiary.create(chosenMonster);
 					packmember.wanderer = true;
 					level.addEntityWithStacking(packmember, packSpawnPos);
+				}
+			}
+		}
+		 */
+		for (Room r : level.rooms) {
+			// TODO separate specialCorridors from special spawn rules
+			if (Game.random.nextInt(100) < SPAWN_CHANCE_PER_ROOM && !r.roomType.specialCorridors) {
+				String chosenMonster = getAllowedMonster(level);
+				if (chosenMonster == null) {
+					System.out.println("No allowed monsters");
+					return;
+				}
+				Point pos = level.findEmptyTileInRoom(r.roomId);
+				Entity e = Game.bestiary.create(chosenMonster);
+				e.wanderer = true;
+				level.addEntityWithStacking(e, pos);
+				int packSize = (int) (Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
+				for (int j = 1; j < packSize; j++) {
+					Point packSpawnPos = level.findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
+					if (packSpawnPos != null) {
+						Entity packmember = Game.bestiary.create(chosenMonster);
+						packmember.wanderer = true;
+						level.addEntityWithStacking(packmember, packSpawnPos);
+					}
 				}
 			}
 		}
@@ -70,17 +97,17 @@ public class DungeonGenerator {
 
 
 
-	public static List<String> getAllowedMonsters(Level level) {
+	public static List<String> getAllowedMonsters(int minThreat, int maxThreat, Level level) {
 		if (level.threat < 0) {
 			return Collections.EMPTY_LIST;
 		}
-		int minThreatAllowed = Math.max(0, level.threat - 1);
-		int maxThreatAllowed = level.threat + 1;
+		//int minThreatAllowed = Math.max(0, threat - 1);
+		//int maxThreatAllowed = threat + 1;
 		ArrayList<String> allowedEntities = new ArrayList<>();
 		for (String key : Game.bestiary.map.keySet()) {
 			Phenotype p = Game.bestiary.map.get(key);
 			if (p.peaceful) continue;
-			if (p.wandering && p.threat >= minThreatAllowed && p.threat <= maxThreatAllowed) {
+			if (p.wandering && p.threat >= minThreat && p.threat <= maxThreat) {
 				for (int i = 0; i < p.frequency; i++) {
 					allowedEntities.add(key);
 				}
@@ -90,7 +117,11 @@ public class DungeonGenerator {
 	}
 
 	public static String getAllowedMonster(Level level) {
-		List<String> allowedEntities = getAllowedMonsters(level);
+		return getAllowedMonster(level.threat/2, level.threat+1, level);
+	}
+
+	public static String getAllowedMonster(int minThreat, int maxThreat, Level level) {
+		List<String> allowedEntities = getAllowedMonsters(minThreat, maxThreat, level);
 		if (allowedEntities.isEmpty()) {
 			return null;
 		}

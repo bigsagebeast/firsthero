@@ -96,6 +96,7 @@ public class CharacterBuilder {
                 pcEntity.statblock.wil += 4;
                 pcEntity.statblock.arc += 6;
         }
+        pcEntity.recalculateSecondaryStats();
     }
 
     private void setEquipment() {

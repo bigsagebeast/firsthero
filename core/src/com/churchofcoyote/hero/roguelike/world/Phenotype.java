@@ -40,10 +40,13 @@ public class Phenotype {
 	public boolean wandering = true;
 	public int frequency = 100;
 	public int corpseSpawnPercent = 50;
+	public String corpseMessage;
+	public String corpseMethod;
 	public BodySize size = BodySize.MEDIUM;
 	public PaletteEntry corpseSpawnColors = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
 	public String chatPage;
 	Set<Consumer<Entity>> setup = new HashSet<>();
 	public List<LoadProc> procLoaders = new ArrayList<>();
+	public LoadTactic tacticLoader;
 	public List<String> tags = new ArrayList<>();
 }

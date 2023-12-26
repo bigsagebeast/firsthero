@@ -67,6 +67,7 @@ public class Game {
 
 	public void startIntro() {
 		Entity pc = bestiary.create("player");
+		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
 		Entity pitchfork = itempedia.create("pitchfork");
 		dungeon.generateFromFile("start", "start.fhm");
@@ -82,6 +83,7 @@ public class Game {
 
 	public void startAurex() {
 		Entity pc = bestiary.create("player");
+		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
 		dungeon.generateFromFile("aurex", "aurex.fhm");
 		changeLevel(dungeon.getLevel("aurex"), new Point(107, 30));

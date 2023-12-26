@@ -5,6 +5,7 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 public class ProcTimedEffects extends Proc {
 
     private int healingTimer;
+    private int spRegenTimer;
 
     public ProcTimedEffects() { super(); }
     @Override
@@ -14,6 +15,10 @@ public class ProcTimedEffects extends Proc {
                 entity.heal(entity.healingRate);
                 entity.spellPoints = Math.min(entity.maxSpellPoints, entity.spellPoints+1);
                 healingTimer = 0;
+            }
+            if (++spRegenTimer >= entity.spRegenDelay) {
+                entity.spellPoints = Math.min(entity.maxSpellPoints, entity.spellPoints+1);
+                spRegenTimer = 0;
             }
         }
     }

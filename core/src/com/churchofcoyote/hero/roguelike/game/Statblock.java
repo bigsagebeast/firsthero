@@ -28,4 +28,12 @@ public class Statblock {
         dr = 0;
         dt = 0;
     }
+
+    public float hitPointsPerLevel() {
+        return tou / 2.0f;
+    }
+
+    public float spellPointsPerLevel() {
+        return (wil + arc) / 4.0f;
+    }
 }

@@ -1,0 +1,124 @@
+{
+  "movers": {
+    "sprite.spark": {
+      "name": "spark sprite",
+      "peaceful": false,
+      "hitPoints": 5,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.sprite",
+      "isManipulator": false,
+      "palette": [
+        "yellow",
+        "purple",
+        "chartreuse"
+      ],
+      "experienceAwarded": 15,
+      "threat": 2,
+      "naturalWeaponDamage": 4,
+      "naturalWeaponToHit": 2,
+      "naturalArmorClass": 0,
+      "size": "SMALL",
+      "corpseMethod": "gainElectricSmall",
+      "procs": {
+        "monster.ProcCaster": {
+          "spellNames": "monster spark weak"
+        }
+      },
+      "tactic": {
+        "name": "TacticBeamAndCharge",
+        "castPercent": 50
+      }
+    },
+    "sprite.fire": {
+      "name": "fire sprite",
+      "peaceful": false,
+      "hitPoints": 5,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.sprite",
+      "isManipulator": false,
+      "palette": [
+        "yellow",
+        "purple",
+        "red"
+      ],
+      "experienceAwarded": 15,
+      "threat": 2,
+      "naturalWeaponDamage": 4,
+      "naturalWeaponToHit": 2,
+      "naturalArmorClass": 0,
+      "size": "SMALL",
+      "corpseMethod": "gainFireSmall",
+      "procs": {
+        "monster.ProcCaster": {
+          "spellNames": "monster fire weak"
+        }
+      },
+      "tactic": {
+        "name": "TacticBeamAndCharge",
+        "castPercent": 50
+      }
+    },
+    "sprite.water": {
+      "name": "water sprite",
+      "peaceful": false,
+      "hitPoints": 5,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.sprite",
+      "isManipulator": false,
+      "palette": [
+        "yellow",
+        "purple",
+        "blue"
+      ],
+      "experienceAwarded": 15,
+      "threat": 2,
+      "naturalWeaponDamage": 4,
+      "naturalWeaponToHit": 2,
+      "naturalArmorClass": 0,
+      "size": "SMALL",
+      "corpseMethod": "gainWaterSmall",
+      "procs": {
+        "monster.ProcCaster": {
+          "spellNames": "monster water weak"
+        }
+      },
+      "tactic": {
+        "name": "TacticBeamAndCharge",
+        "castPercent": 50
+      }
+    },
+    "sprite.wood": {
+      "name": "wood sprite",
+      "peaceful": false,
+      "hitPoints": 5,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.sprite",
+      "isManipulator": false,
+      "palette": [
+        "yellow",
+        "purple",
+        "lightgreen"
+      ],
+      "experienceAwarded": 15,
+      "threat": 2,
+      "naturalWeaponDamage": 4,
+      "naturalWeaponToHit": 2,
+      "naturalArmorClass": 0,
+      "size": "SMALL",
+      "corpseMethod": "gainPlantSmall",
+      "procs": {
+        "monster.ProcCaster": {
+          "spellNames": "monster plant weak"
+        }
+      },
+      "tactic": {
+        "name": "TacticBeamAndCharge",
+        "castPercent": 50
+      }
+    }
+  }
+}

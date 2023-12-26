@@ -4,6 +4,7 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Map;
 
 public class LoadProc {
@@ -46,6 +47,8 @@ public class LoadProc {
                     procField.set(proc, Integer.valueOf(fields.get(fieldName)));
                 } else if (procField.getType().isAssignableFrom(float.class) || procField.getType().isAssignableFrom(Float.class)) {
                     procField.set(proc, Float.valueOf(fields.get(fieldName)));
+                } else if (procField.getType().isArray() && procField.getType().getComponentType().isAssignableFrom(String.class)) {
+                    procField.set(proc, Arrays.stream(fields.get(fieldName).split(",")).map(s -> s.trim()).toArray(String[]::new));
                 } else {
                     throw new RuntimeException("Couldn't identify field type for " + procName + "." + fieldName);
                 }

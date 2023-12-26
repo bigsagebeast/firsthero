@@ -89,9 +89,10 @@ public class ProcPlayer extends ProcMover {
         entity.level++;
         entity.experience -= entity.experienceToNext;
         entity.experienceToNext *= 2;
-        entity.hitPoints += 15;
-        entity.maxHitPoints += 15;
-        entity.healingDelay = 300 / entity.maxHitPoints;
+        //entity.hitPoints += 15;
+        //entity.maxHitPoints += 15;
+        entity.recalculateSecondaryStats();
+        //entity.healingDelay = 300 / entity.maxHitPoints;
 
         Game.announce("You have reached level " + entity.level + "!");
     }

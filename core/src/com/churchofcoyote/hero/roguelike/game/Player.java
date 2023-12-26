@@ -15,10 +15,10 @@ public class Player {
 	public float satiation = Satiation.startingSatiation;
 
 	public Player() {
-		maxElementCharges.put(Element.WATER, 8);
-		maxElementCharges.put(Element.LIGHTNING, 8);
-		maxElementCharges.put(Element.FIRE, 8);
-		maxElementCharges.put(Element.PLANT, 8);
+		maxElementCharges.put(Element.WATER, 4);
+		maxElementCharges.put(Element.LIGHTNING, 4);
+		maxElementCharges.put(Element.FIRE, 4);
+		maxElementCharges.put(Element.PLANT, 4);
 		currentElementCharges.put(Element.WATER, 4);
 		currentElementCharges.put(Element.LIGHTNING, 4);
 		currentElementCharges.put(Element.FIRE, 4);
@@ -96,16 +96,16 @@ public class Player {
 			maxElementCharges.put(element, newMax);
 			switch (element) {
 				case FIRE:
-					Game.announce("You feel hot!");
+					Game.announce("You feel hot! Your fire charges increase.");
 					break;
 				case WATER:
-					Game.announce("Your mind flows!");
+					Game.announce("Your mind flows! Your water charges increase.");
 					break;
 				case LIGHTNING:
-					Game.announce("You feel tingly!");
+					Game.announce("You feel tingly! Your lightning charges increase.");
 					break;
 				case PLANT:
-					Game.announce("You feel rooted!");
+					Game.announce("You feel rooted! Your plant charges increase.");
 					break;
 			}
 		} else {
