@@ -9,6 +9,7 @@ import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
 import com.churchofcoyote.hero.dialogue.TextEntryBox;
 import com.churchofcoyote.hero.roguelike.game.Profile;
+import com.churchofcoyote.hero.story.StoryManager;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.text.effect.TextEffectGranularity;
 import com.churchofcoyote.hero.text.effect.TextEffectJitter;
@@ -118,6 +119,10 @@ public class TitleScreenModule extends Module {
 	@Override
 	public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
 		switch (keycode) {
+			case Keys.S:
+				StoryManager sm = new StoryManager();
+				break;
+
 			case Keys.UP:
 			case Keys.NUMPAD_8:
 				selectedOption = (selectedOption + 6) % 7;
