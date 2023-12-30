@@ -39,6 +39,7 @@ public class StoryCard {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("(" + id + ":");
+        sb.append((descIntroduced ? "D" : "U") + ":");
         sb.append(definition.title + ":");
         for (String linkKey : links.keySet()) {
             sb.append("[Link " + linkKey + ":");
@@ -48,6 +49,9 @@ public class StoryCard {
                 sb.append(" " + links.get(linkKey).get(i).id);
             }
             sb.append("]");
+        }
+        for (String key : hardLinks.keySet()) {
+            sb.append(" HL:" + key + ":" + hardLinks.get(key));
         }
         sb.append(")");
         return sb.toString();
@@ -81,7 +85,7 @@ public class StoryCard {
         return walkLinks;
     }
 
-    boolean isFullyDescribed() {
+    public boolean isFullyDescribed() {
         for (Boolean b : linkDescribed.values()) {
             if (!b) {
                 return false;
@@ -89,5 +93,9 @@ public class StoryCard {
         }
         return descIntroduced;
         // should always have been set TRUE while exploring links, unless this card is somehow standalone?
+    }
+
+    public boolean isPlural() {
+        return gender == Gender.PLURAL;
     }
 }

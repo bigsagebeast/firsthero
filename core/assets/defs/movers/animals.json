@@ -21,6 +21,27 @@
       "packSize": 1,
       "packSpawnArea": 3,
       "size": "SMALL"
+    },
+    "noctupanther": {
+      "name": "noctupanther",
+      "peaceful": false,
+      "hitPoints": 20,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.noctupanther",
+      "isManipulator": false,
+      "palette": [
+        "teal",
+        "purple"
+      ],
+      "experienceAwarded": 30,
+      "threat": 4,
+      "naturalWeaponDamage": 7,
+      "naturalWeaponToHit": 2,
+      "naturalArmorClass": 2,
+      "packSize": 1,
+      "packSpawnArea": 3,
+      "size": "SMALL"
     }
   }
 }

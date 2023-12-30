@@ -10,7 +10,7 @@ import com.churchofcoyote.hero.text.TextBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoryBox {
+public class ChatBox {
 
     public static final int FONT_SIZE = 32;
     public static final int FOOTER_OFFSET_FROM_LEFT = 0;
@@ -38,7 +38,7 @@ public class StoryBox {
     private String text;
     private List<StoryBoxLink> links = new ArrayList<>();
 
-    public StoryBox() {
+    public ChatBox() {
     }
 
     public void update(TextEngine textEngine) {
@@ -48,7 +48,7 @@ public class StoryBox {
         compile(textEngine);
     }
 
-    public StoryBox withDimensions(int x, int y, int width, int height) {
+    public ChatBox withDimensions(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -56,7 +56,7 @@ public class StoryBox {
         return this;
     }
 
-    public StoryBox withMargins(int marginX, int marginY) {
+    public ChatBox withMargins(int marginX, int marginY) {
         this.x = marginX;
         this.y = marginY;
         this.width = Graphics.width - (marginX * 2);
@@ -65,13 +65,13 @@ public class StoryBox {
     }
 
     // Remember to put a ` where you want the glyph if you supply one
-    public StoryBox withTitle(String titleText, GlyphTile glyph) {
+    public ChatBox withTitle(String titleText, GlyphTile glyph) {
         this.titleText = titleText;
         titleGlyph = glyph;
         return this;
     }
 
-    public StoryBox withText(String text) {
+    public ChatBox withText(String text) {
         this.text = text;
         return this;
     }

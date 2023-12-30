@@ -29,6 +29,9 @@ public class StoryGap {
         for (String hl : hardLinks.keySet()) {
             sb.append(" HL:" + hl + ":" + hardLinks.get(hl));
         }
+        for (String thl : terminalHardLinks) {
+            sb.append(" THL:" + thl);
+        }
         sb.append(")");
         return sb.toString();
     }

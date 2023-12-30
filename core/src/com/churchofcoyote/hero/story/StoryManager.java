@@ -20,29 +20,32 @@ public class StoryManager {
 
         StoryCard preDefBoss = new StoryCard(deck.find("preconditionBoss"));
         StoryCard preDefDungeon = new StoryCard(deck.find("preconditionDungeon"));
-        preDefBoss.hardLinks.put("precondition.home", "A");
-        preDefDungeon.hardLinks.put("precondition", "A");
+        StoryCard preDefSword = new StoryCard(deck.find("preconditionSword"));
+        preDefBoss.hardLinks.put("precondition", "A");
+        preDefDungeon.hardLinks.put("precondition.resident", "A");
+        preDefSword.hardLinks.put("precondition.wielder", "A");
         insert(preDefBoss);
         insert(preDefDungeon);
+        insert(preDefSword);
 
         List<StoryGap> gaps = findGaps();
         while (!gaps.isEmpty()) {
-            System.out.println("Gaps: " + gaps.size());
+            //System.out.println("Gaps: " + gaps.size());
             Collections.shuffle(gaps);
             Collections.sort(gaps, Comparator.comparing(g -> -g.getLongestHardLink()));
             for (StoryGap gap : gaps) {
                 System.out.println("  " + gap.toString());
             }
             StoryGap gap = gaps.get(0);
-            System.out.println("Fill first");
+            //System.out.println("Fill first");
             StoryCard filler = draw(gap);
             gaps = findGaps();
         }
-        System.out.println();
         for (Integer key : cards.keySet()) {
             cards.get(key).definition.giveName(cards.get(key));
             System.out.println("Card: " + cards.get(key).toString());
         }
+        System.out.println();
 
         StoryDescriber describer = new StoryDescriber(cards.values());
     }
@@ -57,11 +60,13 @@ public class StoryManager {
         HashMap<String, StoryGap> terminalHardLinks = new HashMap<>();
         for (StoryCard card : cards.values()) {
             for (String key : card.links.keySet()) {
-                if (card.definition.links.get(key).seekType == StoryLinkSeekType.NO_SEEK) {
-                    continue;
-                }
                 if (card.links.get(key).isEmpty()) {
                     List<String> terminalHardLinksInGap = card.getTerminalHardLinksAcrossWalk(key);
+
+                    if (terminalHardLinksInGap.isEmpty() && (card.definition.links.get(key).seekType == StoryLinkSeekType.NO_SEEK || card.definition.links.get(key).seekType == StoryLinkSeekType.OPTIONAL)) {
+                        continue;
+                    }
+
                     HashMap<String, String> hardLinksInGap = card.getHardLinksAcrossWalk(key);
                     // assume 0 or 1 links
                     String hardLinkName = terminalHardLinksInGap.isEmpty() ? null : terminalHardLinksInGap.get(0);
@@ -81,6 +86,7 @@ public class StoryManager {
                     }
                     if (hardLinkName != null && !terminalHardLinks.containsKey(hardLinkName)) {
                         terminalHardLinks.put(hardLinkName, gap);
+                        gap.terminalHardLinks.add(hardLinkName);
                     }
                 }
             }

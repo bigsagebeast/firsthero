@@ -5,7 +5,7 @@ import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.GameState;
 import com.churchofcoyote.hero.Graphics;
 import com.churchofcoyote.hero.GraphicsState;
-import com.churchofcoyote.hero.dialogue.StoryBox;
+import com.churchofcoyote.hero.dialogue.ChatBox;
 import com.churchofcoyote.hero.gfx.GfxRectBorder;
 import com.churchofcoyote.hero.gfx.GfxRectFilled;
 import com.churchofcoyote.hero.glyphtile.GlyphTile;
@@ -13,6 +13,8 @@ import com.churchofcoyote.hero.chat.ChatBook;
 import com.churchofcoyote.hero.chat.ChatLink;
 import com.churchofcoyote.hero.chat.ChatPage;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -22,7 +24,7 @@ public class ChatModule extends Module {
     private GfxRectBorder background2;
     private float margin = 10f;
 
-    private StoryBox storyBox;
+    private ChatBox chatBox;
     Consumer<Object> handler;
 
     private String titleText;
@@ -33,6 +35,36 @@ public class ChatModule extends Module {
         this.titleText = titleText;
         this.titleGlyph = titleGlyph;
         openPage(key);
+        this.start();
+    }
+
+    public void openArbitrary(ChatBox chatBox, ArrayList<ChatLink> links) {
+        this.chatBox = chatBox;
+        validLinks.clear();
+
+        for (ChatLink link : links) {
+            validLinks.add(link);
+            chatBox.addLink(link.text);
+        }
+
+        if (background1 != null) {
+            background1.active = false;
+            background2.active = false;
+        }
+        chatBox.update(textEngine);
+
+        background1 = new GfxRectFilled(Color.BLACK,
+                this.chatBox.getX() - margin,
+                this.chatBox.getY() - margin,
+                this.chatBox.getWidth() + 2f*margin,
+                this.chatBox.getHeight() + 2f*margin);
+        effectEngine.addGfx(background1);
+        background2 = new GfxRectBorder(Color.WHITE,
+                this.chatBox.getX() - margin,
+                this.chatBox.getY() - margin,
+                this.chatBox.getWidth() + 2f*margin,
+                this.chatBox.getHeight() + 2f*margin);
+        effectEngine.addGfx(background2);
         this.start();
     }
 
@@ -62,32 +94,32 @@ public class ChatModule extends Module {
             return;
         }
 
-        storyBox = new StoryBox()
+        chatBox = new ChatBox()
                 .withMargins(60, 60)
                 .withTitle(titleText, titleGlyph)
                 .withText(page.text);
 
         for (ChatLink link : validLinks) {
-            storyBox.addLink(link.text);
+            chatBox.addLink(link.text);
         }
 
         if (background1 != null) {
             background1.active = false;
             background2.active = false;
         }
-        storyBox.update(textEngine);
+        chatBox.update(textEngine);
 
         background1 = new GfxRectFilled(Color.BLACK,
-                this.storyBox.getX() - margin,
-                this.storyBox.getY() - margin,
-                this.storyBox.getWidth() + 2f*margin,
-                this.storyBox.getHeight() + 2f*margin);
+                this.chatBox.getX() - margin,
+                this.chatBox.getY() - margin,
+                this.chatBox.getWidth() + 2f*margin,
+                this.chatBox.getHeight() + 2f*margin);
         effectEngine.addGfx(background1);
         background2 = new GfxRectBorder(Color.WHITE,
-                this.storyBox.getX() - margin,
-                this.storyBox.getY() - margin,
-                this.storyBox.getWidth() + 2f*margin,
-                this.storyBox.getHeight() + 2f*margin);
+                this.chatBox.getX() - margin,
+                this.chatBox.getY() - margin,
+                this.chatBox.getWidth() + 2f*margin,
+                this.chatBox.getHeight() + 2f*margin);
         effectEngine.addGfx(background2);
     }
 
@@ -102,17 +134,29 @@ public class ChatModule extends Module {
 
     @Override
     public void update(GameState state) {
-        if (storyBox.isClosed()) {
+        if (chatBox.isClosed()) {
 
-            ChatLink link = validLinks.get(storyBox.getSelection());
+            ChatLink link = validLinks.get(chatBox.getSelection());
+
+            if (link.codeClass != null) {
+                Class<?> clazz = null;
+                try {
+                    clazz = Class.forName(link.codeClass);
+                    Method method = clazz.getMethod(link.codeMethod);
+                    method.invoke(null);
+                } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             if (link.terminal) {
                 terminate();
-                storyBox = null;
+                chatBox = null;
             } else {
                 openPage(link.nextPage);
             }
         } else {
-            storyBox.update(textEngine);
+            chatBox.update(textEngine);
         }
     }
 
@@ -123,8 +167,8 @@ public class ChatModule extends Module {
 
     @Override
     public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
-        if (storyBox != null) {
-            return storyBox.keyDown(keycode, shift, ctrl, alt);
+        if (chatBox != null) {
+            return chatBox.keyDown(keycode, shift, ctrl, alt);
         }
         return false;
     }

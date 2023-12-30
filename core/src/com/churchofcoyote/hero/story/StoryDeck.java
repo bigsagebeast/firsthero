@@ -2,6 +2,7 @@ package com.churchofcoyote.hero.story;
 
 import com.churchofcoyote.hero.story.defs.SCDPerson;
 import com.churchofcoyote.hero.story.defs.SCDPlace;
+import com.churchofcoyote.hero.story.defs.SCDWeapon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,14 @@ public class StoryDeck {
         preconditionDungeon.doDescribe = false;
         addCard(preconditionDungeon);
 
+        StoryCardDefinition preconditionSword = new StoryCardDefinition();
+        preconditionSword.type = StoryCardType.PRECONDITION;
+        preconditionSword.title = "preconditionSword";
+        preconditionSword.addLink(new StoryCardLink(StoryCardType.THING_TYPE, StoryLinkSeekType.REQUIRED, "precondition", "precondition"));
+        preconditionSword.links.get("precondition").requirements.add(new StoryLinkRequirementTagRequired("weapon"));
+        preconditionSword.doDescribe = false;
+        addCard(preconditionSword);
+
         StoryCardDefinition goblinLeader = new SCDPerson();
         goblinLeader.title = "goblinLeader";
         goblinLeader.tags.add("boss");
@@ -41,21 +50,34 @@ public class StoryDeck {
         goblinLeader.addDescSelf("there was a wily goblin boss, %1n");
         addCard(goblinLeader);
 
+        StoryCardDefinition nightbringer = new SCDWeapon();
+        nightbringer.title = "nightbringer";
+        nightbringer.tags.add("weapon");
+        addCard(nightbringer);
+
         StoryCardDefinition goblinCaves = new SCDPlace();
         goblinCaves.title = "goblinCaves";
         goblinCaves.tags.add("goblin");
         goblinCaves.tags.add("dungeon");
+        goblinCaves.links.get("location").seekType = StoryLinkSeekType.REQUIRED;
+        goblinCaves.links.get("location").requirements.add(new StoryLinkRequirementTagRequired("overworld"));
+        goblinCaves.forceName = "the Goblin Caves";
         addCard(goblinCaves);
 
-        StoryCardDefinition goblinPits = new StoryCardDefinition();
-        goblinPits.type = StoryCardType.PLACE_TYPE;
+        StoryCardDefinition goblinPits = new SCDPlace();
         goblinPits.title = "goblinPits";
         goblinPits.tags.add("goblin");
         goblinPits.tags.add("dungeon");
-        goblinPits.addLink(new StoryCardLink(StoryCardType.PERSON_TYPE, StoryLinkSeekType.OPTIONAL, "resident", "home"));
-        goblinPits.addLink(new StoryCardLink(StoryCardType.PRECONDITION, StoryLinkSeekType.NO_SEEK, "precondition", "precondition"));
-        goblinPits.links.get("precondition").doDescribe = false;
+        goblinPits.links.get("location").seekType = StoryLinkSeekType.REQUIRED;
+        goblinPits.links.get("location").requirements.add(new StoryLinkRequirementTagRequired("overworld"));
+        goblinPits.forceName = "the Goblin Pits";
         addCard(goblinPits);
+
+        StoryCardDefinition woods = new SCDPlace();
+        woods.title = "Weeping Woods";
+        woods.tags.add("overworld");
+        woods.forceName = "the Weeping Woods";
+        addCard(woods);
     }
 
     public Map<StoryCardDefinition, Float> search(StoryGap gap) {

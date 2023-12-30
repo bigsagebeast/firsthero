@@ -16,6 +16,7 @@ public class StoryCardDefinition {
     public List<String> descSelf = new ArrayList<>();
     public HashMap<String, List<String>> descLink = new HashMap<>();
     public boolean doDescribe = true;
+    public String forceName = null;
 
     @Override
     public String toString() {
@@ -36,7 +37,15 @@ public class StoryCardDefinition {
     }
 
     public void giveName(StoryCard storyCard) {
-        storyCard.shortName = "NAME:" + title;
+        if (forceName == null) {
+            storyCard.shortName = "NAME:" + title;
+        } else {
+            storyCard.shortName = forceName;
+        }
+    }
+
+    public String introToStreamingConnector() {
+        return "which";
     }
 
     public void addDefaultDescSelf(String desc) {
