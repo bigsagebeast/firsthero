@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.story;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.util.Gender;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,11 +15,16 @@ public class StoryCard {
     //HashMap<String, String> reflexiveLinkName = new HashMap<>();
     HashMap<String, String> hardLinks = new HashMap<>();
     int id;
+    boolean descIntroduced = false;
+    HashMap<String, Boolean> linkDescribed = new HashMap<>();
+    public String shortName;
+    public Gender gender = Gender.AGENDER;
 
     public StoryCard(StoryCardDefinition definition) {
         this.definition = definition;
         for (String link : definition.links.keySet()) {
             links.put(link, new ArrayList<>());
+            linkDescribed.put(link, false);
         }
         id = Game.random.nextInt(Integer.MAX_VALUE);
     }
@@ -26,6 +32,7 @@ public class StoryCard {
     public StoryCard clone() {
         StoryCard newCard = new StoryCard(definition);
         newCard.links = links.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
+        newCard.linkDescribed = linkDescribed.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
         return newCard;
     }
 
@@ -35,6 +42,8 @@ public class StoryCard {
         sb.append(definition.title + ":");
         for (String linkKey : links.keySet()) {
             sb.append("[Link " + linkKey + ":");
+            sb.append(linkDescribed.get(linkKey) ? "D" : "U");
+            sb.append(":");
             for (int i=0; i<links.get(linkKey).size(); i++) {
                 sb.append(" " + links.get(linkKey).get(i).id);
             }
@@ -70,5 +79,15 @@ public class StoryCard {
             }
         }
         return walkLinks;
+    }
+
+    boolean isFullyDescribed() {
+        for (Boolean b : linkDescribed.values()) {
+            if (!b) {
+                return false;
+            }
+        }
+        return descIntroduced;
+        // should always have been set TRUE while exploring links, unless this card is somehow standalone?
     }
 }

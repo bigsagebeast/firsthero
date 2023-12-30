@@ -1,5 +1,8 @@
 package com.churchofcoyote.hero.story;
 
+import com.churchofcoyote.hero.story.defs.SCDPerson;
+import com.churchofcoyote.hero.story.defs.SCDPlace;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,7 @@ public class StoryDeck {
         StoryCardLink preconditionBossToBoss = new StoryCardLink(StoryCardType.PERSON_TYPE, StoryLinkSeekType.REQUIRED, "precondition", "precondition");
         preconditionBossToBoss.requirements.add(new StoryLinkRequirementTagRequired("boss"));
         preconditionBoss.links.put("precondition", preconditionBossToBoss);
+        preconditionBoss.doDescribe = false;
         addCard(preconditionBoss);
 
         StoryCardDefinition preconditionDungeon = new StoryCardDefinition();
@@ -27,34 +31,20 @@ public class StoryDeck {
         StoryCardLink preconditionDungeonToDungeon = new StoryCardLink(StoryCardType.PLACE_TYPE, StoryLinkSeekType.REQUIRED, "precondition", "precondition");
         preconditionDungeonToDungeon.requirements.add(new StoryLinkRequirementTagRequired("dungeon"));
         preconditionDungeon.links.put("precondition", preconditionDungeonToDungeon);
+        preconditionDungeon.doDescribe = false;
         addCard(preconditionDungeon);
 
-        StoryCardDefinition goblinLeader = new StoryCardDefinition();
-        goblinLeader.type = StoryCardType.PERSON_TYPE;
+        StoryCardDefinition goblinLeader = new SCDPerson();
         goblinLeader.title = "goblinLeader";
         goblinLeader.tags.add("boss");
-        StoryCardLink leaderToHq = new StoryCardLink();
-        StoryLinkRequirement leaderToHqTagReq = new StoryLinkRequirementTagRequired("goblin");
-        leaderToHq.type = StoryCardType.PLACE_TYPE;
-        leaderToHq.requirements.add(leaderToHqTagReq);
-        leaderToHq.key = "home";
-        leaderToHq.backKey = "resident";
-        goblinLeader.links.put("home", leaderToHq);
-        StoryCardLink leaderToPreconditionBoss = new StoryCardLink();
-        leaderToPreconditionBoss.type = StoryCardType.PRECONDITION;
-        leaderToPreconditionBoss.seekType = StoryLinkSeekType.NO_SEEK;
-        leaderToPreconditionBoss.key = "precondition";
-        leaderToPreconditionBoss.backKey = "precondition";
-        goblinLeader.links.put("precondition", leaderToPreconditionBoss);
+        goblinLeader.links.get("home").requirements.add(new StoryLinkRequirementTagRequired("goblin"));
+        goblinLeader.addDescSelf("there was a wily goblin boss, %1n");
         addCard(goblinLeader);
 
-        StoryCardDefinition goblinCaves = new StoryCardDefinition();
-        goblinCaves.type = StoryCardType.PLACE_TYPE;
+        StoryCardDefinition goblinCaves = new SCDPlace();
         goblinCaves.title = "goblinCaves";
         goblinCaves.tags.add("goblin");
         goblinCaves.tags.add("dungeon");
-        goblinCaves.addLink(new StoryCardLink(StoryCardType.PERSON_TYPE, StoryLinkSeekType.OPTIONAL, "resident", "home"));
-        goblinCaves.addLink(new StoryCardLink(StoryCardType.PRECONDITION, StoryLinkSeekType.NO_SEEK, "precondition", "precondition"));
         addCard(goblinCaves);
 
         StoryCardDefinition goblinPits = new StoryCardDefinition();
@@ -64,6 +54,7 @@ public class StoryDeck {
         goblinPits.tags.add("dungeon");
         goblinPits.addLink(new StoryCardLink(StoryCardType.PERSON_TYPE, StoryLinkSeekType.OPTIONAL, "resident", "home"));
         goblinPits.addLink(new StoryCardLink(StoryCardType.PRECONDITION, StoryLinkSeekType.NO_SEEK, "precondition", "precondition"));
+        goblinPits.links.get("precondition").doDescribe = false;
         addCard(goblinPits);
     }
 

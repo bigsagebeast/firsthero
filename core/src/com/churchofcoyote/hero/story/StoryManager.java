@@ -35,19 +35,16 @@ public class StoryManager {
             }
             StoryGap gap = gaps.get(0);
             System.out.println("Fill first");
-            /*
-            Map<StoryCardDefinition, Float> fillers = deck.search(gap);
-            for (StoryCardDefinition key : fillers.keySet()) {
-                System.out.println("Filler: " + key + ": " + fillers.get(key));
-            }
-            */
             StoryCard filler = draw(gap);
             gaps = findGaps();
         }
         System.out.println();
         for (Integer key : cards.keySet()) {
+            cards.get(key).definition.giveName(cards.get(key));
             System.out.println("Card: " + cards.get(key).toString());
         }
+
+        StoryDescriber describer = new StoryDescriber(cards.values());
     }
 
     public void reset() {
