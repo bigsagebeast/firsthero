@@ -8,4 +8,5 @@ public enum StoryCardType {
     ACTOR, // 'this part is played by FOO'
     POPULATION, // 'a group of orcs' for what populates a dungeon
     RELATIONSHIP, // kidnapper->victim, lover->lover, overlord->commanded population, person->lives in town
+    PRECONDITION, // initial condition to kick off the grid
 }

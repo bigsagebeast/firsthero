@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.story;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StoryGap {
@@ -9,6 +10,8 @@ public class StoryGap {
     public List<String> linkName = new ArrayList<>();
     //public List<String> reflexiveLinkName = new ArrayList<>();
     public List<StoryLinkRequirement> requirements = new ArrayList<>();
+    HashMap<String, String> hardLinks = new HashMap<>();
+    List<String> terminalHardLinks = new ArrayList<>();
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -23,7 +26,21 @@ public class StoryGap {
         for (StoryLinkRequirement slr : requirements) {
             sb.append(slr.toString());
         }
+        for (String hl : hardLinks.keySet()) {
+            sb.append(" HL:" + hl + ":" + hardLinks.get(hl));
+        }
         sb.append(")");
         return sb.toString();
+    }
+
+    public int getLongestHardLink() {
+        int longest = terminalHardLinks.isEmpty() ? -1 : 0;
+        for (String hardLink : hardLinks.keySet()) {
+            int length = 1 + hardLink.length() - hardLink.replace(".", "").length();
+            if (length > longest) {
+                longest = length;
+            }
+        }
+        return longest;
     }
 }

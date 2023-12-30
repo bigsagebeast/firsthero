@@ -12,16 +12,29 @@ public class StoryManager {
     public StoryManager() {
         reset();
 
+        /*
         StoryCardDefinition leaderCardDef = deck.deck.get(StoryCardType.PERSON_TYPE).get(0);
         StoryCard leaderCard = new StoryCard(leaderCardDef);
         insert(leaderCard);
+         */
+
+        StoryCard preDefBoss = new StoryCard(deck.find("preconditionBoss"));
+        StoryCard preDefDungeon = new StoryCard(deck.find("preconditionDungeon"));
+        preDefBoss.hardLinks.put("precondition.home", "A");
+        preDefDungeon.hardLinks.put("precondition", "A");
+        insert(preDefBoss);
+        insert(preDefDungeon);
 
         List<StoryGap> gaps = findGaps();
         while (!gaps.isEmpty()) {
             System.out.println("Gaps: " + gaps.size());
             Collections.shuffle(gaps);
+            Collections.sort(gaps, Comparator.comparing(g -> -g.getLongestHardLink()));
+            for (StoryGap gap : gaps) {
+                System.out.println("  " + gap.toString());
+            }
             StoryGap gap = gaps.get(0);
-            System.out.println("Fill: " + gap.toString());
+            System.out.println("Fill first");
             /*
             Map<StoryCardDefinition, Float> fillers = deck.search(gap);
             for (StoryCardDefinition key : fillers.keySet()) {
@@ -44,15 +57,34 @@ public class StoryManager {
 
     public List<StoryGap> findGaps() {
         ArrayList<StoryGap> gaps = new ArrayList<>();
+        HashMap<String, StoryGap> terminalHardLinks = new HashMap<>();
         for (StoryCard card : cards.values()) {
             for (String key : card.links.keySet()) {
+                if (card.definition.links.get(key).seekType == StoryLinkSeekType.NO_SEEK) {
+                    continue;
+                }
                 if (card.links.get(key).isEmpty()) {
-                    StoryGap gap = new StoryGap();
-                    gap.type = card.definition.links.get(key).type;
+                    List<String> terminalHardLinksInGap = card.getTerminalHardLinksAcrossWalk(key);
+                    HashMap<String, String> hardLinksInGap = card.getHardLinksAcrossWalk(key);
+                    // assume 0 or 1 links
+                    String hardLinkName = terminalHardLinksInGap.isEmpty() ? null : terminalHardLinksInGap.get(0);
+                    StoryGap gap;
+                    if (hardLinkName == null || !terminalHardLinks.containsKey(hardLinkName)) {
+                        gap = new StoryGap();
+                        gap.type = card.definition.links.get(key).type;
+                        gap.hardLinks = hardLinksInGap;
+                    } else {
+                        gap = terminalHardLinks.get(hardLinkName);
+                    }
                     gap.link.add(card);
                     gap.linkName.add(card.definition.links.get(key).key);
                     gap.requirements.addAll(card.definition.links.get(key).requirements);
-                    gaps.add(gap);
+                    if (hardLinkName == null || !terminalHardLinks.containsKey(hardLinkName)) {
+                        gaps.add(gap);
+                    }
+                    if (hardLinkName != null && !terminalHardLinks.containsKey(hardLinkName)) {
+                        terminalHardLinks.put(hardLinkName, gap);
+                    }
                 }
             }
         }
@@ -85,10 +117,10 @@ public class StoryManager {
             linkedCard.links.get(forwardKey).add(card);
             String reflexive = linkToThis.backKey;
             card.links.get(reflexive).add(linkedCard);
-            //String doubleReflexive = linkedCard.reflexiveLinkName.get(backLink);
-            //String doubleReflexive = linkToThis.backKey;
-            //linkedCard.links.get(backLink).add(card);
-            //card.links.get(doubleReflexive).add(linkedCard);
+            HashMap<String, String> hardLinksAfterWalk = linkedCard.getHardLinksAcrossWalk(forwardKey);
+            for (String key : hardLinksAfterWalk.keySet()) {
+                card.hardLinks.put(key, hardLinksAfterWalk.get(key));
+            }
         }
 
 

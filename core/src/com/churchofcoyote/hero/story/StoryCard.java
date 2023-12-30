@@ -43,4 +43,32 @@ public class StoryCard {
         sb.append(")");
         return sb.toString();
     }
+
+    public List<String> getTerminalHardLinksAcrossWalk(String walk) {
+        ArrayList<String> terminals = new ArrayList<>();
+        for (String key : hardLinks.keySet()) {
+            if (key.equals(walk)) {
+                terminals.add(hardLinks.get(key));
+            }
+        }
+        if (terminals.size() > 1) {
+            StringBuilder sb = new StringBuilder();
+            for (String s : terminals) {
+                sb.append(" " + s);
+            }
+            throw new RuntimeException("Too many terminals on card " + definition.title + ": " + sb.toString());
+        }
+        return terminals;
+    }
+
+    public HashMap<String, String> getHardLinksAcrossWalk(String walk) {
+        String prefix = walk + ".";
+        HashMap<String, String> walkLinks = new HashMap<>();
+        for (String key : hardLinks.keySet()) {
+            if (key.startsWith(prefix)) {
+                walkLinks.put(key.substring(prefix.length()), hardLinks.get(key));
+            }
+        }
+        return walkLinks;
+    }
 }

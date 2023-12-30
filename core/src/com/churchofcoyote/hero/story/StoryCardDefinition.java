@@ -25,4 +25,8 @@ public class StoryCardDefinition {
         sb.append(")");
         return sb.toString();
     }
+
+    public void addLink(StoryCardLink link) {
+        links.put(link.key, link);
+    }
 }
