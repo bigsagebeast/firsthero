@@ -870,8 +870,8 @@ public class Entity {
         int deltaSpellPoints = newMaxSpellPoints - maxSpellPoints;
         maxHitPoints += deltaHitPoints;
         maxSpellPoints += deltaSpellPoints;
-        hitPoints = Math.max(hitPoints + deltaHitPoints, newMaxHitPoints);
-        spellPoints = Math.max(spellPoints + deltaSpellPoints, newMaxSpellPoints);
+        hitPoints = Math.min(hitPoints + deltaHitPoints, newMaxHitPoints);
+        spellPoints = Math.min(spellPoints + deltaSpellPoints, newMaxSpellPoints);
         healingDelay = 300 / maxHitPoints;
         spRegenDelay = 100 / maxSpellPoints;
     }

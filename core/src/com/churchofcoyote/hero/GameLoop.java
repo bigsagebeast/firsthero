@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.churchofcoyote.hero.engine.WindowEngine;
@@ -53,18 +54,21 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public GameLoop() {
 		try {
 			glyphEngine.initialize();
-			Path defPath = Paths.get("defs");
-			List<File> files = null;
-			try (Stream<Path> walk = Files.walk(defPath, Integer.MAX_VALUE)) {
-				files = walk
-						.filter(Files::isRegularFile)
-						.map(Path::toFile)
-						.collect(Collectors.toList());
-			} catch (IOException e) {
-				throw new SetupException("Can't find defs directory");
+			ArrayList<FileHandle> files = new ArrayList<>();
+			ArrayList<FileHandle> dirs = new ArrayList<>();
+			dirs.add(Gdx.files.internal("defs"));
+			while (!dirs.isEmpty()) {
+				FileHandle[] dirFiles = dirs.remove(0).list();
+				for (FileHandle dirFile : dirFiles) {
+					if (dirFile.isDirectory()) {
+						dirs.add(dirFile);
+					} else {
+						files.add(dirFile);
+					}
+				}
 			}
-			for (File f : files) {
-				DefinitionLoader.loadFile(f);
+			for (FileHandle file : files) {
+				DefinitionLoader.loadFile(file);
 			};
 		} catch (SetupException e) {
 			throw new RuntimeException(e);

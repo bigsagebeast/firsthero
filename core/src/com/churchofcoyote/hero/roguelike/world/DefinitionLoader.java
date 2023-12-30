@@ -1,5 +1,7 @@
 package com.churchofcoyote.hero.roguelike.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.glyphtile.Palette;
 import com.churchofcoyote.hero.glyphtile.PaletteEntry;
@@ -11,23 +13,21 @@ import com.churchofcoyote.hero.roguelike.world.dungeon.generation.Themepedia;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class DefinitionLoader {
-    public static void loadFile(File file) throws SetupException {
-        //File file = new File(filename);
-        if (!file.exists()) {
-            throw new RuntimeException("Definition filename " + file.getName() + " does not exist");
-        }
+    public static void loadFile(FileHandle handle) throws SetupException {
         ObjectMapper om = new ObjectMapper();
         JsonNode root;
         try {
-            root = om.readTree(file);
+            root = om.readTree(new BufferedReader(new InputStreamReader(handle.read())));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

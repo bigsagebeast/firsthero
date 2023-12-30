@@ -1,11 +1,14 @@
 package com.churchofcoyote.hero.chat;
 
+import com.badlogic.gdx.Gdx;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,7 @@ public class ChatLoader {
         ObjectMapper om = new ObjectMapper();
         try {
             Map<String, List<Map<String, Object>>> jsonMap = om.readValue(
-                    new File(filePath),
+                    new BufferedReader(new InputStreamReader(Gdx.files.internal(filePath).read())),
                     new TypeReference<Map<String, List<Map<String, Object>>>>() {}
             );
 
