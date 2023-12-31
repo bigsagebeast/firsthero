@@ -10,5 +10,6 @@ defs/movers/animals.json
 defs/movers/goblins.json
 defs/movers/gods.json
 defs/movers/sprites.json
+defs/movers/tech.json
 defs/themes/goblin-stronghold.json
 defs/unique/unique.json

@@ -85,7 +85,11 @@ public class RoguelikeModule extends Module {
 	}
 	
 	public void announce(String s) {
-		announceWindow.addLine(Util.capitalize(s));
+		// TODO this should already be initialized!
+		// Failed when announcing an elemeng being drawn on the first turn
+		if (announceWindow != null) {
+			announceWindow.addLine(Util.capitalize(s));
+		}
 	}
 
 	public void unannounce() {

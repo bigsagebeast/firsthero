@@ -58,7 +58,7 @@ public class DungeonGenerator {
 		for (Room r : level.rooms) {
 			// TODO separate specialCorridors from special spawn rules
 			if (Game.random.nextInt(100) < SPAWN_CHANCE_PER_ROOM && !r.roomType.specialCorridors) {
-				String chosenMonster = getAllowedMonster(null, level);
+				String chosenMonster = getAllowedMonster(null, level, true);
 				if (chosenMonster == null) {
 					System.out.println("No allowed monsters");
 					return;
@@ -97,7 +97,7 @@ public class DungeonGenerator {
 
 
 
-	public static List<String> getAllowedMonsters(List<String> requiredTags, int minThreat, int maxThreat, Level level) {
+	public static List<String> getAllowedMonsters(List<String> requiredTags, int minThreat, int maxThreat, Level level, boolean wandering) {
 		if (level.threat < 0) {
 			return Collections.EMPTY_LIST;
 		}
@@ -107,7 +107,7 @@ public class DungeonGenerator {
 		for (String key : Game.bestiary.map.keySet()) {
 			Phenotype p = Game.bestiary.map.get(key);
 			if (p.peaceful) continue;
-			if (p.wandering && p.threat >= minThreat && p.threat <= maxThreat) {
+			if ((p.wandering || !wandering) && p.threat >= minThreat && p.threat <= maxThreat) {
 				if (requiredTags != null) {
 					boolean missingTag = false;
 					for (String requiredTag : requiredTags) {
@@ -128,24 +128,24 @@ public class DungeonGenerator {
 		return allowedEntities;
 	}
 
-	public static String getAllowedMonster(List<String> requiredTags, Level level) {
-		return getAllowedMonster(requiredTags, level, 0);
+	public static String getAllowedMonster(List<String> requiredTags, Level level, boolean wandering) {
+		return getAllowedMonster(requiredTags, level, 0, wandering);
 	}
 
-	public static String getAllowedMonster(List<String> requiredTags, Level level, int threatMod) {
+	public static String getAllowedMonster(List<String> requiredTags, Level level, int threatMod, boolean wandering) {
 		int min = Math.max(0, threatMod + level.threat/2);
 		int max = Math.max(0, threatMod + level.threat + 1);
-		String key = getAllowedMonster(requiredTags, min, max, level);
+		String key = getAllowedMonster(requiredTags, min, max, level, wandering);
 		if (key == null) {
-			key = getAllowedMonster(requiredTags, 0, max, level);
+			key = getAllowedMonster(requiredTags, 0, max, level, wandering);
 		}
 		return key;
 	}
 
-	public static String getAllowedMonster(List<String> requiredTags, int minThreat, int maxThreat, Level level) {
-		List<String> allowedEntities = getAllowedMonsters(requiredTags, minThreat, maxThreat, level);
+	public static String getAllowedMonster(List<String> requiredTags, int minThreat, int maxThreat, Level level, boolean wandering) {
+		List<String> allowedEntities = getAllowedMonsters(requiredTags, minThreat, maxThreat, level, wandering);
 		if (allowedEntities.isEmpty()) {
-			allowedEntities = getAllowedMonsters(requiredTags, 0, maxThreat, level);
+			allowedEntities = getAllowedMonsters(requiredTags, 0, maxThreat, level, wandering);
 		}
 		if (allowedEntities.isEmpty()) {
 			StringBuilder sb = new StringBuilder();

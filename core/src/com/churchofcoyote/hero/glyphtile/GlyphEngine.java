@@ -60,6 +60,7 @@ public class GlyphEngine implements GameLogic {
         loadGlyphFile("tiles/misc.gly");
         loadGlyphFile("tiles/feature.gly");
         loadGlyphFile("tiles/aurex.gly");
+        loadGlyphFile("tiles/construct.gly");
     }
 
     public void initializeLevel(Level level) {

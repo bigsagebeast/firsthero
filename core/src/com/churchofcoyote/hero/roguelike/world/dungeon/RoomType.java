@@ -22,6 +22,8 @@ public class RoomType {
     public static RoomType MOSSY = new RoomType(null, "Moss grows thick on the walls.");
     public static RoomType UNDERGROUND_GROVE = new RoomType("Grove", "You approach an underground grove.");
 
+    public static RoomType FRACTAL_COPPER = new RoomType("Fractal Copper", "The ceiling is made of a fractal copper pattern that bubbles as you watch it.");
+
     public String roomName;
     public String entranceMessage;
     public boolean specialCorridors;
@@ -47,6 +49,12 @@ public class RoomType {
         naturaeSpawner.threatModifier = -1;
         MOSSY.spawners.add(naturaeSpawner);
         UNDERGROUND_GROVE.spawners.add(naturaeSpawner);
+
+        SpecialSpawner copperSpawner = SpecialSpawner.newRegen();
+        copperSpawner.spawnMTTH = 300;
+        copperSpawner.tags = Arrays.asList("tech");
+        copperSpawner.spawnNearPlayer = true;
+        FRACTAL_COPPER.spawners.add(copperSpawner);
     }
 
     public RoomType() {

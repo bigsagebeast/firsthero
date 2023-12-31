@@ -534,7 +534,7 @@ public class Game {
 		if (targetCreature != null) {
 			ProcMover targetMover = targetCreature.getMover();
 			if (targetMover.isPeacefulToPlayer(targetCreature)) {
-				announce("You bump into " + targetCreature.getVisibleNameWithQuantity() + ".");
+				announce("You bump into " + targetCreature.getVisibleNameWithQuantity() + ". (Press 'c' to chat.)");
 			} else {
 				Entity weaponPrimary = player.getEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
 				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss

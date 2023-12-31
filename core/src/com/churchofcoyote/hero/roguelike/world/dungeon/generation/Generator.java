@@ -27,6 +27,14 @@ public class Generator {
     public Level generate(String name, int width, int height) {
         level = new Level(name, width, height);
 
+        // TODO: This is duplicate code
+        String[] components = name.split("\\.");
+        if (components.length != 2) {
+            throw new RuntimeException("Invalid level name: " + name);
+        }
+        String dungeon = components[0];
+        int depth = Integer.valueOf(components[1]);
+
         wall = Terrain.get("wall");
         uncarveable = Terrain.get("uncarveable");
         floor = Terrain.get("dot");
@@ -132,6 +140,10 @@ public class Generator {
             retryAddSpecialFeature(RoomType.POOL, RoomType.GENERIC_ROOM);
         }
 
+        if (depth >= 3 && Game.random.nextInt(2) == 0) {
+            retryAddSpecialFeature(RoomType.FRACTAL_COPPER, RoomType.GENERIC_ANY);
+        }
+
         return level;
     }
 
@@ -168,7 +180,6 @@ public class Generator {
             Point forgePoint = openFloorTiles.get(0);
             Entity forge = Game.itempedia.create("feature.forge");
             level.addEntityWithStacking(forge, forgePoint);
-            level.rooms.get(roomId).setRoomType(RoomType.FORGE);
         } else if (roomType == RoomType.POOL) {
             List<Point> openFloorTiles = level.getEmptyRoomMapOpenFloor(roomId);
             if (openFloorTiles.isEmpty()) {
@@ -177,7 +188,6 @@ public class Generator {
             Point poolPoint = openFloorTiles.get(0);
             Entity pool = Game.itempedia.create("feature.pool");
             level.addEntityWithStacking(pool, poolPoint);
-            level.rooms.get(roomId).setRoomType(RoomType.POOL);
         } else if (roomType == RoomType.MOSSY) {
             List<Point> wallFloorTiles = level.getEmptyRoomMapAlongWall(roomId);
             Collections.shuffle(wallFloorTiles);
@@ -185,7 +195,6 @@ public class Generator {
             for (int i = 0; i < mossyTiles && i < wallFloorTiles.size(); i++) {
                 level.addEntityWithStacking(Game.itempedia.create("feature.moss"), wallFloorTiles.get(i));
             }
-            level.rooms.get(roomId).setRoomType(RoomType.MOSSY);
         } else if (roomType == RoomType.UNDERGROUND_GROVE) {
             List<Point> groveStarts = level.getEmptyRoomMapOpenFloor(roomId);
             if (groveStarts.size() < 10) {
@@ -227,10 +236,13 @@ public class Generator {
                 Entity tree = Game.itempedia.create("feature.tree");
                 level.addEntityWithStacking(tree, validTreeCells.get(i));
             }
-            level.rooms.get(roomId).setRoomType(RoomType.UNDERGROUND_GROVE);
+        } else if (roomType == RoomType.FRACTAL_COPPER) {
+
         } else {
-            throw new RuntimeException("No handling rules for roomtype " + roomType.roomName == null ? "unnamed" : roomType.roomName);
+            throw new RuntimeException("No handling rules for roomtype " + (roomType.roomName == null ? "unnamed" : roomType.roomName));
         }
+        // set room type by default (unless we returned true early)
+        level.rooms.get(roomId).setRoomType(roomType);
         return true;
     }
 

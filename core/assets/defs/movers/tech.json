@@ -1,0 +1,28 @@
+{
+  "movers": {
+    "homiform.mirror": {
+      "name": "mirror homiform",
+      "peaceful": false,
+      "hitPoints": 8,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "construct.homiform",
+      "isManipulator": true,
+      "palette": [
+        "white",
+        "gray",
+        "teal"
+      ],
+      "experienceAwarded": 20,
+      "threat": 3,
+      "wandering": false,
+      "naturalWeaponDamage": 5,
+      "naturalWeaponToHit": -1,
+      "naturalArmorClass": 0,
+      "tags": [
+        "tech",
+        "generic-tech"
+      ]
+    }
+  }
+}

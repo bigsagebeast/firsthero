@@ -3,7 +3,7 @@
     "goblin.lackey": {
       "name": "sea-withered goblin lackey",
       "peaceful": false,
-      "hitPoints": 8,
+      "hitPoints": 4,
       "isMonster": true,
       "bodyPlan": "humanoid",
       "glyphName": "humanoid.goblin.grunt",

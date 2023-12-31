@@ -69,7 +69,7 @@ public class Level {
 				return;
 			}
 
-			String monsterKey = DungeonGenerator.getAllowedMonster(Arrays.asList("generic-fantasy"), getMinThreat(), getMaxThreat(), this);
+			String monsterKey = DungeonGenerator.getAllowedMonster(Arrays.asList("generic-fantasy"), getMinThreat(), getMaxThreat(), this, true);
 			Point pos = findSpawnTile(10);
 			if (pos == null || monsterKey == null) {
 				return;

@@ -68,7 +68,7 @@ public class SpecialSpawner {
                         throw new RuntimeException("No entity key to spawn during special spawning");
                     }
                     key = DungeonGenerator.getAllowedMonster(tags, level.getMinThreat() + threatModifier,
-                            level.getMaxThreat() + threatModifier, level);
+                            level.getMaxThreat() + threatModifier, level, false);
                     if (key == null) {
                         //System.out.println("WARN: Special spawning failed to find an appropriate entity.");
                         return;
@@ -152,7 +152,7 @@ public class SpecialSpawner {
                     throw new RuntimeException("No entity key to spawn during special spawning");
                 }
                 key = DungeonGenerator.getAllowedMonster(tags, level.getMinThreat() + threatModifier,
-                        level.getMaxThreat() + threatModifier, level);
+                        level.getMaxThreat() + threatModifier, level, false);
                 if (key == null) {
                     //System.out.println("WARN: Special spawning failed to find an appropriate entity.");
                     return;
