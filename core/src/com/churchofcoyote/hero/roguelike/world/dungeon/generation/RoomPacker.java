@@ -126,6 +126,7 @@ public class RoomPacker {
                 for (int y = packRoom.y; y < packRoom.y + packRoom.height; y++) {
                     level.cell(x, y).terrain = floor;
                     level.cell(x, y).roomId = packRoom.room.roomId;
+                    level.cell(x, y).temp = CellMatching.INTERIOR;
                 }
             }
             for (RoomNode neighbor : packRoom.neighbors.keySet()) {

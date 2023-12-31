@@ -3,6 +3,7 @@ package com.churchofcoyote.hero.roguelike.world.proc.environment;
 import com.churchofcoyote.hero.GameLoop;
 import com.churchofcoyote.hero.chat.ChatLink;
 import com.churchofcoyote.hero.dialogue.ChatBox;
+import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Profile;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
@@ -15,6 +16,13 @@ import java.util.List;
 public class ProcWorldPortal extends Proc {
 
     StoryManager storyManager;
+
+    @Override
+    public void postBeSteppedOn(Entity entity, Entity actor) {
+        if (actor == Game.getPlayerEntity()) {
+            Game.announce("Press 'P' to enter the portal.");
+        }
+    }
 
     @Override
     public Boolean canPrayAt(Entity entity, Entity actor) {

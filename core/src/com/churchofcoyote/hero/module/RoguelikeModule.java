@@ -278,6 +278,10 @@ public class RoguelikeModule extends Module {
 				case Keys.COMMA:
 					game.cmdStairsUp();
 					break;
+				case Keys.BACKSLASH:
+					Entity magicmap = Game.itempedia.create("scroll.magic.map", 100);
+					Game.getPlayerEntity().receiveItem(magicmap);
+					break;
 			}
 		}
 		game.turn();
