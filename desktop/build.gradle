@@ -27,6 +27,25 @@ task dist(type: Jar) {
     }
 }
 
+task writeAllAssetsToFile(type: Task) {
+    doLast {
+        // TODO doesn't work
+        // projectfolder/assets
+        def assetsFolder = new File("${project.rootDir}/assets/")
+        // projectfolder/assets/assets.txt
+        def assetsFile = new File(project.ext.assetsDir, "assets.txt")
+        // delete that file in case we've already created it
+        assetsFile.delete()
+
+        // iterate through all files inside that folder
+        // convert it to a relative path
+        // and append it to assets.txt the file
+        fileTree(assetsFolder).collect {project.ext.assetsDir.relativePath(it) }.each {
+            assetsFile.append(it + "\n")
+        }
+    }
+}
+
 task copyTask(type: Copy) {
     file('build/bin').mkdirs()
     from files(project.assetsDir)
@@ -35,3 +54,4 @@ task copyTask(type: Copy) {
 
 dist.dependsOn classes
 dist.dependsOn copyTask
+copyTask.dependsOn writeAllAssetsToFile

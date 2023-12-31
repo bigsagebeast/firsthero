@@ -1,0 +1,14 @@
+defs/environment/features.json
+defs/items/armor.json
+defs/items/books.json
+defs/items/potions-identified.json
+defs/items/potions-unidentified.json
+defs/items/scrolls-identified.json
+defs/items/scrolls-unidentified.json
+defs/items/weapons.json
+defs/movers/animals.json
+defs/movers/goblins.json
+defs/movers/gods.json
+defs/movers/sprites.json
+defs/themes/goblin-stronghold.json
+defs/unique/unique.json

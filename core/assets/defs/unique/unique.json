@@ -15,7 +15,7 @@
           "text": "Pick up your weapon"
         },
         "ProcMessageOnStepOn": {
-          "text": "Press 'comma' to pick it up."
+          "text": "Press 'g' to pick it up."
         },
         "ProcMessageOnPickup": {
           "text": "Press 'w' to wield it."
