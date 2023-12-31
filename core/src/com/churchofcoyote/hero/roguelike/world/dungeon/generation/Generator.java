@@ -2,7 +2,6 @@ package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.world.Entity;
-import com.churchofcoyote.hero.roguelike.world.Itempedia;
 import com.churchofcoyote.hero.roguelike.world.LevelTransition;
 import com.churchofcoyote.hero.roguelike.world.Terrain;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
@@ -76,7 +75,9 @@ public class Generator {
         SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Themepedia.get("goblin.stronghold"));
         assigner.assign();
 
+        boolean makeRiver = Game.random.nextInt(2) == 0;
         Brogue brogue = new Brogue(level);
+        brogue.makeRiver = makeRiver;
         brogue.generate();
 
         List<Point> astarPoints = AStarLevel.path(level, roomPacker.rooms.get(0).centerPoint, brogue.rooms.get(0).centerPoint, 1000.0f);
@@ -106,7 +107,11 @@ public class Generator {
 
         List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_ROOM).collect(Collectors.toList());
         if (genericRooms.size() < 2) {
-            throw new RuntimeException("Not enough rooms for an upstair and a downstair!");
+            genericRooms.addAll(level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_CAVERN).collect(Collectors.toList()));
+            if (genericRooms.size() < 2) {
+                System.out.println("Not enough rooms, retrying");
+                return null;
+            }
         }
 
         for (Room room : level.rooms) {
@@ -123,6 +128,9 @@ public class Generator {
             retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_ANY);
         }
         retryAddSpecialFeature(RoomType.FORGE, RoomType.GENERIC_ROOM);
+        if (!brogue.madeRiver) {
+            retryAddSpecialFeature(RoomType.POOL, RoomType.GENERIC_ROOM);
+        }
 
         return level;
     }
@@ -161,6 +169,15 @@ public class Generator {
             Entity forge = Game.itempedia.create("feature.forge");
             level.addEntityWithStacking(forge, forgePoint);
             level.rooms.get(roomId).roomType = RoomType.FORGE;
+        } else if (roomType == RoomType.POOL) {
+            List<Point> openFloorTiles = level.getEmptyRoomMapOpenFloor(roomId);
+            if (openFloorTiles.isEmpty()) {
+                return false;
+            }
+            Point poolPoint = openFloorTiles.get(0);
+            Entity pool = Game.itempedia.create("feature.pool");
+            level.addEntityWithStacking(pool, poolPoint);
+            level.rooms.get(roomId).roomType = RoomType.POOL;
         } else if (roomType == RoomType.MOSSY) {
             List<Point> wallFloorTiles = level.getEmptyRoomMapAlongWall(roomId);
             Collections.shuffle(wallFloorTiles);

@@ -122,8 +122,6 @@ public class CharacterBuilder {
                 GameLoop.roguelikeModule.game.spellbook.addSpell("root spear");
                 break;
         }
-        //Entity magicmap = Game.itempedia.create("scroll.magic.map", 100);
-        //pcEntity.receiveItem(magicmap);
     }
 
     private void equip(String key, BodyPart bodyPart) {

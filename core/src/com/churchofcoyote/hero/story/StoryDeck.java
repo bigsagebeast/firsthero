@@ -47,7 +47,7 @@ public class StoryDeck {
         goblinLeader.title = "goblinLeader";
         goblinLeader.tags.add("boss");
         goblinLeader.links.get("home").requirements.add(new StoryLinkRequirementTagRequired("goblin"));
-        goblinLeader.addDescSelf("there was a wily goblin boss, %1n");
+        goblinLeader.addDescSelf("there is a wily goblin boss, %1n");
         addCard(goblinLeader);
 
         StoryCardDefinition nightbringer = new SCDWeapon();

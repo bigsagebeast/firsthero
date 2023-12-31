@@ -26,6 +26,20 @@
         "environment.ProcElementalMoss": {}
       }
     },
+    "feature.pool": {
+      "name": "reflecting pool",
+      "glyphName": "feature.pool",
+      "isFeature": true,
+      "palette": [
+        "tan",
+        "blue"
+      ],
+      "procs": {
+        "environment.ProcElementalSource": {
+          "elementSymbol": "W"
+        }
+      }
+    },
     "feature.forge": {
       "name": "forge",
       "glyphName": "feature.forge",

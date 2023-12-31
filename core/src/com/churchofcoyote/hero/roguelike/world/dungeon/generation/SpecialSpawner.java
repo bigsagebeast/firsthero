@@ -1,6 +1,7 @@
 package com.churchofcoyote.hero.roguelike.world.dungeon.generation;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
+import com.churchofcoyote.hero.roguelike.world.DungeonGenerator;
 import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.dungeon.Level;
 import com.churchofcoyote.hero.util.Point;
@@ -18,6 +19,10 @@ public class SpecialSpawner {
     public int quantity = 1; // if max is present, this is the minimum quantity
     public int quantityMax = -1; // -1 means "the same as min"
 
+    // only for post-gen spawns
+    public boolean spawnWhileVisible = false;
+    public int spawnAverageTurns = 1000;
+
     public void spawnInRoom(Level level, int roomId) {
         if (quantityMax < 0) {
             quantityMax = quantity;
@@ -33,8 +38,11 @@ public class SpecialSpawner {
         } else {
             throw new RuntimeException("Unknown spawning rule: " + rule);
         }
-        if (trueQuantity > validLocations.size()) {
+        if (validLocations == null) {
             System.out.println("ERR: Couldn't find an empty tile for special spawning in room");
+            return;
+        } else if (trueQuantity > validLocations.size()) {
+            System.out.println("WARN: Not enough empty tiles for special spawning in room " + level.rooms.get(roomId).roomType.roomName);
             trueQuantity = validLocations.size();
         }
         for (int i=0; i < trueQuantity; i++) {
