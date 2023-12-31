@@ -117,7 +117,7 @@ public class Generator {
         for (Room room : level.rooms) {
             if (room.roomType != null) {
                 for (SpecialSpawner spawner : room.roomType.spawners) {
-                    spawner.spawnInRoom(level, room.roomId);
+                    spawner.spawnInRoomAtGen(level, room.roomId);
                 }
             }
         }
@@ -168,7 +168,7 @@ public class Generator {
             Point forgePoint = openFloorTiles.get(0);
             Entity forge = Game.itempedia.create("feature.forge");
             level.addEntityWithStacking(forge, forgePoint);
-            level.rooms.get(roomId).roomType = RoomType.FORGE;
+            level.rooms.get(roomId).setRoomType(RoomType.FORGE);
         } else if (roomType == RoomType.POOL) {
             List<Point> openFloorTiles = level.getEmptyRoomMapOpenFloor(roomId);
             if (openFloorTiles.isEmpty()) {
@@ -177,7 +177,7 @@ public class Generator {
             Point poolPoint = openFloorTiles.get(0);
             Entity pool = Game.itempedia.create("feature.pool");
             level.addEntityWithStacking(pool, poolPoint);
-            level.rooms.get(roomId).roomType = RoomType.POOL;
+            level.rooms.get(roomId).setRoomType(RoomType.POOL);
         } else if (roomType == RoomType.MOSSY) {
             List<Point> wallFloorTiles = level.getEmptyRoomMapAlongWall(roomId);
             Collections.shuffle(wallFloorTiles);
@@ -185,7 +185,7 @@ public class Generator {
             for (int i = 0; i < mossyTiles && i < wallFloorTiles.size(); i++) {
                 level.addEntityWithStacking(Game.itempedia.create("feature.moss"), wallFloorTiles.get(i));
             }
-            level.rooms.get(roomId).roomType = RoomType.MOSSY;
+            level.rooms.get(roomId).setRoomType(RoomType.MOSSY);
         } else if (roomType == RoomType.UNDERGROUND_GROVE) {
             List<Point> groveStarts = level.getEmptyRoomMapOpenFloor(roomId);
             if (groveStarts.size() < 10) {
@@ -227,7 +227,7 @@ public class Generator {
                 Entity tree = Game.itempedia.create("feature.tree");
                 level.addEntityWithStacking(tree, validTreeCells.get(i));
             }
-            level.rooms.get(roomId).roomType = RoomType.UNDERGROUND_GROVE;
+            level.rooms.get(roomId).setRoomType(RoomType.UNDERGROUND_GROVE);
         } else {
             throw new RuntimeException("No handling rules for roomtype " + roomType.roomName == null ? "unnamed" : roomType.roomName);
         }
@@ -243,7 +243,7 @@ public class Generator {
         } else {
             Collections.shuffle(genericRooms);
             stairRoom = genericRooms.get(0);
-            stairRoom.roomType = RoomType.GENERIC_UPSTAIR;
+            stairRoom.setRoomType(RoomType.GENERIC_UPSTAIR);
         }
         Point stairPoint = findEmptyPointInRoom(stairRoom);
         level.cell(stairPoint).terrain = Terrain.get("upstair");
@@ -259,7 +259,7 @@ public class Generator {
         } else {
             Collections.shuffle(genericRooms);
             stairRoom = genericRooms.get(0);
-            stairRoom.roomType = RoomType.GENERIC_DOWNSTAIR;
+            stairRoom.setRoomType(RoomType.GENERIC_DOWNSTAIR);
         }
         Point stairPoint = findEmptyPointInRoom(stairRoom);
         level.cell(stairPoint).terrain = Terrain.get("downstair");

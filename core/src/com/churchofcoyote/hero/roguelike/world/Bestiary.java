@@ -60,6 +60,8 @@ public class Bestiary {
 		goblinWarrior.naturalWeaponDamage = 6;
 		goblinWarrior.naturalWeaponToHit = 1;
 		goblinWarrior.naturalArmorClass = 5;
+		goblinWarrior.tags.add("goblin");
+		goblinWarrior.tags.add("generic-fantasy");
 
 		goblinArcher.name = "sea-withered goblin archer";
 		goblinArcher.peaceful = false;
@@ -82,6 +84,8 @@ public class Bestiary {
 			e.addProc(new ProcShooter("weapon.ammo.arrow"));
 			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(4)));
 		});
+		goblinArcher.tags.add("goblin");
+		goblinArcher.tags.add("generic-fantasy");
 
 		Phenotype goblinSlinger = new Phenotype();
 		goblinSlinger.name = "sea-withered goblin slinger";
@@ -105,6 +109,8 @@ public class Bestiary {
 			e.addProc(new ProcShooter("weapon.ammo.rock"));
 			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(6)));
 		});
+		goblinSlinger.tags.add("goblin");
+		goblinSlinger.tags.add("generic-fantasy");
 		map.put("goblin.slinger", goblinSlinger);
 
 
@@ -122,7 +128,8 @@ public class Bestiary {
 		wolf.naturalWeaponDamage = 8;
 		wolf.naturalWeaponToHit = 1;
 		wolf.naturalArmorClass = 5;
-
+		wolf.tags.add("generic-fantasy");
+		wolf.tags.add("animal");
 
 		skeleton.name = "skeleton";
 		skeleton.peaceful = false;
@@ -138,6 +145,8 @@ public class Bestiary {
 		skeleton.naturalWeaponDamage = 6;
 		skeleton.naturalWeaponToHit = 0;
 		skeleton.naturalArmorClass = 4;
+		skeleton.tags.add("generic-fantasy");
+		skeleton.tags.add("undead");
 
 		zombie.name = "zombie";
 		zombie.peaceful = false;
@@ -154,6 +163,8 @@ public class Bestiary {
 		zombie.naturalWeaponDamage = 12;
 		zombie.naturalWeaponToHit = -4;
 		zombie.naturalArmorClass = 0;
+		zombie.tags.add("generic-fantasy");
+		zombie.tags.add("undead");
 
 		fungusRed.name = "red fungus";
 		fungusRed.peaceful = false;
@@ -171,6 +182,8 @@ public class Bestiary {
 		fungusRed.naturalWeaponToHit = -5;
 		fungusRed.naturalArmorClass = -5;
 		fungusRed.setup.add((e) -> {e.addProc(new ProcBurningTouch(3, 3, 0));});
+		fungusRed.tags.add("generic-fantasy");
+		fungusRed.tags.add("plant");
 
 		fungusGreenFunglet.name = "green funglet";
 		fungusGreenFunglet.peaceful = false;
@@ -189,6 +202,8 @@ public class Bestiary {
 		fungusGreenFunglet.naturalArmorClass = -10;
 		fungusGreenFunglet.packSize = 2;
 		fungusGreenFunglet.packSpawnArea = 9;
+		fungusGreenFunglet.tags.add("generic-fantasy");
+		fungusGreenFunglet.tags.add("plant");
 
 		farmer.name = "Farmer";
 		farmer.peaceful = true;

@@ -7,7 +7,7 @@ public enum Element {
     FIRE("fire", "F"),
     WATER("water", "W"),
     LIGHTNING("lightning", "L"),
-    PLANT("plant", "P");
+    NATURAE("naturae", "N");
 
     public String name;
     public String symbol;

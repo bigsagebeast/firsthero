@@ -1,6 +1,5 @@
 package com.churchofcoyote.hero.roguelike.world;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.churchofcoyote.hero.SetupException;
 import com.churchofcoyote.hero.glyphtile.Palette;
@@ -14,7 +13,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -279,7 +277,7 @@ public class DefinitionLoader {
         SpecialSpawner spawner = new SpecialSpawner();
         spawner.isMover = getAsString(node, "type", "item").equals("mover");
         spawner.key = getAsString(node, "key", null);
-        spawner.levelModifier = getAsInt(node, "level", 0);
+        spawner.threatModifier = getAsInt(node, "level", 0);
         spawner.percentChance = getAsInt(node, "percent", 100);
         spawner.quantity = getAsInt(node, "quantity", 1);
         spawner.quantityMax = getAsInt(node, "quantityMax", -1);

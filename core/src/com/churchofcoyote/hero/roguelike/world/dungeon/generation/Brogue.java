@@ -279,7 +279,7 @@ public class Brogue {
             throw new RuntimeException("Failed to generate cavern");
         }
         BrogueGrid grid = new BrogueGrid(width+2, height+2);
-        grid.room.roomType = RoomType.GENERIC_CAVERN;
+        grid.room.setRoomType(RoomType.GENERIC_CAVERN);
         int roomId = level.rooms.size();
         for (int i=0; i<width; i++) {
             for (int j=0; j<height; j++) {
@@ -450,7 +450,7 @@ public class Brogue {
         int riverBankWidth = 1;
         int riverCavernWidth = 4;
         BrogueGrid riverGrid = new BrogueGrid(gridWidth, levelGrid.height);
-        riverGrid.room.roomType = RoomType.UNDERGROUND_RIVER;
+        riverGrid.room.setRoomType(RoomType.UNDERGROUND_RIVER);
         riverGrid.room.roomId = level.rooms.size();
         CellularAutomata automata = new CellularAutomata(gridWidth, levelGrid.height);
         automata.cells = automata.generateStatus();

@@ -15,6 +15,7 @@ import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.roguelike.world.proc.ProcMover;
 import com.churchofcoyote.hero.text.TextBlock;
 import com.churchofcoyote.hero.util.Fov;
+import com.churchofcoyote.hero.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -84,7 +85,7 @@ public class RoguelikeModule extends Module {
 	}
 	
 	public void announce(String s) {
-		announceWindow.addLine(s);
+		announceWindow.addLine(Util.capitalize(s));
 	}
 
 	public void unannounce() {

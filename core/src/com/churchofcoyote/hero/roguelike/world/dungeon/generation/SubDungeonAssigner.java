@@ -25,7 +25,7 @@ public class SubDungeonAssigner {
             if (highestScore == null) {
                 throw new RuntimeException("Failed to retrieve highest scoring RoomAndTheme");
             }
-            highestScore.roomNode.room.roomType = highestScore.themeRoom.type;
+            highestScore.roomNode.room.setRoomType(highestScore.themeRoom.type);
             themeRoomCount.put(highestScore.themeRoom, getThemeRoomCount(highestScore.themeRoom) + 1);
             scores = calculateScores();
         }

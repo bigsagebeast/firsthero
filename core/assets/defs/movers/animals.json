@@ -20,7 +20,11 @@
       "naturalArmorClass": 8,
       "packSize": 1,
       "packSpawnArea": 3,
-      "size": "SMALL"
+      "size": "SMALL",
+      "tags": [
+        "generic-fantasy",
+        "animal"
+      ]
     },
     "noctupanther": {
       "name": "noctupanther",
@@ -41,7 +45,11 @@
       "naturalArmorClass": 2,
       "packSize": 1,
       "packSpawnArea": 3,
-      "size": "SMALL"
+      "size": "SMALL",
+      "tags": [
+        "generic-fantasy",
+        "animal"
+      ]
     }
   }
 }

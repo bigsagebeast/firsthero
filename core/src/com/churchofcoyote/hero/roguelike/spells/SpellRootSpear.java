@@ -32,7 +32,7 @@ public class SpellRootSpear extends Spell {
     @Override
     public Map<Element, Integer> getElementCost(Entity caster) {
         HashMap<Element, Integer> cost = new HashMap<>();
-        cost.put(Element.PLANT, 2);
+        cost.put(Element.NATURAE, 2);
         return cost;
     }
 

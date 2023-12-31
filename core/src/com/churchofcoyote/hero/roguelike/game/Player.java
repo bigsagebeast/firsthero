@@ -18,11 +18,11 @@ public class Player {
 		maxElementCharges.put(Element.WATER, 4);
 		maxElementCharges.put(Element.LIGHTNING, 4);
 		maxElementCharges.put(Element.FIRE, 4);
-		maxElementCharges.put(Element.PLANT, 4);
+		maxElementCharges.put(Element.NATURAE, 4);
 		currentElementCharges.put(Element.WATER, 2);
 		currentElementCharges.put(Element.LIGHTNING, 2);
 		currentElementCharges.put(Element.FIRE, 2);
-		currentElementCharges.put(Element.PLANT, 2);
+		currentElementCharges.put(Element.NATURAE, 2);
 	}
 
 	public boolean areElementsFull() {
@@ -104,8 +104,8 @@ public class Player {
 				case LIGHTNING:
 					Game.announce("You feel tingly! Your lightning charges increase.");
 					break;
-				case PLANT:
-					Game.announce("You feel rooted! Your plant charges increase.");
+				case NATURAE:
+					Game.announce("You feel rooted! Your naturae charges increase.");
 					break;
 			}
 		} else {
@@ -119,7 +119,7 @@ public class Player {
 				case LIGHTNING:
 					Game.announce("You feel a mild tingle.");
 					break;
-				case PLANT:
+				case NATURAE:
 					Game.announce("Your feet feel steady.");
 					break;
 			}

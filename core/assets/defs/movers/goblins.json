@@ -19,7 +19,8 @@
       "naturalWeaponToHit": -2,
       "naturalArmorClass": 2,
       "tags": [
-        "goblin"
+        "goblin",
+        "generic-fantasy"
       ]
     },
     "goblin.butcher": {
@@ -42,7 +43,8 @@
       "naturalArmorClass": 2,
       "wandering": false,
       "tags": [
-        "goblin"
+        "goblin",
+        "generic-fantasy"
       ]
     },
     "jackal.trained": {
@@ -65,7 +67,10 @@
       "naturalArmorClass": 5,
       "packSize": 4,
       "packSpawnArea": 3,
-      "size": "SMALL"
+      "size": "SMALL",
+      "tags": [
+        "generic-fantasy"
+      ]
     }
   }
 }

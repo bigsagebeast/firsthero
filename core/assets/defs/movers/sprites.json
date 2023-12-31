@@ -28,7 +28,11 @@
       "tactic": {
         "name": "TacticBeamAndCharge",
         "castPercent": 50
-      }
+      },
+      "tags": [
+        "generic-fantasy",
+        "lightning"
+      ]
     },
     "sprite.fire": {
       "name": "fire sprite",
@@ -58,7 +62,11 @@
       "tactic": {
         "name": "TacticBeamAndCharge",
         "castPercent": 50
-      }
+      },
+      "tags": [
+        "generic-fantasy",
+        "fire"
+      ]
     },
     "sprite.water": {
       "name": "water sprite",
@@ -88,7 +96,11 @@
       "tactic": {
         "name": "TacticBeamAndCharge",
         "castPercent": 50
-      }
+      },
+      "tags": [
+        "generic-fantasy",
+        "water"
+      ]
     },
     "sprite.wood": {
       "name": "wood sprite",
@@ -109,7 +121,7 @@
       "naturalWeaponToHit": 2,
       "naturalArmorClass": 0,
       "size": "SMALL",
-      "corpseMethod": "gainPlantSmall",
+      "corpseMethod": "gainNaturaeSmall",
       "procs": {
         "monster.ProcCaster": {
           "spellNames": "monster plant weak"
@@ -118,7 +130,11 @@
       "tactic": {
         "name": "TacticBeamAndCharge",
         "castPercent": 50
-      }
+      },
+      "tags": [
+        "generic-fantasy",
+        "naturae"
+      ]
     }
   }
 }

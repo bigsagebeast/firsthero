@@ -8,7 +8,7 @@ import com.churchofcoyote.hero.roguelike.world.Entity;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 
 public class ProcElementalMoss extends Proc {
-    public Element element = Element.PLANT;
+    public Element element = Element.NATURAE;
     private static final int maxCharges = 2;
     private static final int maxRechargeTimer = 50;
     public int charges = maxCharges;

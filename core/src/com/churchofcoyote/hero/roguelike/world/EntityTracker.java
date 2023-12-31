@@ -23,7 +23,14 @@ public class EntityTracker {
         if (id < 0) {
             throw new RuntimeException("Didn't check that entityId was NONE");
         }
-        return entities.get(id);
+        Entity e = entities.get(id);
+        if (e != null) {
+            if (e.destroyed) {
+                entities.remove(id);
+                return null;
+            }
+        }
+        return e;
     }
 
     public static void load(Entity ent) {

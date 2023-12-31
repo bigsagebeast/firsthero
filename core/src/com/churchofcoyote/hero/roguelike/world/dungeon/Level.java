@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import com.churchofcoyote.hero.roguelike.game.Game;
 import com.churchofcoyote.hero.roguelike.game.Visibility;
+import com.churchofcoyote.hero.roguelike.world.dungeon.generation.SpecialSpawner;
 import com.churchofcoyote.hero.roguelike.world.proc.Proc;
 import com.churchofcoyote.hero.util.Compass;
 import com.churchofcoyote.hero.util.Fov;
@@ -30,6 +31,7 @@ public class Level {
 	public List<Room> rooms = new ArrayList<>();
 	public Map<Integer, List<Point>> roomMap = new HashMap<>();
 	public Map<Point, Float> jitters = new HashMap<>();
+	private int lastTurnUpdate = 0;
 	
 	public Level(String name, int width, int height) {
 		this.name = name;
@@ -52,14 +54,22 @@ public class Level {
 	}
 
 	public void timePassed(long time) {
+		if (time < lastTurnUpdate + Game.ONE_TURN) {
+			return;
+		}
+		lastTurnUpdate += Game.ONE_TURN;
+		for (Room r : rooms) {
+			for (SpecialSpawner s : r.spawners) {
+				s.spawnInRoomPostGen(this, r.roomId);
+			}
+		}
 		if (lastWander + wanderRate < time) {
 			lastWander = time;
 			if (getMovers().stream().filter(e -> e.wanderer).count() > maxForWander) {
 				return;
 			}
-			int maxThreat = (Game.getPlayerEntity().level / 2) + Game.getLevel().threat;
-			int minThreat = maxThreat / 2;
-			String monsterKey = DungeonGenerator.getAllowedMonster(this);
+
+			String monsterKey = DungeonGenerator.getAllowedMonster(Arrays.asList("generic-fantasy"), getMinThreat(), getMaxThreat(), this);
 			Point pos = findSpawnTile(10);
 			if (pos == null || monsterKey == null) {
 				return;
@@ -497,5 +507,13 @@ public class Level {
 				jitters.put(ep.entity.pos, jitter);
 			}
 		}
+	}
+
+	public int getMinThreat() {
+		return getMaxThreat() / 2;
+	}
+
+	public int getMaxThreat() {
+		return (Game.getPlayerEntity().level / 2) + Game.getLevel().threat + 1;
 	}
 }

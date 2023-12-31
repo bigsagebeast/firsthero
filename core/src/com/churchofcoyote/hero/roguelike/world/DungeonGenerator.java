@@ -58,7 +58,7 @@ public class DungeonGenerator {
 		for (Room r : level.rooms) {
 			// TODO separate specialCorridors from special spawn rules
 			if (Game.random.nextInt(100) < SPAWN_CHANCE_PER_ROOM && !r.roomType.specialCorridors) {
-				String chosenMonster = getAllowedMonster(level);
+				String chosenMonster = getAllowedMonster(null, level);
 				if (chosenMonster == null) {
 					System.out.println("No allowed monsters");
 					return;
@@ -97,7 +97,7 @@ public class DungeonGenerator {
 
 
 
-	public static List<String> getAllowedMonsters(int minThreat, int maxThreat, Level level) {
+	public static List<String> getAllowedMonsters(List<String> requiredTags, int minThreat, int maxThreat, Level level) {
 		if (level.threat < 0) {
 			return Collections.EMPTY_LIST;
 		}
@@ -108,6 +108,18 @@ public class DungeonGenerator {
 			Phenotype p = Game.bestiary.map.get(key);
 			if (p.peaceful) continue;
 			if (p.wandering && p.threat >= minThreat && p.threat <= maxThreat) {
+				if (requiredTags != null) {
+					boolean missingTag = false;
+					for (String requiredTag : requiredTags) {
+						if (!p.tags.contains(requiredTag)) {
+							missingTag = true;
+							break;
+						}
+					}
+					if (missingTag) {
+						continue;
+					}
+				}
 				for (int i = 0; i < p.frequency; i++) {
 					allowedEntities.add(key);
 				}
@@ -116,13 +128,32 @@ public class DungeonGenerator {
 		return allowedEntities;
 	}
 
-	public static String getAllowedMonster(Level level) {
-		return getAllowedMonster(level.threat/2, level.threat+1, level);
+	public static String getAllowedMonster(List<String> requiredTags, Level level) {
+		return getAllowedMonster(requiredTags, level, 0);
 	}
 
-	public static String getAllowedMonster(int minThreat, int maxThreat, Level level) {
-		List<String> allowedEntities = getAllowedMonsters(minThreat, maxThreat, level);
+	public static String getAllowedMonster(List<String> requiredTags, Level level, int threatMod) {
+		int min = Math.max(0, threatMod + level.threat/2);
+		int max = Math.max(0, threatMod + level.threat + 1);
+		String key = getAllowedMonster(requiredTags, min, max, level);
+		if (key == null) {
+			key = getAllowedMonster(requiredTags, 0, max, level);
+		}
+		return key;
+	}
+
+	public static String getAllowedMonster(List<String> requiredTags, int minThreat, int maxThreat, Level level) {
+		List<String> allowedEntities = getAllowedMonsters(requiredTags, minThreat, maxThreat, level);
 		if (allowedEntities.isEmpty()) {
+			allowedEntities = getAllowedMonsters(requiredTags, 0, maxThreat, level);
+		}
+		if (allowedEntities.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("WARN: No monsters within threat range 0 or " + minThreat + " to " + maxThreat + " with tags:");
+			for (String tag : requiredTags) {
+				sb.append(" " + tag);
+			}
+			//System.out.println(sb);
 			return null;
 		}
 		int index = Game.random.nextInt(allowedEntities.size());

@@ -68,7 +68,7 @@ public class ProcCorpse extends Proc {
         Game.getPlayer().gainStatElement(Element.LIGHTNING, 1, 6);
     }
 
-    public void gainPlantSmall(Entity entity, Entity actor) {
-        Game.getPlayer().gainStatElement(Element.PLANT, 1, 6);
+    public void gainNaturaeSmall(Entity entity, Entity actor) {
+        Game.getPlayer().gainStatElement(Element.NATURAE, 1, 6);
     }
 }

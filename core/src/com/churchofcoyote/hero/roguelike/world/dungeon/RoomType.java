@@ -3,13 +3,14 @@ package com.churchofcoyote.hero.roguelike.world.dungeon;
 import com.churchofcoyote.hero.roguelike.world.dungeon.generation.SpecialSpawner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RoomType {
     public static RoomType GENERIC_UPSTAIR = new RoomType(null, null);
     public static RoomType GENERIC_DOWNSTAIR = new RoomType(null, null);
-    public static RoomType GENERIC_ROOM = new RoomType("Room", null);
-    public static RoomType GENERIC_CAVERN = new RoomType("Cavern", null);
+    public static RoomType GENERIC_ROOM = new RoomType(null, null);
+    public static RoomType GENERIC_CAVERN = new RoomType(null, null);
     public static RoomType UNDERGROUND_RIVER = new RoomType("Underground River", "You approach an underground river.");
     public static RoomType SUBDUNGEON_UNASSIGNED = new RoomType("UNASSIGNED SUBDUNGEON", "ERR: UNASSIGNED SUBDUNGEON ROOM");
 
@@ -25,6 +26,28 @@ public class RoomType {
     public String entranceMessage;
     public boolean specialCorridors;
     public List<SpecialSpawner> spawners = new ArrayList<>();
+
+    static {
+        SpecialSpawner fireSpawner = SpecialSpawner.newRegen();
+        fireSpawner.spawnMTTH = 500;
+        fireSpawner.tags = Arrays.asList("fire", "generic-fantasy");
+        fireSpawner.threatModifier = -1;
+        FORGE.spawners.add(fireSpawner);
+
+        SpecialSpawner waterSpawner = SpecialSpawner.newRegen();
+        waterSpawner.spawnMTTH = 500;
+        waterSpawner.tags = Arrays.asList("water", "generic-fantasy");
+        waterSpawner.threatModifier = -1;
+        POOL.spawners.add(waterSpawner);
+        UNDERGROUND_RIVER.spawners.add(waterSpawner);
+
+        SpecialSpawner naturaeSpawner = SpecialSpawner.newRegen();
+        naturaeSpawner.spawnMTTH = 500;
+        naturaeSpawner.tags = Arrays.asList("naturae", "generic-fantasy");
+        naturaeSpawner.threatModifier = -1;
+        MOSSY.spawners.add(naturaeSpawner);
+        UNDERGROUND_GROVE.spawners.add(naturaeSpawner);
+    }
 
     public RoomType() {
     }
