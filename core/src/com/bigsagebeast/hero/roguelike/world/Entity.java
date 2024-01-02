@@ -1,6 +1,8 @@
 package com.bigsagebeast.hero.roguelike.world;
 
 import com.bigsagebeast.hero.GameLoop;
+import com.bigsagebeast.hero.enums.Ambulation;
+import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
 import com.bigsagebeast.hero.roguelike.game.Statblock;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
@@ -84,8 +86,10 @@ public class Entity {
     public String glyphName;
     public PaletteEntry palette;
     public boolean glyphFlipH; // flip glyph horizontally
+    public Gender gender = Gender.AGENDER;
 
     public boolean isManipulator;
+    public Ambulation ambulation;
 
     public String itemTypeKey;
 

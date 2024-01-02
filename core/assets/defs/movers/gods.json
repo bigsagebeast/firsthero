@@ -8,6 +8,7 @@
       "palette": [
         "white"
       ],
+      "gender": "MALE",
       "chatPage": "aurex.serifex.intro.landing"
     },
     "god.loruch": {
@@ -18,6 +19,7 @@
       "palette": [
         "lightgreen"
       ],
+      "gender": "MALE",
       "chatPage": "aurex.loruch.intro.landing"
     }
   }

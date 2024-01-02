@@ -77,7 +77,7 @@ public class TacticBeamAndCharge extends Tactic {
             else {
                 if (Math.random() < 0.5) {
                     Compass direction = Compass.randomDirection();
-                    if (Game.canMoveTo(e, direction.getX(), direction.getY())) {
+                    if (Game.canMoveBy(e, direction)) {
                         Game.npcMoveBy(e, pm, direction.getX(), direction.getY());
                     }
                 } else {

@@ -39,7 +39,7 @@ public class ChaseAndMeleeTactic extends Tactic {
 			else {
 				if (Math.random() < 0.5) {
 					Compass direction = Compass.randomDirection();
-					if (Game.canMoveTo(e, direction.getX(), direction.getY())) {
+					if (Game.canMoveBy(e, direction)) {
 						Game.npcMoveBy(e, pm, direction.getX(), direction.getY());
 					}
 				}
@@ -63,6 +63,7 @@ public class ChaseAndMeleeTactic extends Tactic {
 					if (Game.random.nextInt(8) == 0) {
 						dir = Compass.neighbors(dir).get(Game.random.nextInt(2));
 					}
+					// TODO what happens if this moves into a wall?
 					Game.npcMoveBy(e, pm, dir.getX(), dir.getY());
 					return true;
 				}

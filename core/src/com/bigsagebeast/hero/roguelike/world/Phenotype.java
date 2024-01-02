@@ -1,5 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world;
 
+import com.bigsagebeast.hero.enums.Ambulation;
+import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.glyphtile.Palette;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
 import com.bigsagebeast.hero.enums.BodySize;
@@ -19,12 +21,13 @@ public class Phenotype {
 	public int divinePoints;
 	//public Glyph glyph;
 	public boolean peaceful;
-	public Rank stats = Rank.C_MINUS;
 	public boolean isMonster;
 	public String bodyPlan;
 	public String glyphName;
+	public Gender gender = Gender.AGENDER;
 	public PaletteEntry palette;
 	public boolean isManipulator;
+	public Ambulation ambulation = Ambulation.WALKING_ONLY;
 	public int experienceAwarded;
 	public int moveCost = 1000;
 	public int naturalWeaponToHit = 0;

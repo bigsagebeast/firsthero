@@ -11,7 +11,7 @@ public class CombatLogic {
 	// TODO split into trySwing, doHit, doMiss
 	public static void swing(Entity actor, Entity target, Entity tool) {
 		
-		Visibility vis = Game.getLevel().checkVis(Game.getPlayerEntity(), actor, target);
+		//Visibility vis = Game.getLevel().checkVis(Game.getPlayerEntity(), actor, target);
 
 		int damage, accuracy;
 		float randomFactor = Game.random.nextFloat() + 0.5f;
@@ -38,38 +38,64 @@ public class CombatLogic {
 
 		int dodge = target.getArmorClass();
 
+		boolean critical = Game.random.nextInt(20) == 0;
 		if (accuracy >= dodge) {
 			// TODO stop on pre failure
 			actor.forEachProc((e, p) -> p.preDoHit(e, target, tool));
 			target.forEachProc((e, p) -> p.preBeHit(e, actor, tool));
 
-			if (damage <= 0) {
+			if (!critical && damage > 0) {
+				// TODO this isn't how thickness should work
+				damage -= target.getArmorThickness();
+				if (damage <= 0) {
+					damage = 1;
+				}
+			}
+
+			if (damage < 0) {
 				damage = 0;
 			} else {
 				hurt(target, damage);
 			}
 
 			if (damage == 0 && actor.naturalWeaponDamage == 0) {
-				Game.announceVis(vis,
+				Game.announceVis(actor, target,
 						"You touch " + target.getVisibleNameThe() + withWeaponString + ".",
 						actor.getVisibleNameThe() + " touches you" + withWeaponString + ".",
 						actor.getVisibleNameThe() + " touches " + target.getVisibleNameThe() + withWeaponString + ".",
 						null);
 				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
 				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
+			} else if (damage == 0) {
+				// actually, can this happen?
+				Game.announceVis(actor, target,
+						"You hit " + target.getVisibleNameThe() + withWeaponString + ", but don't penetrate their armor.",
+						actor.getVisibleNameThe() + "'s blow doesn't penetrate your armor.",
+						actor.getVisibleNameThe() + "'s blow doesn't penetrate " + target.getVisibleNameThe() + "'s armor.",
+						null);
+				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
+				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
 			} else {
 				// TODO: Damage type indicators instead of 'hit', for example 'slash' and 'crush'
 				// TODO: Resistance and weakly modifiers, like "you stab the skeleton moderately" or "you crush the skeleton powerfully"
-				Game.announceVis(vis,
-						"You hit " + target.getVisibleNameThe() + withWeaponString + ".",
-						actor.getVisibleNameThe() + " hits you" + withWeaponString + ".",
-						actor.getVisibleNameThe() + " hits " + target.getVisibleNameThe() + withWeaponString + ".",
-						null);
+				if (critical) {
+					Game.announceVis(actor, target,
+							"You critically hit " + target.getVisibleNameThe() + withWeaponString + "!",
+							actor.getVisibleNameThe() + " critically hits you" + withWeaponString + "!",
+							actor.getVisibleNameThe() + " critically hits " + target.getVisibleNameThe() + withWeaponString + "!",
+							null);
+				} else {
+					Game.announceVis(actor, target,
+							"You hit " + target.getVisibleNameThe() + withWeaponString + ".",
+							actor.getVisibleNameThe() + " hits you" + withWeaponString + ".",
+							actor.getVisibleNameThe() + " hits " + target.getVisibleNameThe() + withWeaponString + ".",
+							null);
+				}
 				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
 				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
 			}
 		} else {
-			Game.announceVis(vis,
+			Game.announceVis(actor, target,
 					"You miss " + target.getVisibleNameThe() + withWeaponString + ".",
 					actor.getVisibleNameThe() + " misses you" + withWeaponString + ".",
 					actor.getVisibleNameThe() + " misses " + target.getVisibleNameThe() + withWeaponString + ".",
@@ -84,11 +110,19 @@ public class CombatLogic {
 			// TODO should pass the entity you killed them with as 'tool'
 			// TODO does pre kill make sense?
 
-			Game.announceVis(vis,
-					"You kill " + target.getVisibleNameThe() + ".",
-					actor.getVisibleNameThe() + " kills you.",
-					actor.getVisibleNameThe() + " kills " + target.getVisibleNameThe() + ".",
-					null);
+			if (critical) {
+				Game.announceVis(actor, target,
+						"You critically hit " + target.getVisibleNameThe() + " and slay %2o!",
+						actor.getVisibleNameThe() + " critically hits and kills you!",
+						actor.getVisibleNameThe() + " critically hits and kills " + target.getVisibleNameThe() + "!",
+						null);
+			} else {
+				Game.announceVis(actor, target,
+						"You hit " + target.getVisibleNameThe() + " and slay %2o.",
+						actor.getVisibleNameThe() + " kills you.",
+						actor.getVisibleNameThe() + " kills " + target.getVisibleNameThe() + ".",
+						null);
+			}
 			actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
 			target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
 		}

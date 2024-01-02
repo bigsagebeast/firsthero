@@ -13,6 +13,7 @@
         "red",
         "brown"
       ],
+      "gender": "RANDOM",
       "experienceAwarded": 10,
       "threat": 1,
       "naturalWeaponDamage": 4,
@@ -36,6 +37,7 @@
         "red",
         "white"
       ],
+      "gender": "RANDOM",
       "experienceAwarded": 25,
       "threat": 2,
       "naturalWeaponDamage": 8,

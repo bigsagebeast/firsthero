@@ -6,6 +6,8 @@ import com.bigsagebeast.hero.Graphics;
 import com.bigsagebeast.hero.logic.TextEngine;
 import com.bigsagebeast.hero.text.TextBlock;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class TextEntryBox {
@@ -30,8 +32,11 @@ public class TextEntryBox {
     private int lineOffset = 0;
     private int selection = -1;
     private String textEntry = "";
+    private List<String> linesText = new ArrayList<>();
 
+    private TextBlock parent;
     private TextBlock title;
+    private List<TextBlock> lines = new ArrayList<>();
     private TextBlock footer;
     private TextBlock textEntryBlock;
 
@@ -67,25 +72,45 @@ public class TextEntryBox {
         return this;
     }
 
-    public void autoHeight() {
-        int textLine = 1;
+    public TextEntryBox withLine(String line) {
+        linesText.add(line);
+        return this;
+    }
+
+    public TextEntryBox autoHeight() {
+        int textLine = linesText.size();
+        if (!titleText.isEmpty()) {
+            textLine++;
+        }
         height = (textLine * FONT_SIZE) + FOOTER_OFFSET_FROM_BOTTOM + 16; // TODO magic number
+        return this;
     }
 
     public void compile(TextEngine textEngine) {
         textEntryBlock = new TextBlock("", null, FONT_SIZE, 0, 0,
                 x + ITEM_OFFSET_FROM_LEFT, y + ITEM_OFFSET_FROM_TOP,
                 Color.WHITE);
-        title =  new TextBlock(titleText, null, FONT_SIZE, 0, 0,
+        title = new TextBlock(titleText, null, FONT_SIZE, 0, 0,
                 x + width/2 - (titleText.length() * FONT_SIZE)/2, y + TITLE_OFFSET_FROM_TOP,
                 Color.YELLOW);
         footer = new TextBlock(footerText, null, FONT_SIZE, 0, 0,
                 x + FOOTER_OFFSET_FROM_LEFT, y + height - FOOTER_OFFSET_FROM_BOTTOM,
                 Color.YELLOW);
+        parent = new TextBlock(null, null, FONT_SIZE, 0, 0,
+                x + ITEM_OFFSET_FROM_LEFT, y + ITEM_OFFSET_FROM_TOP,
+                Color.WHITE);
+
+        for (int i=0; i < linesText.size(); i++) {
+            String lineText = linesText.get(i);
+            parent.addChild(new TextBlock(lineText, null, FONT_SIZE, 0, i, Color.YELLOW));
+            textEntryBlock.y++;
+            footer.y++;
+        }
 
         textEngine.addBlock(textEntryBlock);
         textEngine.addBlock(footer);
         textEngine.addBlock(title);
+        textEngine.addBlock(parent);
 
         compiled = true;
     }
@@ -100,6 +125,9 @@ public class TextEntryBox {
         }
         if (textEntryBlock != null) {
             textEntryBlock.close();
+        }
+        if (parent != null) {
+            parent.close();
         }
         closed = true;
     }

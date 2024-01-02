@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.SetupException;
+import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.module.RoguelikeModule;
 import com.bigsagebeast.hero.module.TargetingModule;
@@ -21,6 +22,7 @@ import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcShooter;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
+import com.bigsagebeast.hero.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -708,7 +710,11 @@ public class Game {
 			}
 		}
 	}
-	
+
+	public static boolean canMoveBy(Entity actor, Compass dir) {
+		return canMoveTo(actor, actor.pos.x + dir.getX(), actor.pos.y + dir.getY());
+	}
+
 	public static boolean canMoveTo(Entity actor, int tx, int ty) {
 		if (level.moverAt(tx, ty) != null) {
 			return false;
@@ -756,7 +762,7 @@ public class Game {
 		if (s == null) {
 			return;
 		}
-		roguelikeModule.announce(s);
+		roguelikeModule.announce(Util.capitalize(s));
 	}
 
 	public static void unannounce() {
@@ -783,16 +789,18 @@ public class Game {
 	}
 
 	public static void announceVis(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+		Gender actorGender = actorEntity == null ? null : actorEntity.gender;
+		Gender targetGender = targetEntity == null ? null : targetEntity.gender;
 		Entity playerEntity = player.getEntity();
 		if (playerEntity == actorEntity) {
-			announce(actor);
+			announce(Util.substitute(actor, actorGender, targetGender));
 		} else if (playerEntity == targetEntity) {
-			announce(target);
+			announce(Util.substitute(target, actorGender, targetGender));
 		} else if ((actorEntity != null && playerEntity.canSee(actorEntity)) || (targetEntity != null && playerEntity.canSee(targetEntity))) {
 			// TODO this might be a problem if you can't see the other actor or target?
-			announce(visible);
+			announce(Util.substitute(visible, actorGender, targetGender));
 		} else if (actorEntity != null && playerEntity.canHear(actorEntity)){
-			announce(audible);
+			announce(Util.substitute(audible, actorGender, targetGender));
 		}
 	}
 }

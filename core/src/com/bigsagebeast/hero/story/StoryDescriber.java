@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.story;
 
 import com.bigsagebeast.hero.roguelike.game.Game;
+import com.bigsagebeast.hero.util.Util;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,9 +26,9 @@ public class StoryDescriber {
             if (!card.descIntroduced) {
                 String intro = rand(card.definition.describeSelf());
                 intro = substitute(intro, card, null);
-                sb.append(capitalize(intro));
+                sb.append(Util.capitalize(intro));
             } else {
-                sb.append(capitalize(card.shortName));
+                sb.append(Util.capitalize(card.shortName));
             }
 
             int numLinks = 0;
@@ -78,37 +79,14 @@ public class StoryDescriber {
         return options[Game.random.nextInt(options.length)];
     }
 
-    public String capitalize(String string) {
-        return string.substring(0, 1).toUpperCase(Locale.ROOT) + string.substring(1);
-    }
-
     public String substitute(String string, StoryCard card1, StoryCard card2) {
         string = string.replace("%1n", card1.shortName);
-        string = string.replace("%1a", card1.gender.a());
-        string = string.replace("%1s", card1.gender.s());
-        string = string.replace("%1o", card1.gender.o());
-        string = string.replace("%1p", card1.gender.p());
-        string = string.replace("%1r", card1.gender.r());
-        string = string.replace("%1N", capitalize(card1.shortName));
-        string = string.replace("%1A", capitalize(card1.gender.a()));
-        string = string.replace("%1S", capitalize(card1.gender.s()));
-        string = string.replace("%1O", capitalize(card1.gender.o()));
-        string = string.replace("%1P", capitalize(card1.gender.p()));
-        string = string.replace("%1R", capitalize(card1.gender.r()));
+        string = string.replace("%1N", Util.capitalize(card1.shortName));
         if (card2 != null) {
             string = string.replace("%2n", card2.shortName);
-            string = string.replace("%2a", card2.gender.a());
-            string = string.replace("%2s", card2.gender.s());
-            string = string.replace("%2o", card2.gender.o());
-            string = string.replace("%2p", card2.gender.p());
-            string = string.replace("%2r", card2.gender.r());
-            string = string.replace("%2N", capitalize(card2.shortName));
-            string = string.replace("%2A", capitalize(card2.gender.a()));
-            string = string.replace("%2S", capitalize(card2.gender.s()));
-            string = string.replace("%2O", capitalize(card2.gender.o()));
-            string = string.replace("%2P", capitalize(card2.gender.p()));
-            string = string.replace("%2R", capitalize(card2.gender.r()));
+            string = string.replace("%2N", Util.capitalize(card2.shortName));
         }
+        string = Util.substitute(string, card1.gender, card2 == null ? null : card2.gender);
         return string;
     }
 }

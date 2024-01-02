@@ -50,6 +50,33 @@
         "generic-fantasy",
         "animal"
       ]
+    },
+    "animal.bat": {
+      "name": "giant bat",
+      "peaceful": false,
+      "hitPoints": 5,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.bat",
+      "isManipulator": false,
+      "ambulation": "FLYING",
+      "moveCost": 500,
+      "palette": [
+        "brown",
+        "tan"
+      ],
+      "experienceAwarded": 10,
+      "threat": 1,
+      "naturalWeaponDamage": 4,
+      "naturalWeaponToHit": -7,
+      "naturalArmorClass": 2,
+      "size": "SMALL",
+      "tactic": {
+        "name": "TacticBat"
+      },
+      "tags": [
+        "generic-fantasy"
+      ]
     }
   }
 }

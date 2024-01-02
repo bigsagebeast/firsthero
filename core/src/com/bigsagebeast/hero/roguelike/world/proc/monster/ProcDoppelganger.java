@@ -17,6 +17,7 @@ public class ProcDoppelganger extends Proc {
         entity.glyphName = Game.getPlayerEntity().glyphName;
         entity.palette = Game.getPlayerEntity().palette;
         entity.glyphFlipH = true;
+        entity.gender = Game.getPlayerEntity().gender;
         EntityGlyph.updateEntity(entity);
     }
 

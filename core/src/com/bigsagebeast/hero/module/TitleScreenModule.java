@@ -205,9 +205,9 @@ public class TitleScreenModule extends Module {
 		end();
 
 		TextEntryBox box = new TextEntryBox()
-				.withTitle("Name yourself, God of Heroes!")
-				.withMargins(60, 60);
-		box.autoHeight();
+				.withTitle("Dead god of Heroes, name yourself!")
+				.withMargins(60, 60)
+				.autoHeight();
 		GameLoop.textEntryModule.openTextEntryBox(box, this::handleEnterName);
 
 	}

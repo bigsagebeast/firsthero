@@ -7,7 +7,12 @@ public enum Gender {
     AGENDER("its", "it", "it", "its", "itself"),
     PLURAL("theirs", "them", "them", "their", "themselves"),
     NONBINARY("theirs", "them", "them", "their", "themself"),
+
+    // assign male or female on entity creation
+    RANDOM("theirs", "them", "them", "their", "themselves"),
+    // pull values from profile
     CUSTOM(null, null, null, null, null);
+
 
     public String absolute;
     public String subjective;

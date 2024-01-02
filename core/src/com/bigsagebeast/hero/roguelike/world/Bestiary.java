@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.bigsagebeast.hero.enums.Ambulation;
+import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.glyphtile.Palette;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
 import com.bigsagebeast.hero.roguelike.world.ai.ChaseAndMeleeTactic;
@@ -36,12 +38,13 @@ public class Bestiary {
 		pc.name = "yourself";
 		pc.hitPoints = 0; // calculated based on stats
 		pc.spellPoints = 0;
-		pc.stats = Rank.B_PLUS;
 		pc.isMonster = false;
 		pc.bodyPlan = "humanoid";
 		pc.glyphName = "player.farmer";
 		pc.isManipulator = true;
+		pc.ambulation = Ambulation.WALKING_SWIMMING;
 		pc.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_YELLOW);
+		pc.gender = Gender.NONBINARY;
 		pc.threat = -1;
 		pc.naturalWeaponDamage = 3;
 		pc.naturalWeaponToHit = 0;
@@ -50,12 +53,12 @@ public class Bestiary {
 		goblinWarrior.name = "sea-withered goblin warrior";
 		goblinWarrior.peaceful = false;
 		goblinWarrior.hitPoints = 16;
-		goblinWarrior.stats = Rank.C_MINUS;
 		goblinWarrior.isMonster = true;
 		goblinWarrior.bodyPlan = "humanoid";
 		goblinWarrior.glyphName = "humanoid.goblin.warrior";
 		goblinWarrior.isManipulator = true;
 		goblinWarrior.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		goblinWarrior.gender = Gender.RANDOM;
 		goblinWarrior.experienceAwarded = 20;
 		goblinWarrior.threat = 2;
 		goblinWarrior.naturalWeaponDamage = 6;
@@ -67,12 +70,12 @@ public class Bestiary {
 		goblinArcher.name = "sea-withered goblin archer";
 		goblinArcher.peaceful = false;
 		goblinArcher.hitPoints = 8;
-		goblinArcher.stats = Rank.C_MINUS;
 		goblinArcher.isMonster = true;
 		goblinArcher.bodyPlan = "humanoid";
 		goblinArcher.glyphName = "humanoid.goblin.archer";
 		goblinArcher.isManipulator = true;
 		goblinArcher.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		goblinArcher.gender = Gender.RANDOM;
 		goblinArcher.experienceAwarded = 15;
 		goblinArcher.threat = 2;
 		goblinArcher.naturalWeaponDamage = 3;
@@ -92,12 +95,12 @@ public class Bestiary {
 		goblinSlinger.name = "sea-withered goblin slinger";
 		goblinSlinger.peaceful = false;
 		goblinSlinger.hitPoints = 8;
-		goblinSlinger.stats = Rank.C_MINUS;
 		goblinSlinger.isMonster = true;
 		goblinSlinger.bodyPlan = "humanoid";
 		goblinSlinger.glyphName = "humanoid.goblin.slinger";
 		goblinSlinger.isManipulator = true;
 		goblinSlinger.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_RED, Palette.COLOR_BROWN);
+		goblinSlinger.gender = Gender.RANDOM;
 		goblinSlinger.experienceAwarded = 15;
 		goblinSlinger.threat = 1;
 		goblinSlinger.naturalWeaponDamage = 3;
@@ -118,7 +121,6 @@ public class Bestiary {
 		wolf.name = "wolf";
 		wolf.peaceful = false;
 		wolf.hitPoints = 20;
-		wolf.stats = Rank.C_MINUS;
 		wolf.isMonster = true;
 		wolf.bodyPlan = "humanoid";
 		wolf.glyphName = "animal.canine";
@@ -135,7 +137,6 @@ public class Bestiary {
 		skeleton.name = "skeleton";
 		skeleton.peaceful = false;
 		skeleton.hitPoints = 8;
-		skeleton.stats = Rank.C_MINUS;
 		skeleton.isMonster = true;
 		skeleton.bodyPlan = "humanoid";
 		skeleton.glyphName = "undead.skeleton";
@@ -152,7 +153,6 @@ public class Bestiary {
 		zombie.name = "zombie";
 		zombie.peaceful = false;
 		zombie.hitPoints = 20;
-		zombie.stats = Rank.C_MINUS;
 		zombie.isMonster = true;
 		zombie.bodyPlan = "humanoid";
 		zombie.glyphName = "undead.zombie";
@@ -170,7 +170,6 @@ public class Bestiary {
 		fungusRed.name = "red fungus";
 		fungusRed.peaceful = false;
 		fungusRed.hitPoints = 25;
-		fungusRed.stats = Rank.C_MINUS;
 		fungusRed.isMonster = true;
 		fungusRed.bodyPlan = "humanoid";
 		fungusRed.glyphName = "plant.fungus";
@@ -189,7 +188,6 @@ public class Bestiary {
 		fungusGreenFunglet.name = "green funglet";
 		fungusGreenFunglet.peaceful = false;
 		fungusGreenFunglet.hitPoints = 10;
-		fungusGreenFunglet.stats = Rank.C_MINUS;
 		fungusGreenFunglet.isMonster = true;
 		fungusGreenFunglet.bodyPlan = "humanoid";
 		fungusGreenFunglet.glyphName = "plant.fungus";
@@ -209,7 +207,6 @@ public class Bestiary {
 		farmer.name = "Farmer";
 		farmer.peaceful = true;
 		farmer.hitPoints = 10;
-		farmer.stats = Rank.D;
 		farmer.isMonster = false;
 		farmer.bodyPlan = "humanoid";
 		farmer.glyphName = "creature.humanoid";
@@ -218,29 +215,6 @@ public class Bestiary {
 		farmer.experienceAwarded = 10;
 		farmer.threat = -1;
 		farmer.chatPage = "intro.farmer.landing";
-
-		/*
-		Phenotype sparkSprite = new Phenotype();
-		sparkSprite.name = "spark sprite";
-		sparkSprite.hitPoints = 5;
-		sparkSprite.isMonster = true;
-		sparkSprite.bodyPlan = "humanoid";
-		sparkSprite.isManipulator = true;
-		sparkSprite.glyphName = "humanoid.sprite";
-		sparkSprite.palette = new PaletteEntry(Palette.COLOR_YELLOW, Palette.COLOR_PURPLE, Palette.COLOR_CHARTREUSE);
-		sparkSprite.experienceAwarded = 15;
-		sparkSprite.threat = 2;
-		sparkSprite.naturalWeaponDamage = 4;
-		sparkSprite.naturalWeaponToHit = 2;
-		sparkSprite.naturalArmorClass = 0;
-		sparkSprite.corpseMethod = "gainElectricSmall";
-		sparkSprite.setup.add(e -> {
-			e.addProc(new ProcCaster(new String[] {"monster spark weak"}));
-			e.addProc(new ProcMonster(new TacticBeamAndCharge()));
-		});
-		map.put("sprite.spark", sparkSprite);
-
-		 */
 
 		map.put("player", pc);
 		map.put("goblin.warrior", goblinWarrior);
@@ -275,12 +249,17 @@ public class Bestiary {
 		e.divinePoints = p.divinePoints;
 		e.maxDivinePoints = p.divinePoints;
 		e.peaceful = p.peaceful;
-		e.stats = p.stats;
 		e.moveCost = p.moveCost;
 		e.body = new Body(p.bodyPlan);
 		e.glyphName = p.glyphName;
 		e.palette = p.palette;
+		if (p.gender == Gender.RANDOM) {
+			e.gender = Game.random.nextInt(2) == 0 ? Gender.MALE : Gender.FEMALE;
+		} else {
+			e.gender = p.gender;
+		}
 		e.isManipulator = p.isManipulator;
+		e.ambulation = p.ambulation;
 		e.experienceAwarded = p.experienceAwarded;
 		e.naturalWeaponDamage = p.naturalWeaponDamage;
 		e.naturalWeaponToHit = p.naturalWeaponToHit;
