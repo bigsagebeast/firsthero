@@ -565,10 +565,10 @@ public class Game {
 		}
 
 		if (!level.cell(tx, ty).terrain.isPassable()) {
-			if (level.cell(tx, ty).terrain == Terrain.BLANK) {
-				announce("You can't go that way.");
-			} else {
+			if (level.cell(tx, ty).terrain.isBumpInto()) {
 				announce("You bump into " + level.cell(tx, ty).terrain.getDescription() + ".");
+			} else {
+				announce("You can't go that way.");
 			}
 			if (player.getEntity().isConfused()) {
 				player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
@@ -674,32 +674,37 @@ public class Game {
 		List<Entity> itemsToMention = new ArrayList<>(items);
 		itemsToMention.removeIf(e -> e.getItemType().hideWalkOver);
 
-		if (items.isEmpty()) {
-			return;
-		}
-		if (!itemsToMention.isEmpty()) {
-			StringBuilder listString = new StringBuilder();
-			if (itemsToMention.size() == 1 && items.get(0).getItem().quantity == 1) {
-				listString.append("There is ");
-			} else {
-				listString.append("There are ");
-			}
-			for (int i = 0; i < itemsToMention.size(); i++) {
-				listString.append(itemsToMention.get(i).getVisibleNameSingularOrSpecific());
-				if (itemsToMention.size() > 1 && i < itemsToMention.size() - 2) {
-					listString.append(", ");
+		if (!items.isEmpty()) {
+			if (!itemsToMention.isEmpty()) {
+				StringBuilder listString = new StringBuilder();
+				if (itemsToMention.size() == 1 && items.get(0).getItem().quantity == 1) {
+					listString.append("There is ");
+				} else {
+					listString.append("There are ");
 				}
-				if (i == itemsToMention.size() - 2) {
-					listString.append(" and ");
+				for (int i = 0; i < itemsToMention.size(); i++) {
+					listString.append(itemsToMention.get(i).getVisibleNameSingularOrSpecific());
+					if (itemsToMention.size() > 1 && i < itemsToMention.size() - 2) {
+						listString.append(", ");
+					}
+					if (i == itemsToMention.size() - 2) {
+						listString.append(" and ");
+					}
+				}
+				listString.append(" here.");
+				announce(listString.toString());
+			}
+
+			for (Entity item : items) {
+				for (Proc p : item.procs) {
+					p.postBeSteppedOn(item, player.getEntity());
 				}
 			}
-			listString.append(" here.");
-			announce(listString.toString());
 		}
 
-		for (Entity item : items) {
-			for (Proc p : item.procs) {
-				p.postBeSteppedOn(item, player.getEntity());
+		for (Point adjacent : level.surroundingTiles(getPlayerEntity().pos)) {
+			for (Entity e : level.getEntitiesOnTile(adjacent)) {
+				e.entityProcs().forEach(ep -> ep.proc.onAdjacentToPlayer(e));
 			}
 		}
 	}

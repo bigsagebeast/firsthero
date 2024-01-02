@@ -36,6 +36,9 @@ public class CombatLogic {
 			accuracy = actor.getNaturalWeaponToHit() + Game.random.nextInt(20);
 		}
 
+		accuracy += actor.getToHitBonus();
+		damage += actor.getDamageBonus();
+
 		int dodge = target.getArmorClass();
 
 		boolean critical = Game.random.nextInt(20) == 0;

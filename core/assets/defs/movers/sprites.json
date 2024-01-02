@@ -8,6 +8,7 @@
       "bodyPlan": "humanoid",
       "glyphName": "humanoid.sprite",
       "isManipulator": false,
+      "ambulation": "FLYING",
       "palette": [
         "yellow",
         "purple",
@@ -42,6 +43,7 @@
       "bodyPlan": "humanoid",
       "glyphName": "humanoid.sprite",
       "isManipulator": false,
+      "ambulation": "FLYING",
       "palette": [
         "yellow",
         "purple",
@@ -76,6 +78,7 @@
       "bodyPlan": "humanoid",
       "glyphName": "humanoid.sprite",
       "isManipulator": false,
+      "ambulation": "FLYING",
       "palette": [
         "yellow",
         "purple",
@@ -110,6 +113,7 @@
       "bodyPlan": "humanoid",
       "glyphName": "humanoid.sprite",
       "isManipulator": false,
+      "ambulation": "FLYING",
       "palette": [
         "yellow",
         "purple",
@@ -134,6 +138,34 @@
       "tags": [
         "generic-fantasy",
         "naturae"
+      ]
+    },
+    "paradox.wisp": {
+      "name": "paradox wisp",
+      "peaceful": false,
+      "hitPoints": 2,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "spirit.wisp",
+      "isManipulator": false,
+      "ambulation": "FLYING",
+      "moveCost": 500,
+      "palette": [
+        "white",
+        "skyblue",
+        "cerulean"
+      ],
+      "experienceAwarded": 5,
+      "threat": 1,
+      "naturalWeaponDamage": 2,
+      "naturalWeaponToHit": -5,
+      "naturalArmorClass": 0,
+      "size": "TINY",
+      "tactic": {
+        "name": "TacticBat"
+      },
+      "tags": [
+        "paradox"
       ]
     }
   }

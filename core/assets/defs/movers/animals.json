@@ -39,7 +39,7 @@
         "purple"
       ],
       "experienceAwarded": 30,
-      "threat": 4,
+      "threat": 6,
       "naturalWeaponDamage": 7,
       "naturalWeaponToHit": 2,
       "naturalArmorClass": 2,
@@ -71,7 +71,6 @@
       "naturalWeaponToHit": -7,
       "naturalArmorClass": 2,
       "size": "SMALL",
-      "frequency": 100000,
       "corpseMethod": "procConfusion",
       "tactic": {
         "name": "TacticBat"

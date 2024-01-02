@@ -91,6 +91,7 @@ public class Proc {
     public void postDoUnequip(Entity entity, BodyPart bp, Entity target) {}
 
     public void postBeSteppedOn(Entity entity, Entity actor) { }
+    public void onAdjacentToPlayer(Entity entity) { }
 
     public void actPlayerLos(Entity entity) {}
 
@@ -132,10 +133,12 @@ public class Proc {
     public void postBeKilled(Entity entity, Entity actor, Entity tool) { }
     public void postDoKill(Entity entity, Entity target, Entity tool) { }
 
-    public int provideArmorClass() { return 0; }
-    public int provideArmorThickness() { return 0; }
+    public int provideArmorClass(Entity entity) { return 0; }
+    public int provideArmorThickness(Entity entity) { return 0; }
+    public int provideToHitBonus(Entity entity) { return 0; }
+    public int provideDamageBonus(Entity entity) { return 0; }
 
-    public List<StatusType> provideStatusResist() { return null; }
+    public List<StatusType> provideStatusResist(Entity entity) { return null; }
 
     public Boolean targetForQuaff(Entity entity) { return null; }
     public Boolean preBeQuaffed(Entity entity, Entity actor) { return null; }

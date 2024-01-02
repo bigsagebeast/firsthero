@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.util;
 
 import com.bigsagebeast.hero.enums.Gender;
+import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.story.StoryCard;
 
 import java.util.Locale;
@@ -53,5 +54,10 @@ public class Util {
     public static String aOrAn(String name) {
         boolean startsWithVowel = "aeiouAEIOU".indexOf(name.charAt(0)) != -1;
         return startsWithVowel ? "an" : "a";
+    }
+
+    public static boolean testMTTH(int mtth) {
+        float chance = 1.0f / mtth;
+        return Game.random.nextFloat() <= chance;
     }
 }

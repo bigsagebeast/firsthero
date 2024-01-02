@@ -5,7 +5,7 @@ import com.bigsagebeast.hero.enums.Ambulation;
 import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
-import com.bigsagebeast.hero.roguelike.game.Statblock;
+import com.bigsagebeast.hero.roguelike.game.*;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
@@ -14,9 +14,6 @@ import com.bigsagebeast.hero.roguelike.world.proc.item.ProcItem;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.util.Fov;
 import com.bigsagebeast.hero.util.Point;
-import com.bigsagebeast.hero.roguelike.game.Game;
-import com.bigsagebeast.hero.roguelike.game.MoverLogic;
-import com.bigsagebeast.hero.roguelike.game.Rank;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcEquippable;
 import com.bigsagebeast.hero.util.Util;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -660,24 +657,40 @@ public class Entity {
 
     public int getArmorClass() {
         int ac = naturalArmorClass;
-        for (Proc p : allProcsIncludingEquipment().collect(Collectors.toList())) {
-            ac += p.provideArmorClass();
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            ac += ep.proc.provideArmorClass(ep.entity);
         }
         return ac;
     }
 
     public int getArmorThickness() {
         int at = naturalArmorThickness;
-        for (Proc p : allProcsIncludingEquipment().collect(Collectors.toList())) {
-            at += p.provideArmorThickness();
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            at += ep.proc.provideArmorThickness(ep.entity);
         }
         return at;
     }
 
+    public int getToHitBonus() {
+        int bonus = 0;
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            bonus += ep.proc.provideToHitBonus(ep.entity);
+        }
+        return bonus;
+    }
+
+    public int getDamageBonus() {
+        int bonus = 0;
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            bonus += ep.proc.provideDamageBonus(ep.entity);
+        }
+        return bonus;
+    }
+
     public List<StatusType> getStatusResists() {
         ArrayList<StatusType> resists = new ArrayList<>();
-        for (Proc p : allProcsIncludingEquipment().collect(Collectors.toList())) {
-            List<StatusType> pr = p.provideStatusResist();
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            List<StatusType> pr = ep.proc.provideStatusResist(ep.entity);
             if (pr != null) {
                 resists.addAll(pr);
             }
@@ -769,19 +782,23 @@ public class Entity {
         return Stream.concat(allEntities.stream(), subEntities.stream());
     }
 
-    public Stream<Proc> allProcsIncludingEquipmentAndInventory() {
-        return Stream.concat(procs.stream(),
-                recursiveInventoryAndEquipment().flatMap(entity -> entity.procs.stream()));
+    public Stream<EntityProc> entityProcs() {
+        return procs.stream().map(p -> new EntityProc(this, p));
     }
 
-    public Stream<Proc> allProcsIncludingEquipment() {
-        return Stream.concat(procs.stream(),
-                recursiveEquipment().flatMap(entity -> entity.procs.stream()));
+    public Stream<EntityProc> allEntityProcsIncludingEquipmentAndInventory() {
+        return Stream.concat(entityProcs(),
+                recursiveInventoryAndEquipment().flatMap(entity -> entity.entityProcs()));
+    }
+
+    public Stream<EntityProc> allEntityProcsIncludingEquipment() {
+        return Stream.concat(entityProcs(),
+                recursiveEquipment().flatMap(entity -> entity.entityProcs()));
     }
 
     public void forEachProc(BiConsumer<Entity, Proc> lambda) {
-        for (Proc p : allProcsIncludingEquipmentAndInventory().collect(Collectors.toList())) {
-            lambda.accept(this, p);
+        for (EntityProc ep : allEntityProcsIncludingEquipmentAndInventory().collect(Collectors.toList())) {
+            lambda.accept(this, ep.proc);
         }
     }
 

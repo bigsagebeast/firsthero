@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.proc.item;
 
+import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 
 public class ProcArmor extends Proc {
@@ -13,12 +14,12 @@ public class ProcArmor extends Proc {
     }
 
     @Override
-    public int provideArmorClass() {
+    public int provideArmorClass(Entity entity) {
         return armorClass;
     }
 
     @Override
-    public int provideArmorThickness() {
+    public int provideArmorThickness(Entity entity) {
         return armorThickness;
     }
 

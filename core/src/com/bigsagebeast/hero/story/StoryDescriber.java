@@ -13,9 +13,21 @@ public class StoryDescriber {
         Collections.shuffle(cardList);
     }
 
+    // TODO: This stuff is incomplete, we need to be willing to fully describe a card after it's been mentioned
     public List<String> generateStory() {
         List<String> storyLines = new ArrayList<>();
-        for (StoryCard card : cardList) {
+        List<StoryCard> preferred = new ArrayList<>();
+        while (!cardList.isEmpty()) {
+            // ideally, pick a card we just visited
+            preferred.retainAll(cardList);
+            StoryCard card;
+            if (!preferred.isEmpty()) {
+                card = preferred.get(0);
+            } else {
+                card = cardList.get(0);
+            }
+            cardList.remove(card);
+
             if (!card.definition.doDescribe) {
                 continue;
             }
@@ -33,15 +45,16 @@ public class StoryDescriber {
 
             int numLinks = 0;
             List<String> linkParts = new ArrayList<>();
+            preferred.clear();
             for (String link : card.links.keySet().stream().filter(k -> !card.links.get(k).isEmpty()).collect(Collectors.toList())) {
                 for (StoryCard target : card.links.get(link)) {
+                    preferred.add(target); // next card should ideally be one we just mentioned
                     if (!card.definition.links.get(link).doDescribe || card.linkDescribed.get(link)) {
                         continue;
                     }
                     target.descIntroduced = true;
                     String linkDesc = rand(card.definition.describeLink(link));
                     linkDesc = substitute(linkDesc, card, target);
-                    //sb.append(linkDesc);
                     linkParts.add(linkDesc);
                     // TODO this doesn't work with multiple cards for a link
                     target.linkDescribed.put(card.definition.links.get(link).backKey, true);

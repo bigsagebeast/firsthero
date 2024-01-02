@@ -133,4 +133,16 @@ public class HeroGame extends ApplicationAdapter {
 		last += millis;
 		timer.put(name, last);
 	}
+
+	public static void resetTimer(String name) {
+		timer.put(name, 0l);
+	}
+
+	public static void addTimer(String name, Long millis) {
+		if (!timer.containsKey(name)) {
+			timer.put(name, millis);
+		} else {
+			timer.put(name, timer.get(name) + millis);
+		}
+	}
 }

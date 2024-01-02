@@ -55,9 +55,9 @@ public class SpellMonsterWaterWeak extends Spell {
 
     @Override
     public void announceCast(Entity caster, Entity target) {
-        Game.announceVis(caster, null, "You breathe water.",
+        Game.announceVis(caster, null, "You project a jet of water.",
                 null,
-                caster.getVisibleNameThe() + " breathes water.",
+                caster.getVisibleNameThe() + " projects a jet of water.",
                 "You hear rushing water.");
     }
 

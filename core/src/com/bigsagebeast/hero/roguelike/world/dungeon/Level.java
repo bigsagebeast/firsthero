@@ -267,7 +267,7 @@ public class Level {
 	}
 	
 	public boolean isOpaque(int x, int y) {
-		if (!cell(x, y).terrain.isPassable()) {
+		if (cell(x, y).terrain.isOpaque()) {
 			return true;
 		}
 		for (Entity e : Game.getLevel().getEntitiesOnTile(new Point(x, y))) {

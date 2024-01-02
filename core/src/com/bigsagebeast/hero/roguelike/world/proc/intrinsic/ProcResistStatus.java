@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world.proc.intrinsic;
 
 import com.bigsagebeast.hero.enums.StatusType;
+import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 
 import java.util.Collections;
@@ -11,7 +12,7 @@ public class ProcResistStatus extends Proc {
     public ProcResistStatus() {}
 
     @Override
-    public List<StatusType> provideStatusResist() {
+    public List<StatusType> provideStatusResist(Entity entity) {
         return Collections.singletonList(status);
     }
 }

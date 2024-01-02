@@ -1,9 +1,11 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon;
 
+import com.bigsagebeast.hero.roguelike.world.LoadProc;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.SpecialSpawner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class RoomType {
@@ -31,20 +33,20 @@ public class RoomType {
 
     static {
         SpecialSpawner fireSpawner = SpecialSpawner.newRegen();
-        fireSpawner.spawnMTTH = 500;
+        fireSpawner.spawnMTTH = 300;
         fireSpawner.tags = Arrays.asList("fire", "generic-fantasy");
         fireSpawner.threatModifier = -1;
         FORGE.spawners.add(fireSpawner);
 
         SpecialSpawner waterSpawner = SpecialSpawner.newRegen();
-        waterSpawner.spawnMTTH = 500;
+        waterSpawner.spawnMTTH = 300;
         waterSpawner.tags = Arrays.asList("water", "generic-fantasy");
         waterSpawner.threatModifier = -1;
         POOL.spawners.add(waterSpawner);
         UNDERGROUND_RIVER.spawners.add(waterSpawner);
 
         SpecialSpawner naturaeSpawner = SpecialSpawner.newRegen();
-        naturaeSpawner.spawnMTTH = 500;
+        naturaeSpawner.spawnMTTH = 300;
         naturaeSpawner.tags = Arrays.asList("naturae", "generic-fantasy");
         naturaeSpawner.threatModifier = -1;
         MOSSY.spawners.add(naturaeSpawner);
@@ -52,9 +54,15 @@ public class RoomType {
 
         SpecialSpawner copperSpawner = SpecialSpawner.newRegen();
         copperSpawner.summoned = true;
-        copperSpawner.spawnMTTH = 300;
+        copperSpawner.spawnMTTH = 200;
         copperSpawner.tags = Arrays.asList("tech");
         copperSpawner.spawnNearPlayer = true;
+        HashMap<String, String> paradoxWispLoadProcMap = new HashMap<>();
+        paradoxWispLoadProcMap.put("spawnMTTH", "3");
+        paradoxWispLoadProcMap.put("quantity", "2");
+        paradoxWispLoadProcMap.put("minionKey", "paradox.wisp");
+        LoadProc paradoxWispLoadProc = new LoadProc("ProcSummonMinions", paradoxWispLoadProcMap);
+        copperSpawner.loadProcs.add(paradoxWispLoadProc);
         FRACTAL_COPPER.spawners.add(copperSpawner);
     }
 

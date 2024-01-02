@@ -9,7 +9,10 @@
         "white"
       ],
       "gender": "MALE",
-      "chatPage": "aurex.serifex.intro.landing"
+      "chatPage": "aurex.serifex.intro.landing",
+      "procs": {
+        "ProcChatWhenAdjacent": {}
+      }
     },
     "god.loruch": {
       "name": "Loruch, God of Trees",

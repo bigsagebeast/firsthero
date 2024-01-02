@@ -1,11 +1,13 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 
+import com.bigsagebeast.hero.roguelike.world.LoadProc;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.DungeonGenerator;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
+import com.bigsagebeast.hero.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class SpecialSpawner {
     public int quantity = 1; // if max is present, this is the minimum quantity
     public int quantityMax = -1; // -1 means "the same as min"
     public boolean summoned; // does the entity count as summoned?
+    public List<LoadProc> loadProcs = new ArrayList<>();
 
     public ArrayList<Integer> ownedEntities = new ArrayList<>();
 
@@ -89,6 +92,9 @@ public class SpecialSpawner {
             }
             entity.summoned = summoned;
             level.addEntityWithStacking(entity, p);
+            for (LoadProc lp : loadProcs) {
+                lp.apply(entity);
+            }
             ownedEntities.add(entity.entityId);
         }
     }
@@ -110,8 +116,7 @@ public class SpecialSpawner {
                 spawnWait = (int) (spawnAverageTurns * (0.5f + Game.random.nextFloat()));
             }
         } else if (spawnMTTH > 0) {
-            float spawnChance = 1.0f / spawnMTTH;
-            if (Game.random.nextFloat() > spawnChance) {
+            if (!Util.testMTTH(spawnMTTH)) {
                 return;
             }
         } else {
@@ -173,6 +178,9 @@ public class SpecialSpawner {
             throw new RuntimeException("No entity to spawn during special regen spawning");
         }
         level.addEntityWithStacking(entity, p);
+        for (LoadProc lp : loadProcs) {
+            lp.apply(entity);
+        }
         if (level.cell(p).visible()) {
             Game.announce(entity.getVisibleNameSingularOrSpecific() + " pops into existence!");
         }
@@ -186,6 +194,7 @@ public class SpecialSpawner {
         clone.rule = rule;
         clone.tags = tags;
         clone.percentChance = percentChance;
+        clone.summoned = summoned;
         clone.threatModifier = threatModifier;
         clone.quantity = quantity;
         clone.quantityMax = quantityMax;
@@ -194,6 +203,7 @@ public class SpecialSpawner {
         clone.spawnAverageTurns = spawnAverageTurns;
         clone.spawnMTTH = spawnMTTH;
         clone.spawnWait = spawnWait;
+        clone.loadProcs.addAll(loadProcs);
         return clone;
     }
 
