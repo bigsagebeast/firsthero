@@ -45,9 +45,11 @@ public class Proc {
         nextAction = Game.time + (delay * 100 / entity.statblock.speed);
     }
 
-    public void initialize() {
+    public void initialize(Entity entity) {
         active = true;
     }
+    // never called unless all entities have been initialized; must be harmless
+    public void postLoad(Entity entity) {}
 
     public boolean hasAction() { return false; }
 

@@ -3,7 +3,7 @@ package com.bigsagebeast.hero.roguelike.game;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
-import com.bigsagebeast.hero.roguelike.world.enums.Satiation;
+import com.bigsagebeast.hero.enums.Satiation;
 
 import java.util.HashMap;
 

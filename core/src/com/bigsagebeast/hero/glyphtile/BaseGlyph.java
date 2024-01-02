@@ -11,6 +11,10 @@ public class BaseGlyph {
     }
 
     public GlyphTile create(PaletteEntry paletteEntry) {
+        return create(paletteEntry, false);
+    }
+
+    public GlyphTile create(PaletteEntry paletteEntry, boolean flipH) {
         Pixmap destination = new Pixmap(GlyphEngine.GLYPH_WIDTH, GlyphEngine.GLYPH_HEIGHT, Pixmap.Format.RGBA8888);
         Pixmap destinationGray = new Pixmap(GlyphEngine.GLYPH_WIDTH, GlyphEngine.GLYPH_HEIGHT, Pixmap.Format.RGBA8888);
         for (int x=0; x<GlyphEngine.GLYPH_WIDTH; x++) {
@@ -37,7 +41,7 @@ public class BaseGlyph {
             }
         }
 
-        return new GlyphTile(new Texture(destination), new Texture(destinationGray));
+        return new GlyphTile(new Texture(destination), new Texture(destinationGray), flipH);
     }
 
     private static int grayscale(int color) {

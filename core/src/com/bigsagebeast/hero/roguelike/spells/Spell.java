@@ -66,6 +66,10 @@ public abstract class Spell {
             announce("Cancelled.");
             return;
         }
+        if (Game.getPlayerEntity().isConfused()) {
+            dir = Compass.randomDirection();
+            Game.announce("You fire the spell in a random direction!");
+        }
         Game.getPlayerEntity().spellPoints -= getCost(Game.getPlayerEntity());
         Map<Element, Integer> elementCost = getElementCost(Game.getPlayerEntity());
         for (Element element : elementCost.keySet()) {

@@ -5,7 +5,7 @@ import com.bigsagebeast.hero.engine.WindowEngine;
 import com.bigsagebeast.hero.module.RoguelikeModule;
 import com.bigsagebeast.hero.roguelike.game.Statblock;
 import com.bigsagebeast.hero.roguelike.world.Element;
-import com.bigsagebeast.hero.roguelike.world.enums.Satiation;
+import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.Player;

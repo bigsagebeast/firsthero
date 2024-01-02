@@ -14,10 +14,13 @@ public class ProcTimedEffect extends Proc {
         turnsRemaining += duration;
     }
 
+    public void expire(Entity entity) {}
+
     @Override
     public void turnPassed(Entity entity) {
         turnsRemaining--;
         if (turnsRemaining == 0) {
+            expire(entity);
             entity.removeProc(this);
         }
     }

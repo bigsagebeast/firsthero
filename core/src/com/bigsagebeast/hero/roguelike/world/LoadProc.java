@@ -57,6 +57,7 @@ public class LoadProc {
             throw new RuntimeException(e);
         }
         entity.addProc(proc);
-        proc.initialize();
+        // Is it dangerous to call initialize here, when some procs could refer to another entity that isn't loaded yet?
+        proc.initialize(entity);
     }
 }

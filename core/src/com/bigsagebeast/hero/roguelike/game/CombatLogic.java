@@ -207,4 +207,15 @@ public class CombatLogic {
 		}
 		target.hurt(damage);
 	}
+
+	public static boolean tryResist(Entity target, int difficulty, int statValue) {
+		int statModifier = (statValue - 20) / 2;
+		int roll = Dice.roll(1, 20, 0);
+		if (statModifier > 0) {
+			roll += Dice.roll(1, statModifier, 0);
+		} else if (statModifier < 0) {
+			roll -= Dice.roll(1, -statModifier, 0);
+		}
+		return (roll > difficulty);
+	}
 }

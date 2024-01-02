@@ -9,6 +9,7 @@ import com.bigsagebeast.hero.roguelike.world.dungeon.generation.Theme;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.ThemeRoom;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.Themepedia;
 import com.bigsagebeast.hero.SetupException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,6 +24,7 @@ import java.util.Iterator;
 public class DefinitionLoader {
     public static void loadFile(FileHandle handle) throws SetupException {
         ObjectMapper om = new ObjectMapper();
+        om.getFactory().enable(JsonParser.Feature.ALLOW_COMMENTS);
         JsonNode root;
         try {
             root = om.readTree(new BufferedReader(new InputStreamReader(handle.read())));

@@ -32,28 +32,7 @@ public class DungeonGenerator {
 		if (level.threat < 0) {
 			return;
 		}
-		/*
-		for (int i = 0; i < NUM_MONSTERS; i++) {
-			String chosenMonster = getAllowedMonster(level);
-			if (chosenMonster == null) {
-				System.out.println("No allowed monsters");
-				return;
-			}
-			Point pos = level.findOpenTile();
-			Entity e = Game.bestiary.create(chosenMonster);
-			e.wanderer = true;
-			level.addEntityWithStacking(e, pos);
-			int packSize = (int) (Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
-			for (int j = 1; j < packSize; j++) {
-				Point packSpawnPos = level.findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
-				if (packSpawnPos != null) {
-					Entity packmember = Game.bestiary.create(chosenMonster);
-					packmember.wanderer = true;
-					level.addEntityWithStacking(packmember, packSpawnPos);
-				}
-			}
-		}
-		 */
+
 		for (Room r : level.rooms) {
 			// TODO separate specialCorridors from special spawn rules
 			if (Game.random.nextInt(100) < SPAWN_CHANCE_PER_ROOM && !r.roomType.specialCorridors) {
@@ -65,14 +44,14 @@ public class DungeonGenerator {
 				Point pos = level.findEmptyTileInRoom(r.roomId);
 				Entity e = Game.bestiary.create(chosenMonster);
 				e.wanderer = true;
-				level.addEntityWithStacking(e, pos);
+				level.addEntityWithStacking(e, pos, false);
 				int packSize = (int) (Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
 				for (int j = 1; j < packSize; j++) {
 					Point packSpawnPos = level.findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
 					if (packSpawnPos != null) {
 						Entity packmember = Game.bestiary.create(chosenMonster);
 						packmember.wanderer = true;
-						level.addEntityWithStacking(packmember, packSpawnPos);
+						level.addEntityWithStacking(packmember, packSpawnPos, false);
 					}
 				}
 			}
@@ -83,14 +62,14 @@ public class DungeonGenerator {
 			if (e == null) {
 				continue;
 			}
-			level.addEntityWithStacking(e, pos);
+			level.addEntityWithStacking(e, pos, false);
 		}
 		int goldPiles = Game.random.nextInt(4) + 4;
 		for (int i=0; i<goldPiles; i++) {
 			int quantity = Dice.roll(level.threat * 2 + 1, 8, 5);
 			Point pos = level.findOpenTile();
 			Entity e = Game.itempedia.create("gold", quantity);
-			level.addEntityWithStacking(e, pos);
+			level.addEntityWithStacking(e, pos, false);
 		}
 	}
 

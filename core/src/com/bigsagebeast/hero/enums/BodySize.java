@@ -1,4 +1,4 @@
-package com.bigsagebeast.hero.roguelike.world.enums;
+package com.bigsagebeast.hero.enums;
 
 public enum BodySize {
     XL(1600),

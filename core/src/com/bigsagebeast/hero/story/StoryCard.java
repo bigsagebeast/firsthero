@@ -1,7 +1,7 @@
 package com.bigsagebeast.hero.story;
 
 import com.bigsagebeast.hero.roguelike.game.Game;
-import com.bigsagebeast.hero.util.Gender;
+import com.bigsagebeast.hero.enums.Gender;
 
 import java.util.ArrayList;
 import java.util.HashMap;

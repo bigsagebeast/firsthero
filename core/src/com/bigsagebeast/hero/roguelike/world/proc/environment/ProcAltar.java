@@ -2,7 +2,7 @@ package com.bigsagebeast.hero.roguelike.world.proc.environment;
 
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.roguelike.world.Entity;
-import com.bigsagebeast.hero.roguelike.world.enums.Alignment;
+import com.bigsagebeast.hero.enums.Alignment;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 
 public class ProcAltar extends Proc {

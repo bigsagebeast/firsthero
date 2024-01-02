@@ -6,6 +6,7 @@ import com.bigsagebeast.hero.roguelike.game.Statblock;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectConfusion;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcItem;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.util.Fov;
@@ -82,6 +83,7 @@ public class Entity {
     public String phenotypeName;
     public String glyphName;
     public PaletteEntry palette;
+    public boolean glyphFlipH; // flip glyph horizontally
 
     public boolean isManipulator;
 
@@ -713,6 +715,12 @@ public class Entity {
         return false;
     }
 
+    public void postLoad() {
+        for (Proc p : procs) {
+            p.postLoad(this);
+        }
+    }
+
     public Stream<Entity> recursiveInventoryAndEquipment() {
         LinkedList<Entity> allEntities = new LinkedList<>();
         allEntities.addAll(getInventoryEntities());
@@ -875,5 +883,10 @@ public class Entity {
         spellPoints = Math.min(spellPoints + deltaSpellPoints, newMaxSpellPoints);
         healingDelay = 300 / maxHitPoints;
         spRegenDelay = 100 / maxSpellPoints;
+    }
+
+    // status tests
+    public boolean isConfused() {
+        return getProcByType(ProcEffectConfusion.class) != null;
     }
 }

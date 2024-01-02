@@ -84,30 +84,30 @@ public class StoryDescriber {
 
     public String substitute(String string, StoryCard card1, StoryCard card2) {
         string = string.replace("%1n", card1.shortName);
-        string = string.replace("%1a", card1.gender.absolute);
-        string = string.replace("%1s", card1.gender.subjective);
-        string = string.replace("%1o", card1.gender.objective);
-        string = string.replace("%1p", card1.gender.possessive);
-        string = string.replace("%1r", card1.gender.reflexive);
+        string = string.replace("%1a", card1.gender.a());
+        string = string.replace("%1s", card1.gender.s());
+        string = string.replace("%1o", card1.gender.o());
+        string = string.replace("%1p", card1.gender.p());
+        string = string.replace("%1r", card1.gender.r());
         string = string.replace("%1N", capitalize(card1.shortName));
-        string = string.replace("%1A", capitalize(card1.gender.absolute));
-        string = string.replace("%1S", capitalize(card1.gender.subjective));
-        string = string.replace("%1O", capitalize(card1.gender.objective));
-        string = string.replace("%1P", capitalize(card1.gender.possessive));
-        string = string.replace("%1R", capitalize(card1.gender.reflexive));
+        string = string.replace("%1A", capitalize(card1.gender.a()));
+        string = string.replace("%1S", capitalize(card1.gender.s()));
+        string = string.replace("%1O", capitalize(card1.gender.o()));
+        string = string.replace("%1P", capitalize(card1.gender.p()));
+        string = string.replace("%1R", capitalize(card1.gender.r()));
         if (card2 != null) {
             string = string.replace("%2n", card2.shortName);
-            string = string.replace("%2a", card2.gender.absolute);
-            string = string.replace("%2s", card2.gender.subjective);
-            string = string.replace("%2o", card2.gender.objective);
-            string = string.replace("%2p", card2.gender.possessive);
-            string = string.replace("%2r", card2.gender.reflexive);
+            string = string.replace("%2a", card2.gender.a());
+            string = string.replace("%2s", card2.gender.s());
+            string = string.replace("%2o", card2.gender.o());
+            string = string.replace("%2p", card2.gender.p());
+            string = string.replace("%2r", card2.gender.r());
             string = string.replace("%2N", capitalize(card2.shortName));
-            string = string.replace("%2A", capitalize(card2.gender.absolute));
-            string = string.replace("%2S", capitalize(card2.gender.subjective));
-            string = string.replace("%2O", capitalize(card2.gender.objective));
-            string = string.replace("%2P", capitalize(card2.gender.possessive));
-            string = string.replace("%2R", capitalize(card2.gender.reflexive));
+            string = string.replace("%2A", capitalize(card2.gender.a()));
+            string = string.replace("%2S", capitalize(card2.gender.s()));
+            string = string.replace("%2O", capitalize(card2.gender.o()));
+            string = string.replace("%2P", capitalize(card2.gender.p()));
+            string = string.replace("%2R", capitalize(card2.gender.r()));
         }
         return string;
     }

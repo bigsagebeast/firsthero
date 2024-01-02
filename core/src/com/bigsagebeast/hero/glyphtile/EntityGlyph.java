@@ -18,7 +18,7 @@ public class EntityGlyph {
 
     public static void updateEntity(Entity e) {
         BaseGlyph b = GlyphIndex.get(e.glyphName);
-        GlyphTile t = b.create(e.palette);
+        GlyphTile t = b.create(e.palette, e.glyphFlipH);
         map.put(e, t);
     }
 

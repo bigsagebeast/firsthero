@@ -10,7 +10,7 @@ import com.bigsagebeast.hero.persistence.PersistentProfile;
 import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
-import com.bigsagebeast.hero.roguelike.world.enums.Satiation;
+import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcDoor;
@@ -124,7 +124,7 @@ public class Game {
 		level = nextLevel;
 		Game.time = 0;
 		Game.lastTurnProc = 0;
-		level.addEntityWithStacking(player.getEntity(), playerPos);
+		level.addEntityWithStacking(player.getEntity(), playerPos, false);
 
 		GameLoop.glyphEngine.initializeLevel(level);
 		level.finalize();
@@ -146,7 +146,7 @@ public class Game {
 		Level nextLevel = dungeon.getLevel(toKey);
 		level = nextLevel;
 		Point playerPos = nextLevel.findTransitionTo(fromKey).loc;
-		level.addEntityWithStacking(player.getEntity(), playerPos);
+		level.addEntityWithStacking(player.getEntity(), playerPos, false);
 		level.finalize();
 
 		GameLoop.glyphEngine.initializeLevel(level);
@@ -366,6 +366,10 @@ public class Game {
 			Game.announce("Canceled.");
 			return;
 		}
+		boolean confused = getPlayerEntity().isConfused();
+		if (confused) {
+			dir = Compass.randomDirection();
+		}
 		boolean somethingToHandle = false;
 		Point targetPoint = dir.from(player.getEntity().pos);
 		for (Entity target : level.getEntitiesOnTile(targetPoint)) {
@@ -375,8 +379,11 @@ public class Game {
 		}
 		if (somethingToHandle) {
 			passTime(player.getEntity().moveCost);
-		} else {
+		} else if (!confused) {
 			announce("There's nothing there to open.");
+		} else {
+			announce("You fail to grasp a door!");
+			passTime(player.getEntity().moveCost);
 		}
 	}
 
@@ -528,8 +535,14 @@ public class Game {
 	}
 
 	public static void playerCmdMoveBy(int dx, int dy) {
-		int tx = player.getEntity().pos.x + dx;
-		int ty = player.getEntity().pos.y + dy;
+		if (getPlayerEntity().isConfused()) {
+			Compass dir = Compass.randomDirection();
+			dx = dir.getX();
+			dy = dir.getY();
+			Game.announce("You are confused!");
+		}
+		int tx = getPlayerEntity().pos.x + dx;
+		int ty = getPlayerEntity().pos.y + dy;
 
 		Entity targetCreature = level.moverAt(tx, ty);
 		if (targetCreature != null) {

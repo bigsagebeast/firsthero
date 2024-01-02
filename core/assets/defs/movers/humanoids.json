@@ -1,0 +1,28 @@
+{
+  "movers": {
+    "doppelganger.normal": {
+      "name": "doppelganger",
+      "peaceful": false,
+      "hitPoints": 4,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      /*"glyphName": "",*/
+      "isManipulator": true,
+      "experienceAwarded": 30,
+      "threat": 6,
+      "naturalWeaponDamage": 6,
+      "naturalWeaponToHit": 0,
+      "naturalArmorClass": 4,
+      "tags": [
+        "generic-fantasy"
+      ],
+      "procs": {
+        "monster.ProcDoppelganger": {
+          "chance": 50,
+          "duration": 5,
+          "difficulty": 10
+        }
+      }
+    }
+  }
+}

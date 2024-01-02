@@ -102,6 +102,10 @@ public class Level {
 
 	// call after the level is all set up
 	public void finalize() {
+		for (Entity ent : getEntities()) {
+			ent.postLoad();
+		}
+
 		recalculateJitter();
 	}
 	
@@ -184,6 +188,10 @@ public class Level {
 	}
 
 	public Entity addEntityWithStacking(Entity entity, Point pos) {
+		return addEntityWithStacking(entity, pos, true);
+	}
+
+	public Entity addEntityWithStacking(Entity entity, Point pos, boolean runPostLoad) {
 		entity.containingLevel = this.name;
 		entity.containingEntity = -1;
 		entity.pos = pos;
@@ -207,6 +215,9 @@ public class Level {
 					p.clearDelay();
 				}
 			}
+		}
+		if (runPostLoad) {
+			entity.postLoad();
 		}
 		return stackedInto == null ? entity : stackedInto;
 	}
