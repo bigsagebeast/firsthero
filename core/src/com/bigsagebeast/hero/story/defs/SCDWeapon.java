@@ -10,8 +10,8 @@ public class SCDWeapon extends StoryCardDefinition {
 
         addDefaultDescSelf("There is a weapon, %1n");
         addDefaultDescSelf("There is a weapon called %1n");
-        addDefaultDescLink("wielder", "was wielded by %2n");
-        addDefaultDescLink("wielder", "was carried by %2n");
+        addDefaultDescLink("wielder", "is wielded by %2n");
+        addDefaultDescLink("wielder", "is carried by %2n");
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Align;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.GameState;
 import com.bigsagebeast.hero.Graphics;

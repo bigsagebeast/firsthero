@@ -2,6 +2,8 @@ package com.bigsagebeast.hero.dialogue;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Align;
 import com.bigsagebeast.hero.Graphics;
 import com.bigsagebeast.hero.logic.TextEngine;
 import com.bigsagebeast.hero.text.TextBlock;
@@ -14,10 +16,14 @@ public class ChatBox {
 
     public static final int FONT_SIZE = 32;
     public static final int FOOTER_OFFSET_FROM_LEFT = 0;
-    public static final int FOOTER_OFFSET_FROM_BOTTOM = 32;
-    public static final int TITLE_OFFSET_FROM_TOP = 0;
+    public static final int FOOTER_OFFSET_FROM_BOTTOM = 24;
+    public static final int TITLE_OFFSET_FROM_TOP = 4;
     public static final int ITEM_OFFSET_FROM_LEFT = 0;
-    public static final int ITEM_OFFSET_FROM_TOP = TITLE_OFFSET_FROM_TOP + FONT_SIZE;
+    public static final int TEXT_OFFSET_FROM_TOP = TITLE_OFFSET_FROM_TOP + FONT_SIZE + 16;
+    public static final int ITEM_OFFSET_FROM_TEXT = 32;
+    public static final int ITEM_INSET = 32;
+    public static final int INTERNAL_MARGIN_X = 32;
+    public static final int ITEM_SPACING_BETWEEN = 16;
 
     private int x;
     private int y;
@@ -35,6 +41,7 @@ public class ChatBox {
     private TextBlock footer;
     private TextBlock textParent;
     private TextBlock linkParent;
+    private TextBlock selector;
     private String text;
     private List<StoryBoxLink> links = new ArrayList<>();
 
@@ -84,10 +91,10 @@ public class ChatBox {
 
     public void compile(TextEngine textEngine) {
         textParent = new TextBlock("", null, FONT_SIZE, 0, 0,
-                x + ITEM_OFFSET_FROM_LEFT, y + ITEM_OFFSET_FROM_TOP,
+                x + ITEM_OFFSET_FROM_LEFT, y + TEXT_OFFSET_FROM_TOP,
                 Color.WHITE);
         linkParent = new TextBlock("", null, FONT_SIZE, 0, 0,
-                x + ITEM_OFFSET_FROM_LEFT, y + ITEM_OFFSET_FROM_TOP,
+                x + ITEM_OFFSET_FROM_LEFT, y + TEXT_OFFSET_FROM_TOP,
                 Color.WHITE);
         title =  new TextBlock(titleText, null, FONT_SIZE, 0, 0,
                 x + width/2 - (titleText.length() * FONT_SIZE)/2, y + TITLE_OFFSET_FROM_TOP,
@@ -101,41 +108,33 @@ public class ChatBox {
         textEngine.addBlock(footer);
         textEngine.addBlock(title);
 
-        int textLine = 0;
-        String textToDisplay = text;
-        int lineWidth = 40;
-        while (textToDisplay.length() > 0) {
-            TextBlock textChild;
-            if (textToDisplay.length() <= lineWidth) {
-                textChild = new TextBlock(textToDisplay, null, FONT_SIZE, 2, textLine,
-                        0, 0, Color.WHITE);
-                textToDisplay = "";
-            } else {
-                int lastSpace = textToDisplay.lastIndexOf(' ', lineWidth);
-                String textThisBlock = textToDisplay.substring(0, lastSpace);
-                textToDisplay = textToDisplay.substring(lastSpace + 1);
-                textChild = new TextBlock(textThisBlock, null, FONT_SIZE, 2, textLine,
-                        0, 0, Color.WHITE);
-                textLine++;
-            }
-            textParent.addChild(textChild);
-        }
+        GlyphLayout layout = Graphics.createProportionalGlyphLayout(text, FONT_SIZE, width - (INTERNAL_MARGIN_X * 2), Align.topLeft, true, Color.WHITE);
+        textParent.addChild(new TextBlock(layout, FONT_SIZE, null, INTERNAL_MARGIN_X, 0));
 
-        textLine += 2;
+        float textSpacing = layout.height + ITEM_OFFSET_FROM_TEXT;
 
         for (int i = 0; i < links.size(); i++) {
             StoryBoxLink link = links.get(i);
-            link.textBlock = new TextBlock("  " + link.text, null, FONT_SIZE, 0, textLine,
-                    0, 0, Color.WHITE);
+            GlyphLayout linkLayout = layoutForItem(i, Color.WHITE);
+            link.textBlock = new TextBlock(linkLayout, FONT_SIZE, null,
+                    INTERNAL_MARGIN_X + ITEM_INSET, textSpacing);
+            textSpacing += linkLayout.height + ITEM_SPACING_BETWEEN;
             linkParent.addChild(link.textBlock);
-            textLine++;
         }
 
-        height = (textLine * FONT_SIZE) + FOOTER_OFFSET_FROM_BOTTOM;
+        selector = new TextBlock(">", null, FONT_SIZE, 0, 0, INTERNAL_MARGIN_X, 0, Color.YELLOW);
+        linkParent.addChild(selector);
+
+        height = (int)textSpacing + FONT_SIZE + FOOTER_OFFSET_FROM_BOTTOM;
 
         selectNext();
 
         compiled = true;
+    }
+
+    GlyphLayout layoutForItem(int item, Color color) {
+        return Graphics.createProportionalGlyphLayout(links.get(item).text, FONT_SIZE,
+                width - (INTERNAL_MARGIN_X * 2) - ITEM_INSET, Align.topLeft, true, color);
     }
 
     private void selectNext() {
@@ -152,13 +151,12 @@ public class ChatBox {
         }
         if (nextSelection > -1) {
             if (selection >= 0) {
-                links.get(selection).textBlock.text = " " + links.get(selection).textBlock.text.substring(1);
-                links.get(selection).textBlock.color = Color.WHITE;
+                links.get(selection).textBlock.glyphLayout = layoutForItem(selection, Color.WHITE);
             }
             selection = nextSelection;
-            links.get(nextSelection).textBlock.text = ">" + links.get(nextSelection).textBlock.text.substring(1);
-            links.get(nextSelection).textBlock.color = Color.YELLOW;
+            links.get(nextSelection).textBlock.glyphLayout = layoutForItem(nextSelection, Color.YELLOW);
         }
+        updateSelector();
     }
 
     private void selectPrevious() {
@@ -175,14 +173,20 @@ public class ChatBox {
         }
         if (nextSelection > -1) {
             if (selection >= 0) {
-                links.get(selection).textBlock.text = " " + links.get(selection).textBlock.text.substring(1);
-                links.get(selection).textBlock.color = Color.WHITE;
+                links.get(selection).textBlock.glyphLayout = layoutForItem(selection, Color.WHITE);
             }
             selection = nextSelection;
-            links.get(nextSelection).textBlock.text = ">" + links.get(nextSelection).textBlock.text.substring(1);
-            links.get(nextSelection).textBlock.color = Color.YELLOW;
+            links.get(nextSelection).textBlock.glyphLayout = layoutForItem(nextSelection, Color.YELLOW);
         }
+        updateSelector();
+    }
 
+    private void updateSelector() {
+        if (selection >= 0) {
+            selector.pixelOffsetY = links.get(selection).textBlock.pixelOffsetY;
+        } else {
+            selector.pixelOffsetY = -9999;
+        }
     }
 
     public void close() {

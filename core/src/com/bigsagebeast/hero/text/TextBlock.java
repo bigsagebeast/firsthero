@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.bigsagebeast.hero.module.RoguelikeModule;
@@ -48,7 +49,9 @@ public class TextBlock implements GameLogic {
 	private TextEffectJitter jitter;
 	private TextEffectSwap swap;
 	private List<TextEffect> effects = new ArrayList<TextEffect>();
-	
+
+	public GlyphLayout glyphLayout;
+
 	private Float fontSize;
 	public String text;
 	public GlyphTile glyph;
@@ -92,6 +95,19 @@ public class TextBlock implements GameLogic {
 
 	public TextBlock(String text, int x, int y) {
 		this(text, x, y, Color.WHITE);
+	}
+
+	public TextBlock(GlyphLayout glyphLayout, float fontSize, String frameBufferKey, float pixelOffsetX, float pixelOffsetY) {
+		this.text = null;
+		this.glyphLayout = glyphLayout;
+		this.fontSize = fontSize;
+		this.frameBufferKey = frameBufferKey;
+		this.pixelOffsetX = pixelOffsetX;
+		this.pixelOffsetY = pixelOffsetY;
+	}
+
+	public TextBlock(GlyphLayout glyphLayout, float fontSize) {
+		this(glyphLayout, fontSize, null, 0, 0);
 	}
 
 	public TextBlock(String text, String frameBufferKey, Float fontSize,
@@ -316,6 +332,9 @@ public class TextBlock implements GameLogic {
 					drawGlyph(g, gState, glyph, x + offsetX + (pixelOffsetX / fontSize), y + offsetY + (pixelOffsetY / fontSize));
 				}
 			}
+			if (glyphLayout != null) {
+				drawGlyphLayout(g, gState, glyphLayout, offsetX + pixelOffsetX, offsetY + pixelOffsetY);
+			}
 			if (wantLocked) {
 				g.endBatch();
 				buffer.end();
@@ -353,9 +372,12 @@ public class TextBlock implements GameLogic {
 		for (TextEffect effect : effects) {
 			blendedColor.mul(effect.getFade());
 		}
-		g.write(letter, x, y, fontSize, pixelOffsetX, pixelOffsetY, blendedColor);
+		g.writeFixed(letter, x, y, fontSize, pixelOffsetX, pixelOffsetY, blendedColor);
 	}
-	
+
+	private void drawGlyphLayout(Graphics g, GraphicsState gState, GlyphLayout glyphLayout, float x, float y) {
+		g.writeProportional(glyphLayout, fontSize, x + pixelOffsetX, g.getViewport().getScreenHeight() - y - pixelOffsetY);
+	}
 	
 	
 	public TextBlock fade(Float from, Float to) {

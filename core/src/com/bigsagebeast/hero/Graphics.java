@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -15,9 +16,11 @@ public class Graphics {
 	OrthographicCamera cam;
 	Viewport viewport;
 
-	private Texture fontTexture;
-	private BitmapFont font;
-	private Float defaultFontSize = 96f;
+	private static Texture fixedFontTexture;
+	private static BitmapFont fixedFont;
+	private static Texture proportionalFontTexture;
+	private static BitmapFont proportionalFont;
+	private static Float defaultFontSize = 96f;
 	private static boolean fullscreen = false;
 
 	SpriteBatch currentSpriteBatch;
@@ -33,9 +36,13 @@ public class Graphics {
 	public Graphics() {
 		cam = new OrthographicCamera();
 
-		fontTexture = new Texture(Gdx.files.internal("lucida-console-96.png"));
-		font = new BitmapFont(Gdx.files.internal("lucida-console-96.fnt"), new TextureRegion(fontTexture), false);
-		fontTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		fixedFontTexture = new Texture(Gdx.files.internal("lucida-console-96.png"));
+		fixedFont = new BitmapFont(Gdx.files.internal("lucida-console-96.fnt"), new TextureRegion(fixedFontTexture), false);
+		proportionalFontTexture = new Texture(Gdx.files.internal("times-new-roman-96.png"));
+		proportionalFont = new BitmapFont(Gdx.files.internal("times-new-roman-96.fnt"), new TextureRegion(proportionalFontTexture), false);
+
+		fixedFontTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		proportionalFontTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 
 	public static void swapFullscreen() {
@@ -89,16 +96,31 @@ public class Graphics {
 		currentSpriteBatch.end();
 		batchInProgress = false;
 	}
-	
-	public void write(String text, float x, float y, float fontSize, float offsetX, float offsetY, Color color) {
-		font.setColor(color);
-		font.getData().setScale(1.1f * fontSize / defaultFontSize);
+
+	public void writeFixed(String text, float x, float y, float fontSize, float offsetX, float offsetY, Color color) {
+		fixedFont.setColor(color);
+		fixedFont.getData().setScale(1.1f * fontSize / defaultFontSize);
 		//font.getData().setScale(1f * fontSize / defaultFontSize);
-		font.draw(batch(), text, offsetX + x * fontSize, height - (offsetY + y * fontSize));
+		fixedFont.draw(batch(), text, offsetX + x * fontSize, height - (offsetY + y * fontSize));
 	}
-	
-	public BitmapFont font() {
-		return font;
+
+	public void writeProportional(String text, float x, float y, float fontSize, float offsetX, float offsetY, Color color) {
+		proportionalFont.setColor(color);
+		proportionalFont.getData().setScale(1.1f * fontSize / defaultFontSize);
+		//font.getData().setScale(1f * fontSize / defaultFontSize);
+		proportionalFont.draw(batch(), text, offsetX + x * fontSize, height - (offsetY + y * fontSize));
+	}
+
+	public static GlyphLayout createProportionalGlyphLayout(String text, float fontSize, float width, int halign, boolean wrap, Color color) {
+		GlyphLayout layout = new GlyphLayout();
+		proportionalFont.getData().setScale(fontSize / defaultFontSize);
+		layout.setText(proportionalFont, text, color, width, halign, wrap);
+		return layout;
+	}
+
+	public void writeProportional(GlyphLayout layout, float fontSize, float x, float y) {
+		proportionalFont.getData().setScale(fontSize / defaultFontSize);
+		proportionalFont.draw(batch(), layout, x, y);
 	}
 
 }

@@ -39,7 +39,7 @@ public class ProcWorldPortal extends Proc {
 
         StringBuilder story = new StringBuilder();
         for (String line : storyLines) {
-            story.append(" " + line);
+            story.append("\n" + line);
         }
 
         ChatBox chatBox = new ChatBox()
