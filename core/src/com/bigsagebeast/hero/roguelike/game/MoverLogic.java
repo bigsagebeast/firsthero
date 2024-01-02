@@ -9,6 +9,9 @@ import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 
 public class MoverLogic {
     public static void createCorpse(Level level, Entity entity) {
+        if (entity.summoned) {
+            return;
+        }
         Phenotype phenotype = Bestiary.get(entity.phenotypeName);
         if (Game.random.nextInt(100) >= phenotype.corpseSpawnPercent) {
             return;

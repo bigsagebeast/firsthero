@@ -49,4 +49,9 @@ public class Util {
         string = string.replace("%2R", capitalize(gender2.r()));
         return string;
     }
+
+    public static String aOrAn(String name) {
+        boolean startsWithVowel = "aeiouAEIOU".indexOf(name.charAt(0)) != -1;
+        return startsWithVowel ? "an" : "a";
+    }
 }

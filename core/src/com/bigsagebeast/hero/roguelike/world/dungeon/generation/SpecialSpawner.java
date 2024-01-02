@@ -19,6 +19,7 @@ public class SpecialSpawner {
     public int threatModifier = 0; // modify dungeon level by this when attempting to spawn
     public int quantity = 1; // if max is present, this is the minimum quantity
     public int quantityMax = -1; // -1 means "the same as min"
+    public boolean summoned; // does the entity count as summoned?
 
     public ArrayList<Integer> ownedEntities = new ArrayList<>();
 
@@ -84,8 +85,9 @@ public class SpecialSpawner {
                 entity = Game.itempedia.create(key);
             }
             if (entity == null) {
-                throw new RuntimeException("No entity to spawn during special spawning");
+                throw new RuntimeException("No entity to spawn during special spawning: " + key + " " + isMover);
             }
+            entity.summoned = summoned;
             level.addEntityWithStacking(entity, p);
             ownedEntities.add(entity.entityId);
         }

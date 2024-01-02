@@ -12,7 +12,7 @@ import com.bigsagebeast.hero.roguelike.game.Game;
 
 public class EquipmentWindow extends UIWindow {
 	private int windowWidth = 26;
-	private int windowHeight = 10;
+	private int windowHeight = 12;
 	TextBlock parent;
 
 	private TextBlock[] rows = new TextBlock[windowHeight];

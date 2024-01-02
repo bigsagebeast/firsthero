@@ -326,7 +326,11 @@ public class Game {
 	}
 
 	public void cmdWait() {
-		player.getEntity().getMover().setDelay(getPlayerEntity(), ONE_TURN);
+		if (player.getEntity().isConfused()) {
+			playerCmdMoveBy(0, 0);
+		} else {
+			player.getEntity().getMover().setDelay(getPlayerEntity(), ONE_TURN);
+		}
 	}
 
 	public void cmdWield() {
@@ -566,12 +570,18 @@ public class Game {
 			} else {
 				announce("You bump into " + level.cell(tx, ty).terrain.getDescription() + ".");
 			}
+			if (player.getEntity().isConfused()) {
+				player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
+			}
 			return;
 		}
 
 		for (Entity e : level.getEntitiesOnTile(new Point(tx, ty))) {
 			if (e.isObstructive()) {
 				announce("You bump into " + e.getVisibleNameThe() + ".");
+				if (player.getEntity().isConfused()) {
+					player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
+				}
 				return;
 			}
 		}

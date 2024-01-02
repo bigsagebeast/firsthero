@@ -1,0 +1,19 @@
+{
+  "items": {
+    "ring.resist.confusion": {
+      "idenGroup": "ring1",
+      "name": "ring of confusion resistance",
+      "pluralName": "rings of confusion resistance",
+      "category": "ring",
+      "equipmentFor": "ring",
+      "frequency": 100000,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "intrinsic.ProcResistStatus": {
+          "status": "CONFUSION"
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.proc;
 
+import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.game.Game;
@@ -7,6 +8,7 @@ import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @JsonTypeInfo(
@@ -132,6 +134,8 @@ public class Proc {
 
     public int provideArmorClass() { return 0; }
     public int provideArmorThickness() { return 0; }
+
+    public List<StatusType> provideStatusResist() { return null; }
 
     public Boolean targetForQuaff(Entity entity) { return null; }
     public Boolean preBeQuaffed(Entity entity, Entity actor) { return null; }

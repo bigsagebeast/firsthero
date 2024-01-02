@@ -56,6 +56,8 @@ public class Inventory {
         if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND) {
             equippable.add(BodyPart.ANY_HAND);
             equippable.add(BodyPart.TWO_HAND);
+        } else if (bp == BodyPart.LEFT_RING || bp == BodyPart.RIGHT_RING) {
+            equippable.add(BodyPart.RING);
         } else {
             equippable.add(bp);
         }

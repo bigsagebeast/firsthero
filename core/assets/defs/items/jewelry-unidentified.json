@@ -1,0 +1,13 @@
+{
+  "items": {
+    "ring.amber": {
+      "unidGroup": "ring1",
+      "unidentifiedName": "amber ring",
+      "glyphName": "ring.jeweled",
+      "palette": [
+        "tan",
+        "yellow"
+      ]
+    }
+  }
+}

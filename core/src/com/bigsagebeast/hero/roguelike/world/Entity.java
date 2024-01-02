@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.roguelike.world;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.enums.Ambulation;
 import com.bigsagebeast.hero.enums.Gender;
+import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
 import com.bigsagebeast.hero.roguelike.game.Statblock;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
@@ -17,6 +18,7 @@ import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.MoverLogic;
 import com.bigsagebeast.hero.roguelike.game.Rank;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcEquippable;
+import com.bigsagebeast.hero.util.Util;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -100,6 +102,8 @@ public class Entity {
 
     // to count the number of wandering monsters
     public boolean wanderer;
+    // summoned monsters don't drop items or corpses
+    public boolean summoned;
 
     public String toString() {
         return name + " " + pos;
@@ -186,7 +190,8 @@ public class Entity {
         if (item != null && item.quantity > 1) {
             return getVisibleNameWithQuantity();
         }
-        return "a " + getVisibleName();
+        String visibleName = getVisibleName();
+        return Util.aOrAn(visibleName) + " " + visibleName;
     }
 
     public String getVisibleNameSingularOrVague() {
@@ -194,7 +199,8 @@ public class Entity {
         if (item != null && item.quantity > 1) {
             return "some " + getVisiblePluralName();
         }
-        return "a " + getVisibleName();
+        String visibleName = getVisibleName();
+        return Util.aOrAn(visibleName) + " " + visibleName;
     }
 
     public int getMoveCost() {
@@ -379,7 +385,9 @@ public class Entity {
 
         if (target != null && pe.equipmentFor != bp &&
                 !(pe.equipmentFor == BodyPart.ANY_HAND && (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND)) &&
-                !(pe.equipmentFor == BodyPart.TWO_HAND && bp == BodyPart.PRIMARY_HAND)) {
+                !(pe.equipmentFor == BodyPart.TWO_HAND && bp == BodyPart.PRIMARY_HAND) &&
+                !(pe.equipmentFor == BodyPart.RING && (bp == BodyPart.LEFT_RING || bp == BodyPart.RIGHT_RING))
+        ) {
             Game.announceVis(this, null, "That's not equippable in that slot.", null,
                     "Failed to equip: " + this.name + ", " + target.name, "Failed to equip: " + this.name + ", " + target.name);
             return false;
@@ -664,6 +672,21 @@ public class Entity {
             at += p.provideArmorThickness();
         }
         return at;
+    }
+
+    public List<StatusType> getStatusResists() {
+        ArrayList<StatusType> resists = new ArrayList<>();
+        for (Proc p : allProcsIncludingEquipment().collect(Collectors.toList())) {
+            List<StatusType> pr = p.provideStatusResist();
+            if (pr != null) {
+                resists.addAll(pr);
+            }
+        }
+        return resists;
+    }
+
+    public boolean testResistStatus(StatusType status) {
+        return getStatusResists().contains(status);
     }
 
     public TextBlock getNameBlock() {

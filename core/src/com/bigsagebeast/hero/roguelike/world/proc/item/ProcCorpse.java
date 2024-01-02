@@ -1,9 +1,11 @@
 package com.bigsagebeast.hero.roguelike.world.proc.item;
 
+import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.game.Game;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectConfusion;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -56,19 +58,37 @@ public class ProcCorpse extends Proc {
         }
     }
 
+    public void procConfusion(Entity entity, Entity actor) {
+        if (actor.testResistStatus(StatusType.CONFUSION)) {
+            return;
+        }
+        ProcEffectConfusion proc = new ProcEffectConfusion();
+        proc.turnsRemaining = 5;
+        actor.addProc(proc);
+        proc.initialize(actor);
+    }
+
     public void gainFireSmall(Entity entity, Entity actor) {
-        Game.getPlayer().gainStatElement(Element.FIRE, 1, 6);
+        if (actor == Game.getPlayerEntity()) {
+            Game.getPlayer().gainStatElement(Element.FIRE, 1, 6);
+        }
     }
 
     public void gainWaterSmall(Entity entity, Entity actor) {
-        Game.getPlayer().gainStatElement(Element.WATER, 1, 6);
+        if (actor == Game.getPlayerEntity()) {
+            Game.getPlayer().gainStatElement(Element.WATER, 1, 6);
+        }
     }
 
     public void gainElectricSmall(Entity entity, Entity actor) {
-        Game.getPlayer().gainStatElement(Element.LIGHTNING, 1, 6);
+        if (actor == Game.getPlayerEntity()) {
+            Game.getPlayer().gainStatElement(Element.LIGHTNING, 1, 6);
+        }
     }
 
     public void gainNaturaeSmall(Entity entity, Entity actor) {
-        Game.getPlayer().gainStatElement(Element.NATURAE, 1, 6);
+        if (actor == Game.getPlayerEntity()) {
+            Game.getPlayer().gainStatElement(Element.NATURAE, 1, 6);
+        }
     }
 }

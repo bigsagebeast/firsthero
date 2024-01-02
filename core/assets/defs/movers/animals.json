@@ -71,6 +71,8 @@
       "naturalWeaponToHit": -7,
       "naturalArmorClass": 2,
       "size": "SMALL",
+      "frequency": 100000,
+      "corpseMethod": "procConfusion",
       "tactic": {
         "name": "TacticBat"
       },

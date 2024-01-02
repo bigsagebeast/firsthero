@@ -29,6 +29,8 @@ public class BodyPlanpedia {
         humanoid.addPart(BodyPart.LEGS);
         humanoid.addPart(BodyPart.HANDS);
         humanoid.addPart(BodyPart.FEET);
+        humanoid.addPart(BodyPart.LEFT_RING);
+        humanoid.addPart(BodyPart.RIGHT_RING);
         humanoid.addPart(BodyPart.RANGED_WEAPON);
         humanoid.addPart(BodyPart.RANGED_AMMO);
         addBodyPlan("humanoid", humanoid);

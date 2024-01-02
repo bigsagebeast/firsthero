@@ -51,6 +51,7 @@ public class RoomType {
         UNDERGROUND_GROVE.spawners.add(naturaeSpawner);
 
         SpecialSpawner copperSpawner = SpecialSpawner.newRegen();
+        copperSpawner.summoned = true;
         copperSpawner.spawnMTTH = 300;
         copperSpawner.tags = Arrays.asList("tech");
         copperSpawner.spawnNearPlayer = true;
