@@ -8,7 +8,7 @@ import com.bigsagebeast.hero.module.RoguelikeModule;
 public class UIManager {
     private static final int WIDTH_IN_CHARS = 46;
     private static final int RIGHT_SIDE_WIDTH_IN_PIXELS = RoguelikeModule.FONT_SIZE * WIDTH_IN_CHARS;
-    private static final int LOWER_BOX_HEIGHT_IN_CHARS = 20;
+    private static final int LOWER_BOX_HEIGHT_IN_CHARS = 22;
     private static final int LOWER_BOX_HEIGHT_IN_PIXELS = RoguelikeModule.FONT_SIZE * LOWER_BOX_HEIGHT_IN_CHARS;
     private static final int STATS_WIDTH_IN_CHARS = 16;
     private static final int STATS_WIDTH_IN_PIXELS = RoguelikeModule.FONT_SIZE * STATS_WIDTH_IN_CHARS;

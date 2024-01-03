@@ -149,6 +149,7 @@
       "glyphName": "spirit.wisp",
       "isManipulator": false,
       "ambulation": "FLYING",
+      "wandering": false,
       "moveCost": 500,
       "palette": [
         "white",

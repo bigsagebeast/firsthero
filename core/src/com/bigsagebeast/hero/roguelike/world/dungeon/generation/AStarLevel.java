@@ -1,5 +1,8 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 
+import com.bigsagebeast.hero.enums.Ambulation;
+import com.bigsagebeast.hero.roguelike.world.Bestiary;
+import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.world.Terrain;
@@ -38,7 +41,6 @@ public class AStarLevel {
 				break;
 			}
 
-			//for (Compass dir : Compass.points) {
 			for (Compass dir : Compass.orthogonal) {
 				Point newloc = dir.from(next.location);
 				float moveCost = 0f;

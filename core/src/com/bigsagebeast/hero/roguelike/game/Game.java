@@ -1,9 +1,9 @@
 package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
+import com.bigsagebeast.hero.HeroGame;
 import com.bigsagebeast.hero.SetupException;
 import com.bigsagebeast.hero.enums.Gender;
-import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.module.RoguelikeModule;
 import com.bigsagebeast.hero.module.TargetingModule;
 import com.bigsagebeast.hero.persistence.Persistence;
@@ -198,7 +198,7 @@ public class Game {
 	}
 	
 	public void turn() {
-
+		HeroGame.resetTimer("astar");
 		// at the start of the turn, the player has just acted
 		for (Proc p : Game.getPlayerEntity().procs) {
 			p.onAction(Game.getPlayerEntity());
@@ -410,7 +410,7 @@ public class Game {
 				if (chatPage == null) {
 					Game.announce(target.getVisibleNameThe() + " won't talk to you.");
 				} else {
-					GameLoop.CHAT_MODULE.openStory(chatPage, "` " + target.getVisibleName(), EntityGlyph.getGlyph(target));
+					GameLoop.CHAT_MODULE.openStory(target);
 				}
 				passTime(player.getEntity().moveCost);
 				return;
@@ -586,9 +586,14 @@ public class Game {
 			}
 		}
 
-		//announce("Walked one square.");
-		player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 		movePlayer(tx, ty);
+
+		if (level.cell(player.getEntity().pos).terrain.getName().equals("water")) {
+			announce("You flail around in the water.");
+			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost * 4);
+		} else {
+			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
+		}
 	}
 
 	public static boolean pushBy(Entity actor, int dx, int dy) {
@@ -727,29 +732,46 @@ public class Game {
 	}
 
 	public static boolean canMoveBy(Entity actor, Compass dir) {
-		return canMoveTo(actor, actor.pos.x + dir.getX(), actor.pos.y + dir.getY());
+		return !isBlockedByTerrain(actor, actor.pos.x + dir.getX(), actor.pos.y + dir.getY()) &&
+				!isBlockedByEntity(actor, actor.pos.x + dir.getX(), actor.pos.y + dir.getY());
 	}
 
-	public static boolean canMoveTo(Entity actor, int tx, int ty) {
-		if (level.moverAt(tx, ty) != null) {
-			return false;
-		}
+	public static boolean isBlockedByTerrain(Entity actor, int tx, int ty) {
 		if (!level.cell(tx, ty).terrain.isPassable()) {
-			return false;
+			return true;
+		}
+		switch (actor.ambulation) {
+			case WALKING_ONLY:
+				if (level.cell(tx, ty).terrain.getName().equals("water")) {
+					return true;
+				}
+				break;
+			case SWIMMING_ONLY:
+				if (!level.cell(tx, ty).terrain.getName().equals("water")) {
+					return true;
+				}
+				break;
+		}
+		return false;
+	}
+
+	public static boolean isBlockedByEntity(Entity actor, int tx, int ty) {
+		if (level.moverAt(tx, ty) != null) {
+			return true;
 		}
 
 		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
 			if (target != player.getEntity() && target.isManipulator) {
 				if (target.isObstructiveToManipulators()) {
-					return false;
+					return true;
 				}
 			}
 			else if (target.isObstructive()) {
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	public static boolean tryMoveTo(Entity e, int tx, int ty) {

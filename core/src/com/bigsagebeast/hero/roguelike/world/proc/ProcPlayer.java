@@ -50,7 +50,7 @@ public class ProcPlayer extends ProcMover {
                 if (Game.getLevel().cell(p).terrain == water) {
                     int missing = Game.getPlayer().elementMissing(Element.WATER);
                     if (missing > 0) {
-                        Game.announce("You draw " + missing + " water charge" + (missing == 1 ? "" : "s") + " from the water!");
+                        Game.announce("You draw " + missing + " water charge" + (missing == 1 ? "" : "s") + " from the water.");
                         Game.getPlayer().changeCharges(Element.WATER, missing);
                     }
                 }

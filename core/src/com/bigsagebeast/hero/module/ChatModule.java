@@ -11,7 +11,10 @@ import com.bigsagebeast.hero.chat.ChatPage;
 import com.bigsagebeast.hero.dialogue.ChatBox;
 import com.bigsagebeast.hero.gfx.GfxRectBorder;
 import com.bigsagebeast.hero.gfx.GfxRectFilled;
+import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.glyphtile.GlyphTile;
+import com.bigsagebeast.hero.roguelike.world.Bestiary;
+import com.bigsagebeast.hero.roguelike.world.Entity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,6 +33,11 @@ public class ChatModule extends Module {
     private String titleText;
     private GlyphTile titleGlyph;
     ArrayList<ChatLink> validLinks = new ArrayList<>();
+
+    public void openStory(Entity entity) {
+        String page = Bestiary.get(entity.phenotypeName).chatPage;
+        openStory(page, "` " + entity.getVisibleName(), EntityGlyph.getGlyph(entity));
+    }
 
     public void openStory(String key, String titleText, GlyphTile titleGlyph) {
         this.titleText = titleText;
