@@ -8,6 +8,7 @@ import com.bigsagebeast.hero.GraphicsState;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.gfx.GfxRectBorder;
 import com.bigsagebeast.hero.gfx.GfxRectFilled;
+import com.bigsagebeast.hero.roguelike.game.Game;
 
 import java.util.function.Consumer;
 
@@ -39,6 +40,7 @@ public class DialogueBoxModule extends Module {
         this.dialogueBox = dialogueBox;
         this.handler = handler;
 
+        Game.interrupt();
         this.start();
     }
 

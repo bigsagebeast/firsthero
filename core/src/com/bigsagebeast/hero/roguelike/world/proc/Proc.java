@@ -91,7 +91,7 @@ public class Proc {
     public void postDoUnequip(Entity entity, BodyPart bp, Entity target) {}
 
     public void postBeSteppedOn(Entity entity, Entity actor) { }
-    public void onAdjacentToPlayer(Entity entity) { }
+    public void onPlayerMovesAdjacentTo(Entity entity) { }
 
     public void actPlayerLos(Entity entity) {}
 

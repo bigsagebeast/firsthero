@@ -82,9 +82,9 @@ public class TitleScreenModule extends Module {
 		
 		options[0] = new TextBlock("  Continue", null, 14, 18, 29, Color.WHITE, 0f, 0f);
 		options[1] = new TextBlock("> New Game", null, 14, 18, 30, Color.YELLOW, 0f, 0f);
-		options[2] = new TextBlock("  Dungeon", null, 14, 18, 31, Color.WHITE, 0f, 0f);
-		options[3] = new TextBlock("  Aurex", null, 14, 18, 32, Color.WHITE, 0f, 0f);
-		options[4] = new TextBlock("  Watch Cutscene", null, 14, 18, 33, Color.WHITE, 0f, 0f);
+		options[2] = new TextBlock("  Skip to Dungeon", null, 14, 18, 31, Color.WHITE, 0f, 0f);
+		options[3] = new TextBlock("  Skip to Aurex", null, 14, 18, 32, Color.WHITE, 0f, 0f);
+		options[4] = new TextBlock("  Skip to Farm", null, 14, 18, 33, Color.WHITE, 0f, 0f);
 		options[5] = new TextBlock("  Watch Intro", null, 14, 18, 34, Color.WHITE, 0f, 0f);
 		options[6] = new TextBlock("  Quit", null, 14, 18, 35, Color.WHITE, 0f, 0f);
 		updateOptions();
@@ -166,7 +166,7 @@ public class TitleScreenModule extends Module {
 					case 4:
 						IntroModule.musicResource.stop();
 						end();
-						Profile.setString("mode", "newGameCutscene1");
+						Profile.setString("mode", "newGameIntroQuest");
 						GameLoop.flowModule.start();
 						break;
 					case 5:

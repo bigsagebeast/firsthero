@@ -44,7 +44,9 @@ public class Game {
 	public static final int ONE_TURN = 1000;
 	public static boolean initialized = false;
 
+	public static boolean interrupted;
 	public static int restTurns; // if > 0, we're waiting in place
+	public static Compass longWalkDir = null; // if non-null, we're long-walking
 
 	public static Spellbook spellbook = new Spellbook();
 
@@ -225,17 +227,8 @@ public class Game {
 			}
 			time = lowestTurn;
 			if (lowestProc.proc == player.getEntity().getMover()) {
-				if (restTurns-- > 0) {
-					if (hasInterruption()) {
-						announce("You are interrupted.");
-						restTurns = 0;
-						break;
-					} else if (restTurns == 0) {
-						announce("You finish resting.");
-					}
-				} else {
-					break;
-				}
+				tryLongTaskAction();
+				break;
 			}
 			lowestProc.proc.act(lowestProc.entity);
 			for (Proc onActProc : lowestProc.entity.procs) {
@@ -247,6 +240,60 @@ public class Game {
 	public void passTime(int delay) {
 		getPlayerEntity().getMover().setDelay(getPlayerEntity(), delay);
 		turn();
+	}
+
+	public static void interrupt() {
+		interrupted = true;
+	}
+
+	public boolean hasLongTask() {
+		return restTurns > 0 || longWalkDir != null;
+	}
+
+	// return true if still resting, false if not resting / interrupted
+	private boolean tryLongTaskAction() {
+		if (interrupted && (restTurns > 0 || longWalkDir != null)) {
+			announce("You are interrupted.");
+			interrupted = false;
+			restTurns = 0;
+			longWalkDir = null;
+		}
+		interrupted = false;
+
+		if (restTurns-- > 0) {
+			if (hasInterruption()) {
+				announce("You are interrupted.");
+				restTurns = 0;
+				return false;
+			} else if (restTurns == 0) {
+				announce("You finish resting.");
+				return false;
+			} else {
+				playerCmdMoveBy(0, 0);
+			}
+			return true;
+		} else if (longWalkDir != null) {
+			if (hasInterruption()) {
+				announce("You are interrupted.");
+				longWalkDir = null;
+				return false;
+			}
+			if (!canMoveBy(getPlayerEntity(), longWalkDir)) {
+				//announce("You finish walking.");
+				longWalkDir = null;
+				return false;
+			}
+			if (!level.cell(longWalkDir.from(getPlayerEntity().pos)).terrain.isSafe()) {
+				longWalkDir = null;
+				return false;
+			}
+
+			else {
+				playerCmdMoveBy(longWalkDir);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void cmdMoveLeft() {
@@ -342,6 +389,15 @@ public class Game {
 			restTurns = 50;
 			player.getEntity().getMover().setDelay(getPlayerEntity(), ONE_TURN);
 		}
+	}
+
+	public void cmdLongWalk(Compass dir) {
+		if (hasInterruption()) {
+			announce("You are interrupted.");
+			return; // TODO does this skip a turn?
+		}
+		longWalkDir = dir;
+		playerCmdMoveBy(dir);
 	}
 
 	public void cmdWield() {
@@ -550,6 +606,10 @@ public class Game {
 		GameLoop.targetingModule.begin(tm, null);
 	}
 
+	public static void playerCmdMoveBy(Compass dir) {
+		playerCmdMoveBy(dir.getX(), dir.getY());
+	}
+
 	public static void playerCmdMoveBy(int dx, int dy) {
 		if (getPlayerEntity().isConfused()) {
 			Compass dir = Compass.randomDirection();
@@ -690,6 +750,7 @@ public class Game {
 		itemsToMention.removeIf(e -> e.getItemType().hideWalkOver);
 
 		if (!items.isEmpty()) {
+			longWalkDir = null; // stop when walking over items
 			if (!itemsToMention.isEmpty()) {
 				StringBuilder listString = new StringBuilder();
 				if (itemsToMention.size() == 1 && items.get(0).getItem().quantity == 1) {
@@ -719,7 +780,7 @@ public class Game {
 
 		for (Point adjacent : level.surroundingTiles(getPlayerEntity().pos)) {
 			for (Entity e : level.getEntitiesOnTile(adjacent)) {
-				e.entityProcs().forEach(ep -> ep.proc.onAdjacentToPlayer(e));
+				e.entityProcs().forEach(ep -> ep.proc.onPlayerMovesAdjacentTo(e));
 			}
 		}
 	}

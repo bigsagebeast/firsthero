@@ -13,6 +13,7 @@ import com.bigsagebeast.hero.gfx.GfxRectBorder;
 import com.bigsagebeast.hero.gfx.GfxRectFilled;
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.glyphtile.GlyphTile;
+import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 
@@ -44,6 +45,7 @@ public class ChatModule extends Module {
         this.titleGlyph = titleGlyph;
         openPage(key);
         this.start();
+        Game.interrupt();
     }
 
     public void openArbitrary(ChatBox chatBox, ArrayList<ChatLink> links) {

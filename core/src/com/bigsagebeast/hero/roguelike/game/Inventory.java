@@ -317,6 +317,7 @@ public class Inventory {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             Game.getPlayerEntity().readItem(e);
+            GameLoop.roguelikeModule.game.turn();
         }
     }
 

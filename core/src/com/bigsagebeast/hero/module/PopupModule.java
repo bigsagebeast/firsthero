@@ -8,6 +8,7 @@ import com.bigsagebeast.hero.HeroGame;
 import com.bigsagebeast.hero.gfx.GfxMovingCircle;
 import com.bigsagebeast.hero.gfx.GfxRectBorder;
 import com.bigsagebeast.hero.gfx.GfxRectFilled;
+import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.text.TextBlock;
 
@@ -57,17 +58,20 @@ public class PopupModule extends Module {
     }
 
     public void createPopup(String text, float time) {
+        Game.interrupt();
         orders.add(new PopupOrder(text, time));
         this.start();
     }
 
 
     public void createPopup(String text, float time, Entity entity, float shrinkTime) {
+        Game.interrupt();
         orders.add(new PopupOrder(text, time, entity, shrinkTime));
         this.start();
     }
 
     public void createPopup(String text, float time, Entity entity, float shrinkTime, Runnable runOnCompletion) {
+        Game.interrupt();
         orders.add(new PopupOrder(text, time, entity, shrinkTime, runOnCompletion));
         this.start();
     }

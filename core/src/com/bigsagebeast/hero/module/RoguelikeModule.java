@@ -13,6 +13,7 @@ import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.text.TextBlock;
+import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Fov;
 import com.bigsagebeast.hero.util.Util;
 
@@ -167,8 +168,13 @@ public class RoguelikeModule extends Module {
 		if (dirty) {
 			redraw();
 			process();
-			dirty = false;
 		}
+		while (game.hasLongTask()) {
+			game.turn();
+			redraw();
+			process();
+		}
+		dirty = false;
 	}
 
 	@Override
@@ -260,6 +266,38 @@ public class RoguelikeModule extends Module {
 		}
 		if (shift) {
 			switch (keycode) {
+				case Keys.LEFT:
+				case Keys.NUMPAD_4:
+					game.cmdLongWalk(Compass.WEST);
+					break;
+				case Keys.RIGHT:
+				case Keys.NUMPAD_6:
+					game.cmdLongWalk(Compass.EAST);
+					break;
+				case Keys.UP:
+				case Keys.NUMPAD_8:
+					game.cmdLongWalk(Compass.NORTH);
+					break;
+				case Keys.DOWN:
+				case Keys.NUMPAD_2:
+					game.cmdLongWalk(Compass.SOUTH);
+					break;
+				case Keys.HOME:
+				case Keys.NUMPAD_7:
+					game.cmdLongWalk(Compass.NORTH_WEST);
+					break;
+				case Keys.END:
+				case Keys.NUMPAD_1:
+					game.cmdLongWalk(Compass.SOUTH_WEST);
+					break;
+				case Keys.PAGE_UP:
+				case Keys.NUMPAD_9:
+					game.cmdLongWalk(Compass.NORTH_EAST);
+					break;
+				case Keys.PAGE_DOWN:
+				case Keys.NUMPAD_3:
+					game.cmdLongWalk(Compass.SOUTH_EAST);
+					break;
 				case Keys.NUMPAD_5:
 					game.cmdRest();
 				case Keys.L:
