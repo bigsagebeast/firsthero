@@ -84,7 +84,7 @@ public class CutsceneModule extends Module {
 		scene.text.add("the Bodnam still told stories, back in the Old King's");
 		scene.text.add("era, before the worlds turned grey.@@");
 		scene.text.add("");
-		scene.text.add("I pray it can revive your spark.@");
+		scene.text.add("I pray this mortal can revive your spark.@");
 		scene.text.add("                                          [Enter]");
 	}
 

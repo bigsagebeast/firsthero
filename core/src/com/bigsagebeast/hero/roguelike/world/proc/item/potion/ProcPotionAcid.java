@@ -22,6 +22,6 @@ public class ProcPotionAcid extends ImmutableProc {
                 null,
                 actor.getVisibleNameThe() + " is burned!",
                 null);
-        entity.identifyItem();
+        entity.identifyItemType();
     }
 }

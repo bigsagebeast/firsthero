@@ -27,6 +27,6 @@ public class ProcPotionRegeneration extends ImmutableProc {
                 null,
                 actor.getVisibleNameThe() + " starts to regenerate more quickly!",
                 null);
-        entity.identifyItem();
+        entity.identifyItemType();
     }
 }

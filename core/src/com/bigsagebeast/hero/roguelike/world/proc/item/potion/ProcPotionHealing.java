@@ -22,6 +22,6 @@ public class ProcPotionHealing extends ImmutableProc {
                 null,
                 actor.getVisibleNameThe() + " looks better!",
                 null);
-        entity.identifyItem();
+        entity.identifyItemType();
     }
 }

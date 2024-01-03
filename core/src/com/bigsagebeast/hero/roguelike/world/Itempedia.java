@@ -86,6 +86,7 @@ public class Itempedia {
         gold.category = ItemCategory.CATEGORY_GOLD;
         gold.level = -1;
         gold.frequency = 0;
+        gold.hasBeatitude = false;
         map.put(gold.keyName, gold);
     }
 

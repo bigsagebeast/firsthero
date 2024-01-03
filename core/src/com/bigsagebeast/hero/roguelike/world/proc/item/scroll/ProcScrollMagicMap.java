@@ -16,7 +16,7 @@ public class ProcScrollMagicMap extends ImmutableProc {
 
     @Override
     public void postBeRead(Entity entity, Entity actor) {
-        entity.identifyItem();
+        entity.identifyItemType();
         Game.getLevel().getCellStream().forEach(c -> c.explored = true);
         Game.announce("You feel more knowledgeable!");
     }

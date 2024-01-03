@@ -20,7 +20,7 @@ public class ProcBookSpell extends Proc {
 
     @Override
     public void postBeRead(Entity entity, Entity actor) {
-        entity.identifyItem();
+        entity.identifyItemType();
         if (GameLoop.roguelikeModule.game.spellbook.hasSpell(spell)) {
             Game.announce("You already know that spell.");
         } else {

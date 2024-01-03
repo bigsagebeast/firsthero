@@ -54,6 +54,7 @@ public class UnidMapping {
             ItemType iden = Itempedia.get(key);
             ItemType unid = Itempedia.get(mappings.get(key));
             iden.unidentifiedName = unid.unidentifiedName;
+            iden.unidentifiedPluralName = unid.unidentifiedPluralName;
             iden.glyphName = unid.glyphName;
             iden.palette = unid.palette;
             // TODO material?

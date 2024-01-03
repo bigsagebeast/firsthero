@@ -134,34 +134,44 @@ public class Entity {
         return null;
     }
 
+    public String getBeatitudeString() {
+        if (getItem() == null || !getItem().identified || !getItemType().hasBeatitude) {
+            return "";
+        }
+        return "uncursed ";
+    }
+
     public String getVisibleName() {
+        String beatitude = getBeatitudeString();
         ItemType it = getItemType();
         if (it != null && it.identityHidden && !it.identified) {
-            return it.unidentifiedName;
+            return beatitude + it.unidentifiedName;
         }
-        return name;
+
+        return beatitude + name;
     }
 
     public String getVisiblePluralName() {
+        String beatitude = getBeatitudeString();
         ItemType it = getItemType();
         if (it != null && it.identityHidden && !it.identified) {
             if (it.unidentifiedPluralName != null) {
-                return it.unidentifiedPluralName;
+                return beatitude + it.unidentifiedPluralName;
             } else {
                 if (it.unidentifiedName.endsWith("s")) {
-                    return it.unidentifiedName + "es";
+                    return beatitude + it.unidentifiedName + "es";
                 } else {
-                    return it.unidentifiedName + "s";
+                    return beatitude + it.unidentifiedName + "s";
                 }
             }
         }
         if (pluralName != null) {
-            return pluralName;
+            return beatitude + pluralName;
         } else {
             if (name.endsWith("s")) {
-                return name + "es";
+                return beatitude + name + "es";
             } else {
-                return name + "s";
+                return beatitude + name + "s";
             }
         }
     }
@@ -513,7 +523,7 @@ public class Entity {
         return true;
     }
 
-    public void identifyItem() {
+    public void identifyItemType() {
         ItemType it = getItemType();
         if (it == null) {
             throw new RuntimeException("Tried to identify a non-item");
@@ -522,6 +532,21 @@ public class Entity {
             return;
         }
         ProcItem pi = getItem();
+        String preIdentified = getVisibleNameThe();
+        it.identified = true;
+        String postIdentified = getVisibleNameSingularOrSpecific();
+        Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
+    }
+
+    public void identifyItemFully() {
+        ItemType it = getItemType();
+        ProcItem pi = getItem();
+        if (it == null) {
+            throw new RuntimeException("Tried to identify a non-item");
+        }
+        if ((!it.hasBeatitude || pi.identified) && (!it.identityHidden || it.identified)) {
+            return;
+        }
         String preIdentified = getVisibleNameThe();
         it.identified = true;
         pi.identified = true;

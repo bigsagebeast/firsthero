@@ -52,7 +52,7 @@
     "jackal.trained": {
       "name": "trained jackal",
       "peaceful": false,
-      "hitPoints": 6,
+      "hitPoints": 3,
       "isMonster": true,
       "bodyPlan": "humanoid",
       "glyphName": "animal.canine",

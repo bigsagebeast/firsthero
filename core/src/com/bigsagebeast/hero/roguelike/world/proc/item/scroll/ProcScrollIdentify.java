@@ -25,7 +25,7 @@ public class ProcScrollIdentify extends ImmutableProc {
 
     @Override
     public void postBeRead(Entity entity, Entity actor) {
-        entity.identifyItem();
+        entity.identifyItemType();
         openInventoryToIdentify();
     }
 
@@ -41,7 +41,7 @@ public class ProcScrollIdentify extends ImmutableProc {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
             List<Entity> unidentified = new ArrayList<>();
             for (Entity ent : ents) {
-                if (ent.getItemType().identityHidden && !ent.getItemType().identified)
+                if ((!ent.getItem().identified && ent.getItemType().hasBeatitude) || (ent.getItemType().identityHidden && !ent.getItemType().identified))
                 unidentified.add(ent);
             }
             if (unidentified.size() > 0) {
@@ -61,7 +61,7 @@ public class ProcScrollIdentify extends ImmutableProc {
     public void handleInventoryToIdentifyResponse(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
-            e.identifyItem();
+            e.identifyItemFully();
         }
     }
 
