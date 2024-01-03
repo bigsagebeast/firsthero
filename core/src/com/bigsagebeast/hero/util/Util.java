@@ -60,4 +60,11 @@ public class Util {
         float chance = 1.0f / mtth;
         return Game.random.nextFloat() <= chance;
     }
+
+    public static int randomBetween(int min, int max) {
+        if (min >= max) {
+            return min;
+        }
+        return min + Game.random.nextInt(max - min + 1);
+    }
 }

@@ -8,7 +8,7 @@ import com.bigsagebeast.hero.enums.Satiation;
 import java.util.HashMap;
 
 public class Player {
-	private int entityId;
+	private int entityId = -1;
 
 	public HashMap<Element, Integer> currentElementCharges = new HashMap<>();
 	public HashMap<Element, Integer> maxElementCharges = new HashMap<>();
@@ -80,7 +80,11 @@ public class Player {
 	}
 
 	public Entity getEntity() {
-		return EntityTracker.get(entityId);
+		if (entityId >= 0) {
+			return EntityTracker.get(entityId);
+		} else {
+			return null;
+		}
 	}
 
 	public boolean isEntity(Entity e) {

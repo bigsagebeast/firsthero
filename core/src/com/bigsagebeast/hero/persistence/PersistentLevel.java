@@ -86,7 +86,7 @@ public class PersistentLevel {
                 level.putCell(col, row, cell);
             }
         }
-        level.finalize();
+        level.prepare();
         return level;
     }
 

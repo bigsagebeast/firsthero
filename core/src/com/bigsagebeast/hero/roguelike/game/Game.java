@@ -44,8 +44,9 @@ public class Game {
 	public static final int ONE_TURN = 1000;
 	public static boolean initialized = false;
 
-	private Inventory inventory = new Inventory();
-	public Spellbook spellbook = new Spellbook();
+	public static int restTurns; // if > 0, we're waiting in place
+
+	public static Spellbook spellbook = new Spellbook();
 
 	public Game(RoguelikeModule module) {
 		Game.roguelikeModule = module;
@@ -81,7 +82,7 @@ public class Game {
 		level = dungeon.getLevel("start");
 		Level cave = dungeon.getLevel("cave");
 		cave.addEntityWithStacking(itempedia.create("feature.intro.altar"), new Point(4, 3));
-		level.finalize();
+		level.prepare();
 	}
 
 	public void startAurex() {
@@ -91,7 +92,7 @@ public class Game {
 		dungeon.generateFromFile("aurex", "aurex.fhm");
 		changeLevel(dungeon.getLevel("aurex"), new Point(107, 30));
 		level.addEntityWithStacking(itempedia.create("feature.worldportal"), new Point(105, 30));
-		level.finalize();
+		level.prepare();
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			GameLoop.roguelikeModule.start();
 		}
@@ -102,7 +103,7 @@ public class Game {
 		player.setEntityId(pc.entityId);
 		dungeon.generateClassic("dungeon.1");
 		changeLevel("dungeon.1", "out");
-		level.finalize();
+		level.prepare();
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			GameLoop.roguelikeModule.start();
 		}
@@ -129,7 +130,7 @@ public class Game {
 		level.addEntityWithStacking(player.getEntity(), playerPos, false);
 
 		GameLoop.glyphEngine.initializeLevel(level);
-		level.finalize();
+		level.prepare();
 		passTime(0);
 	}
 
@@ -149,7 +150,7 @@ public class Game {
 		level = nextLevel;
 		Point playerPos = nextLevel.findTransitionTo(fromKey).loc;
 		level.addEntityWithStacking(player.getEntity(), playerPos, false);
-		level.finalize();
+		level.prepare();
 
 		GameLoop.glyphEngine.initializeLevel(level);
 		passTime(0);
@@ -158,7 +159,7 @@ public class Game {
 	public void changeLevel(Level nextLevel) {
 		level = nextLevel;
 		GameLoop.glyphEngine.initializeLevel(level);
-		level.finalize();
+		level.prepare();
 		passTime(0);
 	}
 
@@ -178,17 +179,8 @@ public class Game {
 		return player;
 	}
 
-	// TODO this should be cached...
 	public static Entity getPlayerEntity() {
-		if (level == null) {
-			return null;
-		}
-		for (Entity c : level.getEntities()) {
-			if (player.isEntity(c)) {
-				return c;
-			}
-		}
-		return null;
+		return player.getEntity();
 	}
 
 	public static void feelMsg(Entity entity, String message) {
@@ -200,8 +192,8 @@ public class Game {
 	public void turn() {
 		HeroGame.resetTimer("astar");
 		// at the start of the turn, the player has just acted
-		for (Proc p : Game.getPlayerEntity().procs) {
-			p.onAction(Game.getPlayerEntity());
+		for (Proc p : getPlayerEntity().procs) {
+			p.onAction(getPlayerEntity());
 		}
 
 		// TODO maybe check state here?
@@ -233,7 +225,17 @@ public class Game {
 			}
 			time = lowestTurn;
 			if (lowestProc.proc == player.getEntity().getMover()) {
-				break;
+				if (restTurns-- > 0) {
+					if (hasInterruption()) {
+						announce("You are interrupted.");
+						restTurns = 0;
+						break;
+					} else if (restTurns == 0) {
+						announce("You finish resting.");
+					}
+				} else {
+					break;
+				}
 			}
 			lowestProc.proc.act(lowestProc.entity);
 			for (Proc onActProc : lowestProc.entity.procs) {
@@ -321,7 +323,7 @@ public class Game {
 				GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
 			}
 		} else {
-			inventory.openFloorToGet();
+			Inventory.openFloorToGet();
 		}
 	}
 
@@ -333,24 +335,33 @@ public class Game {
 		}
 	}
 
+	public void cmdRest() {
+		if (hasInterruption()) {
+			announce("You can't rest right now.");
+		} else {
+			restTurns = 50;
+			player.getEntity().getMover().setDelay(getPlayerEntity(), ONE_TURN);
+		}
+	}
+
 	public void cmdWield() {
-		inventory.doWield();
+		Inventory.doWield();
 	}
 
 	public void cmdQuaff() {
-		inventory.doQuaff();
+		Inventory.doQuaff();
 	}
 
 	public void cmdRead() {
-		inventory.doRead();
+		Inventory.doRead();
 	}
 
 	public void cmdInventory() {
-		inventory.openInventory();
+		Inventory.openInventory();
 	}
 
 	public void cmdDrop() {
-		inventory.openInventoryToDrop();
+		Inventory.openInventoryToDrop();
 	}
 
 	public void cmdEat() {
@@ -358,7 +369,7 @@ public class Game {
 			announce("You are too stuffed to eat!");
 			return;
 		}
-		inventory.openInventoryToEat();
+		Inventory.openInventoryToEat();
 	}
 
 	public void cmdRegenerate() { startCaves(); }
@@ -529,7 +540,6 @@ public class Game {
 
 		if (targetPoint != null) {
 			CombatLogic.shoot(actor, targetEntity, rangedWeapon, ammo);
-
 		}
 		actor.getMover().setDelay(actor, actor.moveCost);
 		level.addEntityWithStacking(ammo, targetPoint);
@@ -590,7 +600,7 @@ public class Game {
 
 		if (level.cell(player.getEntity().pos).terrain.getName().equals("water")) {
 			announce("You flail around in the water.");
-			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost * 4);
+			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost * 4L);
 		} else {
 			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 		}
@@ -839,5 +849,18 @@ public class Game {
 		} else if (actorEntity != null && playerEntity.canHear(actorEntity)){
 			announce(Util.substitute(audible, actorGender, targetGender));
 		}
+	}
+
+	public static boolean hasInterruption() {
+		// TODO: Have a flag that can be set during a turn by things like starvation.
+		if (getPlayerEntity().isConfused()) {
+			return true;
+		}
+		for (Entity e : level.getMovers()) {
+			if (e != getPlayerEntity() && !e.peaceful && getPlayerEntity().canSee(e)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

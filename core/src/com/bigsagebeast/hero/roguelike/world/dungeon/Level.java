@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.Visibility;
+import com.bigsagebeast.hero.util.Util;
 
 public class Level {
 	String name;
@@ -101,7 +102,7 @@ public class Level {
 	}
 
 	// call after the level is all set up
-	public void finalize() {
+	public void prepare() {
 		for (Entity ent : getEntities()) {
 			ent.postLoad();
 		}
@@ -313,6 +314,35 @@ public class Level {
 		Collection<Point> points = surroundingTiles(p);
 		points.add(p);
 		return points;
+	}
+
+	public Point findOpenTileWithinRange(Point center, int range, boolean includeCenter) {
+		int minX = Math.max(center.x - range, 0);
+		int maxX = Math.min(center.x + range, width - 1);
+		int minY = Math.max(center.y - range, 0);
+		int maxY = Math.min(center.y + range, height - 1);
+		for (int i=0; i<10000; i++) {
+			// TODO not stochastic?
+			int x = Util.randomBetween(minX, maxX);
+			int y = Util.randomBetween(minY, maxY);
+			if (!includeCenter && x == center.x && y == center.y) {
+				continue;
+			}
+			if (cell[x][y].terrain.isPassable() && cell[x][y].terrain.isSpawnable()) {
+				boolean blockingEntity = false;
+				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
+					if (e.getMover() != null || e.isObstructive()) {
+						blockingEntity = true;
+						break;
+					}
+				}
+				if (blockingEntity) {
+					continue;
+				}
+				return new Point(x, y);
+			}
+		}
+		return null;
 	}
 
 	public Point findOpenTile() {

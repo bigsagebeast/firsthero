@@ -21,11 +21,7 @@ import java.util.HashSet;
 
 public class RoguelikeModule extends Module {
 
-	int mainWindowOffsetX = 1;
-	int mainWindowOffsetY = 1;
-	
 	public static final int FONT_SIZE = 16;
-
 
 	static final float ZOOM_MIN = 1.0f;
 	static final float ZOOM_MAX = 2.0f;
@@ -264,6 +260,8 @@ public class RoguelikeModule extends Module {
 		}
 		if (shift) {
 			switch (keycode) {
+				case Keys.NUMPAD_5:
+					game.cmdRest();
 				case Keys.L:
 					game.cmdLoad();
 					break;
@@ -296,23 +294,24 @@ public class RoguelikeModule extends Module {
 		DialogueBox box = new DialogueBox()
 				.withMargins(60, 60)
 				.withTitle("Commands");
-		box.addItem("Keypad        Move or attack", null);
-		box.addItem("Keypad 5      Wait", "5");
-		box.addItem("c             Chat to an NPC", "c");
-		box.addItem("d             Drop an item", "d");
-		box.addItem("e             Eat something (including off the ground)", "e");
-		box.addItem("g             Pick up an item", "g");
-		box.addItem("i             Check inventory", "i");
-		box.addItem("l             Look around", "l");
-		box.addItem("m             Cast a magic spell", "m");
-		box.addItem("o             Open or close a door", "o");
-		box.addItem("q             Quaff a potion", "q");
-		box.addItem("r             Read a scroll or book", "r");
-		box.addItem("t             Target ranged attack", "t");
-		box.addItem("w             Wear or wield", "w");
-		box.addItem("<             Go up stairs", "<");
-		box.addItem(">             Go down stairs", ">");
-		box.addItem("P             Pray", "P");
+		box.addItem("Keypad       Move or attack", null);
+		box.addItem("Keypad 5     Wait", "5");
+		box.addItem("Shift KP 5   Rest", "~");
+		box.addItem("c            Chat to an NPC", "c");
+		box.addItem("d            Drop an item", "d");
+		box.addItem("e            Eat something (including off the ground)", "e");
+		box.addItem("g            Pick up an item", "g");
+		box.addItem("i            Check inventory", "i");
+		box.addItem("l            Look around", "l");
+		box.addItem("m            Cast a magic spell", "m");
+		box.addItem("o            Open or close a door", "o");
+		box.addItem("q            Quaff a potion", "q");
+		box.addItem("r            Read a scroll or book", "r");
+		box.addItem("t            Target ranged attack", "t");
+		box.addItem("w            Wear or wield", "w");
+		box.addItem("<            Go up stairs", "<");
+		box.addItem(">            Go down stairs", ">");
+		box.addItem("P            Pray", "P");
 		box.autoHeight();
 		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handlePopupCommands);
 	}
@@ -325,6 +324,9 @@ public class RoguelikeModule extends Module {
 		switch (key) {
 			case "5":
 				game.cmdWait();
+				break;
+			case "~":
+				game.cmdRest();
 				break;
 			case "c":
 				game.cmdChat();

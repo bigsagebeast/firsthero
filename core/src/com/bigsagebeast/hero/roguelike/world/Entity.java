@@ -536,6 +536,9 @@ public class Entity {
         it.identified = true;
         String postIdentified = getVisibleNameSingularOrSpecific();
         Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
+        if (containingEntity >= 0) {
+            EntityTracker.get(containingEntity).restack(this);
+        }
     }
 
     public void identifyItemFully() {
@@ -552,6 +555,9 @@ public class Entity {
         pi.identified = true;
         String postIdentified = getVisibleNameSingularOrSpecific();
         Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
+        if (containingEntity >= 0) {
+            EntityTracker.get(containingEntity).restack(this);
+        }
     }
 
     public Entity acquireWithStacking(Entity target) {
@@ -570,6 +576,23 @@ public class Entity {
             inventoryIds.add(target.entityId);
         }
         return (stackedInto != null) ? stackedInto : target;
+    }
+
+    public void restack(Entity target) {
+        Entity foundTarget = null;
+        for (int mergeTargetId : inventoryIds) {
+            if (mergeTargetId == target.entityId) {
+                continue;
+            }
+            Entity mergeTarget = EntityTracker.get(mergeTargetId);
+            if (mergeTarget.canStackWith(target)) {
+                foundTarget = mergeTarget;
+            }
+        }
+        if (foundTarget != null) {
+            foundTarget.beStackedWith(target);
+            target.destroy();
+        }
     }
 
     public void dropItem(Entity target) {

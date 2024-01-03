@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 
 public class Inventory {
 
-    private BodyPart chosenBodyPartForDialogue;
+    private static BodyPart chosenBodyPartForDialogue;
 
-    public void doWield() {
+    public static void doWield() {
 
         Entity playerEntity = Game.getPlayerEntity();
         DialogueBox box = new DialogueBox()
@@ -42,16 +42,16 @@ public class Inventory {
             }
             box.addItem(String.format("%-16s: %-16s", bp.getName(), equipmentName), bp);
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleWieldResponse);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleWieldResponse);
     }
 
-    public void handleWieldResponse(Object response) {
+    public static void handleWieldResponse(Object response) {
         if (response == null)
         {
             return;
         }
         BodyPart bp = (BodyPart)response;
-        this.chosenBodyPartForDialogue = bp;
+        chosenBodyPartForDialogue = bp;
         List<BodyPart> equippable = new ArrayList<>();
         if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND) {
             equippable.add(BodyPart.ANY_HAND);
@@ -64,7 +64,7 @@ public class Inventory {
         openInventoryToEquip(equippable);
     }
 
-    public void openInventoryToEquip(List<BodyPart> bodyParts) {
+    public static void openInventoryToEquip(List<BodyPart> bodyParts) {
         boolean addedAnything = false;
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
@@ -95,10 +95,10 @@ public class Inventory {
         if (!addedAnything) {
             box.addHeader("No inventory available.");
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryToEquipResponse);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryToEquipResponse);
     }
 
-    public void handleInventoryToEquipResponse(Object chosenEntity) {
+    public static void handleInventoryToEquipResponse(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e == Game.getPlayerEntity()) {
             Game.getPlayerEntity().equip(null, chosenBodyPartForDialogue);
@@ -109,7 +109,7 @@ public class Inventory {
     }
 
 
-    public void openInventoryToDrop() {
+    public static void openInventoryToDrop() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
@@ -124,10 +124,10 @@ public class Inventory {
                 box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
             }
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryToDropResponse);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryToDropResponse);
     }
 
-    public void handleInventoryToDropResponse(Object chosenEntity) {
+    public static void handleInventoryToDropResponse(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
 
@@ -137,7 +137,7 @@ public class Inventory {
     }
 
 
-    public void openFloorToGet() {
+    public static void openFloorToGet() {
         Collection<Entity> floorInventory = Game.getLevel().getItemsOnTile(Game.getPlayerEntity().pos);
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
@@ -152,10 +152,10 @@ public class Inventory {
                 box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
             }
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleFloorToGetResponse);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleFloorToGetResponse);
     }
 
-    public void handleFloorToGetResponse(Object chosenEntity) {
+    public static void handleFloorToGetResponse(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             if (!Game.getPlayerEntity().pickup(e)) {
@@ -166,7 +166,7 @@ public class Inventory {
         }
     }
 
-    public void openInventoryToEat() {
+    public static void openInventoryToEat() {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to eat")
@@ -226,17 +226,17 @@ public class Inventory {
                 }
             }
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryToEatResponse);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryToEatResponse);
     }
 
-    public void handleInventoryToEatResponse(Object chosenEntity) {
+    public static void handleInventoryToEatResponse(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             Game.getPlayerEntity().eatItem(e);
         }
     }
 
-    public void doQuaff() {
+    public static void doQuaff() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
@@ -268,17 +268,17 @@ public class Inventory {
                 box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
             }
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleQuaff);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleQuaff);
     }
 
-    public void handleQuaff(Object chosenEntity) {
+    public static void handleQuaff(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             Game.getPlayerEntity().quaffItem(e);
         }
     }
 
-    public void doRead() {
+    public static void doRead() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
@@ -310,10 +310,10 @@ public class Inventory {
                 box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
             }
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleRead);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleRead);
     }
 
-    public void handleRead(Object chosenEntity) {
+    public static void handleRead(Object chosenEntity) {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             Game.getPlayerEntity().readItem(e);
@@ -322,7 +322,7 @@ public class Inventory {
 
 
 
-    public void openInventory() {
+    public static void openInventory() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
@@ -337,9 +337,9 @@ public class Inventory {
                 box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
             }
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleInventoryResponse);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryResponse);
     }
 
-    public void handleInventoryResponse(Object chosenEntity) {
+    public static void handleInventoryResponse(Object chosenEntity) {
     }
 }
