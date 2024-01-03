@@ -73,12 +73,16 @@ public class Game {
 
 	public void startIntro() {
 		Entity pc = bestiary.create("player");
+		pc.name = "Mortal Farmboy";
 		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
 		Entity pitchfork = itempedia.create("pitchfork");
 		dungeon.generateFromFile("start", "start.fhm");
+		dungeon.getLevel("start").setFriendlyName("Besieged Farm");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
+		dungeon.getLevel("cave-entry").setFriendlyName("Goblin cave entrance");
 		dungeon.generateFromFile("cave", "cave.fhm");
+		dungeon.getLevel("cave").setFriendlyName("Goblin caves");
 		changeLevel(dungeon.getLevel("start"), new Point(26, 27));
 		level.addEntityWithStacking(pitchfork, new Point(29, 24));
 		level = dungeon.getLevel("start");
@@ -89,9 +93,11 @@ public class Game {
 
 	public void startAurex() {
 		Entity pc = bestiary.create("player");
+		pc.name = Profile.getString("godName");
 		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
 		dungeon.generateFromFile("aurex", "aurex.fhm");
+		dungeon.getLevel("aurex").setFriendlyName("Aurex, Realm of the Gods");
 		changeLevel(dungeon.getLevel("aurex"), new Point(107, 30));
 		level.addEntityWithStacking(itempedia.create("feature.worldportal"), new Point(105, 30));
 		level.prepare();
@@ -102,6 +108,7 @@ public class Game {
 
 
 	public void handleStartCaves(Entity pc) {
+		pc.name = Profile.getString("godName") + "'s avatar";
 		player.setEntityId(pc.entityId);
 		dungeon.generateClassic("dungeon.1");
 		changeLevel("dungeon.1", "out");
@@ -191,7 +198,7 @@ public class Game {
 		}
 	}
 	
-	public void turn() {
+	public static void turn() {
 		HeroGame.resetTimer("astar");
 		// at the start of the turn, the player has just acted
 		for (Proc p : getPlayerEntity().procs) {
@@ -237,7 +244,7 @@ public class Game {
 		}
 	}
 
-	public void passTime(int delay) {
+	public static void passTime(int delay) {
 		getPlayerEntity().getMover().setDelay(getPlayerEntity(), delay);
 		turn();
 	}
@@ -246,12 +253,12 @@ public class Game {
 		interrupted = true;
 	}
 
-	public boolean hasLongTask() {
+	public static boolean hasLongTask() {
 		return restTurns > 0 || longWalkDir != null;
 	}
 
 	// return true if still resting, false if not resting / interrupted
-	private boolean tryLongTaskAction() {
+	private static boolean tryLongTaskAction() {
 		if (interrupted && (restTurns > 0 || longWalkDir != null)) {
 			announce("You are interrupted.");
 			interrupted = false;
@@ -365,7 +372,7 @@ public class Game {
 		}
 		if (itemsHere.size() == 1) {
 			if (!player.getEntity().pickup(itemsHere.get(0))) {
-				announce("You can't pick up " + itemsHere.get(0).getVisibleNameThe() + ".");
+				announce("You can't pick up " + itemsHere.get(0).getVisibleNameDefinite() + ".");
 			} else {
 				GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
 			}
@@ -475,7 +482,7 @@ public class Game {
 			if (target.getMover() != null) {
 				String chatPage = Bestiary.get(target.phenotypeName).chatPage;
 				if (chatPage == null) {
-					Game.announce(target.getVisibleNameThe() + " won't talk to you.");
+					Game.announce(target.getVisibleNameDefinite() + " won't talk to you.");
 				} else {
 					GameLoop.CHAT_MODULE.openStory(target);
 				}
@@ -503,17 +510,40 @@ public class Game {
 	public void cmdTarget() {
 		Entity rangedWeapon = getPlayerEntity().body.getEquipment(BodyPart.RANGED_WEAPON);
 		Entity rangedAmmo = getPlayerEntity().body.getEquipment(BodyPart.RANGED_AMMO);
-		if (rangedWeapon == null || rangedAmmo == null) {
-			announce("You need a ranged weapon and ammo equipped!");
+		ProcWeaponRanged pwr = (rangedWeapon != null) ? (ProcWeaponRanged)rangedWeapon.getProcByType(ProcWeaponRanged.class) : null;
+		ProcWeaponAmmo pwa = (rangedAmmo != null) ? (ProcWeaponAmmo)rangedAmmo.getProcByType(ProcWeaponAmmo.class) : null;
+
+		if (rangedWeapon != null && pwr == null) {
+			announce("Invalid ranged weapon.");
+			System.out.println("ERR: Invalid ranged weapon.");
 			return;
 		}
-		ProcWeaponRanged pwr = (ProcWeaponRanged)(rangedWeapon.procs.stream().filter(p -> p.getClass() == ProcWeaponRanged.class).findFirst().orElse(null));
-		ProcWeaponAmmo pwa = (ProcWeaponAmmo)(rangedAmmo.procs.stream().filter(p -> p.getClass() == ProcWeaponAmmo.class).findFirst().orElse(null));
-		if (pwr == null || pwa == null) {
-			throw new RuntimeException("Invalid ranged or ammo equipped");
+		if (rangedAmmo != null && pwa == null) {
+			announce("Invalid ranged ammo.");
+			System.out.println("ERR: Invalid ranged ammo.");
+			return;
 		}
 
-		int range = pwr.range;
+		if (pwr == null && pwa == null) {
+			announce("You need a ranged weapon and ammo equipped, or throwable ammo!");
+			return;
+		} else if (pwa == null) {
+			announce("Out of ammo.");
+			return;
+		} else if (pwr == null && !pwa.canThrow) {
+			announce("You need a ranged weapon to use that ammo.");
+			return;
+		} else if (pwr != null && pwa.ammoType != pwr.ammoType) {
+			announce("Wrong ammo type for that ranged weapon.");
+			return;
+		}
+
+		int range;
+		if (pwr != null) {
+			range = pwr.range;
+		} else {
+			range = pwa.throwRange;
+		}
 		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(true, true, true, range);
 		GameLoop.targetingModule.begin(tm, this::handleTarget);
 	}
@@ -648,7 +678,12 @@ public class Game {
 
 		for (Entity e : level.getEntitiesOnTile(new Point(tx, ty))) {
 			if (e.isObstructive()) {
-				announce("You bump into " + e.getVisibleNameThe() + ".");
+				if (!player.getEntity().isConfused() && e.containsProc(ProcDoor.class)) {
+					e.tryOpen(player.getEntity());
+					passTime(player.getEntity().moveCost);
+				} else {
+					announce("You bump into " + e.getVisibleNameDefinite() + ".");
+				}
 				if (player.getEntity().isConfused()) {
 					player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 				}
@@ -759,7 +794,7 @@ public class Game {
 					listString.append("There are ");
 				}
 				for (int i = 0; i < itemsToMention.size(); i++) {
-					listString.append(itemsToMention.get(i).getVisibleNameSingularOrSpecific());
+					listString.append(itemsToMention.get(i).getVisibleNameIndefiniteOrSpecific());
 					if (itemsToMention.size() > 1 && i < itemsToMention.size() - 2) {
 						listString.append(", ");
 					}
@@ -855,9 +890,9 @@ public class Game {
 
 		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
 			if (target.isObstructive()) {
-				announceVis(e, target, "You bump into " + target.getVisibleNameThe() + ".",
-						e.getVisibleNameThe() + " bumps into you.",
-						e.getVisibleNameThe() + " bumps into " + target.getVisibleNameThe() + ".",
+				announceVis(e, target, "You bump into " + target.getVisibleNameDefinite() + ".",
+						e.getVisibleNameDefinite() + " bumps into you.",
+						e.getVisibleNameDefinite() + " bumps into " + target.getVisibleNameDefinite() + ".",
 						null);
 				return false;
 			}

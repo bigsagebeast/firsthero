@@ -35,8 +35,10 @@ public class PopupModule extends Module {
         }
 
         TextBlock popupBlock = new TextBlock(order.text, null,
-                36, 10, 5, Color.CYAN, 0f, 0f).fade(order.time-1, order.time);
+                36, 0, 5, Color.CYAN, 0f, 0f).fade(order.time-1, order.time);
         textEngine.addBlock(popupBlock);
+        int center = Graphics.width / 2;
+        popupBlock.pixelOffsetX = center - (order.text.length() * 36) / 2;
 
         background1 = new GfxRectFilled(Color.BLACK,
                 popupBlock.getPixelX() - margin,

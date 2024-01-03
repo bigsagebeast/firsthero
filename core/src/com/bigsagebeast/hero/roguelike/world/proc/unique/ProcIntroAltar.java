@@ -16,7 +16,7 @@ public class ProcIntroAltar extends Proc {
 
     @Override
     public void prayAt(Entity entity, Entity actor) {
-        GameLoop.popupModule.createPopup("You pray to the God of Heroes.", 4f, null, 1f);
+        GameLoop.popupModule.createPopup("The farmboy prays to the God of Heroes.", 4f, null, 1f);
         GameLoop.popupModule.createPopup("A blinding light begins to grow.", 4f, null, 1f);
         GameLoop.popupModule.createPopup("Far away, something wakes...", 4f, null, 1f, this::postPray);
     }

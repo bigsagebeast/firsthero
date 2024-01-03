@@ -35,7 +35,7 @@ public class Raycasting {
 
     // modifies ray
     public static List<Point> trimRayToEntity(Level level, List<Point> ray, Entity entity) {
-        if (entity.containingLevel != level.getName()) {
+        if (entity.containingLevel != level.getKey()) {
             throw new RuntimeException("Tried to find entity along ray of the wrong level");
         }
         for (int i=0; i<ray.size(); i++) {

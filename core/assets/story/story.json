@@ -26,19 +26,49 @@
     },
     {
       "key": "aurex.serifex.intro.landing",
-      "text": "You're a strange thing.  We haven't seen a new God appear since before the war.  Or are you one of the old ones?  In any case, my name is Serifex, and I bring fresh water to the Bodnam.",
+      "text": "You're alive? And after all this time. We haven't seen another Old God here since your brother. No matter - the war is over, and we haven't been properly introduced. My name is Serifex, and I bring fresh water to the Bodnam. Your kind have been gone for a long time, after all, and there's a new order to things.",
       "links": [
         {
-          "text": "Serifex?  Fresh water?",
-          "nextPage": "aurex.serifex.intro.whoareyou"
+          "text": "My brother? What has happened to Nemesis?",
+          "nextPage": "aurex.serifex.intro.nemesis"
         },
         {
-          "text": "The war?",
+          "text": "The war is over?",
           "nextPage": "aurex.serifex.intro.thewar"
         },
         {
-          "text": "Yes, I'm one of the old Gods... I think.",
+          "text": "Serifex? Fresh water?",
+          "nextPage": "aurex.serifex.intro.serifex"
+        },
+        {
+          "text": "The Bodnam?",
           "nextPage": "aurex.serifex.intro.iamhero"
+        },
+        {
+          "text": "New order?",
+          "nextPage": "aurex.serifex.intro.neworder"
+        }
+      ]
+    },
+    {
+      "key": "aurex.loruch.intro.landing",
+      "text": "My name is Loruch, God of the trees. We never fought, but I know who you are. No matter, the world is different now. We Gods live in peace with the natural forces of the multiverse, guiding the Bodnam from afar.",
+      "links": [
+        {
+          "text": "God of the trees?",
+          "nextPage": "aurex.loruch.intro.trees"
+        },
+        {
+          "text": "Guiding the Bodnam?",
+          "nextPage": "aurex.loruch.intro.bodnam"
+        },
+        {
+          "text": "Who I am",
+          "nextPage": "aurex.loruch.intro.whoiam"
+        },
+        {
+          "text": "What is your philosophy?",
+          "nextPage": "aurex.loruch.intro.philosophy"
         }
       ]
     }

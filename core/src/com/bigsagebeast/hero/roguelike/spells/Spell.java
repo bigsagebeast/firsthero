@@ -125,31 +125,31 @@ public abstract class Spell {
     public void announceCast(Entity caster, Entity target) {
         Game.announceVis(caster, null, "You cast " + getName() + ".",
                 null,
-                caster.getVisibleNameThe() + " casts " + getName() + ".", "You hear someone muttering.");
+                caster.getVisibleNameDefinite() + " casts " + getName() + ".", "You hear someone muttering.");
     }
 
     public void announceDodged(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You dodge the spell!",
-                target.getVisibleNameThe() + " dodges the spell!",
-                target.getVisibleNameThe() + " dodges the spell!", null);
+                target.getVisibleNameDefinite() + " dodges the spell!",
+                target.getVisibleNameDefinite() + " dodges the spell!", null);
     }
 
     public void announceResisted(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You resist the spell!",
-                target.getVisibleNameThe() + " resists the spell!",
-                target.getVisibleNameThe() + " resists the spell!", null);
+                target.getVisibleNameDefinite() + " resists the spell!",
+                target.getVisibleNameDefinite() + " resists the spell!", null);
     }
 
     public void announceHitWithoutKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are hit by the spell!",
-                target.getVisibleNameThe() + " is hit by the spell!",
-                target.getVisibleNameThe() + " is hit by the spell!", null);
+                target.getVisibleNameDefinite() + " is hit by the spell!",
+                target.getVisibleNameDefinite() + " is hit by the spell!", null);
     }
 
     public void announceHitWithKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are killed by the spell!",
-                target.getVisibleNameThe() + " is killed by the spell!",
-                target.getVisibleNameThe() + " is killed by the spell!", null);
+                target.getVisibleNameDefinite() + " is killed by the spell!",
+                target.getVisibleNameDefinite() + " is killed by the spell!", null);
     }
 
 }

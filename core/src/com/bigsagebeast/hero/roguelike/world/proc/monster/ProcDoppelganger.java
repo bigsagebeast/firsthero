@@ -28,9 +28,9 @@ public class ProcDoppelganger extends Proc {
             return;
         }
         Game.announceVis(entity, target,
-                "You mimick " + target.getVisibleNameThe() + "'s movements!",
-                entity.getVisibleNameThe() + " mimicks your movements!",
-                entity.getVisibleNameThe() + " mimicks " + target.getVisibleNameThe() + "'s movements!",
+                "You mimick " + target.getVisibleNameDefinite() + "'s movements!",
+                entity.getVisibleNameDefinite() + " mimicks your movements!",
+                entity.getVisibleNameDefinite() + " mimicks " + target.getVisibleNameDefinite() + "'s movements!",
                 null);
         if (target.getProcByType(ProcEffectConfusion.class) != null) {
             // already confused - don't reset duration

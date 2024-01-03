@@ -57,22 +57,22 @@ public class SpellMonsterFireWeak extends Spell {
     public void announceCast(Entity caster, Entity target) {
         Game.announceVis(caster, null, "You breathe fire.",
                 null,
-                caster.getVisibleNameThe() + " breathes flame.",
+                caster.getVisibleNameDefinite() + " breathes flame.",
                 "You hear a puff of flame.");
     }
 
     @Override
     public void announceHitWithoutKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are burned.",
-                target.getVisibleNameThe() + " is burned.",
-                target.getVisibleNameThe() + " is burned.", null);
+                target.getVisibleNameDefinite() + " is burned.",
+                target.getVisibleNameDefinite() + " is burned.", null);
     }
 
     @Override
     public void announceHitWithKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are burned to death!",
-                target.getVisibleNameThe() + " is burned to death!",
-                target.getVisibleNameThe() + " is burned to death!", null);
+                target.getVisibleNameDefinite() + " is burned to death!",
+                target.getVisibleNameDefinite() + " is burned to death!", null);
     }
 
 

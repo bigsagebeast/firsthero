@@ -183,7 +183,7 @@ public class ChatBox {
 
     private void updateSelector() {
         if (selection >= 0) {
-            selector.pixelOffsetY = links.get(selection).textBlock.pixelOffsetY;
+            selector.pixelOffsetY = links.get(selection).textBlock.pixelOffsetY - 3;
         } else {
             selector.pixelOffsetY = -9999;
         }
@@ -206,7 +206,7 @@ public class ChatBox {
     }
 
     public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
-        if (keycode == Input.Keys.SPACE) {
+        if (keycode == Input.Keys.SPACE || keycode == Input.Keys.ESCAPE) {
             close();
         } else if (keycode == Input.Keys.UP || keycode == Input.Keys.NUMPAD_8) {
             selectPrevious();

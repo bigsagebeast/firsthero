@@ -59,8 +59,8 @@ public class SpellWaterBlast extends Spell {
         boolean pushed = Game.pushBy(target, dir.getX(), dir.getY());
         if (pushed) {
             announceVis(target, caster, "You are pushed back!",
-                    target.getVisibleNameThe() + " is pushed back!",
-                    target.getVisibleNameThe() + " is pushed back!",
+                    target.getVisibleNameDefinite() + " is pushed back!",
+                    target.getVisibleNameDefinite() + " is pushed back!",
                     null);
         }
     }
@@ -77,14 +77,14 @@ public class SpellWaterBlast extends Spell {
 
     public void announceHitWithoutKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are pummeled with water.",
-                target.getVisibleNameThe() + " is pummeled with water.",
-                target.getVisibleNameThe() + " is pummeled with water.", null);
+                target.getVisibleNameDefinite() + " is pummeled with water.",
+                target.getVisibleNameDefinite() + " is pummeled with water.", null);
     }
 
     public void announceHitWithKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are pummeled to death by water!",
-                target.getVisibleNameThe() + " is pummeled to death by water!",
-                target.getVisibleNameThe() + " is pummeled to death by water!", null);
+                target.getVisibleNameDefinite() + " is pummeled to death by water!",
+                target.getVisibleNameDefinite() + " is pummeled to death by water!", null);
     }
 
 

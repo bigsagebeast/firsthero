@@ -184,7 +184,7 @@ public class Entity {
         return getVisibleName();
     }
 
-    public String getVisibleNameThe() {
+    public String getVisibleNameDefinite() {
         ProcItem item = getItem();
         if (item != null && item.quantity > 1) {
             return getVisibleNameWithQuantity();
@@ -192,22 +192,22 @@ public class Entity {
         return "the " + getVisibleNameWithQuantity();
     }
 
-    public String getVisibleNameSingularOrSpecific() {
+    public String getVisibleNameIndefiniteOrSpecific() {
         ProcItem item = getItem();
         if (item != null && item.quantity > 1) {
             return getVisibleNameWithQuantity();
         }
         String visibleName = getVisibleName();
-        return Util.aOrAn(visibleName) + " " + visibleName;
+        return Util.indefinite(visibleName) + " " + visibleName;
     }
 
-    public String getVisibleNameSingularOrVague() {
+    public String getVisibleNameIndefiniteOrVague() {
         ProcItem item = getItem();
         if (item != null && item.quantity > 1) {
             return "some " + getVisiblePluralName();
         }
         String visibleName = getVisibleName();
-        return Util.aOrAn(visibleName) + " " + visibleName;
+        return Util.indefinite(visibleName) + " " + visibleName;
     }
 
     public int getMoveCost() {
@@ -346,9 +346,9 @@ public class Entity {
             return false;
         }
 
-        Game.announceVis(this, target, "You pick up " + target.getVisibleNameThe() + ".",
-                "You are picked up by " + getVisibleNameThe() + ".",
-                this.getVisibleNameThe() + " picks up " + target.getVisibleNameThe() + ".",
+        Game.announceVis(this, target, "You pick up " + target.getVisibleNameDefinite() + ".",
+                "You are picked up by " + getVisibleNameDefinite() + ".",
+                this.getVisibleNameDefinite() + " picks up " + target.getVisibleNameDefinite() + ".",
                 null);
 
         Game.getLevel().removeEntity(target);
@@ -498,10 +498,12 @@ public class Entity {
         if (this == Game.getPlayerEntity()) {
             if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND ||
                     bp == BodyPart.ANY_HAND || bp == BodyPart.TWO_HAND ||
-                    bp == BodyPart.RANGED_AMMO || bp == BodyPart.RANGED_WEAPON) {
-                Game.announce("You wield " + actualTarget.getVisibleNameThe() + ".");
+                    bp == BodyPart.RANGED_WEAPON) {
+                Game.announce("You wield " + actualTarget.getVisibleNameDefinite() + ".");
+            } else if (bp == BodyPart.RANGED_AMMO) {
+                Game.announce("You reload with " + actualTarget.getVisibleNameDefinite() + ".");
             } else {
-                Game.announce("You wear " + actualTarget.getVisibleNameThe() + ".");
+                Game.announce("You wear " + actualTarget.getVisibleNameDefinite() + ".");
             }
         }
 
@@ -532,9 +534,9 @@ public class Entity {
             return;
         }
         ProcItem pi = getItem();
-        String preIdentified = getVisibleNameThe();
+        String preIdentified = getVisibleNameDefinite();
         it.identified = true;
-        String postIdentified = getVisibleNameSingularOrSpecific();
+        String postIdentified = getVisibleNameIndefiniteOrSpecific();
         Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
         if (containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
@@ -550,10 +552,10 @@ public class Entity {
         if ((!it.hasBeatitude || pi.identified) && (!it.identityHidden || it.identified)) {
             return;
         }
-        String preIdentified = getVisibleNameThe();
+        String preIdentified = getVisibleNameDefinite();
         it.identified = true;
         pi.identified = true;
-        String postIdentified = getVisibleNameSingularOrSpecific();
+        String postIdentified = getVisibleNameIndefiniteOrSpecific();
         Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
         if (containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
@@ -602,9 +604,9 @@ public class Entity {
         // TODO predrop, postdrop
         inventoryIds.remove(target.entityId);
         Game.getLevel().addEntityWithStacking(target, pos);
-        Game.announceVis(this, target, "You drop " + target.getVisibleNameThe() + ".",
-                this.getVisibleNameThe() + " drops you.",
-                this.getVisibleNameThe() + " drops " + target.getVisibleNameSingularOrSpecific(),
+        Game.announceVis(this, target, "You drop " + target.getVisibleNameDefinite() + ".",
+                this.getVisibleNameDefinite() + " drops you.",
+                this.getVisibleNameDefinite() + " drops " + target.getVisibleNameIndefiniteOrSpecific(),
                 null);
     }
 
@@ -625,9 +627,9 @@ public class Entity {
         if (target.getItem().quantity > 1) {
             quaffedPotion = target.split(1);
         }
-        Game.announceVis(this, null, "You quaff " + quaffedPotion.getVisibleNameThe() + ".",
+        Game.announceVis(this, null, "You quaff " + quaffedPotion.getVisibleNameDefinite() + ".",
                 null,
-                this.getVisibleNameThe() + " quaffs " + quaffedPotion.getVisibleNameSingularOrSpecific() + ".",
+                this.getVisibleNameDefinite() + " quaffs " + quaffedPotion.getVisibleNameIndefiniteOrSpecific() + ".",
                 null);
         for (Proc p : this.procs) {
             p.postDoQuaff(this, quaffedPotion);
@@ -647,7 +649,7 @@ public class Entity {
             }
         }
 
-        Game.announce("You eat " + ((Entity)target).getVisibleNameThe() + ".");
+        Game.announce("You eat " + ((Entity)target).getVisibleNameDefinite() + ".");
 
         for (Proc p : target.procs) {
             p.postBeEaten(target, Game.getPlayerEntity());
@@ -673,9 +675,9 @@ public class Entity {
         if (target.getItem().quantity > 1) {
             readScroll = target.split(1);
         }
-        Game.announceVis(this, null, "You read " + readScroll.getVisibleNameThe() + ".",
+        Game.announceVis(this, null, "You read " + readScroll.getVisibleNameDefinite() + ".",
                 null,
-                this.getVisibleNameThe() + " reads " + readScroll.getVisibleNameSingularOrSpecific() + ".",
+                this.getVisibleNameDefinite() + " reads " + readScroll.getVisibleNameIndefiniteOrSpecific() + ".",
                 null);
         for (Proc p : this.procs) {
             p.postDoRead(this, readScroll);

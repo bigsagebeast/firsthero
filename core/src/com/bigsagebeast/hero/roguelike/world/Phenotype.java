@@ -33,8 +33,8 @@ public class Phenotype {
 	public int naturalWeaponToHit = 0;
 	public int naturalWeaponDamage = 5;
 	public int naturalRangedWeaponToHit = 0;
-	public int naturalRangedWeaponDamage = 5;
-	public int naturalRangedWeaponRange = 6;
+	public int naturalRangedWeaponDamage = 0;
+	public int naturalRangedWeaponRange = 0;
 	public int naturalArmorClass = 5;
 	public int naturalArmorThickness = 0;
 	public int threat;

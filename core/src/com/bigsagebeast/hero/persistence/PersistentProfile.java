@@ -24,7 +24,7 @@ public class PersistentProfile {
     public void save() {
         playerEntityId = Game.getPlayerEntity().entityId;
         lastCreatedEntityId = EntityTracker.lastCreated;
-        levelName = Game.getLevel().getName();
+        levelName = Game.getLevel().getKey();
         gameTime = Game.time;
         gameLastTurnProc = Game.lastTurnProc;
     }

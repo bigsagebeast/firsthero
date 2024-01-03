@@ -57,22 +57,22 @@ public class SpellMonsterSparkWeak extends Spell {
     public void announceCast(Entity caster, Entity target) {
         Game.announceVis(caster, null, "You breathe sparks.",
                 null,
-                caster.getVisibleNameThe() + " breathes sparks.",
+                caster.getVisibleNameDefinite() + " breathes sparks.",
                 "You hear crackling.");
     }
 
     @Override
     public void announceHitWithoutKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are zapped.",
-                target.getVisibleNameThe() + " is zapped.",
-                target.getVisibleNameThe() + " is zapped.", null);
+                target.getVisibleNameDefinite() + " is zapped.",
+                target.getVisibleNameDefinite() + " is zapped.", null);
     }
 
     @Override
     public void announceHitWithKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are zapped to death!",
-                target.getVisibleNameThe() + " is zapped to death!",
-                target.getVisibleNameThe() + " is zapped to death!", null);
+                target.getVisibleNameDefinite() + " is zapped to death!",
+                target.getVisibleNameDefinite() + " is zapped to death!", null);
     }
 
 

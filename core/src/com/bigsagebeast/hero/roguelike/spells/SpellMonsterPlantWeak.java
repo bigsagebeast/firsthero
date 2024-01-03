@@ -57,22 +57,22 @@ public class SpellMonsterPlantWeak extends Spell {
     public void announceCast(Entity caster, Entity target) {
         Game.announceVis(caster, null, "You breathe splinters.",
                 null,
-                caster.getVisibleNameThe() + " breathes splinters.",
+                caster.getVisibleNameDefinite() + " breathes splinters.",
                 "You hear splintering.");
     }
 
     @Override
     public void announceHitWithoutKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are skewered.",
-                target.getVisibleNameThe() + " is skewered.",
-                target.getVisibleNameThe() + " is skewered.", null);
+                target.getVisibleNameDefinite() + " is skewered.",
+                target.getVisibleNameDefinite() + " is skewered.", null);
     }
 
     @Override
     public void announceHitWithKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are skewered to death!",
-                target.getVisibleNameThe() + " is skewered to death!",
-                target.getVisibleNameThe() + " is skewered to death!", null);
+                target.getVisibleNameDefinite() + " is skewered to death!",
+                target.getVisibleNameDefinite() + " is skewered to death!", null);
     }
 
 

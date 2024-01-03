@@ -90,8 +90,8 @@ public class CutsceneModule extends Module {
 
 	public void loadIntro2() {
 		String playerName = "(YOUR NAME)";
-		if (Profile.getString("name") != null) {
-			playerName = Profile.getString("name");
+		if (Profile.getString("godName") != null) {
+			playerName = Profile.getString("godName");
 		}
 		scene.artFile = "art/Nemesis-kneeling.png";
 		scene.secondsBeforeFade = 1.0f;

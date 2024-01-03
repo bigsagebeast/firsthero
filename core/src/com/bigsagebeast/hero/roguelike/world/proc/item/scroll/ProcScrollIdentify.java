@@ -49,7 +49,7 @@ public class ProcScrollIdentify extends ImmutableProc {
                 anyUnidentified = true;
             }
             for (Entity ent : unidentified) {
-                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
             }
         }
         if (!anyUnidentified) {

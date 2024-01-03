@@ -39,7 +39,7 @@ public class LoadProc {
                     Class<? extends Enum> enumClass = (Class<? extends Enum>) procField.getType();
                     Enum<?> enumValue = Enum.valueOf(enumClass, fields.get(fieldName));
                     procField.set(proc, enumValue);
-                } else if (procField.getType().isAssignableFrom(Boolean.class)) {
+                } else if (procField.getType().isAssignableFrom(Boolean.class) || procField.getType().isAssignableFrom(boolean.class)) {
                     procField.set(proc, Boolean.valueOf(fields.get(fieldName)));
                 } else if (procField.getType().isAssignableFrom(String.class)) {
                     procField.set(proc, fields.get(fieldName));

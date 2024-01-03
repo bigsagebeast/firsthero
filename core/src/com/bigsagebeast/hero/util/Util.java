@@ -51,7 +51,7 @@ public class Util {
         return string;
     }
 
-    public static String aOrAn(String name) {
+    public static String indefinite(String name) {
         boolean startsWithVowel = "aeiouAEIOU".indexOf(name.charAt(0)) != -1;
         return startsWithVowel ? "an" : "a";
     }

@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.ui;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.engine.WindowEngine;
 import com.bigsagebeast.hero.module.RoguelikeModule;
+import com.bigsagebeast.hero.roguelike.game.Profile;
 import com.bigsagebeast.hero.roguelike.game.Statblock;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.enums.Satiation;
@@ -71,7 +72,7 @@ public class StatBarWindow extends UIWindow {
 		tbElementLightning = new TextBlock("L 8/8", 16, 0, Color.YELLOW);
 		tbElementNaturae = new TextBlock("P 8/8", 24, 0, Color.GREEN);
 
-		statRows.add(new TextBlock("Character Name", 0, 0, Color.WHITE));
+		statRows.add(new TextBlock("", 0, 0, Color.WHITE));
 		statRows.add(new TextBlock("", 0, 1, Color.WHITE));
 		statRows.get(1).addChild(levelDesc);
 		statRows.add(new TextBlock("", 0, 2, Color.WHITE));
@@ -129,7 +130,16 @@ public class StatBarWindow extends UIWindow {
 		Player player = Game.getPlayer();
 		Statblock statblock = entity.statblock;
 
-		levelDesc.text = Game.getLevel().getName();
+		String name = "";
+		if (Game.getPlayerEntity() != null) {
+			name = Game.getPlayerEntity().name;
+			if (name == null) {
+				name = Profile.getString("godName" + "'s Avatar");
+			}
+		}
+		statRows.get(0).text = name;
+
+		levelDesc.text = Game.getLevel().getFriendlyName();
 		if (entity.roomId < 0) {
 			roomDesc.text = "";
 		} else {
@@ -163,7 +173,7 @@ public class StatBarWindow extends UIWindow {
 		}
 
 		Satiation satiation = player.getSatiationStatus();
-		if (satiation.message != null) {
+		if (satiation.description != null) {
 			statRows.get(8).color = satiation.statusColor;
 			statRows.get(8).text = satiation.description;
 		} else {

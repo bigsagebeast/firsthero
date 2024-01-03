@@ -119,6 +119,9 @@ public class DialogueBox {
     public void autoHeight() {
         int textLine = lines.size();
         height = (textLine * FONT_SIZE) + FOOTER_OFFSET_FROM_BOTTOM + 16; // TODO magic number
+        if (!footerText.isEmpty()) {
+            height += FONT_SIZE;
+        }
     }
 
     public void compile(TextEngine textEngine) {
@@ -221,7 +224,7 @@ public class DialogueBox {
     }
 
     public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
-        if (keycode == Input.Keys.SPACE && cancelable) {
+        if ((keycode == Input.Keys.SPACE || keycode == Input.Keys.ESCAPE) && cancelable) {
             close();
         } else if (keycode == Input.Keys.UP || keycode == Input.Keys.NUMPAD_8) {
             selectPrevious();

@@ -29,7 +29,7 @@ public class Inventory {
         for (BodyPart bp : Game.getPlayerEntity().body.getParts()) {
             String equipmentName;
             if (playerEntity.body.getEquipment(bp) != null) {
-                equipmentName = playerEntity.body.getEquipment(bp).getVisibleNameSingularOrSpecific();
+                equipmentName = playerEntity.body.getEquipment(bp).getVisibleNameIndefiniteOrSpecific();
             } else {
                 // TODO: I don't like this test, it seems like the wielder should have an "is 2h" flag
                 if (bp == BodyPart.OFF_HAND && playerEntity.body.getEquipment(BodyPart.PRIMARY_HAND) != null &&
@@ -88,7 +88,7 @@ public class Inventory {
                 box.addHeader(cat.getName());
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameSingularOrSpecific(), EntityGlyph.getGlyph(ent), ent);
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), EntityGlyph.getGlyph(ent), ent);
                 addedAnything = true;
             }
         }
@@ -121,7 +121,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryToDropResponse);
@@ -149,7 +149,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleFloorToGetResponse);
@@ -159,7 +159,7 @@ public class Inventory {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             if (!Game.getPlayerEntity().pickup(e)) {
-                Game.announce("You can't pick up " + e.getVisibleNameThe() + ".");
+                Game.announce("You can't pick up " + e.getVisibleNameDefinite() + ".");
             } else {
                 GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
             }
@@ -211,7 +211,7 @@ public class Inventory {
                     box.addHeader("*** " + cat.getName() + " (on floor) ***");
                 }
                 for (Entity ent : ents) {
-                    box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                    box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
                 }
             }
         }
@@ -222,7 +222,7 @@ public class Inventory {
                     box.addHeader("*** " + cat.getName() + " ***");
                 }
                 for (Entity ent : ents) {
-                    box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                    box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
                 }
             }
         }
@@ -265,7 +265,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : quaffableEnts) {
-                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleQuaff);
@@ -307,7 +307,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : readableEnts) {
-                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleRead);
@@ -335,7 +335,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameSingularOrSpecific(), ent);
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryResponse);

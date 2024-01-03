@@ -87,6 +87,7 @@ public class DirectionModule extends Module {
                 consumer.accept(Compass.SOUTH_EAST);
                 break;
             case Input.Keys.SPACE:
+            case Input.Keys.ESCAPE:
             case Input.Keys.NUMPAD_5:
                 end();
                 Game.unannounce();

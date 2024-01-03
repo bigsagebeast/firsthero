@@ -33,6 +33,7 @@ public class TextEntryBox {
     private int selection = -1;
     private String textEntry = "";
     private List<String> linesText = new ArrayList<>();
+    private int maxLength = -1;
 
     private TextBlock parent;
     private TextBlock title;
@@ -74,6 +75,11 @@ public class TextEntryBox {
 
     public TextEntryBox withLine(String line) {
         linesText.add(line);
+        return this;
+    }
+
+    public TextEntryBox withMaxLength(int maxLength) {
+        this.maxLength = maxLength;
         return this;
     }
 
@@ -158,7 +164,7 @@ public class TextEntryBox {
             equivalent = equivalent.toUpperCase(Locale.ROOT);
         }
 
-        if (equivalent != null) {
+        if (equivalent != null && (maxLength == -1 || textEntry.length() <= maxLength)) {
             textEntry = textEntry + equivalent;
         } else if (keycode == Input.Keys.BACKSPACE) {
             if (textEntry.length() > 0) {

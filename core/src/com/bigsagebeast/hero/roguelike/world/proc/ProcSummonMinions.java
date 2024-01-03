@@ -40,6 +40,6 @@ public class ProcSummonMinions extends Proc {
         Point spawnPoint = pointList.get(Game.random.nextInt(pointList.size()));
         Game.getLevel().addEntityWithStacking(minion, spawnPoint);
         Game.announceVis(minion, null, null, null,
-                minion.getVisibleNameSingularOrSpecific() + " appears!", null);
+                minion.getVisibleNameIndefiniteOrSpecific() + " appears!", null);
     }
 }

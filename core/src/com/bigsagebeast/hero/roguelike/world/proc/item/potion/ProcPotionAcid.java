@@ -20,7 +20,7 @@ public class ProcPotionAcid extends ImmutableProc {
         actor.hurt(hurtAmount);
         Game.announceVis(actor, null, "It burns!",
                 null,
-                actor.getVisibleNameThe() + " is burned!",
+                actor.getVisibleNameDefinite() + " is burned!",
                 null);
         entity.identifyItemType();
     }

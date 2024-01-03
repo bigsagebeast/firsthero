@@ -120,7 +120,7 @@
       }
     },
     "armor.body.chain": {
-      "name": "chainmail",
+      "name": "chainmail armor",
       "glyphName": "armor.body.chain",
       "palette": [
         "white",

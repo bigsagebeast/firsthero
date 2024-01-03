@@ -12,18 +12,20 @@ import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 public class ProcWeaponAmmo extends Proc {
 
     public ProcWeaponAmmo() { super(); }
-    public ProcWeaponAmmo(int averageDamage, int toHitBonus, AmmoType ammoType, boolean canThrow) {
+    public ProcWeaponAmmo(int averageDamage, int toHitBonus, AmmoType ammoType, boolean canThrow, int throwRange) {
         this();
         this.averageDamage = averageDamage;
         this.toHitBonus = toHitBonus;
         this.ammoType = ammoType;
         this.canThrow = canThrow;
+        this.throwRange = throwRange;
     }
 
     public int averageDamage;
     public int toHitBonus;
     public AmmoType ammoType;
     public boolean canThrow;
+    public int throwRange = 4;
 
     public int averageDamage(Entity wielder) {
         return averageDamage;
@@ -86,7 +88,7 @@ public class ProcWeaponAmmo extends Proc {
 
     @Override
     public Proc clone() {
-        ProcWeaponAmmo pw = new ProcWeaponAmmo(averageDamage, toHitBonus, ammoType, canThrow);
+        ProcWeaponAmmo pw = new ProcWeaponAmmo(averageDamage, toHitBonus, ammoType, canThrow, throwRange);
         return pw;
     }
 }

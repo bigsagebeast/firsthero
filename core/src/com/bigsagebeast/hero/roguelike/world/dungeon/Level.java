@@ -16,7 +16,8 @@ import com.bigsagebeast.hero.roguelike.game.Visibility;
 import com.bigsagebeast.hero.util.Util;
 
 public class Level {
-	String name;
+	String key;
+	String friendlyName;
 	int width, height;
 	// list of entities on the floor
 	private Collection<Integer> entityIds = new HashSet<>();
@@ -34,8 +35,8 @@ public class Level {
 	public Map<Point, Float> jitters = new HashMap<>();
 	private int lastTurnUpdate = 0;
 	
-	public Level(String name, int width, int height) {
-		this.name = name;
+	public Level(String key, int width, int height) {
+		this.key = key;
 		this.width = width;
 		this.height = height;
 
@@ -81,8 +82,17 @@ public class Level {
 		}
 	}
 
-	public String getName() {
-		return name;
+	public String getKey() {
+		return key;
+	}
+	public String getFriendlyName() {
+		if (friendlyName != null) {
+			return friendlyName;
+		}
+		return getKey();
+	}
+	public void setFriendlyName(String friendlyName) {
+		this.friendlyName = friendlyName;
 	}
 
 	public Iterable<LevelCell> getCellStream() {
@@ -129,7 +139,7 @@ public class Level {
 				return transition;
 			}
 		}
-		throw new RuntimeException("Failed to find 'to' transition when moving levels from " + toKey + " to " + name);
+		throw new RuntimeException("Failed to find 'to' transition when moving levels from " + toKey + " to " + key);
 	}
 	
 	public int getWidth() {
@@ -193,7 +203,7 @@ public class Level {
 	}
 
 	public Entity addEntityWithStacking(Entity entity, Point pos, boolean runPostLoad) {
-		entity.containingLevel = this.name;
+		entity.containingLevel = this.key;
 		entity.containingEntity = -1;
 		entity.pos = pos;
 		entity.roomId = cell(pos).roomId;

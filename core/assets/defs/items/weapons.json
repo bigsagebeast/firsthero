@@ -36,6 +36,8 @@
         "item.ProcWeaponAmmo": {
           "averageDamage": 3,
           "toHitBonus": 0,
+          "canThrow": true,
+          "throwRange": 5,
           "ammoType": "STONE"
         }
       }

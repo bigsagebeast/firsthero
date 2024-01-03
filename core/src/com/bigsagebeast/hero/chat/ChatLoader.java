@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.chat;
 
 import com.badlogic.gdx.Gdx;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,7 @@ public class ChatLoader {
         ChatPage page = new ChatPage();
 
         ObjectMapper om = new ObjectMapper();
+        om.getFactory().enable(JsonParser.Feature.ALLOW_COMMENTS);
 
         try {
             page = om.readValue(text, ChatPage.class);
@@ -34,6 +36,7 @@ public class ChatLoader {
 
     public static void createPages(ChatBook book, String filePath) {
         ObjectMapper om = new ObjectMapper();
+        om.getFactory().enable(JsonParser.Feature.ALLOW_COMMENTS);
         try {
             Map<String, List<Map<String, Object>>> jsonMap = om.readValue(
                     new BufferedReader(new InputStreamReader(Gdx.files.internal(filePath).read())),
@@ -57,7 +60,6 @@ public class ChatLoader {
                     }
                     chatPage.links = chatLinks;
                 }
-
                 book.add(chatPage);
             }
         } catch (IOException e) {

@@ -57,14 +57,14 @@ public class SpellFirebeam extends Spell {
 
     public void announceHitWithoutKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are burned.",
-                target.getVisibleNameThe() + " is burned.",
-                target.getVisibleNameThe() + " is burned.", null);
+                target.getVisibleNameDefinite() + " is burned.",
+                target.getVisibleNameDefinite() + " is burned.", null);
     }
 
     public void announceHitWithKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are burned to a crisp!",
-                target.getVisibleNameThe() + " is burned to a crisp!",
-                target.getVisibleNameThe() + " is burned to a crisp!", null);
+                target.getVisibleNameDefinite() + " is burned to a crisp!",
+                target.getVisibleNameDefinite() + " is burned to a crisp!", null);
     }
 
 

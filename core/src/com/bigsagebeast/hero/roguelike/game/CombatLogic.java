@@ -10,11 +10,9 @@ public class CombatLogic {
 
 	// TODO split into trySwing, doHit, doMiss
 	public static void swing(Entity actor, Entity target, Entity tool) {
-		
-		//Visibility vis = Game.getLevel().checkVis(Game.getPlayerEntity(), actor, target);
 
 		int damage, accuracy;
-		float randomFactor = Game.random.nextFloat() + 0.5f;
+		float randomFactor = generateWeaponRandomness();
 		String withWeaponString = "";
 		ProcWeaponMelee pwm = null;
 		if (tool != null) {
@@ -22,7 +20,7 @@ public class CombatLogic {
 		}
 		// TODO should do this stuff across all procs, not just PWMs
 		if (pwm != null) {
-			damage = (int)(pwm.averageDamage() * randomFactor);
+			damage = Math.round(pwm.averageDamage() * randomFactor);
 			accuracy = pwm.toHitBonus(actor) + Game.random.nextInt(20);
 			// TODO should be a TextBlock
 			if (actor == Game.getPlayerEntity()) {
@@ -32,8 +30,12 @@ public class CombatLogic {
 				withWeaponString = " with their " + tool.getVisibleNameWithQuantity();
 			}
 		} else {
-			damage = (int)(actor.getNaturalWeaponDamage() * randomFactor);
+			damage = Math.round(actor.getNaturalWeaponDamage() * randomFactor);
 			accuracy = actor.getNaturalWeaponToHit() + Game.random.nextInt(20);
+			if (actor == Game.getPlayerEntity()) {
+				// alert the player that they're unarmed - disable for monks, etc
+				withWeaponString = " with your bare hands";
+			}
 		}
 
 		accuracy += actor.getToHitBonus();
@@ -63,18 +65,18 @@ public class CombatLogic {
 
 			if (damage == 0 && actor.naturalWeaponDamage == 0) {
 				Game.announceVis(actor, target,
-						"You touch " + target.getVisibleNameThe() + withWeaponString + ".",
-						actor.getVisibleNameThe() + " touches you" + withWeaponString + ".",
-						actor.getVisibleNameThe() + " touches " + target.getVisibleNameThe() + withWeaponString + ".",
+						"You touch " + target.getVisibleNameDefinite() + withWeaponString + ".",
+						actor.getVisibleNameDefinite() + " touches you" + withWeaponString + ".",
+						actor.getVisibleNameDefinite() + " touches " + target.getVisibleNameDefinite() + withWeaponString + ".",
 						null);
 				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
 				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
 			} else if (damage == 0) {
 				// actually, can this happen?
 				Game.announceVis(actor, target,
-						"You hit " + target.getVisibleNameThe() + withWeaponString + ", but don't penetrate their armor.",
-						actor.getVisibleNameThe() + "'s blow doesn't penetrate your armor.",
-						actor.getVisibleNameThe() + "'s blow doesn't penetrate " + target.getVisibleNameThe() + "'s armor.",
+						"You hit " + target.getVisibleNameDefinite() + withWeaponString + ", but don't penetrate their armor.",
+						actor.getVisibleNameDefinite() + "'s blow doesn't penetrate your armor.",
+						actor.getVisibleNameDefinite() + "'s blow doesn't penetrate " + target.getVisibleNameDefinite() + "'s armor.",
 						null);
 				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
 				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
@@ -83,15 +85,15 @@ public class CombatLogic {
 				// TODO: Resistance and weakly modifiers, like "you stab the skeleton moderately" or "you crush the skeleton powerfully"
 				if (critical) {
 					Game.announceVis(actor, target,
-							"You critically hit " + target.getVisibleNameThe() + withWeaponString + "!",
-							actor.getVisibleNameThe() + " critically hits you" + withWeaponString + "!",
-							actor.getVisibleNameThe() + " critically hits " + target.getVisibleNameThe() + withWeaponString + "!",
+							"You critically hit " + target.getVisibleNameDefinite() + withWeaponString + "!",
+							actor.getVisibleNameDefinite() + " critically hits you" + withWeaponString + "!",
+							actor.getVisibleNameDefinite() + " critically hits " + target.getVisibleNameDefinite() + withWeaponString + "!",
 							null);
 				} else {
 					Game.announceVis(actor, target,
-							"You hit " + target.getVisibleNameThe() + withWeaponString + ".",
-							actor.getVisibleNameThe() + " hits you" + withWeaponString + ".",
-							actor.getVisibleNameThe() + " hits " + target.getVisibleNameThe() + withWeaponString + ".",
+							"You hit " + target.getVisibleNameDefinite() + withWeaponString + ".",
+							actor.getVisibleNameDefinite() + " hits you" + withWeaponString + ".",
+							actor.getVisibleNameDefinite() + " hits " + target.getVisibleNameDefinite() + withWeaponString + ".",
 							null);
 				}
 				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
@@ -99,9 +101,9 @@ public class CombatLogic {
 			}
 		} else {
 			Game.announceVis(actor, target,
-					"You miss " + target.getVisibleNameThe() + withWeaponString + ".",
-					actor.getVisibleNameThe() + " misses you" + withWeaponString + ".",
-					actor.getVisibleNameThe() + " misses " + target.getVisibleNameThe() + withWeaponString + ".",
+					"You miss " + target.getVisibleNameDefinite() + withWeaponString + ".",
+					actor.getVisibleNameDefinite() + " misses you" + withWeaponString + ".",
+					actor.getVisibleNameDefinite() + " misses " + target.getVisibleNameDefinite() + withWeaponString + ".",
 					null);
 
 			actor.forEachProc((e, p) -> p.postDoMiss(e, target, tool));
@@ -115,15 +117,15 @@ public class CombatLogic {
 
 			if (critical) {
 				Game.announceVis(actor, target,
-						"You critically hit " + target.getVisibleNameThe() + " and slay %2o!",
-						actor.getVisibleNameThe() + " critically hits and kills you!",
-						actor.getVisibleNameThe() + " critically hits and kills " + target.getVisibleNameThe() + "!",
+						"You critically hit " + target.getVisibleNameDefinite() + " and slay %2o!",
+						actor.getVisibleNameDefinite() + " critically hits and kills you!",
+						actor.getVisibleNameDefinite() + " critically hits and kills " + target.getVisibleNameDefinite() + "!",
 						null);
 			} else {
 				Game.announceVis(actor, target,
-						"You hit " + target.getVisibleNameThe() + " and slay %2o.",
-						actor.getVisibleNameThe() + " kills you.",
-						actor.getVisibleNameThe() + " kills " + target.getVisibleNameThe() + ".",
+						"You hit " + target.getVisibleNameDefinite() + " and slay %2o.",
+						actor.getVisibleNameDefinite() + " kills you.",
+						actor.getVisibleNameDefinite() + " kills " + target.getVisibleNameDefinite() + ".",
 						null);
 			}
 			actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
@@ -163,7 +165,7 @@ public class CombatLogic {
 		String withWeaponString = "";
 
 		int damage, accuracy;
-		float randomFactor = Game.random.nextFloat() + 0.5f;
+		float randomFactor = generateWeaponRandomness();
 		// TODO invoke all procs, not just pwa/pwr
 		int averageDamage;
 		int accuracyBonus;
@@ -176,7 +178,7 @@ public class CombatLogic {
 			averageDamage = actor.getNaturalRangedWeaponDamage() + pwa.averageDamage(actor);
 			accuracyBonus = actor.getNaturalRangedWeaponToHit() + pwa.toHitBonus(actor);
 		}
-		damage = (int)(averageDamage * randomFactor);
+		damage = Math.round(averageDamage * randomFactor);
 		accuracy = accuracyBonus + Game.random.nextInt(20);
 		// TODO should be a TextBlock
 		if (actor == Game.getPlayerEntity()) {
@@ -200,26 +202,21 @@ public class CombatLogic {
 			}
 
 			Game.announceVis(vis,
-					"You hit " + target.getVisibleNameThe() + withWeaponString + ".",
-					actor.getVisibleNameThe() + " hits you" + withWeaponString + ".",
-					actor.getVisibleNameThe() + " hits " + target.getVisibleNameThe() + withWeaponString + ".",
+					"You hit " + target.getVisibleNameDefinite() + withWeaponString + ".",
+					actor.getVisibleNameDefinite() + " hits you" + withWeaponString + ".",
+					actor.getVisibleNameDefinite() + " hits " + target.getVisibleNameDefinite() + withWeaponString + ".",
 					null);
 			actor.forEachProc((e, p) -> p.postDoShoot(e, target, null));
 			target.forEachProc((e, p) -> p.postBeShot(e, actor, null));
 		} else {
 			Game.announceVis(vis,
-					"You miss " + target.getVisibleNameThe() + withWeaponString + ".",
-					actor.getVisibleNameThe() + " misses you" + withWeaponString + ".",
-					actor.getVisibleNameThe() + " misses " + target.getVisibleNameThe() + withWeaponString + ".",
+					"You miss " + target.getVisibleNameDefinite() + withWeaponString + ".",
+					actor.getVisibleNameDefinite() + " misses you" + withWeaponString + ".",
+					actor.getVisibleNameDefinite() + " misses " + target.getVisibleNameDefinite() + withWeaponString + ".",
 					null);
 
 			actor.forEachProc((e, p) -> p.postDoMiss(e, target, null));
 			target.forEachProc((e, p) -> p.postBeMissed(e, actor, null));
-
-			/*
-			Game.feelMsg(target, "The " + actor.getVisibleName(Game.getPlayer()) + " misses you.");
-			Game.feelMsg(actor, "You miss the " + target.getVisibleName(Game.getPlayer()) + ".");
-			*/
 		}
 
 		// TODO make use of the flag...
@@ -228,9 +225,9 @@ public class CombatLogic {
 			// TODO does pre kill make sense?
 
 			Game.announceVis(vis,
-					"You kill " + target.getVisibleNameThe() + ".",
-					actor.getVisibleNameThe() + " kills you.",
-					actor.getVisibleNameThe() + " kills " + target.getVisibleNameThe() + ".",
+					"You kill " + target.getVisibleNameDefinite() + ".",
+					actor.getVisibleNameDefinite() + " kills you.",
+					actor.getVisibleNameDefinite() + " kills " + target.getVisibleNameDefinite() + ".",
 					null);
 			actor.forEachProc((e, p) -> p.postDoKill(e, target, ammo));
 			target.forEachProc((e, p) -> p.postBeKilled(e, actor, ammo));
@@ -254,5 +251,25 @@ public class CombatLogic {
 			roll -= Dice.roll(1, -statModifier, 0);
 		}
 		return (roll > difficulty);
+	}
+
+	// range is 0.25..1.75
+	// one standard deviation is 0.75..1.25
+	public static float generateWeaponRandomness() {
+		float mean = 1.0f;
+		float standardDeviation = 0.25f; // One standard deviation is 0.25
+		float u1 = Game.random.nextFloat();
+		float u2 = Game.random.nextFloat();
+
+		// Use the Box-Muller transform to generate two independent normally distributed numbers
+		float z = (float)Math.sqrt(-2.0 * Math.log(u1));
+		float z0 = (float)(z * Math.cos(2.0f * Math.PI * u2));
+		float z1 = (float)(z * Math.sin(2.0f * Math.PI * u2));
+
+		// Scale and shift the numbers to match the desired mean and standard deviation
+		float x0 = mean + z0 * standardDeviation;
+
+		// Ensure the generated value is within the desired range [0, 2]
+		return Math.min(Math.max(x0, 0.25f), 1.75f);
 	}
 }

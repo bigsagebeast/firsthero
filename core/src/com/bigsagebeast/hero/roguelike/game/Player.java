@@ -69,9 +69,13 @@ public class Player {
 		}
 		Satiation after = getSatiationStatus();
 		if (before != after) {
-			Game.announce(after.message);
-			// TODO update stat window
-			// TODO update a proc on the player
+			if (delta > 0) {
+				Game.announce(after.messageUp);
+				// TODO update stat window
+				// TODO update a proc on the player
+			} else {
+				Game.announce(after.messageDown);
+			}
 		}
 	}
 

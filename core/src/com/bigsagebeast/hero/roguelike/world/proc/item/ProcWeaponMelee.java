@@ -57,6 +57,10 @@ public class ProcWeaponMelee extends Proc {
         Color adColor = (damageComparator < 0) ? Color.RED : (damageComparator == 0) ? Color.WHITE : Color.GREEN;
         Color thColor = (toHitComparator < 0) ? Color.RED : (toHitComparator == 0) ? Color.WHITE : Color.GREEN;
 
+        // Removing this for now
+        adColor = Color.WHITE;
+        thColor = Color.WHITE;
+
         String adString = "" + ad;
         String thString = "" + th;
         if (th > 0) {

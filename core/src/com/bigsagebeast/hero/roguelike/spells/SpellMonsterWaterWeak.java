@@ -57,22 +57,22 @@ public class SpellMonsterWaterWeak extends Spell {
     public void announceCast(Entity caster, Entity target) {
         Game.announceVis(caster, null, "You project a jet of water.",
                 null,
-                caster.getVisibleNameThe() + " projects a jet of water.",
+                caster.getVisibleNameDefinite() + " projects a jet of water.",
                 "You hear rushing water.");
     }
 
     @Override
     public void announceHitWithoutKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are flooded by water.",
-                target.getVisibleNameThe() + " is flooded by water.",
-                target.getVisibleNameThe() + " is flooded by water.", null);
+                target.getVisibleNameDefinite() + " is flooded by water.",
+                target.getVisibleNameDefinite() + " is flooded by water.", null);
     }
 
     @Override
     public void announceHitWithKill(Entity caster, Entity target) {
         Game.announceVis(target, caster, "You are drowned!",
-                target.getVisibleNameThe() + " is drowned!",
-                target.getVisibleNameThe() + " is drowned!", null);
+                target.getVisibleNameDefinite() + " is drowned!",
+                target.getVisibleNameDefinite() + " is drowned!", null);
     }
 
 

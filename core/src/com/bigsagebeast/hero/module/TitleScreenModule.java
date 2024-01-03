@@ -137,10 +137,12 @@ public class TitleScreenModule extends Module {
 			case Keys.SPACE:
 				switch (selectedOption) {
 					case 0:
+						/*
 						IntroModule.musicResource.stop();
 						end();
 						GameLoop.roguelikeModule.start();
 						GameLoop.roguelikeModule.game.load();
+						 */
 						break;
 					case 1:
 						requestName();
@@ -207,6 +209,7 @@ public class TitleScreenModule extends Module {
 		TextEntryBox box = new TextEntryBox()
 				.withTitle("Dead god of Heroes, name yourself!")
 				.withMargins(60, 60)
+				.withMaxLength(20)
 				.autoHeight();
 		GameLoop.textEntryModule.openTextEntryBox(box, this::handleEnterName);
 
@@ -214,7 +217,7 @@ public class TitleScreenModule extends Module {
 
 	private void handleEnterName(String name) {
 
-		Profile.setString("name", name);
+		Profile.setString("godName", name);
 		Profile.setString("mode", "newGameCutscene1");
 		GameLoop.flowModule.start();
 

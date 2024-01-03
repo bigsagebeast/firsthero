@@ -3,10 +3,17 @@ package com.bigsagebeast.hero.roguelike.game;
 import java.util.HashMap;
 
 public class Profile {
+    // godName: Name of your god
+    // avatarName: Name of the avatar in the current world (may not be necessary?)
     public static HashMap<String, Integer> dataInt = new HashMap<>();
     public static HashMap<String, Float> dataFloat = new HashMap<>();
     public static HashMap<String, String> dataString = new HashMap<>();
     public static HashMap<String, Boolean> dataFlag = new HashMap<>();
+
+    static {
+        // defaults
+        setString("godName", "God of Heroism");
+    }
 
     public static boolean save() {
         return false;

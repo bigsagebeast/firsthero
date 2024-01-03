@@ -38,7 +38,7 @@ public class ProcPlayer extends ProcMover {
                             if (missing > 0) {
                                 int retrieved = proc.drawElement(e, playerEntity, missing);
                                 if (retrieved > 0) {
-                                    Game.announce("You draw " + retrieved + " " + element.name + " charge" + (retrieved == 1 ? "" : "s") + " from " + e.getVisibleNameThe() + ".");
+                                    Game.announce("You draw " + retrieved + " " + element.name + " charge" + (retrieved == 1 ? "" : "s") + " from " + e.getVisibleNameDefinite() + ".");
                                     Game.getPlayer().changeCharges(element, retrieved);
                                 }
                             }

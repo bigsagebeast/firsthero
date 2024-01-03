@@ -12,7 +12,7 @@ public class ProcEffectConfusion extends ProcTimedEffect {
         Game.announceVis(entity, null,
                 "You are confused!",
                 null,
-                entity.getVisibleNameThe() + " is confused!",
+                entity.getVisibleNameDefinite() + " is confused!",
                 null);
     }
 
@@ -21,7 +21,7 @@ public class ProcEffectConfusion extends ProcTimedEffect {
         Game.announceVis(entity, null,
                 "You are no longer confused.",
                 null,
-                entity.getVisibleNameThe() + " is no longer confused.",
+                entity.getVisibleNameDefinite() + " is no longer confused.",
                 null);
     }
 }

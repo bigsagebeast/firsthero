@@ -25,7 +25,7 @@ public class PersistentLevel {
     private PersistentLevel() {}
 
     public PersistentLevel(Level level) {
-        this.name = level.getName();
+        this.name = level.getKey();
         this.width = level.getWidth();
         this.height = level.getHeight();
 

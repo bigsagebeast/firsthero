@@ -19,9 +19,9 @@ public class ProcStandardMessages extends Proc {
             vis = Visibility.VISIBLE;
         }
 
-        Game.announceVis(vis, "You equip " + target.getVisibleNameThe() + ".",
-                "You are equipped by " + entity.getVisibleNameThe() + ".",
-                entity.getVisibleNameThe() + " equips " + target.getVisibleNameThe() + ".",
+        Game.announceVis(vis, "You equip " + target.getVisibleNameDefinite() + ".",
+                "You are equipped by " + entity.getVisibleNameDefinite() + ".",
+                entity.getVisibleNameDefinite() + " equips " + target.getVisibleNameDefinite() + ".",
                 null);
     }
 
@@ -35,9 +35,9 @@ public class ProcStandardMessages extends Proc {
             vis = Visibility.VISIBLE;
         }
 
-        Game.announceVis(vis, "You unequip " + target.getVisibleNameThe() + ".",
-                "You are unequipped by " + entity.getVisibleNameThe() + ".",
-                entity.getVisibleNameThe() + " unequips " + target.getVisibleNameThe() + ".",
+        Game.announceVis(vis, "You unequip " + target.getVisibleNameDefinite() + ".",
+                "You are unequipped by " + entity.getVisibleNameDefinite() + ".",
+                entity.getVisibleNameDefinite() + " unequips " + target.getVisibleNameDefinite() + ".",
                 null);
     }
 }

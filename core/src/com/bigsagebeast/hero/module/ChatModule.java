@@ -98,6 +98,13 @@ public class ChatModule extends Module {
                 validLinks.add(link);
             }
         }
+        if (page.inheritLinks != null) {
+            ChatPage inheritPage = ChatBook.get(page.inheritLinks);
+            for (ChatLink link : inheritPage.links) {
+                validLinks.add(link);
+            }
+        }
+
         if (validLinks.isEmpty()) {
             System.out.println("No valid links on page " + key);
             terminate();

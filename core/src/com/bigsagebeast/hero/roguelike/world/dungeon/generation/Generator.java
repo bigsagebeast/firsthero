@@ -259,7 +259,7 @@ public class Generator {
         }
         Point stairPoint = findEmptyPointInRoom(stairRoom);
         level.cell(stairPoint).terrain = Terrain.get("upstair");
-        level.addTransition(new LevelTransition("up", stairPoint, level.getName(), levelKey));
+        level.addTransition(new LevelTransition("up", stairPoint, level.getKey(), levelKey));
     }
 
     public void addDownstairTo(String levelKey) {
@@ -275,7 +275,7 @@ public class Generator {
         }
         Point stairPoint = findEmptyPointInRoom(stairRoom);
         level.cell(stairPoint).terrain = Terrain.get("downstair");
-        level.addTransition(new LevelTransition("down", stairPoint, level.getName(), levelKey));
+        level.addTransition(new LevelTransition("down", stairPoint, level.getKey(), levelKey));
     }
 
     private Point findEmptyPointInRoom(Room room) {

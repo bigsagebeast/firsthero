@@ -6,6 +6,7 @@ public class ChatPage {
     public String key;
     public String text;
     public List<ChatLink> links;
+    public String inheritLinks;
     public boolean auto;
 
     public String toString() {

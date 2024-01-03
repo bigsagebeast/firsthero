@@ -129,16 +129,16 @@ public class TargetingModule extends Module {
             Entity targetMover = Game.getLevel().moverAt(targetTile.x, targetTile.y);
             if (targetMover != null) {
                 // TODO fetch a text block, child it to description
-                description.text = "You see " + targetMover.getVisibleNameSingularOrSpecific() + ".";
+                description.text = "You see " + targetMover.getVisibleNameIndefiniteOrSpecific() + ".";
             } else {
                 // TODO fetch a text block etc
                 List<Entity> targetItems = Game.getLevel().getItemsOnTile(targetTile);
                 if (targetItems.size() > 2) {
-                    description.text = "You see " + targetItems.get(0).getVisibleNameSingularOrVague() + " and " + (targetItems.size() - 1) + " other items.";
+                    description.text = "You see " + targetItems.get(0).getVisibleNameIndefiniteOrVague() + " and " + (targetItems.size() - 1) + " other items.";
                 } else if (targetItems.size() == 2) {
-                    description.text = "You see " + targetItems.get(0).getVisibleNameSingularOrVague() + " and " + (targetItems.size() - 1) + " other item.";
+                    description.text = "You see " + targetItems.get(0).getVisibleNameIndefiniteOrVague() + " and " + (targetItems.size() - 1) + " other item.";
                 } else if (targetItems.size() == 1) {
-                    description.text = "You see " + targetItems.get(0).getVisibleNameSingularOrVague() + ".";
+                    description.text = "You see " + targetItems.get(0).getVisibleNameIndefiniteOrVague() + ".";
                 } else {
                     description.text = "You see " + Game.getLevel().cell(targetTile).terrain.getDescription() + ".";
                 }
@@ -336,6 +336,15 @@ public class TargetingModule extends Module {
     }
 
     public void moveTarget(int x, int y) {
+        if (Game.getLevel().withinBounds(targetTile.x + x, targetTile.y + y)) {
+            // we're OK
+        } else if (Game.getLevel().withinBounds(targetTile.x, targetTile.y + y)) {
+            x = 0;
+        } else if (Game.getLevel().withinBounds(targetTile.x + x, targetTile.y)) {
+            y = 0;
+        } else {
+            return;
+        }
         targetTile = new Point(targetTile.x + x, targetTile.y + y);
     }
 

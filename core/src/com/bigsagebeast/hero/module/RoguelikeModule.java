@@ -248,6 +248,9 @@ public class RoguelikeModule extends Module {
 				case Keys.O:
 					game.cmdOpen();
 					break;
+				case Keys.P:
+					game.cmdPray();
+					break;
 				case Keys.Q:
 					game.cmdQuaff();
 					break;
@@ -303,9 +306,6 @@ public class RoguelikeModule extends Module {
 				case Keys.L:
 					game.cmdLoad();
 					break;
-				case Keys.P:
-					game.cmdPray();
-					break;
 				case Keys.R:
 					game.cmdRegenerate();
 					break;
@@ -331,6 +331,7 @@ public class RoguelikeModule extends Module {
 	public void popupCommands() {
 		DialogueBox box = new DialogueBox()
 				.withMargins(60, 60)
+				.withFooterClosableAndSelectable()
 				.withTitle("Commands");
 		box.addItem("Keypad       Move or attack", null);
 		box.addItem("Keypad 5     Wait", "5");
@@ -343,13 +344,13 @@ public class RoguelikeModule extends Module {
 		box.addItem("l            Look around", "l");
 		box.addItem("m            Cast a magic spell", "m");
 		box.addItem("o            Open or close a door", "o");
+		box.addItem("p            Pray", "p");
 		box.addItem("q            Quaff a potion", "q");
 		box.addItem("r            Read a scroll or book", "r");
 		box.addItem("t            Target ranged attack", "t");
 		box.addItem("w            Wear or wield", "w");
 		box.addItem("<            Go up stairs", "<");
 		box.addItem(">            Go down stairs", ">");
-		box.addItem("P            Pray", "P");
 		box.autoHeight();
 		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handlePopupCommands);
 	}
@@ -390,6 +391,9 @@ public class RoguelikeModule extends Module {
 			case "o":
 				game.cmdOpen();
 				break;
+			case "p":
+				game.cmdPray();
+				break;
 			case "q":
 				game.cmdQuaff();
 				break;
@@ -407,9 +411,6 @@ public class RoguelikeModule extends Module {
 				break;
 			case ">":
 				game.cmdStairsDown();
-				break;
-			case "P":
-				game.cmdPray();
 				break;
 			default:
 				break;
