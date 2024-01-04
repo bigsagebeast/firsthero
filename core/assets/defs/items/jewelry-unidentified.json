@@ -8,6 +8,24 @@
         "tan",
         "yellow"
       ]
+    },
+    "ring.sapphire": {
+      "unidGroup": "ring1",
+      "unidentifiedName": "sapphire ring",
+      "glyphName": "ring.jeweled",
+      "palette": [
+        "tan",
+        "blue"
+      ]
+    },
+    "ring.ruby": {
+      "unidGroup": "ring1",
+      "unidentifiedName": "ruby ring",
+      "glyphName": "ring.jeweled",
+      "palette": [
+        "tan",
+        "red"
+      ]
     }
   }
 }

@@ -13,6 +13,32 @@
           "status": "CONFUSION"
         }
       }
+    },
+    "ring.resist.acid": {
+      "idenGroup": "ring1",
+      "name": "ring of acid resistance",
+      "pluralName": "rings of acid resistance",
+      "category": "ring",
+      "equipmentFor": "ring",
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "intrinsic.ProcResistDamageType": {
+          "damageType": "ACID"
+        }
+      }
+    },
+    "ring.telepathy": {
+      "idenGroup": "ring1",
+      "name": "ring of telepathy",
+      "pluralName": "rings of telepathy",
+      "category": "ring",
+      "equipmentFor": "ring",
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "intrinsic.ProcTelepathy": {}
+      }
     }
   }
 }

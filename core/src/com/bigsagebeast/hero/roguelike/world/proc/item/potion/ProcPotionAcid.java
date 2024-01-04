@@ -1,5 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world.proc.item.potion;
 
+import com.bigsagebeast.hero.enums.DamageType;
+import com.bigsagebeast.hero.enums.ResistanceLevel;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.ImmutableProc;
 import com.bigsagebeast.hero.roguelike.game.Game;
@@ -17,11 +19,47 @@ public class ProcPotionAcid extends ImmutableProc {
     @Override
     public void postBeQuaffed(Entity entity, Entity actor) {
         int hurtAmount = 10 + Game.random.nextInt(10);
-        actor.hurt(hurtAmount);
-        Game.announceVis(actor, null, "It burns!",
-                null,
-                actor.getVisibleNameDefinite() + " is burned!",
-                null);
+        switch (entity.getItem().beatitude) {
+            case BLESSED:
+                hurtAmount *= 2/3;
+                break;
+            case CURSED:
+                hurtAmount *= 3/2;
+                break;
+        }
+        burnMessage(actor);
+        actor.hurt(hurtAmount, DamageType.ACID);
         entity.identifyItemType();
+    }
+
+    private void burnMessage(Entity actor) {
+        ResistanceLevel acidResistance = actor.getDamageTypeResist(DamageType.ACID);
+        switch (acidResistance) {
+            case WEAK:
+                Game.announceVis(actor, null, "It burns excruciatingly!",
+                        null,
+                        actor.getVisibleNameDefinite() + " is badly burned!",
+                        null);
+                break;
+            case NORMAL:
+                Game.announceVis(actor, null, "It burns!",
+                        null,
+                        actor.getVisibleNameDefinite() + " is burned!",
+                        null);
+                break;
+            case RESISTANT:
+            case VERY_RESISTANT:
+                Game.announceVis(actor, null, "It burns a little.",
+                        null,
+                        actor.getVisibleNameDefinite() + " is burned a little.",
+                        null);
+                break;
+            case IMMUNE:
+                Game.announceVis(actor, null, "There is no effect.",
+                        null,
+                        actor.getVisibleNameDefinite() + " is not affected.",
+                        null);
+                break;
+        }
     }
 }

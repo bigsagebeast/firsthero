@@ -13,7 +13,7 @@ public enum ResistanceLevel {
         this.multiplier = multiplier;
     }
 
-    public ResistanceLevel counterToEnum(int counter) {
+    public static ResistanceLevel counterToEnum(int counter) {
         if (counter < 0) return WEAK;
         if (counter == 0) return NORMAL;
         if (counter == 1) return RESISTANT;

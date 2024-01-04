@@ -1,9 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world;
 
 import com.bigsagebeast.hero.GameLoop;
-import com.bigsagebeast.hero.enums.Ambulation;
-import com.bigsagebeast.hero.enums.Gender;
-import com.bigsagebeast.hero.enums.StatusType;
+import com.bigsagebeast.hero.enums.*;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
 import com.bigsagebeast.hero.roguelike.game.*;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
@@ -141,11 +139,18 @@ public class Entity {
         return found == null ? null : found.proc;
     }
 
+    public Beatitude getBeatitude() {
+        if (getItem() == null) {
+            return Beatitude.UNCURSED;
+        }
+        return getItem().beatitude;
+    }
+
     public String getBeatitudeString() {
         if (getItem() == null || !getItem().identified || !getItemType().hasBeatitude) {
             return "";
         }
-        return "uncursed ";
+        return getBeatitude().description + " ";
     }
 
     public String getVisibleName() {
@@ -237,6 +242,12 @@ public class Entity {
             MoverLogic.createCorpse(Game.getLevel(), this);
             destroy();
         }
+    }
+
+    public void hurt(int amount, DamageType damageType) {
+        ResistanceLevel resistLevel = getDamageTypeResist(damageType);
+        amount = (int)Math.ceil(resistLevel.multiplier * amount);
+        hurt(amount);
     }
 
     public boolean canSee(Entity target) {
@@ -757,6 +768,18 @@ public class Entity {
 
     public boolean testResistStatus(StatusType status) {
         return getStatusResists().contains(status);
+    }
+
+    public ResistanceLevel getDamageTypeResist(DamageType damageType) {
+        ArrayList<DamageType> resists = new ArrayList<>();
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            List<DamageType> procResists = ep.proc.provideDamageTypeResist(ep.entity);
+            if (procResists != null) {
+                resists.addAll(procResists);
+            }
+        }
+        long resistCount = resists.stream().filter(resist -> resist == damageType).count();
+        return ResistanceLevel.counterToEnum((int)resistCount);
     }
 
     public TextBlock getNameBlock() {

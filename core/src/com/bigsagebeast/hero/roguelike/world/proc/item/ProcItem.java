@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world.proc.item;
 
 import com.badlogic.gdx.graphics.Color;
+import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.ItemStatus;
@@ -10,6 +11,7 @@ public class ProcItem extends Proc {
 
     public ItemStatus status;
     public boolean identified;
+    public Beatitude beatitude = Beatitude.UNCURSED;
     public int quantity = 1;
 
     public ProcItem() { super(); }

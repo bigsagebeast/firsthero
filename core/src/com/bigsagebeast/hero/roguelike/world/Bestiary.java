@@ -21,8 +21,8 @@ import com.bigsagebeast.hero.roguelike.game.Rank;
 
 public class Bestiary {
 	public static Map<String, Phenotype> map = new HashMap<String, Phenotype>();
-	
-	public Bestiary() {
+
+	static {
 		Phenotype door = new Phenotype();
 
 		Phenotype pc = new Phenotype();
@@ -190,11 +190,11 @@ public class Bestiary {
 		map.put("farmer", farmer);
 	}
 
-	public Entity create(String key) {
+	public static Entity create(String key) {
 		return create(key, null);
 	}
 
-	public Entity create(String key, String name) {
+	public static Entity create(String key, String name) {
 		Entity e = EntityTracker.create();
 
 		Phenotype p = map.get(key);

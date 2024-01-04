@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.proc;
 
+import com.bigsagebeast.hero.enums.DamageType;
 import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.text.TextBlock;
@@ -139,6 +140,7 @@ public class Proc {
     public int provideDamageBonus(Entity entity) { return 0; }
 
     public List<StatusType> provideStatusResist(Entity entity) { return null; }
+    public List<DamageType> provideDamageTypeResist(Entity entity) { return null; }
 
     public Boolean targetForQuaff(Entity entity) { return null; }
     public Boolean preBeQuaffed(Entity entity, Entity actor) { return null; }
