@@ -72,6 +72,8 @@ public class Game {
 
 	public void startIntro() {
 		Entity pc = bestiary.create("pc.farmboy");
+		pc.statblock.arc = 5;
+		pc.statblock.ava = 0;
 		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
 		Entity pitchfork = itempedia.create("pitchfork");

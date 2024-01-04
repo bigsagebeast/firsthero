@@ -19,6 +19,7 @@ public abstract class Spell {
         BEAM("Beam"),
         MELEE("Melee"),
         BALL("Ball"),
+        PERSONAL("Personal"),
         OTHER("OTHER");
 
         public String name;
@@ -27,7 +28,22 @@ public abstract class Spell {
         }
     }
 
+    public enum SpellType {
+        MONSTER("Monster Ability"),
+        ARCANUM("Arcanum"),
+        WEAPON_SKILL("Weapon Skill"),
+        DIVINE("Divine Power");
+
+        public String name;
+
+        SpellType(String name) {
+            this.name = name;
+        }
+    }
+
     public abstract TargetType getTargetType();
+
+    public abstract SpellType getSpellType();
 
     public abstract String getName();
 
@@ -42,9 +58,16 @@ public abstract class Spell {
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.emptyMap(); }
 
     public void playerStartSpell() {
-        if (Game.getPlayerEntity().spellPoints < getCost(Game.getPlayerEntity())) {
-            Game.announce("You don't have enough SP for that spell.");
-            return;
+        if (getSpellType() == SpellType.WEAPON_SKILL || getSpellType() == SpellType.ARCANUM) {
+            if (Game.getPlayerEntity().spellPoints < getCost(Game.getPlayerEntity())) {
+                Game.announce("You don't have enough SP for that spell.");
+                return;
+            }
+        } else {
+            if (Game.getPlayerEntity().divinePoints < getCost(Game.getPlayerEntity())) {
+                Game.announce("You don't have enough DP for that spell.");
+                return;
+            }
         }
         Map<Element, Integer> elementCost = getElementCost(Game.getPlayerEntity());
         for (Element element : elementCost.keySet()) {
@@ -57,8 +80,17 @@ public abstract class Spell {
         GameLoop.directionModule.begin("Select a direction to cast " + getName() + ", or space to cancel.",
                 this::handlePlayerStartSpell);
          */
-        GameLoop.directionModule.begin("Select a direction, or space to cancel.",
-                this::handlePlayerStartSpell);
+        switch (getTargetType()) {
+            case BEAM:
+            case BOLT:
+            case MELEE:
+                GameLoop.directionModule.begin("Select a direction, or space to cancel.",
+                        this::handlePlayerStartSpell);
+                break;
+            case PERSONAL:
+                handlePlayerStartSpell(null);
+                break;
+        }
     }
 
     public void handlePlayerStartSpell(Compass dir) {
@@ -66,27 +98,43 @@ public abstract class Spell {
             announce("Cancelled.");
             return;
         }
-        if (Game.getPlayerEntity().isConfused()) {
+        if (dir != null && Game.getPlayerEntity().isConfused()) {
             dir = Compass.randomDirection();
             Game.announce("You fire the spell in a random direction!");
         }
-        Game.getPlayerEntity().spellPoints -= getCost(Game.getPlayerEntity());
+        if (getSpellType() == SpellType.WEAPON_SKILL || getSpellType() == SpellType.ARCANUM) {
+            Game.getPlayerEntity().spellPoints -= getCost(Game.getPlayerEntity());
+        } else {
+            Game.getPlayerEntity().divinePoints -= getCost(Game.getPlayerEntity());
+        }
         Map<Element, Integer> elementCost = getElementCost(Game.getPlayerEntity());
         for (Element element : elementCost.keySet()) {
             Game.getPlayer().changeCharges(element, -elementCost.get(element));
         }
-        castDirectionally(Game.getPlayerEntity(), dir);
+        switch (getTargetType()) {
+            case BEAM:
+            case BOLT:
+            case MELEE:
+                castDirectionally(Game.getPlayerEntity(), dir);
+                break;
+            case PERSONAL:
+                castPersonal(Game.getPlayerEntity());
+                break;
+        }
     }
 
     public void castDirectionally(Entity caster, Compass dir) {
         caster.getMover().setDelay(caster, Game.ONE_TURN);
         announceCast(caster, null);
         List<Point> ray = Raycasting.createOrthogonalRay(Game.getLevel(), caster.pos, Math.round(getRange(caster)), dir);
-        if (ray.size() <= 1) {
+        ray.remove(null);
+        if (ray.isEmpty()) {
             announce("Nothing happens.");
+            Game.turn();
             return;
         }
-        Point endpoint = ray.get(ray.size() - 2);
+        // TODO: Back out from a wall
+        Point endpoint = ray.get(ray.size()-1);
         List<Entity> targets;
         if (getTargetType() == TargetType.BEAM) {
             targets = Raycasting.findAllMoversAlongRay(Game.getLevel(), ray);
@@ -104,6 +152,14 @@ public abstract class Spell {
         GameLoop.targetingModule.animate(ray.get(0), endpoint, getAnimationColor(), isAnimationStars());
 
         affectTargets(caster, targets, dir);
+        Game.turn();
+    }
+
+    public void castPersonal(Entity caster) {
+        caster.getMover().setDelay(caster, Game.ONE_TURN);
+        announceCast(caster, null);
+        affectTargets(caster, Collections.singletonList(caster), null);
+        Game.turn();
     }
 
     public void affectTargets(Entity caster, Collection<Entity> targets, Compass dir) {

@@ -17,6 +17,11 @@ import static com.bigsagebeast.hero.roguelike.game.Game.announceVis;
 
 public class SpellWaterBlast extends Spell {
     @Override
+    public SpellType getSpellType() {
+        return SpellType.ARCANUM;
+    }
+
+    @Override
     public TargetType getTargetType() {
         return TargetType.BEAM;
     }

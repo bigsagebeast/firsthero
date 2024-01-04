@@ -36,20 +36,26 @@ public class Spellbook {
                 .withFooterClosable()
                 .withTitle("Select spell to cast")
                 .withMargins(60, 60);
-        String format = "%-20s %-6s %-5s %-5s";
+        String format = "%-15s %-8s %-5s %-5s";
         box.addHeader(String.format("  " + format, "Name", "Type", "Range", "Cost"));
-        for (Spell spell : getSpells()) {
-            Map<Element, Integer> elementCost = spell.getElementCost(Game.getPlayerEntity());
-            StringBuilder elementString = new StringBuilder();
-            for (Element element : elementCost.keySet()) {
-                for (int i=0; i<elementCost.get(element); i++) {
-                    elementString.append(element.symbol);
+        for (Spell.SpellType type : Spell.SpellType.values()) {
+            List<Spell> spellsOfType = getSpells().stream().filter(s -> s.getSpellType() == type).collect(Collectors.toList());
+            if (!spellsOfType.isEmpty()) {
+                box.addHeader(type.name());
+                for (Spell spell : spellsOfType) {
+                    Map<Element, Integer> elementCost = spell.getElementCost(Game.getPlayerEntity());
+                    StringBuilder elementString = new StringBuilder();
+                    for (Element element : elementCost.keySet()) {
+                        for (int i = 0; i < elementCost.get(element); i++) {
+                            elementString.append(element.symbol);
+                        }
+                    }
+                    box.addItem(String.format(format,
+                                    spell.getName(), spell.getTypeDescription(),
+                                    spell.getRange(Game.getPlayerEntity()), spell.getCost(Game.getPlayerEntity()) + " " + elementString)
+                            , spell);
                 }
             }
-            box.addItem(String.format(format,
-                    spell.getName(), spell.getTypeDescription(),
-                    spell.getRange(Game.getPlayerEntity()), spell.getCost(Game.getPlayerEntity()) + " " + elementString)
-                , spell);
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleSpellbookToCastResponse);
     }

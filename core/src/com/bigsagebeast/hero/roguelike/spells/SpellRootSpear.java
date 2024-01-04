@@ -10,6 +10,11 @@ import java.util.Map;
 
 public class SpellRootSpear extends Spell {
     @Override
+    public SpellType getSpellType() {
+        return SpellType.ARCANUM;
+    }
+
+    @Override
     public TargetType getTargetType() {
         return TargetType.BOLT;
     }

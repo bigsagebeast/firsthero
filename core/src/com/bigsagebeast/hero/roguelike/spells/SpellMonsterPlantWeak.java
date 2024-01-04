@@ -12,6 +12,11 @@ import java.util.Map;
 
 public class SpellMonsterPlantWeak extends Spell {
     @Override
+    public SpellType getSpellType() {
+        return SpellType.MONSTER;
+    }
+
+    @Override
     public TargetType getTargetType() {
         return TargetType.BEAM;
     }

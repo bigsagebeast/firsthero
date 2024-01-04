@@ -1015,12 +1015,16 @@ public class Entity {
         int effectiveLevel = level == 0 ? 0 : level + 2;
         int newMaxHitPoints = (int)(Bestiary.get(phenotypeName).hitPoints + (effectiveLevel * statblock.hitPointsPerLevel()));
         int newMaxSpellPoints = (int)(Bestiary.get(phenotypeName).spellPoints + (effectiveLevel * statblock.spellPointsPerLevel()));
+        int newMaxDivinePoints = (int)(Bestiary.get(phenotypeName).divinePoints + statblock.divinePoints());
         int deltaHitPoints = newMaxHitPoints - maxHitPoints;
         int deltaSpellPoints = newMaxSpellPoints - maxSpellPoints;
+        int deltaDivinePoints = newMaxDivinePoints - maxDivinePoints;
         maxHitPoints += deltaHitPoints;
         maxSpellPoints += deltaSpellPoints;
-        hitPoints = Math.min(hitPoints + deltaHitPoints, newMaxHitPoints);
-        spellPoints = Math.min(spellPoints + deltaSpellPoints, newMaxSpellPoints);
+        maxDivinePoints += deltaDivinePoints;
+        hitPoints = Math.min(Math.max(hitPoints + deltaHitPoints, hitPoints), newMaxHitPoints);
+        spellPoints = Math.min(Math.max(spellPoints + deltaSpellPoints, spellPoints), newMaxSpellPoints);
+        divinePoints = Math.min(Math.max(divinePoints + deltaDivinePoints, divinePoints), newMaxDivinePoints);
         healingDelay = 300 / maxHitPoints;
         spRegenDelay = 100 / maxSpellPoints;
     }

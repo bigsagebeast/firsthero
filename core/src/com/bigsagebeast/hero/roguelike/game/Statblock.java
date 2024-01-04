@@ -36,4 +36,8 @@ public class Statblock {
     public float spellPointsPerLevel() {
         return (wil + arc) / 4.0f;
     }
+
+    public float divinePoints() {
+        return ava * 50;
+    }
 }

@@ -4,6 +4,7 @@ import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.roguelike.world.Itempedia;
 
 import java.util.function.Consumer;
 
@@ -115,12 +116,15 @@ public class CharacterBuilder {
             case "wizard":
                 equip(entity, "armor.body.whiterobe", BodyPart.TORSO);
                 equip(entity, "dagger", BodyPart.PRIMARY_HAND);
-                GameLoop.roguelikeModule.game.spellbook.addSpell("magic missile");
-                GameLoop.roguelikeModule.game.spellbook.addSpell("firebeam");
-                GameLoop.roguelikeModule.game.spellbook.addSpell("water blast");
-                GameLoop.roguelikeModule.game.spellbook.addSpell("root spear");
+                Game.spellbook.addSpell("magic missile");
+                Game.spellbook.addSpell("firebeam");
+                Game.spellbook.addSpell("water blast");
+                Game.spellbook.addSpell("root spear");
                 break;
         }
+        Game.spellbook.addSpell("divine banish");
+        Game.spellbook.addSpell("divine healing");
+        Game.spellbook.addSpell("divine time stop");
     }
 
     private static void equip(Entity entity, String key, BodyPart bodyPart) {
@@ -128,8 +132,6 @@ public class CharacterBuilder {
     }
 
     private static void equip(Entity entity, String key, BodyPart bodyPart, int quantity) {
-        entity.equip(Game.itempedia.create(key, quantity), bodyPart);
+        entity.equip(Itempedia.create(key, quantity), bodyPart);
     }
-
-
 }

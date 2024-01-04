@@ -17,6 +17,10 @@ public class Spellpedia {
         map.put("monster fire weak", new SpellMonsterFireWeak());
         map.put("monster water weak", new SpellMonsterWaterWeak());
         map.put("monster plant weak", new SpellMonsterPlantWeak());
+
+        map.put("divine banish", new SpellDivineBanish());
+        map.put("divine healing", new SpellDivineHealing());
+        map.put("divine time stop", new SpellDivineTimeStop());
     }
 
     public static Spell get(String key) {

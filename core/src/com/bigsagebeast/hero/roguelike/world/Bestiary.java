@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import com.bigsagebeast.hero.enums.Ambulation;
 import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.glyphtile.Palette;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
@@ -13,11 +12,10 @@ import com.bigsagebeast.hero.roguelike.world.ai.RangedAmmoThenMeleeTactic;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcBurningTouch;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
-import com.bigsagebeast.hero.roguelike.world.proc.ProcTimedEffects;
+import com.bigsagebeast.hero.roguelike.world.proc.ProcEveryTurn;
 import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcMonster;
 import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcShooter;
 import com.bigsagebeast.hero.roguelike.game.Game;
-import com.bigsagebeast.hero.roguelike.game.Rank;
 
 public class Bestiary {
 	public static Map<String, Phenotype> map = new HashMap<String, Phenotype>();
@@ -223,7 +221,7 @@ public class Bestiary {
 		for (Consumer<Entity> consumer : p.setup) {
 			consumer.accept(e);
 		}
-		e.addProc(new ProcTimedEffects());
+		e.addProc(new ProcEveryTurn());
 
 		if (p.procLoaders != null) {
 			for (LoadProc loader : p.procLoaders) {

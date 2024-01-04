@@ -6,6 +6,11 @@ import com.bigsagebeast.hero.roguelike.world.Entity;
 
 public class SpellMagicMissile extends Spell {
     @Override
+    public SpellType getSpellType() {
+        return SpellType.ARCANUM;
+    }
+
+    @Override
     public TargetType getTargetType() {
         return TargetType.BOLT;
     }
