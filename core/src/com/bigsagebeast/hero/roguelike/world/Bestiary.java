@@ -30,8 +30,6 @@ public class Bestiary {
 		Phenotype goblinWarrior = new Phenotype();
 		Phenotype farmer = new Phenotype();
 		Phenotype wolf = new Phenotype();
-		Phenotype skeleton = new Phenotype();
-		Phenotype zombie = new Phenotype();
 		Phenotype fungusRed = new Phenotype();
 		Phenotype fungusGreenFunglet = new Phenotype();
 
@@ -134,39 +132,6 @@ public class Bestiary {
 		wolf.tags.add("generic-fantasy");
 		wolf.tags.add("animal");
 
-		skeleton.name = "skeleton";
-		skeleton.peaceful = false;
-		skeleton.hitPoints = 8;
-		skeleton.isMonster = true;
-		skeleton.bodyPlan = "humanoid";
-		skeleton.glyphName = "undead.skeleton";
-		skeleton.isManipulator = true;
-		skeleton.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
-		skeleton.experienceAwarded = 15;
-		skeleton.threat = 1;
-		skeleton.naturalWeaponDamage = 6;
-		skeleton.naturalWeaponToHit = 0;
-		skeleton.naturalArmorClass = 4;
-		skeleton.tags.add("generic-fantasy");
-		skeleton.tags.add("undead");
-
-		zombie.name = "zombie";
-		zombie.peaceful = false;
-		zombie.hitPoints = 20;
-		zombie.isMonster = true;
-		zombie.bodyPlan = "humanoid";
-		zombie.glyphName = "undead.zombie";
-		zombie.isManipulator = true;
-		zombie.palette = new PaletteEntry(Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TAN);
-		zombie.experienceAwarded = 20;
-		zombie.moveCost = 2000;
-		zombie.threat = 2;
-		zombie.naturalWeaponDamage = 12;
-		zombie.naturalWeaponToHit = -4;
-		zombie.naturalArmorClass = 0;
-		zombie.tags.add("generic-fantasy");
-		zombie.tags.add("undead");
-
 		fungusRed.name = "red fungus";
 		fungusRed.peaceful = false;
 		fungusRed.hitPoints = 25;
@@ -220,8 +185,6 @@ public class Bestiary {
 		map.put("goblin.warrior", goblinWarrior);
 		map.put("goblin.archer", goblinArcher);
 		map.put("wolf", wolf);
-		map.put("skeleton", skeleton);
-		map.put("zombie", zombie);
 		map.put("fungus.red", fungusRed);
 		map.put("fungus.greenfunglet", fungusGreenFunglet);
 		map.put("farmer", farmer);

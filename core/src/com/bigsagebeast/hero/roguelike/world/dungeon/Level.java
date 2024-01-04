@@ -387,7 +387,7 @@ public class Level {
 		Collections.shuffle(points);
 		for (Point p : points) {
 			if (cell(p).terrain.isPassable()) { // should always be true...
-				if (getMoversOnTile(p).isEmpty()) {
+				if (getEntitiesOnTile(p).isEmpty()) {
 					return p;
 				}
 			}
@@ -406,7 +406,7 @@ public class Level {
 		Collections.shuffle(points);
 		for (Point p : points) {
 			if (cell(p).terrain.isPassable()) { // should always be true...
-				if (getMoversOnTile(p).isEmpty()) {
+				if (getEntitiesOnTile(p).isEmpty()) {
 					found.add(p);
 				}
 			}
@@ -449,11 +449,9 @@ public class Level {
 			int xRand = origin.x - (area/2) + Game.random.nextInt(area);
 			int yRand = origin.y - (area/2) + Game.random.nextInt(area);
 			if (!withinBounds(xRand, yRand)) continue;
-			if (cell[xRand][yRand].terrain.isPassable() && cell[xRand][yRand].visible() == false) {
-				for (Entity e : getEntitiesOnTile(new Point(xRand, yRand))) {
-					if (e.getMover() != null) {
-						continue;
-					}
+			if (cell[xRand][yRand].terrain.isPassable() && !cell[xRand][yRand].visible()) {
+				if (!getMoversOnTile(new Point(xRand, yRand)).isEmpty()) {
+					continue;
 				}
 				return new Point(xRand, yRand);
 			}

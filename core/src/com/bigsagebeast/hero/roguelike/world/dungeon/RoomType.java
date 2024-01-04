@@ -33,20 +33,20 @@ public class RoomType {
 
     static {
         SpecialSpawner fireSpawner = SpecialSpawner.newRegen();
-        fireSpawner.spawnMTTH = 300;
+        fireSpawner.spawnMTTH = 500;
         fireSpawner.tags = Arrays.asList("fire", "generic-fantasy");
         fireSpawner.threatModifier = -1;
         FORGE.spawners.add(fireSpawner);
 
         SpecialSpawner waterSpawner = SpecialSpawner.newRegen();
-        waterSpawner.spawnMTTH = 300;
+        waterSpawner.spawnMTTH = 500;
         waterSpawner.tags = Arrays.asList("water", "generic-fantasy");
         waterSpawner.threatModifier = -1;
         POOL.spawners.add(waterSpawner);
         UNDERGROUND_RIVER.spawners.add(waterSpawner);
 
         SpecialSpawner naturaeSpawner = SpecialSpawner.newRegen();
-        naturaeSpawner.spawnMTTH = 300;
+        naturaeSpawner.spawnMTTH = 500;
         naturaeSpawner.tags = Arrays.asList("naturae", "generic-fantasy");
         naturaeSpawner.threatModifier = -1;
         MOSSY.spawners.add(naturaeSpawner);

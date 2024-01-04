@@ -276,7 +276,7 @@ public class Game {
 				announce("You finish resting.");
 				return false;
 			} else {
-				playerCmdMoveBy(0, 0);
+				GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
 			}
 			return true;
 		} else if (longWalkDir != null) {

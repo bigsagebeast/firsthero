@@ -134,6 +134,13 @@ public class Entity {
         return null;
     }
 
+    // only returns the first
+    public Proc getProcByTypeIncludingEquipment(Class clazz) {
+        EntityProc found = allEntityProcsIncludingEquipment().filter(ep -> clazz.isAssignableFrom(ep.proc.getClass()))
+                .findFirst().orElse(null);
+        return found == null ? null : found.proc;
+    }
+
     public String getBeatitudeString() {
         if (getItem() == null || !getItem().identified || !getItemType().hasBeatitude) {
             return "";

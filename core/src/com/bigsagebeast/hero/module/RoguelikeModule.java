@@ -36,6 +36,7 @@ public class RoguelikeModule extends Module {
 	public static AnnounceWindow announceWindow;
 	public static EquipmentWindow equipWindow;
 	public static HitPointWindow hitPointWindow;
+	public static SpellPointWindow spellPointWindow;
 	public static ExperienceWindow experienceWindow;
 	public static StatBarWindow statBarWindow;
 
@@ -55,6 +56,7 @@ public class RoguelikeModule extends Module {
 		announceWindow = new AnnounceWindow();
 		equipWindow = new EquipmentWindow();
 		hitPointWindow = new HitPointWindow();
+		spellPointWindow = new SpellPointWindow();
 		experienceWindow = new ExperienceWindow();
 		statBarWindow = new StatBarWindow();
 
@@ -65,6 +67,7 @@ public class RoguelikeModule extends Module {
 //		uiEngine.addBlock(statsWindow.getTextBlockParent());
 		uiEngine.addBlock(equipWindow.getTextBlockParent());
 		uiEngine.addBlock(hitPointWindow.getTextBlockParent());
+		uiEngine.addBlock(spellPointWindow.getTextBlockParent());
 		uiEngine.addBlock(experienceWindow.getTextBlockParent());
 		uiEngine.addBlock(statBarWindow.getTextBlockParent());
 	}
@@ -76,6 +79,7 @@ public class RoguelikeModule extends Module {
 		announceWindow.close();
 		equipWindow.close();
 		hitPointWindow.close();
+		spellPointWindow.close();
 		experienceWindow.close();
 		statBarWindow.close();
 	}
@@ -134,10 +138,7 @@ public class RoguelikeModule extends Module {
 					if (e == target)
 						continue;
 					if (Fov.canSee(level, e.pos, target.pos, 15)) {
-						//System.out.println("Can   see: " + e.name + ", " + target.name);
 						visibleMovers.add(target);
-					} else {
-						//System.out.println("Can't see: " + e.name + ", " + target.name);
 					}
 				}
 			}
@@ -153,6 +154,7 @@ public class RoguelikeModule extends Module {
 		}
 		equipWindow.update();
 		hitPointWindow.update();
+		spellPointWindow.update();
 		experienceWindow.update();
 		statBarWindow.update();
 

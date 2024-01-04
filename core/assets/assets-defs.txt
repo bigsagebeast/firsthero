@@ -7,6 +7,7 @@ defs/items/jewelry-identified.json
 defs/items/jewelry-unidentified.json
 defs/items/scrolls-identified.json
 defs/items/scrolls-unidentified.json
+defs/items/misc.json
 defs/items/weapons.json
 defs/movers/animals.json
 defs/movers/goblins.json
@@ -14,5 +15,6 @@ defs/movers/gods.json
 defs/movers/humanoids.json
 defs/movers/sprites.json
 defs/movers/tech.json
+defs/movers/undead.json
 defs/themes/goblin-stronghold.json
 defs/unique/unique.json

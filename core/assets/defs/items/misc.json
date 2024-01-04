@@ -1,0 +1,37 @@
+{
+  "items": {
+    "food.bone": {
+      "name": "bone",
+      "glyphName": "food.bone",
+      "palette": [
+        "white"
+      ],
+      "category": "food",
+      "level": 1,
+      "minCount": 4,
+      "maxCount": 8,
+      "frequency": 20,
+      "procs": {
+        "item.ProcFood": {
+          "satiation": 20,
+          "eatMessage": "Crunch, crunch..."
+        }
+      }
+    },
+    "food.meat": {
+      "name": "cooked meat",
+      "glyphName": "food.meat",
+      "palette": [
+        "white", "red", "brown"
+      ],
+      "category": "food",
+      "level": 1,
+      "procs": {
+        "item.ProcFood": {
+          "satiation": 400,
+          "eatMessage": "Juicy."
+        }
+      }
+    }
+  }
+}

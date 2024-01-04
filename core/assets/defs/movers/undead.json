@@ -1,0 +1,55 @@
+{
+  "movers": {
+    "undead.skeleton": {
+      "name": "skeleton",
+      "peaceful": false,
+      "hitPoints": 8,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "undead.skeleton",
+      "palette": [
+        "white", "red", "brown"
+      ],
+      "isManipulator": true,
+      "experienceAwarded": 15,
+      "threat": 1,
+      "naturalWeaponDamage": 6,
+      "naturalWeaponToHit": 0,
+      "naturalArmorClass": 4,
+      "tags": [
+        "generic-fantasy",
+        "undead"
+      ],
+      "corpseSpawnPercent": 0,
+      "procs": {
+        "monster.ProcDropOnDeath": {
+          "key": "food.bone",
+          "chance": 50,
+          "minCount": 4,
+          "maxCount": 8
+        }
+      }
+    },
+    "undead.zombie": {
+      "name": "zombie",
+      "peaceful": false,
+      "hitPoints": 20,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "undead.zombie",
+      "palette": [
+        "darkgreen", "brown", "tan"
+      ],
+      "isManipulator": true,
+      "experienceAwarded": 20,
+      "threat": 3,
+      "naturalWeaponDamage": 8,
+      "naturalWeaponToHit": -4,
+      "naturalArmorClass": 0,
+      "tags": [
+        "generic-fantasy",
+        "undead"
+      ]
+    }
+  }
+}

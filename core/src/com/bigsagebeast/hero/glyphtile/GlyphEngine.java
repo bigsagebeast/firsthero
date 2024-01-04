@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.bigsagebeast.hero.*;
 import com.bigsagebeast.hero.engine.WindowEngine;
+import com.bigsagebeast.hero.roguelike.game.GameEntities;
+import com.bigsagebeast.hero.roguelike.world.proc.intrinsic.ProcTelepathy;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Entity;
@@ -59,6 +61,7 @@ public class GlyphEngine implements GameLogic {
         loadGlyphFile("tiles/armor.gly");
         loadGlyphFile("tiles/misc.gly");
         loadGlyphFile("tiles/jewelry.gly");
+        loadGlyphFile("tiles/food.gly");
         loadGlyphFile("tiles/feature.gly");
         loadGlyphFile("tiles/aurex.gly");
         loadGlyphFile("tiles/construct.gly");
@@ -141,67 +144,78 @@ public class GlyphEngine implements GameLogic {
         long start = System.currentTimeMillis();
 
         Point size = WindowEngine.getSize(UIManager.NAME_MAIN_WINDOW);
-        //int widthInTiles = (int)((size.x / 2 - 1) / tileWidth);
-        //int heightInTiles = (int)((size.y / 2 - 1) / tileHeight);
         int widthInTiles = (int)((size.x / 2 - 1) / tileWidth());
         int heightInTiles = (int)((size.y / 2 - 1) / tileHeight());
 
+        // TODO monster detection should probably happen outside of the graphics engine...
         if (isDirty()) {
+            boolean isTelepathic = Game.getPlayerEntity().getProcByTypeIncludingEquipment(ProcTelepathy.class) != null;
             for (int x = offsetX - widthInTiles; x <= offsetX + widthInTiles; x++) {
                 for (int y = offsetY - heightInTiles; y <= offsetY + heightInTiles; y++) {
                     // could these ever be different?
                     if (grid.withinBounds(x, y) && level.withinBounds(x, y)) {
                         grid.clearBackground(x, y);
 
-                        if (!level.cell(x, y).explored) {
+                        Entity e = level.getMoversOnTile(new Point(x, y)).stream().findAny().orElse(null);
+                        GlyphTile moverTile = null;
+                        boolean canSeeTelepathic = isTelepathic && e != null && GameEntities.isTelepathicallyVisible(e);
+                        boolean explored = level.cell(x, y).explored;
+
+                        if (!explored && !canSeeTelepathic) {
                             grid.put(GlyphTile.BLANK, x, y);
                             continue;
                         }
 
-                        Terrain t = level.cell(x, y).terrain;
-                        GlyphTile[] blockGlyphs = terrainGlyph.getGlyphTile(t);
-                        String blockCategory = t.getBlockCategory();
-                        String[] matchingBlocks = t.getMatchingBlocks();
-                        int blockDirection = 0;
-                        if (t.getBlockCategory() != null) {
-                            blockDirection = BlockJoin.calculate(
-                                    matchesBlockType(x, y-1, blockCategory, matchingBlocks),
-                                    matchesBlockType(x-1, y, blockCategory, matchingBlocks),
-                                    matchesBlockType(x+1, y, blockCategory, matchingBlocks),
-                                    matchesBlockType(x, y+1, blockCategory, matchingBlocks)
-                            );
-                        }
-                        GlyphTile terrainGlyph = blockGlyphs[blockDirection];
+                        List<GlyphTile> itemTiles = null;
+                        GlyphTile terrainGlyphTile = null;
+                        if (explored) {
+                            Terrain t = level.cell(x, y).terrain;
+                            GlyphTile[] blockGlyphs = terrainGlyph.getGlyphTile(t);
+                            String blockCategory = t.getBlockCategory();
+                            String[] matchingBlocks = t.getMatchingBlocks();
+                            int blockDirection = 0;
+                            if (t.getBlockCategory() != null) {
+                                blockDirection = BlockJoin.calculate(
+                                        matchesBlockType(x, y - 1, blockCategory, matchingBlocks),
+                                        matchesBlockType(x - 1, y, blockCategory, matchingBlocks),
+                                        matchesBlockType(x + 1, y, blockCategory, matchingBlocks),
+                                        matchesBlockType(x, y + 1, blockCategory, matchingBlocks)
+                                );
+                            }
+                            terrainGlyphTile = blockGlyphs[blockDirection];
 
-                        List<GlyphTile> itemTiles = new ArrayList<>();
-                        for (Entity item : level.getItemsOnTile(new Point(x, y))) {
-                            GlyphTile itemTile = entityGlyph.getGlyph(item);
-                            itemTiles.add(itemTile);
+                            itemTiles = new ArrayList<>();
+                            for (Entity item : level.getItemsOnTile(new Point(x, y))) {
+                                GlyphTile itemTile = entityGlyph.getGlyph(item);
+                                itemTiles.add(itemTile);
+                            }
                         }
 
-                        GlyphTile moverTile = null;
-                        Entity e = level.getMoversOnTile(new Point(x, y)).stream().findAny().orElse(null);
                         if (e != null) {
                             moverTile = entityGlyph.getGlyph(e);
                         }
-
-                        if (moverTile != null && level.cell(x, y).visible()) {
+                        boolean canSee = moverTile != null && level.cell(x, y).visible();
+                        if (canSee || canSeeTelepathic) {
                             grid.put(moverTile, x, y);
-                            for (GlyphTile itemTile : itemTiles) {
-                                grid.addBackground(itemTile, x, y);
+                            if (canSee) {
+                                for (GlyphTile itemTile : itemTiles) {
+                                    grid.addBackground(itemTile, x, y);
+                                }
                             }
                         }
                         // TODO: Figure out a better solution for displaying items that aren't presently visible?
-                        else if (itemTiles.size() > 0/* && level.cell(x, y).visible()*/) {
-                            grid.put(itemTiles.get(0), x, y);
-                            for (int i=1; i<itemTiles.size(); i++) {
-                                grid.addBackground(itemTiles.get(i), x, y);
+                        else if (explored) {
+                            if (itemTiles.size() > 0) {
+                                grid.put(itemTiles.get(0), x, y);
+                                for (int i=1; i<itemTiles.size(); i++) {
+                                    grid.addBackground(itemTiles.get(i), x, y);
+                                }
+                            } else {
+                                grid.put(terrainGlyphTile, x, y);
                             }
-                        } else {
-                            grid.put(terrainGlyph, x, y);
-                        }
 
-                        grid.setJitter(x, y, level.getJitterAt(new Point(x, y)));
+                            grid.setJitter(x, y, level.getJitterAt(new Point(x, y)));
+                        }
                     }
                 }
             }
@@ -312,8 +326,8 @@ public class GlyphEngine implements GameLogic {
     }
 
     public float getTileCenterPixelY(int x, int y) {
-        // TODO what is this extra offset???
-        float extraOffset = -30f;
+        // TODO what is this extra offset??? Comes from game window offset vs progress bars
+        float extraOffset = -46f;
         return (y - topTile() + 0.5f) * tileHeight() + marginY + RENDER_OFFSET_Y + extraOffset;
     }
 

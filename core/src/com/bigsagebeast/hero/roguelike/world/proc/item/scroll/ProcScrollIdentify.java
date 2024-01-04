@@ -32,23 +32,33 @@ public class ProcScrollIdentify extends ImmutableProc {
 
     public void openInventoryToIdentify() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
+        Collection<Entity> equipment = Game.getPlayerEntity().getEquippedEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to identify")
                 .withMargins(60, 60);
         boolean anyUnidentified = false;
+        equipment = equipment.stream().filter(ent ->
+                        (!ent.getItem().identified && ent.getItemType().hasBeatitude) || (ent.getItemType().identityHidden && !ent.getItemType().identified))
+                .collect(Collectors.toList());
+        inventory = inventory.stream().filter(ent ->
+                        (!ent.getItem().identified && ent.getItemType().hasBeatitude) || (ent.getItemType().identityHidden && !ent.getItemType().identified))
+                .collect(Collectors.toList());
+        if (!equipment.isEmpty()) {
+            anyUnidentified = true;
+            box.addHeader("*** Equipment ***");
+            for (Entity ent : equipment) {
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+            }
+        }
+
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
-            List<Entity> unidentified = new ArrayList<>();
-            for (Entity ent : ents) {
-                if ((!ent.getItem().identified && ent.getItemType().hasBeatitude) || (ent.getItemType().identityHidden && !ent.getItemType().identified))
-                unidentified.add(ent);
-            }
-            if (unidentified.size() > 0) {
+            if (ents.size() > 0) {
                 box.addHeader("*** " + cat.getName() + " ***");
                 anyUnidentified = true;
             }
-            for (Entity ent : unidentified) {
+            for (Entity ent : ents) {
                 box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
             }
         }

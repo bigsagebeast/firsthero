@@ -90,11 +90,11 @@ public class Itempedia {
         map.put(gold.keyName, gold);
     }
 
-    public Entity create(String key) {
+    public static Entity create(String key) {
         return create(key, null);
     }
 
-    public Entity create(String key, String name) {
+    public static Entity create(String key, String name) {
         ItemType t = map.get(key);
         if (t == null) {
             throw new RuntimeException("Tried to create nonexistent item type " + key);
@@ -133,7 +133,7 @@ public class Itempedia {
         return e;
     }
 
-    public Entity create(String key, int quantity) {
+    public static Entity create(String key, int quantity) {
         ItemType t = map.get(key);
         if (t == null) {
             throw new RuntimeException("Creating invalid item: " + key);

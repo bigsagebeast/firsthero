@@ -280,7 +280,7 @@ public class DefinitionLoader {
         spawner.isMover = getAsString(node, "type", "item").equals("mover");
         spawner.key = getAsString(node, "key", null);
         spawner.threatModifier = getAsInt(node, "level", 0);
-        spawner.percentChance = getAsInt(node, "percent", 100);
+        spawner.percentChance = getAsInt(node, "chance", 100);
         spawner.quantity = getAsInt(node, "quantity", 1);
         spawner.quantityMax = getAsInt(node, "quantityMax", -1);
         JsonNode tags = node.get("tags");

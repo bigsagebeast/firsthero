@@ -27,6 +27,7 @@ public class UIManager {
     public static final String NAME_EQUIPMENT = "equipent";
     public static final String NAME_MAIN_WINDOW = "mainWindow";
     public static final String NAME_HIT_POINTS = "hitpoints";
+    public static final String NAME_SPELL_POINTS = "spellpoints";
     public static final String NAME_EXPERIENCE = "experience";
 
     public static void resize(int width, int height) {
@@ -45,12 +46,15 @@ public class UIManager {
                 width - RIGHT_SIDE_WIDTH_IN_PIXELS, -(height - LOWER_BOX_HEIGHT_IN_PIXELS) - STATBOX_HEIGHT_IN_PIXELS,
                 RIGHT_SIDE_WIDTH_IN_PIXELS, LOWER_BOX_HEIGHT_IN_PIXELS);
         WindowEngine.createFrameBuffer(NAME_MAIN_WINDOW,
-                0, (2 * PROGRESS_HEIGHT_IN_PIXELS),
+                0, (3 * PROGRESS_HEIGHT_IN_PIXELS),
                 width - RIGHT_SIDE_WIDTH_IN_PIXELS, height);
         WindowEngine.createFrameBuffer(NAME_EXPERIENCE,
-                0, -(height - (2 * PROGRESS_HEIGHT_IN_PIXELS)),
+                0, -(height - (3 * PROGRESS_HEIGHT_IN_PIXELS)),
                 width - RIGHT_SIDE_WIDTH_IN_PIXELS, PROGRESS_HEIGHT_IN_PIXELS);
         WindowEngine.createFrameBuffer(NAME_HIT_POINTS,
+                0, -(height - (2 * PROGRESS_HEIGHT_IN_PIXELS)),
+                width - RIGHT_SIDE_WIDTH_IN_PIXELS, PROGRESS_HEIGHT_IN_PIXELS);
+        WindowEngine.createFrameBuffer(NAME_SPELL_POINTS,
                 0, -(height - (1 * PROGRESS_HEIGHT_IN_PIXELS)),
                 width - RIGHT_SIDE_WIDTH_IN_PIXELS, PROGRESS_HEIGHT_IN_PIXELS);
 
@@ -64,6 +68,7 @@ public class UIManager {
         // TODO should be centralized in a List of UIWindows
         if (RoguelikeModule.hitPointWindow != null) {
             RoguelikeModule.hitPointWindow.update();
+            RoguelikeModule.spellPointWindow.update();
             RoguelikeModule.experienceWindow.update();
         }
     }

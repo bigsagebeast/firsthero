@@ -77,6 +77,21 @@
               "rule": "floor",
               "type": "item",
               "key": "feature.campfire"
+            },
+            {
+              /* one guaranteed, maybe 2-3 */
+              "type": "item",
+              "key": "food.meat"
+            },
+            {
+              "type": "item",
+              "key": "food.meat",
+              "chance": 50
+            },
+            {
+              "type": "item",
+              "key": "food.meat",
+              "chance": 50
             }
           ]
         },

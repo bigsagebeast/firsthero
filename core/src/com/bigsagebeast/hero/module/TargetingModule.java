@@ -22,7 +22,8 @@ import java.util.function.Consumer;
 
 public class TargetingModule extends Module {
 
-    private static int ANIMATION_STEP_TIME = 1;
+    private static final int ANIMATION_STEP_TIME = 1;
+    private static final int Y_OFFSET = -16;
     private OperationMode operationMode;
     public TargetMode targetMode;
     public Point targetTile;
@@ -194,7 +195,7 @@ public class TargetingModule extends Module {
             // TODO better font centering calculation
             TextBlock tb = new TextBlock(symbol, UIManager.NAME_MAIN_WINDOW,
                     fontSize,
-                    0, 0, centerPixel.x - (fontSize / 3), centerPixel.y - (fontSize / 3),
+                    0, 0, centerPixel.x - (fontSize / 3), centerPixel.y - (fontSize / 3) + Y_OFFSET,
                     color);
             // ugly!
             if (tb.text == "|") {
@@ -263,7 +264,7 @@ public class TargetingModule extends Module {
         float fontSize = RoguelikeModule.FONT_SIZE * 1.2f * GameLoop.glyphEngine.zoom;
         // TODO update this calculation at the same time as the targeting one
         animationBlock.pixelOffsetX = centerPixel.x - (fontSize / 3);
-        animationBlock.pixelOffsetY = centerPixel.y - (fontSize / 3);
+        animationBlock.pixelOffsetY = centerPixel.y - (fontSize / 3) + Y_OFFSET;
         if (animationBlock.text == "|") {
             animationBlock.pixelOffsetX += (fontSize / 3);
         }
