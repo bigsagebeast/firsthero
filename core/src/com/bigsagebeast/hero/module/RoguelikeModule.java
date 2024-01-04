@@ -271,7 +271,7 @@ public class RoguelikeModule extends Module {
 					popupCommands();
 			}
 		}
-		if (shift) {
+		if (shift && !ctrl && !alt) {
 			switch (keycode) {
 				case Keys.LEFT:
 				case Keys.NUMPAD_4:
@@ -332,6 +332,17 @@ public class RoguelikeModule extends Module {
 				case Keys.RIGHT_BRACKET:
 					GameSpecials.wish();
 					break;
+			}
+		}
+		if (!shift && ctrl && !alt) {
+			switch (keycode) {
+				case Keys.RIGHT_BRACKET:
+					for (String key : Itempedia.map.keySet()) {
+						if (!Itempedia.map.get(key).isFeature) {
+							int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
+							Game.getPlayerEntity().acquireWithStacking(Itempedia.create(key, quantity));
+						}
+					}
 			}
 		}
 		game.turn();

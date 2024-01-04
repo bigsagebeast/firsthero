@@ -138,7 +138,7 @@ public class Itempedia {
         if (t == null) {
             throw new RuntimeException("Creating invalid item: " + key);
         }
-        if (!t.stackable) {
+        if (!t.stackable && quantity != 1) {
             throw new RuntimeException("Tried to create a stack of unstackable " + key);
         }
         Entity e = create(key);

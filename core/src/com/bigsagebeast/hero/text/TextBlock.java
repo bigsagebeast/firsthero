@@ -36,7 +36,8 @@ public class TextBlock implements GameLogic {
 	public Color color;
 	public float pixelOffsetX;
 	public float pixelOffsetY;
-	
+	public boolean hidden;
+
 	// tickStart: What tick to display the first letter in this block.
 	// used during tick
 	private Float secondStart;
@@ -282,6 +283,9 @@ public class TextBlock implements GameLogic {
 	
 	public void render(Graphics g, GraphicsState gState, float offsetX, float offsetY, float pixelOffsetX, float pixelOffsetY) {
 		if (frameBufferKey != null && !WindowEngine.isDirty(frameBufferKey)) {
+			return;
+		}
+		if (hidden) {
 			return;
 		}
 		if (!isLocked) {

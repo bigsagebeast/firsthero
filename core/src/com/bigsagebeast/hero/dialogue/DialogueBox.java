@@ -33,10 +33,13 @@ public class DialogueBox {
     private int selection = -1;
     private Object finalValue = null;
     private boolean cancelable = true;
+    private int linesFit;
 
     private TextBlock title;
     private TextBlock footer;
     private TextBlock lineParent;
+    private TextBlock moreTop;
+    private TextBlock moreBottom;
     private List<DialogueLine> lines = new ArrayList<>();
     private List<Object> mapping = new ArrayList<>();
 
@@ -118,7 +121,7 @@ public class DialogueBox {
 
     public void autoHeight() {
         int textLine = lines.size();
-        height = (textLine * FONT_SIZE) + FOOTER_OFFSET_FROM_BOTTOM + 16; // TODO magic number
+        height = (textLine * FONT_SIZE) + FOOTER_OFFSET_FROM_BOTTOM + 32; // TODO magic number
         if (!footerText.isEmpty()) {
             height += FONT_SIZE;
         }
@@ -134,16 +137,30 @@ public class DialogueBox {
         footer = new TextBlock(footerText, null, FONT_SIZE, 0, 0,
                 x + FOOTER_OFFSET_FROM_LEFT, y + height - FOOTER_OFFSET_FROM_BOTTOM,
                 Color.YELLOW);
+        int pixelsForLines = height - FOOTER_OFFSET_FROM_BOTTOM - ITEM_OFFSET_FROM_TOP;
+        linesFit = pixelsForLines / FONT_SIZE;
 
         textEngine.addBlock(lineParent);
         textEngine.addBlock(footer);
         textEngine.addBlock(title);
+
+        moreTop = new TextBlock("(More)", null, FONT_SIZE, 0, 0,0, 0, Color.YELLOW);
+        moreBottom = new TextBlock("(More)", null, FONT_SIZE, 0, linesFit - 1,0, 0, Color.YELLOW);
+        moreTop.hidden = true;
+        moreBottom.hidden = true;
+        lineParent.addChild(moreTop);
+        lineParent.addChild(moreBottom);
+
 
         for (int i=0; i<lines.size(); i++) {
             DialogueLine line = lines.get(i);
             line.textBlock = new TextBlock(line.text, null, FONT_SIZE, 0, i,
                     0, 0, Color.WHITE, line.glyphs);
             lineParent.addChild(line.textBlock);
+        }
+        if (lines.size() > linesFit) {
+            // make space for 'more'
+            linesFit -= 2;
         }
 
         selectNext();
@@ -174,6 +191,7 @@ public class DialogueBox {
             selection = nextSelection;
             lines.get(nextSelection).textBlock.text = ">" + lines.get(nextSelection).textBlock.text.substring(1);
         }
+        shiftLines();
     }
 
     private void selectPrevious() {
@@ -199,7 +217,40 @@ public class DialogueBox {
             selection = nextSelection;
             lines.get(nextSelection).textBlock.text = ">" + lines.get(nextSelection).textBlock.text.substring(1);
         }
+        shiftLines();
+    }
 
+    private int topLine() {
+        int middleLine = linesFit / 2;
+        if (selection < middleLine) {
+            return 0;
+        } else if (selection > lines.size() - middleLine) {
+            return lines.size() - linesFit;
+        } else {
+            return selection - middleLine;
+        }
+    }
+
+    private void shiftLines() {
+        if (linesFit >= lines.size()) {
+            return;
+        }
+        int topLine = topLine();
+        int bottomLine = topLine() + linesFit;
+        moreTop.hidden = !(topLine > 0);
+        moreBottom.hidden = !(bottomLine < lines.size() - 1);
+
+        for (int i=0; i<lines.size(); i++) {
+            lines.get(i).textBlock.y = i - topLine;
+            if (i == topLine && i != 0 || i > bottomLine && bottomLine < lines.size() - 1) {
+                // TODO: I feel like there's an off-by-one somewhere here
+                lines.get(i).textBlock.hidden = true;
+            } else if (i < topLine || i > bottomLine) {
+                lines.get(i).textBlock.hidden = true;
+            } else {
+                lines.get(i).textBlock.hidden = false;
+            }
+        }
     }
 
     public void close() {
