@@ -307,31 +307,14 @@ public class Entity {
         return false;
     }
 
-    /*
-    // returns 'true' if an attempt was made
-    public boolean tryClose(Entity actor) {
-        boolean canClose = false;
-        for (Proc p : procs) {
-            Boolean canCloseThisProc = p.preBeClosed(this, actor);
-            if (canCloseThisProc == Boolean.TRUE) {
-                canClose = true;
-            } else if (canCloseThisProc == Boolean.FALSE) {
-                // we tried, this probably uses up a turn
-                // and more importantly, means we won't say "You can't open anything there."
-                return true;
-            }
-        }
-        if (canClose) {
-            for (Proc p : procs) {
-                p.postBeClosed(this, actor);
-            }
-            return true;
-        }
-        return false;
+    public boolean pickupItem(Entity target) {
+        return pickupItemWithQuantity(target, target.getItem().quantity);
     }
-     */
 
-    public boolean pickup(Entity target) {
+    public boolean pickupItemWithQuantity(Entity target, int quantity) {
+        if (quantity == 0) {
+            return false;
+        }
         boolean canBePickedUp = false;
         for (Proc p : target.procs) {
             Boolean attempt = p.preBePickedUp(target, this);
@@ -364,22 +347,31 @@ public class Entity {
             return false;
         }
 
-        Game.announceVis(this, target, "You pick up " + target.getVisibleNameDefinite() + ".",
+        Entity pickupTarget;
+        if (quantity == target.getItem().quantity) {
+            pickupTarget = target;
+        } else {
+            pickupTarget = target.split(quantity);
+        }
+
+        Game.announceVis(this, target, "You pick up " + pickupTarget.getVisibleNameDefinite() + ".",
                 "You are picked up by " + getVisibleNameDefinite() + ".",
-                this.getVisibleNameDefinite() + " picks up " + target.getVisibleNameDefinite() + ".",
+                this.getVisibleNameDefinite() + " picks up " + pickupTarget.getVisibleNameDefinite() + ".",
                 null);
 
-        Game.getLevel().removeEntity(target);
+        if (target == pickupTarget) {
+            Game.getLevel().removeEntity(target);
+        }
 
-        target = acquireWithStacking(target);
+        pickupTarget = acquireWithStacking(pickupTarget);
 
         Entity stackedInto = null;
         for (Proc p : this.procs) {
-            p.postDoPickup(this, target);
+            p.postDoPickup(this, pickupTarget);
         }
         // careful with this: if stacked, this operates on the entire stack
         for (Proc p : target.procs) {
-            p.postBePickedUp(target, this);
+            p.postBePickedUp(pickupTarget, this);
         }
         return true;
     }
@@ -626,15 +618,28 @@ public class Entity {
     }
 
     public void dropItem(Entity target) {
+        dropItemWithQuantity(target, target.getItem().quantity);
+    }
+
+    public void dropItemWithQuantity(Entity target, int quantity) {
+        if (quantity == 0) {
+            return;
+        }
         if (!inventoryIds.contains(target.entityId)) {
             throw new RuntimeException("Tried to drop item not in inventory: " + target.name);
         }
+        Entity dropped;
+        if (quantity == target.getItem().quantity) {
+            dropped = target;
+            inventoryIds.remove(dropped.entityId);
+        } else {
+            dropped = target.split(quantity);
+        }
         // TODO predrop, postdrop
-        inventoryIds.remove(target.entityId);
-        Game.getLevel().addEntityWithStacking(target, pos);
-        Game.announceVis(this, target, "You drop " + target.getVisibleNameDefinite() + ".",
+        Game.getLevel().addEntityWithStacking(dropped, pos);
+        Game.announceVis(this, target, "You drop " + dropped.getVisibleNameDefinite() + ".",
                 this.getVisibleNameDefinite() + " drops you.",
-                this.getVisibleNameDefinite() + " drops " + target.getVisibleNameIndefiniteOrSpecific(),
+                this.getVisibleNameDefinite() + " drops " + dropped.getVisibleNameIndefiniteOrSpecific(),
                 null);
     }
 

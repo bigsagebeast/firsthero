@@ -362,7 +362,7 @@ public class Game {
 		}
 	}
 
-	public void cmdPickUp() {
+	public void cmdPickup() {
 		List<Entity> itemsHere = level.getItemsOnTile(player.getEntity().pos);
 		itemsHere = itemsHere.stream().filter(i -> !i.getItemType().isFeature).collect(Collectors.toList());
 		if (itemsHere.isEmpty()) {
@@ -370,13 +370,26 @@ public class Game {
 			return;
 		}
 		if (itemsHere.size() == 1) {
-			if (!player.getEntity().pickup(itemsHere.get(0))) {
-				announce("You can't pick up " + itemsHere.get(0).getVisibleNameDefinite() + ".");
+			if (itemsHere.get(0).getItem().quantity == 1) {
+				pickupWithQuantity(itemsHere.get(0), 1);
 			} else {
-				passTime(Game.ONE_TURN);
+				Inventory.handleFloorToGetResponse(itemsHere.get(0));
 			}
 		} else {
 			Inventory.openFloorToGet();
+		}
+	}
+
+	public static void pickupWithQuantity(Entity entity, int quantity) {
+		if (quantity == 0) {
+			return;
+		}
+		if (!player.getEntity().pickupItemWithQuantity(entity, quantity)) {
+			// TODO: This message will be wrong if we attempt to pick up a small number of them
+			// Maybe this message needs to happen elsewhere?
+			announce("You can't pick up " + entity.getVisibleNameDefinite() + ".");
+		} else {
+			passTime(Game.ONE_TURN);
 		}
 	}
 

@@ -92,6 +92,13 @@ public class TextEntryBox {
         return this;
     }
 
+    // only works based on title
+    public TextEntryBox autoWidth() {
+        width = (titleText.length() + 2) * FONT_SIZE;
+        x = (Graphics.width - width) / 2;
+        return this;
+    }
+
     public void compile(TextEngine textEngine) {
         textEntryBlock = new TextBlock("", null, FONT_SIZE, 0, 0,
                 x + ITEM_OFFSET_FROM_LEFT, y + ITEM_OFFSET_FROM_TOP,
@@ -151,7 +158,7 @@ public class TextEntryBox {
         if (keycode >= Input.Keys.A && keycode <= Input.Keys.Z) {
             equivalent = String.valueOf((char)(keycode - Input.Keys.A + 'a'));
         } else if (keycode >= Input.Keys.NUM_0 && keycode <= Input.Keys.NUM_9) {
-            equivalent = String.valueOf((char)(keycode - Input.Keys.A + '0'));
+            equivalent = String.valueOf((char)(keycode - Input.Keys.NUM_0 + '0'));
         } else if (keycode == Input.Keys.SPACE) {
             equivalent = " ";
         } else if (keycode == Input.Keys.MINUS) {
@@ -174,7 +181,7 @@ public class TextEntryBox {
 
             close();
         }
-        textEntryBlock.pixelOffsetX = (width/2) - (textEntry.length() * FONT_SIZE / 2);
+        textEntryBlock.pixelOffsetX = x + (width/2) - (textEntry.length() * FONT_SIZE / 2);
         textEntryBlock.text = textEntry + "|";
         return true;
     }

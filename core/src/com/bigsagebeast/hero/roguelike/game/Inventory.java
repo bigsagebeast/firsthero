@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
+import com.bigsagebeast.hero.dialogue.TextEntryBox;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.ItemCategory;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
@@ -12,11 +13,18 @@ import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class Inventory {
 
     private static BodyPart chosenBodyPartForDialogue;
+
+    private static Entity promptQuantityEntity;
+    private static int promptQuantityMin;
+    private static int promptQuantityMax;
+    private static int promptQuantityDefault;
+    private static BiConsumer<Entity, Integer> promptQuantityHandler;
 
     public static void doWield() {
 
@@ -98,12 +106,12 @@ public class Inventory {
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryToEquipResponse);
     }
 
-    public static void handleInventoryToEquipResponse(Object chosenEntity) {
-        Entity e = (Entity)chosenEntity;
-        if (e == Game.getPlayerEntity()) {
+    public static void handleInventoryToEquipResponse(Object chosenObject) {
+        Entity chosenEntity = (Entity)chosenObject;
+        if (chosenEntity == Game.getPlayerEntity()) {
             Game.getPlayerEntity().equip(null, chosenBodyPartForDialogue);
-        } else if (e != null) {
-            Game.getPlayerEntity().equip(e, chosenBodyPartForDialogue);
+        } else if (chosenEntity != null) {
+            Game.getPlayerEntity().equip(chosenEntity, chosenBodyPartForDialogue);
             GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
         }
     }
@@ -127,12 +135,21 @@ public class Inventory {
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryToDropResponse);
     }
 
-    public static void handleInventoryToDropResponse(Object chosenEntity) {
-        Entity e = (Entity)chosenEntity;
-        if (e != null) {
+    public static void handleInventoryToDropResponse(Object chosenObject) {
+        Entity chosenEntity = (Entity)chosenObject;
+        if (chosenEntity != null) {
+            if (chosenEntity.getItem().quantity == 1) {
+                dropWithQuantity(chosenEntity, 1);
+            } else {
+                promptQuantity("Drop", chosenEntity, Inventory::dropWithQuantity);
+            }
+        }
+    }
 
-            Game.getPlayerEntity().dropItem(e);
-            GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
+    public static void dropWithQuantity(Entity entity, int quantity) {
+        if (quantity > 0) {
+            Game.getPlayerEntity().dropItemWithQuantity(entity, quantity);
+            Game.passTime(Game.ONE_TURN);
         }
     }
 
@@ -155,13 +172,13 @@ public class Inventory {
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleFloorToGetResponse);
     }
 
-    public static void handleFloorToGetResponse(Object chosenEntity) {
-        Entity e = (Entity)chosenEntity;
-        if (e != null) {
-            if (!Game.getPlayerEntity().pickup(e)) {
-                Game.announce("You can't pick up " + e.getVisibleNameDefinite() + ".");
+    public static void handleFloorToGetResponse(Object chosenObject) {
+        Entity chosenEntity = (Entity)chosenObject;
+        if (chosenEntity != null) {
+            if (chosenEntity.getItem().quantity == 1) {
+                Game.pickupWithQuantity(chosenEntity, 1);
             } else {
-                GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
+                promptQuantity("Pick up", chosenEntity, Game::pickupWithQuantity);
             }
         }
     }
@@ -343,4 +360,32 @@ public class Inventory {
 
     public static void handleInventoryResponse(Object chosenEntity) {
     }
+
+    public static void promptQuantity(String command, Entity entity, BiConsumer<Entity, Integer> handler) {
+        promptQuantityEntity = entity;
+        promptQuantityMin = 0;
+        promptQuantityMax = entity.getItem().quantity;
+        promptQuantityDefault = promptQuantityMax;
+        promptQuantityHandler = handler;
+        TextEntryBox box = new TextEntryBox()
+                .withMaxLength(6)
+                .withTitle(command + " how many? (default " + promptQuantityDefault + ")")
+                .withMargins(60, 60)
+                .autoHeight()
+                .autoWidth();
+
+        GameLoop.textEntryModule.openTextEntryBox(box, Inventory::promptQuantityResponse);
+    }
+
+    public static void promptQuantityResponse(String response) {
+        int intResponse = 0;
+        try {
+            intResponse = Integer.parseInt(response);
+        } catch (NumberFormatException e) {
+            intResponse = promptQuantityDefault;
+        }
+
+        promptQuantityHandler.accept(promptQuantityEntity, Math.max(Math.min(intResponse, promptQuantityMax), promptQuantityMin));
+    }
+
 }

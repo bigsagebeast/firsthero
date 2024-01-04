@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.module;
 
 import com.badlogic.gdx.Input.Keys;
 import com.bigsagebeast.hero.roguelike.game.GameSpecials;
+import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.ui.*;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.GameState;
@@ -237,7 +238,7 @@ public class RoguelikeModule extends Module {
 					game.cmdEat();
 					break;
 				case Keys.G:
-					game.cmdPickUp();
+					game.cmdPickup();
 					break;
 				case Keys.L:
 					game.cmdLook();
@@ -322,8 +323,8 @@ public class RoguelikeModule extends Module {
 					game.cmdStairsUp();
 					break;
 				case Keys.BACKSLASH:
-					Game.getPlayerEntity().receiveItem(Game.itempedia.create("scroll.magic.map", 100));
-					Game.getPlayerEntity().receiveItem(Game.itempedia.create("scroll.identify", 100));
+					Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.magic.map", 100));
+					Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.identify", 100));
 					break;
 				case Keys.LEFT_BRACKET:
 					GameSpecials.wishSummon();
@@ -386,7 +387,7 @@ public class RoguelikeModule extends Module {
 				game.cmdEat();
 				break;
 			case "g":
-				game.cmdPickUp();
+				game.cmdPickup();
 				break;
 			case "i":
 				game.cmdInventory();
