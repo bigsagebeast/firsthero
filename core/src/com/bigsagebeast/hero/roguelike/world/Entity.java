@@ -588,11 +588,21 @@ public class Entity {
             Entity mergeTarget = EntityTracker.get(mergeTargetId);
             if (mergeTarget.canStackWith(target)) {
                 stackedInto = mergeTarget;
-                mergeTarget.beStackedWith(target);
-                target.destroy();
             }
         }
-        if (stackedInto == null) {
+        if (stackedInto == null && body.hasBodyPart(BodyPart.RANGED_AMMO)) {
+            Entity ammo = body.getEquipment(BodyPart.RANGED_AMMO);
+            if (ammo != null && ammo.canStackWith(target)) {
+                stackedInto = ammo;
+                if (this == Game.getPlayerEntity()) {
+                    Game.announce("You add " + target.getVisibleNameIndefiniteOrSpecific() + " to your ammo.");
+                }
+            }
+        }
+        if (stackedInto != null) {
+            stackedInto.beStackedWith(target);
+            target.destroy();
+        } else {
             inventoryIds.add(target.entityId);
         }
         return (stackedInto != null) ? stackedInto : target;

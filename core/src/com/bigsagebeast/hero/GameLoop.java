@@ -1,8 +1,6 @@
 package com.bigsagebeast.hero;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -122,84 +120,108 @@ public class GameLoop implements GameLogic, InputProcessor {
 	}
 
 	public void update(GameState state) {
-		for (Module m : allModules) {
-			if (m.isRunning()) {
-				m.update(state);
-			}
-		}
-		for (QueuedKeypress q : queuedKeyTyped) {
+		try {
 			for (Module m : allModules) {
 				if (m.isRunning()) {
-					if (m.keyTyped((char) q.keycode, q.ctrl, q.alt)) {
-						break;
+					m.update(state);
+				}
+			}
+			for (QueuedKeypress q : queuedKeyTyped) {
+				for (Module m : allModules) {
+					if (m.isRunning()) {
+						if (m.keyTyped((char) q.keycode, q.ctrl, q.alt)) {
+							break;
+						}
 					}
 				}
 			}
-		}
-		queuedKeyTyped.clear();
-		for (QueuedKeypress q : queuedKeyDown) {
-			for (Module m : allModules) {
-				if (m.isRunning()) {
-					if (m.keyDown(q.keycode, q.shift, q.ctrl, q.alt)) {
-						break;
+			queuedKeyTyped.clear();
+			for (QueuedKeypress q : queuedKeyDown) {
+				for (Module m : allModules) {
+					if (m.isRunning()) {
+						if (m.keyDown(q.keycode, q.shift, q.ctrl, q.alt)) {
+							break;
+						}
 					}
 				}
 			}
-		}
-		for (Float f : queuedScrollEvents) {
-			for (Module m : allModules) {
-				if (m.isRunning()) {
-					if (m.scrolled(f)) {
-						break;
+			for (Float f : queuedScrollEvents) {
+				for (Module m : allModules) {
+					if (m.isRunning()) {
+						if (m.scrolled(f)) {
+							break;
+						}
 					}
 				}
 			}
+			queuedKeyDown.clear();
+			effectEngine.update(state);
+			textEngine.update(state);
+			uiEngine.update(state);
+			glyphEngine.update(state);
+		} catch (Exception e) {
+			logStackTrace(e);
+			throw e;
 		}
-		queuedKeyDown.clear();
-		effectEngine.update(state);
-		textEngine.update(state);
-		uiEngine.update(state);
-		glyphEngine.update(state);
 	}
 	
 	public void render(Graphics g, GraphicsState gState) {
-		ShapeRenderer shapeBatch = new ShapeRenderer();
-		shapeBatch.begin(ShapeType.Filled);
-	    shapeBatch.setColor(0.1f, 0.1f, 0.1f, 1.0f);
-	    shapeBatch.rect(0, 0, g.getViewport().getWorldWidth(), g.getViewport().getWorldHeight());
-	    shapeBatch.end();
+		try {
+			ShapeRenderer shapeBatch = new ShapeRenderer();
+			shapeBatch.begin(ShapeType.Filled);
+			shapeBatch.setColor(0.1f, 0.1f, 0.1f, 1.0f);
+			shapeBatch.rect(0, 0, g.getViewport().getWorldWidth(), g.getViewport().getWorldHeight());
+			shapeBatch.end();
 
-		long startAll = System.currentTimeMillis();
-		long start = System.currentTimeMillis();
-		if (cutsceneModule.isRunning()) {
-			cutsceneModule.render(g, gState);
+			long startAll = System.currentTimeMillis();
+			long start = System.currentTimeMillis();
+			if (cutsceneModule.isRunning()) {
+				cutsceneModule.render(g, gState);
+			}
+			g.startBatch();
+			if (roguelikeModule.isRunning()) {
+				glyphEngine.render(g, gState);
+			}
+			HeroGame.updateTimer("ge", System.currentTimeMillis() - start);
+			start = System.currentTimeMillis();
+			uiEngine.render(g, gState);
+			HeroGame.updateTimer("uie", System.currentTimeMillis() - start);
+			WindowEngine.setAllClean();
+			start = System.currentTimeMillis();
+			if (roguelikeModule.isRunning()) {
+				WindowEngine.render(g);
+			}
+			HeroGame.updateTimer("we", System.currentTimeMillis() - start);
+			g.endBatch();
+			start = System.currentTimeMillis();
+			effectEngine.render(g, gState);
+			HeroGame.updateTimer("ee", System.currentTimeMillis() - start);
+			start = System.currentTimeMillis();
+			g.startBatch();
+			textEngine.render(g, gState);
+			HeroGame.updateTimer("te", System.currentTimeMillis() - start);
+			g.endBatch();
+			HeroGame.updateTimer("all", System.currentTimeMillis() - startAll);
+		} catch (Exception e) {
+			logStackTrace(e);
+			throw e;
 		}
-	    g.startBatch();
-		if (roguelikeModule.isRunning()) {
-			glyphEngine.render(g, gState);
-		}
-		HeroGame.updateTimer("ge", System.currentTimeMillis() - start);
-		start = System.currentTimeMillis();
-		uiEngine.render(g, gState);
-		HeroGame.updateTimer("uie", System.currentTimeMillis() - start);
-		WindowEngine.setAllClean();
-		start = System.currentTimeMillis();
-		if (roguelikeModule.isRunning()) {
-			WindowEngine.render(g);
-		}
-		HeroGame.updateTimer("we", System.currentTimeMillis() - start);
-		g.endBatch();
-		start = System.currentTimeMillis();
-		effectEngine.render(g, gState);
-		HeroGame.updateTimer("ee", System.currentTimeMillis() - start);
-		start = System.currentTimeMillis();
-		g.startBatch();
-	    textEngine.render(g, gState);
-		HeroGame.updateTimer("te", System.currentTimeMillis() - start);
-	    g.endBatch();
-		HeroGame.updateTimer("all", System.currentTimeMillis() - startAll);
 	}
-	
+
+	public void logStackTrace(Exception exception) {
+		try (FileWriter fileWriter = new FileWriter("first-hero-crashlog.txt");
+			 PrintWriter printWriter = new PrintWriter(fileWriter)) {
+
+			// Write the exception details to the file
+			exception.printStackTrace(printWriter);
+
+		} catch (IOException e) {
+			// Handle IOException, e.g., log it or print an error message
+			e.printStackTrace();
+		}
+	}
+
+
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub

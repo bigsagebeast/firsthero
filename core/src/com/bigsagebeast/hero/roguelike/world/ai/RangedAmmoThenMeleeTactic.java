@@ -12,7 +12,6 @@ import java.util.List;
 
 public class RangedAmmoThenMeleeTactic extends Tactic {
 
-	Point lastSeen = null;
 	int ammo;
 
 	public RangedAmmoThenMeleeTactic(int ammo) {
@@ -32,7 +31,7 @@ public class RangedAmmoThenMeleeTactic extends Tactic {
 		}
 		if (target != null && e.canSee(target) && distance < e.naturalRangedWeaponRange) {
 			// maybe stand there instead of shooting
-			if (Math.random() < 0.5) {
+			if (Math.random() < 0.25) {
 				pm.setDelay(e, e.getMoveCost());
 				return true;
 			}
@@ -41,67 +40,19 @@ public class RangedAmmoThenMeleeTactic extends Tactic {
 			pm.setDelay(e, e.getMoveCost());
 			return true;
 		}
-		return executeChaseAndMelee(e, pm);
-	}
 
-	public boolean executeChaseAndMelee(Entity e, ProcMover pm) {
+		// fall back to chase and melee
 		if (pm.targetEntityId == EntityTracker.NONE) {
 			if (lastSeen != null) {
-				List<Point> path = AStar.path(Game.getLevel(), e, e.pos, lastSeen);
-				if (path == null || path.size() == 0) {
-					lastSeen = null;
-					return false;
+				if (!huntLastSeen(e, pm)) {
+					return wander(e, pm);
 				}
-				Point first = path.get(0);
-				if (first == null) {
-					lastSeen = null;
-					// wait around
-					return false;
-				} else {
-					Compass dir = Compass.to(e.pos, first);
-					if (Game.random.nextInt(8) == 0) {
-						dir = Compass.neighbors(dir).get(Game.random.nextInt(2));
-					}
-					Game.npcMoveBy(e, pm, dir.getX(), dir.getY());
-				}
-			} else {
-				if (Math.random() < 0.5) {
-					Compass direction = Compass.randomDirection();
-					if (Game.canMoveBy(e, direction)) {
-						Game.npcMoveBy(e, pm, direction.getX(), direction.getY());
-					}
-				} else {
-					pm.setDelay(e, Game.ONE_TURN);
-				}
+			}
+			else {
+				return wander(e, pm);
 			}
 		} else {
-			Entity target = EntityTracker.get(pm.targetEntityId);
-			lastSeen = target.pos;
-			List<Point> path = AStar.path(Game.getLevel(), e, e.pos, target.pos);
-			if (path == null || path.size() == 0 || path.get(0) == null) {
-				if (Math.random() < 0.5) {
-					Compass direction = Compass.randomDirection();
-					if (Game.canMoveBy(e, direction)) {
-						Game.npcMoveBy(e, pm, direction.getX(), direction.getY());
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			}
-			Point first = path.get(0);
-			Compass dir = Compass.to(e.pos, first);
-			if (target.pos.equals(first)) {
-				Game.npcAttack(e, pm, dir.getX(), dir.getY());
-			} else {
-				if (Game.random.nextInt(8) == 0) {
-					dir = Compass.neighbors(dir).get(Game.random.nextInt(2));
-				}
-				Game.npcMoveBy(e, pm, dir.getX(), dir.getY());
-				return true;
-			}
+			return chaseSeenPlayer(e, pm);
 		}
 		return false;
 	}

@@ -89,7 +89,7 @@ public class TargetingModule extends Module {
         this.handler = handler;
         // TODO draw black boxes over the top and bottom of the main window
         if (targetMode.look) {
-            instructions = new TextBlock("space to finish looking around", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
+            instructions = new TextBlock("Tab to cycle targets, space to finish looking around", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
                     0, 0, 20, 0, Color.WHITE);
         } else {
             instructions = new TextBlock("'t' to select target, tab to cycle targets, space to cancel", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
@@ -119,7 +119,9 @@ public class TargetingModule extends Module {
         if (!dirty) {
             return;
         }
-        GameLoop.descriptionModule.terminate();
+        if (targetMode.look) {
+            GameLoop.descriptionModule.terminate();
+        }
         // TODO fix positioning
         Point windowSize = WindowEngine.getSize(UIManager.NAME_MAIN_WINDOW);
         Point windowOffset = WindowEngine.getOffset(UIManager.NAME_MAIN_WINDOW);
@@ -141,7 +143,9 @@ public class TargetingModule extends Module {
                 } else {
                     description.text = "You see " + targetMover.getVisibleNameIndefiniteOrSpecific() + ".";
                 }
-                GameLoop.descriptionModule.lookAtEntity(targetMover);
+                if (targetMode.look) {
+                    GameLoop.descriptionModule.lookAtEntity(targetMover);
+                }
             } else {
                 // TODO fetch a text block etc
                 List<Entity> targetItems = Game.getLevel().getItemsOnTile(targetTile);
@@ -154,8 +158,8 @@ public class TargetingModule extends Module {
                 } else {
                     description.text = "You see " + Game.getLevel().cell(targetTile).terrain.getDescription() + ".";
                 }
-                if (!targetItems.isEmpty()) {
-                    GameLoop.descriptionModule.lookAtEntity(targetItems.get(0));
+                if (targetMode.look && !targetItems.isEmpty()) {
+                    //GameLoop.descriptionModule.lookAtEntity(targetItems.get(0));
                 }
             }
         } else {

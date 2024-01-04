@@ -13,8 +13,8 @@ public class BodyPart {
     public static BodyPart HANDS = new BodyPart("hands", "Hands", 5);
     public static BodyPart FEET = new BodyPart("feet", "Feet", 6);
 
-    public static BodyPart LEFT_RING = new BodyPart("left ring", "l.ring", 6);
-    public static BodyPart RIGHT_RING = new BodyPart("right ring", "r.ring", 6);
+    public static BodyPart LEFT_RING = new BodyPart("left ring", "L.ring", 6);
+    public static BodyPart RIGHT_RING = new BodyPart("right ring", "R.ring", 6);
 
     public static BodyPart RANGED_WEAPON = new BodyPart("ranged weapon", "Ranged", 7);
     public static BodyPart RANGED_AMMO = new BodyPart("ammunition", "Ammo", 8);

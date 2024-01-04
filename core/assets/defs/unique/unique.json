@@ -63,7 +63,8 @@
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": 0,
       "naturalArmorClass": 7,
-      "gender": "NONBINARY"
+      "gender": "NONBINARY",
+      "wandering": false
     },
     "pc.deity": {
       "name": "yourself",
@@ -80,7 +81,8 @@
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": 0,
       "naturalArmorClass": 7,
-      "gender": "NONBINARY"
+      "gender": "NONBINARY",
+      "wandering": false
     },
     "pc.farmboy": {
       "name": "Mortal Farmboy",
@@ -97,7 +99,8 @@
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": 0,
       "naturalArmorClass": 7,
-      "gender": "NONBINARY"
+      "gender": "NONBINARY",
+      "wandering": false
     }
   }
 }
