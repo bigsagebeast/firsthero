@@ -15,6 +15,7 @@ import com.bigsagebeast.hero.module.*;
 import com.bigsagebeast.hero.engine.WindowEngine;
 import com.bigsagebeast.hero.glyphtile.GlyphEngine;
 import com.bigsagebeast.hero.logic.EffectEngine;
+import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.DefinitionLoader;
 import com.bigsagebeast.hero.chat.ChatBook;
 import com.bigsagebeast.hero.chat.ChatLoader;
@@ -32,6 +33,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final IntroModule introModule = new IntroModule();
 	public static final TitleScreenModule titleModule = new TitleScreenModule();
 	public static final RoguelikeModule roguelikeModule = new RoguelikeModule();
+	public static final DuelModule duelModule = new DuelModule();
 	public static final PopupModule popupModule = new PopupModule();
 	public static final DialogueBoxModule dialogueBoxModule = new DialogueBoxModule();
 	public static final TargetingModule targetingModule = new TargetingModule();
@@ -92,6 +94,8 @@ public class GameLoop implements GameLogic, InputProcessor {
 				FileHandle defFileHandle = Gdx.files.internal(defFilePath);
 				DefinitionLoader.loadFile(defFileHandle);
 			}
+
+			Game.initialize();
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
 		}
@@ -114,6 +118,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		allModules.add(introModule);
 		allModules.add(titleModule);
 		allModules.add(roguelikeModule);
+		allModules.add(duelModule);
 		allModules.add(flowModule);
 
 		introModule.start();

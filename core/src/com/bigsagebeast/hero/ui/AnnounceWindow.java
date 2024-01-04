@@ -12,11 +12,11 @@ public class AnnounceWindow extends UIWindow {
 	private int windowWidth;
 	private int windowHeight;
 	private int paraWidth;
-	private int allowedSpace = 10;
+	private int allowedSpace = 11;
 	private int slack = 0;
 
-	List<String> lines = new ArrayList<String>();
-	List<TextBlock> lineBlocks = new ArrayList<TextBlock>();
+	List<String> lines = new ArrayList<>();
+	List<TextBlock> lineBlocks = new ArrayList<>();
 	TextBlock parent;
 	
 	public AnnounceWindow() {
@@ -89,10 +89,10 @@ public class AnnounceWindow extends UIWindow {
 			// No cut required
 			thisLine = line;
 			nextLine = "";
-		} else if (line.length() >= width && line.charAt(width) == ' ') {
+		} else if (line.charAt(width) == ' ') {
 			// Perfect spacing: character after width is a space
 			thisLine = line.substring(0, width);
-			nextLine = line.substring(width+1);
+			nextLine = line.substring(width+1); // TODO width + 2?
 		} else if (lastSpace > width - allowedSpace) {
 			// can cut within our range
 			thisLine = line.substring(0, lastSpace);
@@ -100,7 +100,7 @@ public class AnnounceWindow extends UIWindow {
 		} else {
 			// can't cut at a space, take maximum length and break
 			thisLine = line.substring(0, width);
-			nextLine = line.substring(width+1);
+			nextLine = line.substring(width);
 		}
 		
 		lines.add(thisLine);

@@ -55,67 +55,66 @@ public class CharacterBuilder {
 
     private void finish() {
         pcEntity = Game.bestiary.create("pc.avatar");
-        setStats();
-        setEquipment();
+        setStats(pcEntity, race, archetype);
+        setEquipment(pcEntity, race, archetype);
 
         handler.accept(pcEntity);
     }
 
-    private void setStats() {
+    public static void setStats(Entity entity, String race, String archetype) {
         switch (race) {
             case "human":
-                pcEntity.statblock.str = 10;
-                pcEntity.statblock.tou = 10;
-                pcEntity.statblock.dex = 10;
-                pcEntity.statblock.agi = 10;
-                pcEntity.statblock.per = 10;
-                pcEntity.statblock.wil = 10;
-                pcEntity.statblock.arc = 10;
-                pcEntity.statblock.ava = 10;
+                entity.statblock.str = 10;
+                entity.statblock.tou = 10;
+                entity.statblock.dex = 10;
+                entity.statblock.agi = 10;
+                entity.statblock.per = 10;
+                entity.statblock.wil = 10;
+                entity.statblock.arc = 10;
+                entity.statblock.ava = 10;
                 break;
         }
 
         switch (archetype) {
             case "warrior":
-                pcEntity.statblock.str += 6;
-                pcEntity.statblock.tou += 6;
-                pcEntity.statblock.dex += 4;
-                pcEntity.statblock.agi += 4;
-                pcEntity.statblock.wil += 4;
-                pcEntity.statblock.arc -= 2;
+                entity.statblock.str += 6;
+                entity.statblock.tou += 6;
+                entity.statblock.dex += 4;
+                entity.statblock.agi += 4;
+                entity.statblock.wil += 4;
+                entity.statblock.arc -= 2;
                 break;
             case "archer":
-                pcEntity.statblock.tou += 2;
-                pcEntity.statblock.dex += 6;
-                pcEntity.statblock.agi += 6;
-                pcEntity.statblock.per += 6;
+                entity.statblock.tou += 2;
+                entity.statblock.dex += 6;
+                entity.statblock.agi += 6;
+                entity.statblock.per += 6;
                 break;
             case "wizard":
-                pcEntity.statblock.str -= 2;
-                pcEntity.statblock.agi -= 2;
-                pcEntity.statblock.wil += 4;
-                pcEntity.statblock.arc += 6;
+                entity.statblock.str -= 2;
+                entity.statblock.agi -= 2;
+                entity.statblock.wil += 4;
+                entity.statblock.arc += 6;
         }
-        pcEntity.recalculateSecondaryStats();
+        entity.recalculateSecondaryStats();
     }
 
-    private void setEquipment() {
-        Entity temp;
+    public static void setEquipment(Entity entity, String race, String archetype) {
         switch (archetype) {
             case "warrior":
-                equip("armor.body.chain", BodyPart.TORSO);
-                equip("armor.head.leatherhat", BodyPart.HEAD);
-                equip("longsword", BodyPart.PRIMARY_HAND);
+                equip(entity, "armor.body.chain", BodyPart.TORSO);
+                equip(entity, "armor.head.leatherhat", BodyPart.HEAD);
+                equip(entity, "longsword", BodyPart.PRIMARY_HAND);
                 break;
             case "archer":
-                equip("armor.body.leather", BodyPart.TORSO);
-                equip("short sword", BodyPart.PRIMARY_HAND);
-                equip("shortbow", BodyPart.RANGED_WEAPON);
-                equip("weapon.ammo.arrow", BodyPart.RANGED_AMMO, 30);
+                equip(entity, "armor.body.leather", BodyPart.TORSO);
+                equip(entity, "short sword", BodyPart.PRIMARY_HAND);
+                equip(entity, "shortbow", BodyPart.RANGED_WEAPON);
+                equip(entity, "weapon.ammo.arrow", BodyPart.RANGED_AMMO, 30);
                 break;
             case "wizard":
-                equip("armor.body.whiterobe", BodyPart.TORSO);
-                equip("dagger", BodyPart.PRIMARY_HAND);
+                equip(entity, "armor.body.whiterobe", BodyPart.TORSO);
+                equip(entity, "dagger", BodyPart.PRIMARY_HAND);
                 GameLoop.roguelikeModule.game.spellbook.addSpell("magic missile");
                 GameLoop.roguelikeModule.game.spellbook.addSpell("firebeam");
                 GameLoop.roguelikeModule.game.spellbook.addSpell("water blast");
@@ -124,12 +123,12 @@ public class CharacterBuilder {
         }
     }
 
-    private void equip(String key, BodyPart bodyPart) {
-        equip(key, bodyPart, 1);
+    private static void equip(Entity entity, String key, BodyPart bodyPart) {
+        equip(entity, key, bodyPart, 1);
     }
 
-    private void equip(String key, BodyPart bodyPart, int quantity) {
-        pcEntity.equip(Game.itempedia.create(key, quantity), bodyPart);
+    private static void equip(Entity entity, String key, BodyPart bodyPart, int quantity) {
+        entity.equip(Game.itempedia.create(key, quantity), bodyPart);
     }
 
 

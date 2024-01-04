@@ -86,18 +86,19 @@ public class TitleScreenModule extends Module {
 		options[3] = new TextBlock("  Skip to Aurex", null, 14, 18, 32, Color.WHITE, 0f, 0f);
 		options[4] = new TextBlock("  Skip to Farm", null, 14, 18, 33, Color.WHITE, 0f, 0f);
 		options[5] = new TextBlock("  Watch Intro", null, 14, 18, 34, Color.WHITE, 0f, 0f);
-		options[6] = new TextBlock("  Quit", null, 14, 18, 35, Color.WHITE, 0f, 0f);
+		options[6] = new TextBlock("  Test duel", null, 14, 18, 35, Color.WHITE, 0f, 0f);
+		options[7] = new TextBlock("  Quit", null, 14, 18, 36, Color.WHITE, 0f, 0f);
 		updateOptions();
 		for (TextBlock tb : options) {
 			textEngine.addBlock(tb);
 		}
 	}
 	
-	public TextBlock[] options = new TextBlock[7];
+	public TextBlock[] options = new TextBlock[8];
 	int selectedOption = 1;
 	
 	private void updateOptions() {
-		for (int i=0; i<7; i++) {
+		for (int i=0; i<8; i++) {
 			if (selectedOption == i) {
 				options[i].text = "> " + options[i].text.substring(2);
 				if (i == 0) {
@@ -125,12 +126,12 @@ public class TitleScreenModule extends Module {
 
 			case Keys.UP:
 			case Keys.NUMPAD_8:
-				selectedOption = (selectedOption + 6) % 7;
+				selectedOption = (selectedOption + 7) % 8;
 				updateOptions();
 				break;
 			case Keys.DOWN:
 				case Keys.NUMPAD_2:
-				selectedOption = (selectedOption + 1) % 7;
+				selectedOption = (selectedOption + 1) % 8;
 				updateOptions();
 				break;
 			case Keys.ENTER:
@@ -177,6 +178,11 @@ public class TitleScreenModule extends Module {
 						GameLoop.introModule.start();
 						break;
 					case 6:
+						IntroModule.musicResource.stop();
+						end();
+						GameLoop.duelModule.start();
+						break;
+					case 7:
 						Gdx.app.exit();
 				}
 				break;

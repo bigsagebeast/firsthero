@@ -52,10 +52,9 @@ public class Game {
 
 	public Game(RoguelikeModule module) {
 		Game.roguelikeModule = module;
-		initialize();
 	}
 
-	public void initialize() {
+	public static void initialize() {
 		time = 0;
 		lastTurnProc = 0;
 		if (!initialized) {
@@ -668,9 +667,7 @@ public class Game {
 			if (targetMover.isPeacefulToPlayer(targetCreature)) {
 				announce("You bump into " + targetCreature.getVisibleNameWithQuantity() + ". (Press 'c' to chat.)");
 			} else {
-				Entity weaponPrimary = player.getEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
-				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
-				CombatLogic.swing(player.getEntity(), targetCreature, weaponPrimary);
+				attack(player.getEntity(), targetCreature);
 				player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 			}
 			return;
@@ -770,14 +767,15 @@ public class Game {
 						(targetCreature.getMover().isPeacefulToPlayer(targetCreature) ? "peaceful" : "hostile") +
 						" creature (" + actor.getVisibleNameWithQuantity() + ").");
 			} else {
-				Entity weaponPrimary = actor.body.getEquipment(BodyPart.PRIMARY_HAND);
-				// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
-				CombatLogic.swing(actor, targetCreature, weaponPrimary);
-
-				// check if player is dead
+				attack(actor, targetCreature);
 			}
-			return;
 		}
+	}
+
+	public static void attack(Entity actor, Entity target) {
+		Entity weaponPrimary = actor.body.getEquipment(BodyPart.PRIMARY_HAND);
+		// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
+		CombatLogic.swing(actor, target, weaponPrimary);
 	}
 
 	private static void movePlayer(int tx, int ty) {
@@ -914,7 +912,7 @@ public class Game {
 	}
 
 	public static void announce(String s) {
-		if (s == null) {
+		if (s == null || !GameLoop.roguelikeModule.isRunning()) {
 			return;
 		}
 		roguelikeModule.announce(Util.capitalize(s));
@@ -944,6 +942,10 @@ public class Game {
 	}
 
 	public static void announceVis(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+		if (!GameLoop.roguelikeModule.isRunning()) {
+			// hack to avoid messages during test duel
+			return;
+		}
 		Gender actorGender = actorEntity == null ? null : actorEntity.gender;
 		Gender targetGender = targetEntity == null ? null : targetEntity.gender;
 		Entity playerEntity = player.getEntity();

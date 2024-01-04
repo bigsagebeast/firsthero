@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.game;
 
+import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.roguelike.spells.Spell;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
@@ -57,7 +58,7 @@ public class CombatLogic {
 				}
 			}
 
-			if (damage < 0) {
+			if (damage <= 0) {
 				damage = 0;
 			} else {
 				hurt(target, damage);
@@ -115,21 +116,16 @@ public class CombatLogic {
 			// TODO should pass the entity you killed them with as 'tool'
 			// TODO does pre kill make sense?
 
-			if (critical) {
-				Game.announceVis(actor, target,
-						"You critically hit " + target.getVisibleNameDefinite() + " and slay %2o!",
-						actor.getVisibleNameDefinite() + " critically hits and kills you!",
-						actor.getVisibleNameDefinite() + " critically hits and kills " + target.getVisibleNameDefinite() + "!",
-						null);
-			} else {
-				Game.announceVis(actor, target,
-						"You hit " + target.getVisibleNameDefinite() + " and slay %2o.",
-						actor.getVisibleNameDefinite() + " kills you.",
-						actor.getVisibleNameDefinite() + " kills " + target.getVisibleNameDefinite() + ".",
-						null);
+			Game.announceVis(actor, target,
+					"You slay " + target.getVisibleNameDefinite() + ".",
+					actor.getVisibleNameDefinite() + " kills you.",
+					actor.getVisibleNameDefinite() + " kills " + target.getVisibleNameDefinite() + ".",
+					null);
+			if (GameLoop.roguelikeModule.isRunning()) {
+				// test to make sure we're not in a duel
+				actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
+				target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
 			}
-			actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
-			target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
 		}
 	}
 
@@ -153,15 +149,15 @@ public class CombatLogic {
 		if (target.hitPoints > 0) {
 			spell.announceHitWithoutKill(actor, target);
 		} else {
-			actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
-			target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
+			if (GameLoop.roguelikeModule.isRunning()) {
+				actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
+				target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
+			}
 			spell.announceHitWithKill(actor, target);
 		}
 	}
 
 	public static void shoot(Entity actor, Entity target, Entity tool, Entity ammo) {
-
-		Visibility vis = Game.getLevel().checkVis(Game.getPlayerEntity(), actor, target);
 		String withWeaponString = "";
 
 		int damage, accuracy;
@@ -201,7 +197,7 @@ public class CombatLogic {
 				hurt(target, damage);
 			}
 
-			Game.announceVis(vis,
+			Game.announceVis(actor, target,
 					"You hit " + target.getVisibleNameDefinite() + withWeaponString + ".",
 					actor.getVisibleNameDefinite() + " hits you" + withWeaponString + ".",
 					actor.getVisibleNameDefinite() + " hits " + target.getVisibleNameDefinite() + withWeaponString + ".",
@@ -209,7 +205,7 @@ public class CombatLogic {
 			actor.forEachProc((e, p) -> p.postDoShoot(e, target, null));
 			target.forEachProc((e, p) -> p.postBeShot(e, actor, null));
 		} else {
-			Game.announceVis(vis,
+			Game.announceVis(actor, target,
 					"You miss " + target.getVisibleNameDefinite() + withWeaponString + ".",
 					actor.getVisibleNameDefinite() + " misses you" + withWeaponString + ".",
 					actor.getVisibleNameDefinite() + " misses " + target.getVisibleNameDefinite() + withWeaponString + ".",
@@ -224,13 +220,15 @@ public class CombatLogic {
 			// TODO should pass the entity you killed them with as 'tool'
 			// TODO does pre kill make sense?
 
-			Game.announceVis(vis,
+			Game.announceVis(actor, target,
 					"You kill " + target.getVisibleNameDefinite() + ".",
 					actor.getVisibleNameDefinite() + " kills you.",
 					actor.getVisibleNameDefinite() + " kills " + target.getVisibleNameDefinite() + ".",
 					null);
-			actor.forEachProc((e, p) -> p.postDoKill(e, target, ammo));
-			target.forEachProc((e, p) -> p.postBeKilled(e, actor, ammo));
+			if (GameLoop.roguelikeModule.isRunning()) {
+				actor.forEachProc((e, p) -> p.postDoKill(e, target, ammo));
+				target.forEachProc((e, p) -> p.postBeKilled(e, actor, ammo));
+			}
 		}
 	}
 

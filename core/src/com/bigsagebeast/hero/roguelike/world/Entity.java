@@ -238,7 +238,8 @@ public class Entity {
         if (hitPoints <= 0) {
             dead = true;
         }
-        if (dead) {
+        if (dead && GameLoop.roguelikeModule.isRunning()) {
+            // tests to make sure we're not in a test duel
             MoverLogic.createCorpse(Game.getLevel(), this);
             destroy();
         }
