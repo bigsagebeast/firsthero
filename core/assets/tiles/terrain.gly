@@ -1,4 +1,4 @@
-1 45
+1 61
 0 0 terrain.grass
 0 1 wall.stone:x
 0 2 wall.stone:n
@@ -44,3 +44,19 @@
 0 42 terrain.dirt1
 0 43 terrain.dirt2
 0 44 terrain.farmland
+0 45 wall.cavern:x
+0 46 wall.cavern:n
+0 47 wall.cavern:w
+0 48 wall.cavern:nw
+0 49 wall.cavern:e
+0 50 wall.cavern:ne
+0 51 wall.cavern:we
+0 52 wall.cavern:nwe
+0 53 wall.cavern:s
+0 54 wall.cavern:ns
+0 55 wall.cavern:ws
+0 56 wall.cavern:nws
+0 57 wall.cavern:es
+0 58 wall.cavern:nes
+0 59 wall.cavern:wes
+0 60 wall.cavern:nwes

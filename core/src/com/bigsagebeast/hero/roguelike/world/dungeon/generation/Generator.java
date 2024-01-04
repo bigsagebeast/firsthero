@@ -301,5 +301,21 @@ public class Generator {
                 }
             }
         }
+        Terrain terrainDirt1 = Terrain.get("dirt1");
+        Terrain terrainDirt2 = Terrain.get("dirt2");
+        Terrain cavern = Terrain.get("cavernwall");
+        for (int i=0; i<level.getWidth(); i++) {
+            for (int j=0; j<level.getHeight(); j++) {
+                if (level.cell(i, j).terrain == wall) {
+                    for (Point p : level.surroundingTiles(new Point(i, j))) {
+                        if (level.cell(p).terrain == terrainDirt1 || level.cell(p).terrain == terrainDirt2) {
+                            level.cell(i, j).terrain = cavern;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

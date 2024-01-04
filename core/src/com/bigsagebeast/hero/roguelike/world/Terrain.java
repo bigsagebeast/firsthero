@@ -36,6 +36,7 @@ public class Terrain {
 		addTerrain("water", "water", true, false, false, false, false, "terrain.water", new PaletteEntry(Palette.COLOR_BLUE, Palette.COLOR_CERULEAN, Palette.COLOR_CYAN, Palette.COLOR_TRANSPARENT), "water");
 		addTerrain("grass", "grass", true, false, false, true, true, "terrain.grass", new PaletteEntry(Palette.COLOR_LIGHTGREEN, Palette.COLOR_LIGHTGREEN, Palette.COLOR_CHARTREUSE, Palette.COLOR_TRANSPARENT), null);
 		addTerrain("wall", "a wall", false, true, true, false, false, "wall.stone", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_TAN, Palette.COLOR_TRANSPARENT), "wall");
+		addTerrain("cavernwall", "a wall", false, true, true, false, false, "wall.cavern", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_TAN, Palette.COLOR_TRANSPARENT), "wall");
 		addTerrain("uncarveable", "a wall", false, false, true, false, false, "terrain.mountain", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_TAN, Palette.COLOR_TRANSPARENT), null);
 		addTerrain("floor", "wood floor", true, false, false, true, true, "terrain.floor", new PaletteEntry(Palette.COLOR_TAN, Palette.COLOR_DARKGREEN, Palette.COLOR_BROWN, Palette.COLOR_TRANSPARENT), null);
 		addTerrain("mountain", "the mountainside", false, true, true, false, false, "terrain.mountain", new PaletteEntry(Palette.COLOR_GRAY, Palette.COLOR_FORESTGREEN, Palette.COLOR_GRAY, Palette.COLOR_TRANSPARENT), null);
