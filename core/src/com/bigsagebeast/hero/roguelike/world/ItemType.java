@@ -16,6 +16,7 @@ public class ItemType {
     public String pluralName;
     public String unidentifiedName;
     public String unidentifiedPluralName;
+    public String description;
     public boolean isFeature = false;
     public BodyPart equipmentFor;
     public String glyphName;

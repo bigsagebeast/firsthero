@@ -449,14 +449,16 @@ public class Level {
 			int xRand = origin.x - (area/2) + Game.random.nextInt(area);
 			int yRand = origin.y - (area/2) + Game.random.nextInt(area);
 			if (!withinBounds(xRand, yRand)) continue;
-			if (cell[xRand][yRand].terrain.isPassable() && !cell[xRand][yRand].visible()) {
-				if (!getMoversOnTile(new Point(xRand, yRand)).isEmpty()) {
-					continue;
-				}
+			Point p = new Point(xRand, yRand);
+			if (isSpawnable(p) && !cell(p).visible()) {
 				return new Point(xRand, yRand);
 			}
 		}
 		return null;
+	}
+
+	public boolean isSpawnable(Point p) {
+		return cell(p).terrain.isSpawnable() && getMoversOnTile(p).isEmpty();
 	}
 
 	public List<Point> getEmptyRoomMapOpenFloor(int roomId) {

@@ -16,8 +16,8 @@ public class ChatBox {
 
     public static final int FONT_SIZE = 32;
     public static final int FOOTER_OFFSET_FROM_LEFT = 0;
-    public static final int FOOTER_OFFSET_FROM_BOTTOM = 24;
-    public static final int TITLE_OFFSET_FROM_TOP = 4;
+    public static final int FOOTER_OFFSET_FROM_BOTTOM = 28;
+    public static final int TITLE_OFFSET_FROM_TOP = 8;
     public static final int ITEM_OFFSET_FROM_LEFT = 0;
     public static final int TEXT_OFFSET_FROM_TOP = TITLE_OFFSET_FROM_TOP + FONT_SIZE + 16;
     public static final int ITEM_OFFSET_FROM_TEXT = 32;

@@ -20,7 +20,7 @@ public class ProcWorldPortal extends Proc {
     @Override
     public void postBeSteppedOn(Entity entity, Entity actor) {
         if (actor == Game.getPlayerEntity()) {
-            Game.announce("Press 'P' to enter the portal.");
+            Game.announce("Press 'p' to enter the portal.");
         }
     }
 

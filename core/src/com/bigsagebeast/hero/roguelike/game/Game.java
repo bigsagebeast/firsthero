@@ -72,8 +72,7 @@ public class Game {
 	}
 
 	public void startIntro() {
-		Entity pc = bestiary.create("player");
-		pc.name = "Mortal Farmboy";
+		Entity pc = bestiary.create("pc.farmboy");
 		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
 		Entity pitchfork = itempedia.create("pitchfork");
@@ -92,7 +91,7 @@ public class Game {
 	}
 
 	public void startAurex() {
-		Entity pc = bestiary.create("player");
+		Entity pc = bestiary.create("pc.deity");
 		pc.name = Profile.getString("godName");
 		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
@@ -374,7 +373,7 @@ public class Game {
 			if (!player.getEntity().pickup(itemsHere.get(0))) {
 				announce("You can't pick up " + itemsHere.get(0).getVisibleNameDefinite() + ".");
 			} else {
-				GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
+				passTime(Game.ONE_TURN);
 			}
 		} else {
 			Inventory.openFloorToGet();
@@ -544,7 +543,7 @@ public class Game {
 		} else {
 			range = pwa.throwRange;
 		}
-		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(true, true, true, range);
+		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, true, true, true, range);
 		GameLoop.targetingModule.begin(tm, this::handleTarget);
 	}
 
@@ -632,7 +631,7 @@ public class Game {
 	}
 
 	public void cmdLook() {
-		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, false, false, -1);
+		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(true, false, false, false, -1);
 		GameLoop.targetingModule.begin(tm, null);
 	}
 

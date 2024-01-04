@@ -42,6 +42,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final CutsceneModule cutsceneModule = new CutsceneModule();
 	public static final FlowModule flowModule = new FlowModule();
 	public static final TextEntryModule textEntryModule = new TextEntryModule();
+	public static final DescriptionModule descriptionModule = new DescriptionModule();
 	private List<Module> allModules = new ArrayList<Module>();
 	private Queue<QueuedKeypress> queuedKeyDown = new LinkedList<>();
 	private Queue<QueuedKeypress> queuedKeyTyped = new LinkedList<>();
@@ -107,6 +108,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		allModules.add(textEntryModule);
 		allModules.add(cutsceneModule);
 		allModules.add(popupModule);
+		allModules.add(descriptionModule);
 		allModules.add(dialogueBoxModule);
 		allModules.add(CHAT_MODULE);
 		allModules.add(directionModule);

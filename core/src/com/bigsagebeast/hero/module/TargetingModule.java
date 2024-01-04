@@ -88,8 +88,13 @@ public class TargetingModule extends Module {
         this.targetMode = targetMode;
         this.handler = handler;
         // TODO draw black boxes over the top and bottom of the main window
-        instructions = new TextBlock("'t' to select target, tab to cycle targets, space to cancel", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
-                0, 0, 20, 0, Color.WHITE);
+        if (targetMode.look) {
+            instructions = new TextBlock("space to finish looking around", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
+                    0, 0, 20, 0, Color.WHITE);
+        } else {
+            instructions = new TextBlock("'t' to select target, tab to cycle targets, space to cancel", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
+                    0, 0, 20, 0, Color.WHITE);
+        }
         instructions.compile();
         description = new TextBlock("Target description", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
                 0, 0, 20, 0, Color.WHITE);
@@ -114,6 +119,7 @@ public class TargetingModule extends Module {
         if (!dirty) {
             return;
         }
+        GameLoop.descriptionModule.terminate();
         // TODO fix positioning
         Point windowSize = WindowEngine.getSize(UIManager.NAME_MAIN_WINDOW);
         Point windowOffset = WindowEngine.getOffset(UIManager.NAME_MAIN_WINDOW);
@@ -130,7 +136,12 @@ public class TargetingModule extends Module {
             Entity targetMover = Game.getLevel().moverAt(targetTile.x, targetTile.y);
             if (targetMover != null) {
                 // TODO fetch a text block, child it to description
-                description.text = "You see " + targetMover.getVisibleNameIndefiniteOrSpecific() + ".";
+                if (targetMover == Game.getPlayerEntity()) {
+                    description.text = "This is you.";
+                } else {
+                    description.text = "You see " + targetMover.getVisibleNameIndefiniteOrSpecific() + ".";
+                }
+                GameLoop.descriptionModule.lookAtEntity(targetMover);
             } else {
                 // TODO fetch a text block etc
                 List<Entity> targetItems = Game.getLevel().getItemsOnTile(targetTile);
@@ -142,6 +153,9 @@ public class TargetingModule extends Module {
                     description.text = "You see " + targetItems.get(0).getVisibleNameIndefiniteOrVague() + ".";
                 } else {
                     description.text = "You see " + Game.getLevel().cell(targetTile).terrain.getDescription() + ".";
+                }
+                if (!targetItems.isEmpty()) {
+                    GameLoop.descriptionModule.lookAtEntity(targetItems.get(0));
                 }
             }
         } else {
@@ -350,6 +364,7 @@ public class TargetingModule extends Module {
     }
 
     public void select(Point p) {
+        GameLoop.descriptionModule.terminate();
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
 
         if (targetMode.stopAtWall) {
@@ -381,12 +396,14 @@ public class TargetingModule extends Module {
     }
 
     public class TargetMode {
+        public boolean look;
         public boolean lineFromPlayer;
         public boolean trackMovers;
         public boolean stopAtWall;
         public float maxRange;
 
-        public TargetMode(boolean lineFromPlayer, boolean trackMovers, boolean stopAtWall, float maxRange) {
+        public TargetMode(boolean look, boolean lineFromPlayer, boolean trackMovers, boolean stopAtWall, float maxRange) {
+            this.look = look;
             this.lineFromPlayer = lineFromPlayer;
             this.trackMovers = trackMovers;
             this.stopAtWall = stopAtWall;

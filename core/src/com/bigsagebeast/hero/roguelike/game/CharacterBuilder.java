@@ -54,7 +54,7 @@ public class CharacterBuilder {
     }
 
     private void finish() {
-        pcEntity = Game.bestiary.create("player");
+        pcEntity = Game.bestiary.create("pc.avatar");
         setStats();
         setEquipment();
 

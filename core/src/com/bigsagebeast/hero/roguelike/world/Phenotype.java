@@ -16,10 +16,10 @@ import java.util.function.Consumer;
 public class Phenotype {
 	public String key;
 	public String name;
+	public String description;
 	public int hitPoints;
 	public int spellPoints;
 	public int divinePoints;
-	//public Glyph glyph;
 	public boolean peaceful;
 	public boolean isMonster;
 	public String bodyPlan;

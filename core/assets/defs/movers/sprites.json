@@ -2,6 +2,7 @@
   "movers": {
     "sprite.spark": {
       "name": "spark sprite",
+      "description": "Only a foot tall, this humanoid hovers at head level on flickering yellow wings of elemental energy.",
       "peaceful": false,
       "hitPoints": 5,
       "isMonster": true,
@@ -37,6 +38,7 @@
     },
     "sprite.fire": {
       "name": "fire sprite",
+      "description": "Only a foot tall, this humanoid hovers at head level on flickering red wings of elemental energy.",
       "peaceful": false,
       "hitPoints": 5,
       "isMonster": true,
@@ -72,6 +74,7 @@
     },
     "sprite.water": {
       "name": "water sprite",
+      "description": "Only a foot tall, this humanoid hovers at head level on flickering blue wings of elemental energy.",
       "peaceful": false,
       "hitPoints": 5,
       "isMonster": true,
@@ -107,6 +110,7 @@
     },
     "sprite.wood": {
       "name": "wood sprite",
+      "description": "Only a foot tall, this humanoid hovers at head level on flickering green wings of elemental energy.",
       "peaceful": false,
       "hitPoints": 5,
       "isMonster": true,
@@ -142,6 +146,7 @@
     },
     "paradox.wisp": {
       "name": "paradox wisp",
+      "description": "Light is drawn in and twisted around the horizon of this ball of quasi-matter. It exists, drawn to things that should not exist, a minor anti-form of reality and time.",
       "peaceful": false,
       "hitPoints": 2,
       "isMonster": true,

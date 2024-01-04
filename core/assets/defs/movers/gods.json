@@ -2,6 +2,7 @@
   "movers": {
     "god.serifex": {
       "name": "Serifex, God of Fresh Water",
+      "description": "Wearing an androgynous guise of indeterminate age, Serifex is wreathed in glittering white robes, with a silver crown upon their golden-locked head.",
       "peaceful": true,
       "bodyPlan": "humanoid",
       "glyphName": "humanoid.atsign",
@@ -16,6 +17,7 @@
     },
     "god.loruch": {
       "name": "Loruch, God of Trees",
+      "description": "What you can see of Loruch is an old, bearded man. He stands spread-eagled with his back to the massive stump of a once-great tree, ensconced by vines that threaten to consume him entirely.",
       "peaceful": true,
       "bodyPlan": "humanoid",
       "glyphName": "humanoid.atsign",

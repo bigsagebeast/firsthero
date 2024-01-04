@@ -2,6 +2,7 @@
   "movers": {
     "goblin.lackey": {
       "name": "sea-withered goblin lackey",
+      "description": "Bearing the brunt of their master's wrath and of the acid seas they rowed, these footsoldiers of the invasion are little threat.",
       "peaceful": false,
       "hitPoints": 4,
       "isMonster": true,
@@ -26,6 +27,7 @@
     },
     "goblin.butcher": {
       "name": "goblin butcher",
+      "description": "Wielding a jagged and rusting cleaver, this goblin is strong from good eating.",
       "peaceful": false,
       "hitPoints": 15,
       "isMonster": true,
@@ -51,6 +53,7 @@
     },
     "jackal.trained": {
       "name": "trained jackal",
+      "description": "Wearing a spiked collar, this beast was barely weaned when it was taught to kill the enemies of the goblin horde.",
       "peaceful": false,
       "hitPoints": 3,
       "isMonster": true,

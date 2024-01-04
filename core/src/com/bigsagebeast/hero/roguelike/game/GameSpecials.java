@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameSpecials {
     public static void teleportRandomly(Entity entity) {
@@ -74,13 +75,14 @@ public class GameSpecials {
 
     public static void handleWishSummon(String text) {
         Entity entity = null;
-        Collection<Point> spawnPoints = Game.getLevel().surroundingTiles(Game.getPlayerEntity().pos);
+        List<Point> spawnPoints = Game.getLevel().surroundingTiles(Game.getPlayerEntity().pos)
+                .stream().filter(p -> Game.getLevel().isSpawnable(p)).collect(Collectors.toList());
         if (spawnPoints.isEmpty()) {
             Game.announce("Nowhere to summon!");
             return;
         }
-        List<Point> pointList = new ArrayList(spawnPoints);
-        Point spawnPoint = pointList.get(Game.random.nextInt(pointList.size()));
+        Collections.shuffle(spawnPoints);
+        Point spawnPoint = spawnPoints.get(0);
 
         if (Bestiary.map.containsKey(text)) {
             entity = Bestiary.create(text);

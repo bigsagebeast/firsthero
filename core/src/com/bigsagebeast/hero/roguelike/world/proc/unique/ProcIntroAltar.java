@@ -30,7 +30,7 @@ public class ProcIntroAltar extends Proc {
     @Override
     public void postBeSteppedOn(Entity entity, Entity actor) {
         if (actor == Game.getPlayerEntity()) {
-            Game.announce("Press 'P' to pray.");
+            Game.announce("Press 'p' to pray.");
         }
     }
 

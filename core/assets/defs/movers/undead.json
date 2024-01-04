@@ -2,6 +2,7 @@
   "movers": {
     "undead.skeleton": {
       "name": "skeleton",
+      "description": "Clattering bones drawn together by dark arcanum, an amalgamation of myriad corpses. A skeleton leaves very little to pierce, but is terribly vulnerable to crushing blows.",
       "peaceful": false,
       "hitPoints": 8,
       "isMonster": true,
@@ -32,6 +33,7 @@
     },
     "undead.zombie": {
       "name": "zombie",
+      "description": "Slow and ungainly, this is meat and muscle given purpose anew. Its wrenching blows threaten to tear itself apart, but it does not care.",
       "peaceful": false,
       "hitPoints": 20,
       "isMonster": true,

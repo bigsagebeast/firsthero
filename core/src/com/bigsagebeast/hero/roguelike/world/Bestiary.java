@@ -23,9 +23,6 @@ public class Bestiary {
 	public static Map<String, Phenotype> map = new HashMap<String, Phenotype>();
 
 	static {
-		Phenotype door = new Phenotype();
-
-		Phenotype pc = new Phenotype();
 		Phenotype goblinArcher = new Phenotype();
 		Phenotype goblinWarrior = new Phenotype();
 		Phenotype farmer = new Phenotype();
@@ -33,22 +30,8 @@ public class Bestiary {
 		Phenotype fungusRed = new Phenotype();
 		Phenotype fungusGreenFunglet = new Phenotype();
 
-		pc.name = "yourself";
-		pc.hitPoints = 0; // calculated based on stats
-		pc.spellPoints = 0;
-		pc.isMonster = false;
-		pc.bodyPlan = "humanoid";
-		pc.glyphName = "player.farmer";
-		pc.isManipulator = true;
-		pc.ambulation = Ambulation.WALKING_SWIMMING;
-		pc.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_BROWN, Palette.COLOR_YELLOW);
-		pc.gender = Gender.NONBINARY;
-		pc.threat = -1;
-		pc.naturalWeaponDamage = 3;
-		pc.naturalWeaponToHit = 0;
-		pc.naturalArmorClass = 7;
-
 		goblinWarrior.name = "sea-withered goblin warrior";
+		goblinWarrior.description = "From across the acid sea, these goblins come ready to fight. Their flesh and their weapons are scarred and pitted from exposure, but their training makes them dangerous foes.";
 		goblinWarrior.peaceful = false;
 		goblinWarrior.hitPoints = 16;
 		goblinWarrior.isMonster = true;
@@ -66,6 +49,7 @@ public class Bestiary {
 		goblinWarrior.tags.add("generic-fantasy");
 
 		goblinArcher.name = "sea-withered goblin archer";
+		goblinArcher.description = "Their bows have been crafted on the mainland; such wood and sinew would have scarcely survived the trip. Their arrows are meant not for hunting, but for war.";
 		goblinArcher.peaceful = false;
 		goblinArcher.hitPoints = 8;
 		goblinArcher.isMonster = true;
@@ -91,6 +75,7 @@ public class Bestiary {
 
 		Phenotype goblinSlinger = new Phenotype();
 		goblinSlinger.name = "sea-withered goblin slinger";
+		goblinSlinger.description = "Even half-blinded by the acid sea, these goblins with their leather straps can hurl projectiles with forcefully enough to break bones.";
 		goblinSlinger.peaceful = false;
 		goblinSlinger.hitPoints = 8;
 		goblinSlinger.isMonster = true;
@@ -115,8 +100,8 @@ public class Bestiary {
 		goblinSlinger.tags.add("generic-fantasy");
 		map.put("goblin.slinger", goblinSlinger);
 
-
-		wolf.name = "wolf";
+		wolf.name = "dungeon wolf";
+		wolf.description = "Prey runs barely thick enough in the strange dungeon ecosystem to support a pack of these hungry predators. Any meat they can find is a meal. Dungeon wolves are heavy beasts with bone-crushing teeth.";
 		wolf.peaceful = false;
 		wolf.hitPoints = 20;
 		wolf.isMonster = true;
@@ -133,6 +118,7 @@ public class Bestiary {
 		wolf.tags.add("animal");
 
 		fungusRed.name = "red fungus";
+		fungusRed.description = "An overgrowth of globules and stalks that somehow finds the motility to slowly pursue and consume dead or slow prey. The air around it shimmers with dangerous heat.";
 		fungusRed.peaceful = false;
 		fungusRed.hitPoints = 25;
 		fungusRed.isMonster = true;
@@ -151,6 +137,7 @@ public class Bestiary {
 		fungusRed.tags.add("plant");
 
 		fungusGreenFunglet.name = "green funglet";
+		fungusGreenFunglet.description = "A small overgrowth of green globules, the fruiting bodies of this slow-moving fungal creature have not yet emerged.";
 		fungusGreenFunglet.peaceful = false;
 		fungusGreenFunglet.hitPoints = 10;
 		fungusGreenFunglet.isMonster = true;
@@ -170,6 +157,7 @@ public class Bestiary {
 		fungusGreenFunglet.tags.add("plant");
 
 		farmer.name = "Farmer";
+		farmer.description = "Your parents are hard-working farmers who keep to themselves. When the goblins landed from the acid sea, their farm was in the way, and now they are in danger of losing their land and their lives.";
 		farmer.peaceful = true;
 		farmer.hitPoints = 10;
 		farmer.isMonster = false;
@@ -181,7 +169,6 @@ public class Bestiary {
 		farmer.threat = -1;
 		farmer.chatPage = "intro.farmer.landing";
 
-		map.put("player", pc);
 		map.put("goblin.warrior", goblinWarrior);
 		map.put("goblin.archer", goblinArcher);
 		map.put("wolf", wolf);
@@ -244,7 +231,7 @@ public class Bestiary {
 			}
 		}
 
-		if (key.equals("player")) {
+		if (key.startsWith("pc.")) {
 			e.addProc(new ProcPlayer());
 		}
 		else if (p.isMonster && e.getProcByType(ProcMonster.class) == null) {

@@ -2,6 +2,7 @@
   "movers": {
     "horseshoe": {
       "name": "horseshoe crab",
+      "description": "This scuttling thing the size of a small dog bears the weight of prehistoric ancestry on its form. /Limulus transarcana/ feed on distortions of reality, but unlike their larger brethren, they cannot tear such rifts open themselves.",
       "peaceful": false,
       "hitPoints": 10,
       "isMonster": true,
@@ -28,6 +29,7 @@
     },
     "noctupanther": {
       "name": "noctupanther",
+      "description": "Native to underground forests, this six-legged beast is a stalking predator. Its shape allows it to move low and silent, but it is repelled by loud noise.",
       "peaceful": false,
       "hitPoints": 20,
       "isMonster": true,
@@ -53,6 +55,7 @@
     },
     "animal.bat": {
       "name": "giant bat",
+      "description": "While not truly blind, these airborne predators fly erratically nonetheless, swooping in to bite pieces of their prey before retreating to distance.",
       "peaceful": false,
       "hitPoints": 5,
       "isMonster": true,

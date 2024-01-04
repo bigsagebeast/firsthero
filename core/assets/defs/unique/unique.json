@@ -43,8 +43,61 @@
         "pink"
       ],
       "procs": {
-        "unique.ProcIntroAltar": { }
+        "unique.ProcIntroAltar": {}
       }
+    }
+  },
+  "movers": {
+    "pc.avatar": {
+      "name": "yourself",
+      "description": "You are an avatar of the God of Heroes, sent from on high to reclaim your prior glory.",
+      "bodyPlan": "humanoid",
+      "glyphName": "player.farmer",
+      "isManipulator": true,
+      "ambulation": "WALKING_SWIMMING",
+      "palette": [
+        "white",
+        "brown",
+        "yellow"
+      ],
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": 0,
+      "naturalArmorClass": 7,
+      "gender": "NONBINARY"
+    },
+    "pc.deity": {
+      "name": "yourself",
+      "description": "You are the revived God of Heroes, a stranger in this place. What will you make of this shattered multiverse?",
+      "bodyPlan": "humanoid",
+      "glyphName": "player.farmer",
+      "isManipulator": true,
+      "ambulation": "WALKING_SWIMMING",
+      "palette": [
+        "white",
+        "brown",
+        "yellow"
+      ],
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": 0,
+      "naturalArmorClass": 7,
+      "gender": "NONBINARY"
+    },
+    "pc.farmboy": {
+      "name": "Mortal Farmboy",
+      "description": "You are but a hapless farmboy. Were it not for the goblin invasion, you might be consigned to a lifetime of obscurity. But you are strong of body, and a voice is calling you to do what must be done.",
+      "bodyPlan": "humanoid",
+      "glyphName": "player.farmer",
+      "isManipulator": true,
+      "ambulation": "WALKING_SWIMMING",
+      "palette": [
+        "white",
+        "brown",
+        "yellow"
+      ],
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": 0,
+      "naturalArmorClass": 7,
+      "gender": "NONBINARY"
     }
   }
 }
