@@ -172,11 +172,10 @@ public class GameLoop implements GameLogic, InputProcessor {
 	
 	public void render(Graphics g, GraphicsState gState) {
 		try {
-			ShapeRenderer shapeBatch = new ShapeRenderer();
-			shapeBatch.begin(ShapeType.Filled);
-			shapeBatch.setColor(0.1f, 0.1f, 0.1f, 1.0f);
-			shapeBatch.rect(0, 0, g.getViewport().getWorldWidth(), g.getViewport().getWorldHeight());
-			shapeBatch.end();
+			g.startShapeBatch(ShapeType.Filled);
+			g.shapeBatch().setColor(0.1f, 0.1f, 0.1f, 1.0f);
+			g.shapeBatch().rect(0, 0, g.getViewport().getWorldWidth(), g.getViewport().getWorldHeight());
+			g.endShapeBatch();
 
 			long startAll = System.currentTimeMillis();
 			long start = System.currentTimeMillis();

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -23,7 +24,8 @@ public class Graphics {
 	private static Float defaultFontSize = 96f;
 	private static boolean fullscreen = false;
 
-	SpriteBatch currentSpriteBatch;
+	ShapeRenderer shapeBatch;
+	SpriteBatch spriteBatch;
 	boolean batchInProgress = false;
 
 	public static final int STARTING_WIDTH = 1920;
@@ -43,6 +45,9 @@ public class Graphics {
 
 		fixedFontTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		proportionalFontTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		shapeBatch = new ShapeRenderer();
+		spriteBatch = new SpriteBatch();
 	}
 
 	public static void swapFullscreen() {
@@ -72,20 +77,31 @@ public class Graphics {
 	
 	public void startBatch() {
 		// TODO necessary?  seems not
-		currentSpriteBatch = new SpriteBatch();
 		if (batchInProgress) {
 			throw new RuntimeException("Tried to create a SpriteBatch within a batch");
 		}
-		currentSpriteBatch.setProjectionMatrix(cam.combined);
-		currentSpriteBatch.begin();
+		spriteBatch.setProjectionMatrix(cam.combined);
+		spriteBatch.begin();
 		batchInProgress = true;
+	}
+
+	public void startShapeBatch(ShapeRenderer.ShapeType shapeType) {
+		shapeBatch.begin(shapeType);
+	}
+
+	public void endShapeBatch() {
+		shapeBatch.end();
+	}
+
+	public ShapeRenderer shapeBatch() {
+		return shapeBatch;
 	}
 	
 	public SpriteBatch batch() {
 		if (!batchInProgress) {
 			throw new RuntimeException("SpriteBatch not started");
 		}
-		return currentSpriteBatch;
+		return spriteBatch;
 	}
 	
 	public void endBatch() {
@@ -93,7 +109,7 @@ public class Graphics {
 			throw new RuntimeException("Can't end an unstarted SpriteBatch");
 		}
 		//currentSpriteBatch.setShader(null);
-		currentSpriteBatch.end();
+		spriteBatch.end();
 		batchInProgress = false;
 	}
 

@@ -429,7 +429,7 @@ public class Level {
 				continue;
 			}
 			boolean foundMover = false;
-			if (cell[x][y].terrain.isPassable() && cell[x][y].visible() == false) {
+			if (cell[x][y].terrain.isSpawnable() && cell[x][y].visible() == false) {
 				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
 					if (e.getMover() != null) {
 						foundMover = true;

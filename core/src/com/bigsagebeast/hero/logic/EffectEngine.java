@@ -15,7 +15,6 @@ import java.util.List;
 
 public class EffectEngine implements GameLogic {
 
-    ShapeRenderer shapeBatch;
     public List<Gfx> gfxList = new ArrayList<>();
 
     public void addGfx(Gfx gfx) {
@@ -39,32 +38,31 @@ public class EffectEngine implements GameLogic {
     @Override
     public void render(Graphics g, GraphicsState gState) {
 
-        shapeBatch = new ShapeRenderer();
-        shapeBatch.begin(ShapeRenderer.ShapeType.Filled);
+        g.startShapeBatch(ShapeRenderer.ShapeType.Filled);
         for (Gfx gfx : gfxList) {
             if (gfx instanceof GfxRectFilled) {
                 GfxRectFilled gfxRectFilled = (GfxRectFilled)gfx;
-                shapeBatch.setColor(gfxRectFilled.color);
-                shapeBatch.rect(gfxRectFilled.x, Graphics.height - gfxRectFilled.y - gfxRectFilled.height, gfxRectFilled.width, gfxRectFilled.height);
+                g.shapeBatch().setColor(gfxRectFilled.color);
+                g.shapeBatch().rect(gfxRectFilled.x, Graphics.height - gfxRectFilled.y - gfxRectFilled.height, gfxRectFilled.width, gfxRectFilled.height);
             }
         }
-        shapeBatch.end();
+        g.endShapeBatch();
 
-        shapeBatch.begin(ShapeRenderer.ShapeType.Line);
+        g.startShapeBatch(ShapeRenderer.ShapeType.Line);
         for (Gfx gfx : gfxList) {
             if (gfx instanceof GfxRectBorder) {
                 GfxRectBorder gfxRectBorder = (GfxRectBorder)gfx;
-                shapeBatch.setColor(gfxRectBorder.color);
-                shapeBatch.rect(gfxRectBorder.x, Graphics.height - gfxRectBorder.y - gfxRectBorder.height, gfxRectBorder.width, gfxRectBorder.height);
+                g.shapeBatch().setColor(gfxRectBorder.color);
+                g.shapeBatch().rect(gfxRectBorder.x, Graphics.height - gfxRectBorder.y - gfxRectBorder.height, gfxRectBorder.width, gfxRectBorder.height);
             }
         }
         for (Gfx gfx : gfxList) {
             if (gfx instanceof GfxMovingCircle) {
                 GfxMovingCircle gfxMovingCircle = (GfxMovingCircle)gfx;
-                shapeBatch.setColor(gfxMovingCircle.color);
-                shapeBatch.circle(gfxMovingCircle.x, gfxMovingCircle.y, gfxMovingCircle.currentRadius());
+                g.shapeBatch().setColor(gfxMovingCircle.color);
+                g.shapeBatch().circle(gfxMovingCircle.x, gfxMovingCircle.y, gfxMovingCircle.currentRadius());
             }
         }
-        shapeBatch.end();
+        g.endShapeBatch();
     }
 }
