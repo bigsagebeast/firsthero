@@ -13,6 +13,8 @@ public class StoryCardDefinition {
     public HashMap<String, List<String>> defaultDescLink = new HashMap<>();
     public List<String> descSelf = new ArrayList<>();
     public HashMap<String, List<String>> descLink = new HashMap<>();
+    public List<String> nameIntro = new ArrayList<>();
+    public List<String> defaultNameIntro = new ArrayList<>();
     public boolean doDescribe = true;
     public String forceName = null;
 
@@ -68,6 +70,14 @@ public class StoryCardDefinition {
         descLink.get(link).add(desc);
     }
 
+    public void addDefaultNameIntro(String intro) {
+        defaultNameIntro.add(intro);
+    }
+
+    public void addNameIntro(String intro) {
+        nameIntro.add(intro);
+    }
+
     public String[] describeSelf() {
         if (!descSelf.isEmpty()) {
             return descSelf.toArray(new String[0]);
@@ -88,5 +98,15 @@ public class StoryCardDefinition {
             return defaultDescLink.get(link).toArray(new String[0]);
         }
         return new String[] { "%1N:" + link + ":%2N" };
+    }
+
+    public String[] getNameIntro(boolean intro) {
+        if (intro && !nameIntro.isEmpty()) {
+            return nameIntro.toArray(new String[0]);
+        }
+        if (intro && !defaultNameIntro.isEmpty()) {
+            return defaultNameIntro.toArray(new String[0]);
+        }
+        return null;
     }
 }

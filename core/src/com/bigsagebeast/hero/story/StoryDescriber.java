@@ -27,6 +27,7 @@ public class StoryDescriber {
                 card = cardList.get(0);
             }
             cardList.remove(card);
+            boolean alreadyIntroduced = card.descIntroduced;
 
             if (!card.definition.doDescribe) {
                 continue;
@@ -36,6 +37,7 @@ public class StoryDescriber {
             }
             StringBuilder sb = new StringBuilder();
             if (!card.descIntroduced) {
+                card.descIntroduced = true;
                 String intro = rand(card.definition.describeSelf());
                 intro = substitute(intro, card, null);
                 sb.append(Util.capitalize(intro));
@@ -52,19 +54,19 @@ public class StoryDescriber {
                     if (!card.definition.links.get(link).doDescribe || card.linkDescribed.get(link)) {
                         continue;
                     }
-                    target.descIntroduced = true;
                     String linkDesc = rand(card.definition.describeLink(link));
                     linkDesc = substitute(linkDesc, card, target);
+                    target.descIntroduced = true;
                     linkParts.add(linkDesc);
                     // TODO this doesn't work with multiple cards for a link
                     target.linkDescribed.put(card.definition.links.get(link).backKey, true);
                 }
                 card.linkDescribed.put(link, true);
             }
-            if (!card.descIntroduced || linkParts.size() > 0) {
+            if (!alreadyIntroduced || linkParts.size() > 0) {
                 for (String linkPart : linkParts) {
                     if (numLinks == 0) {
-                        if (card.descIntroduced) {
+                        if (alreadyIntroduced) {
                             sb.append(" ");
                         } else {
                             sb.append(", " + card.definition.introToStreamingConnector() + " ");
@@ -72,7 +74,8 @@ public class StoryDescriber {
                     } else if (numLinks == linkParts.size() - 1) {
                         sb.append(", and ");
                     } else {
-                        sb.append(", ");
+                        // decided that 'and' was better at each connector
+                        sb.append(", and ");
                     }
                     numLinks++;
                     sb.append(linkPart);
@@ -81,7 +84,6 @@ public class StoryDescriber {
                 System.out.println(sb.toString());
                 storyLines.add(sb.toString());
             }
-            card.descIntroduced = true;
         }
 
         return storyLines;
@@ -93,11 +95,38 @@ public class StoryDescriber {
     }
 
     public String substitute(String string, StoryCard card1, StoryCard card2) {
-        string = string.replace("%1n", card1.shortName);
-        string = string.replace("%1N", Util.capitalize(card1.shortName));
+        String name1 = card1.shortName;
+        if (!card1.descIntroduced) {
+            String[] introNames = card1.definition.getNameIntro(true);
+            if (introNames != null) {
+                name1 = rand(introNames);
+            }
+        }
+        String name2 = null;
         if (card2 != null) {
-            string = string.replace("%2n", card2.shortName);
-            string = string.replace("%2N", Util.capitalize(card2.shortName));
+            name2 = card2.shortName;
+            if (!card2.descIntroduced) {
+                String[] introNames = card2.definition.getNameIntro(true);
+                if (introNames != null) {
+                    name2 = rand(introNames);
+                }
+            }
+        }
+
+        if (name1 != null) {
+            name1 = name1.replace("%1n", card1.shortName);
+            name1 = name1.replace("%1N", Util.capitalize(card1.shortName));
+        }
+        if (name2 != null) {
+            name2 = name2.replace("%1n", card2.shortName);
+            name2 = name2.replace("%1N", Util.capitalize(card2.shortName));
+        }
+
+        string = string.replace("%1n", name1);
+        string = string.replace("%1N", Util.capitalize(name1));
+        if (card2 != null) {
+            string = string.replace("%2n", name2);
+            string = string.replace("%2N", Util.capitalize(name2));
         }
         string = Util.substitute(string, card1.gender, card2 == null ? null : card2.gender);
         return string;

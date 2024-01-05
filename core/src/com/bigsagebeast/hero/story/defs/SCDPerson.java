@@ -12,7 +12,7 @@ public class SCDPerson extends StoryCardDefinition {
         addDefaultDescSelf("There is a person, %1n");
         addDefaultDescSelf("There is someone named %1n");
         addDefaultDescLink("home", "lives in %2n");
-        addDefaultDescLink("home", "lives at %2n");
+        //addDefaultDescLink("home", "lives at %2n");
         addDefaultDescLink("wielding", "wields %2n");
     }
 

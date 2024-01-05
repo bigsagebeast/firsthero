@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.story;
 
 import com.bigsagebeast.hero.story.defs.SCDPerson;
 import com.bigsagebeast.hero.story.defs.SCDPlace;
+import com.bigsagebeast.hero.story.defs.SCDPopulation;
 import com.bigsagebeast.hero.story.defs.SCDWeapon;
 
 import java.util.ArrayList;
@@ -48,11 +49,14 @@ public class StoryDeck {
         goblinLeader.tags.add("boss");
         goblinLeader.links.get("home").requirements.add(new StoryLinkRequirementTagRequired("goblin"));
         goblinLeader.addDescSelf("there is a wily goblin boss, %1n");
+        goblinLeader.addNameIntro("the wily goblin boss, %1n");
         addCard(goblinLeader);
 
         StoryCardDefinition nightbringer = new SCDWeapon();
         nightbringer.title = "nightbringer";
         nightbringer.tags.add("weapon");
+        nightbringer.addDescSelf("forged in darkness is the dread blade %1n");
+        nightbringer.addNameIntro("the dread blade %1n");
         addCard(nightbringer);
 
         StoryCardDefinition goblinCaves = new SCDPlace();
@@ -61,7 +65,10 @@ public class StoryDeck {
         goblinCaves.tags.add("dungeon");
         goblinCaves.links.get("location").seekType = StoryLinkSeekType.REQUIRED;
         goblinCaves.links.get("location").requirements.add(new StoryLinkRequirementTagRequired("overworld"));
+        goblinCaves.links.get("populace").seekType = StoryLinkSeekType.REQUIRED;
         goblinCaves.forceName = "the Goblin Caves";
+        goblinCaves.addDescSelf("Beneath the earth lie the gloomy Goblin Caves");
+        goblinCaves.addNameIntro("the gloomy Goblin Caves");
         addCard(goblinCaves);
 
         StoryCardDefinition goblinPits = new SCDPlace();
@@ -70,14 +77,28 @@ public class StoryDeck {
         goblinPits.tags.add("dungeon");
         goblinPits.links.get("location").seekType = StoryLinkSeekType.REQUIRED;
         goblinPits.links.get("location").requirements.add(new StoryLinkRequirementTagRequired("overworld"));
+        goblinPits.links.get("populace").seekType = StoryLinkSeekType.REQUIRED;
         goblinPits.forceName = "the Goblin Pits";
+        goblinPits.addDescSelf("Beneath the earth lie the gloomy Goblin Pits");
+        goblinPits.addNameIntro("the gloomy Goblin Pits");
         addCard(goblinPits);
 
         StoryCardDefinition woods = new SCDPlace();
         woods.title = "Weeping Woods";
         woods.tags.add("overworld");
         woods.forceName = "the Weeping Woods";
+        woods.addDescSelf("Enshrouded in mists are %1n");
+        woods.addNameIntro("%1n, enshrouded in mists");
         addCard(woods);
+
+        StoryCardDefinition populationGoblins = new SCDPopulation();
+        populationGoblins.title = "populationGoblins";
+        populationGoblins.tags.add("goblin");
+        populationGoblins.forceName = "the goblin horde";
+        populationGoblins.addDescSelf("From across the acid sea have come a goblin horde");
+        populationGoblins.addNameIntro("a goblin horde from across the acid sea");
+        addCard(populationGoblins);
+
     }
 
     public Map<StoryCardDefinition, Float> search(StoryGap gap) {
