@@ -373,6 +373,9 @@ public class Game {
 		if (itemsHere.size() == 1) {
 			if (itemsHere.get(0).getItem().quantity == 1) {
 				pickupWithQuantity(itemsHere.get(0), 1);
+			} else if (itemsHere.get(0).getItemType().keyName == "gold") {
+				// TODO are there other items that we want to pick up all automatically?
+				pickupWithQuantity(itemsHere.get(0), itemsHere.get(0).getItem().quantity);
 			} else {
 				Inventory.handleFloorToGetResponse(itemsHere.get(0));
 			}
@@ -947,6 +950,12 @@ public class Game {
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			// hack to avoid messages during test duel
 			return;
+		}
+		if (actorEntity != null && actorEntity.containingEntity < 0) {
+			actorEntity = actorEntity.getTopLevelContainer();
+		}
+		if (targetEntity != null && targetEntity.containingEntity < 0) {
+			targetEntity = targetEntity.getTopLevelContainer();
 		}
 		Gender actorGender = actorEntity == null ? null : actorEntity.gender;
 		Gender targetGender = targetEntity == null ? null : targetEntity.gender;

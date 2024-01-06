@@ -65,7 +65,6 @@ public class ProcCorpse extends Proc {
         ProcEffectConfusion proc = new ProcEffectConfusion();
         proc.turnsRemaining = 5;
         actor.addProc(proc);
-        proc.initialize(actor);
     }
 
     public void gainFireSmall(Entity entity, Entity actor) {

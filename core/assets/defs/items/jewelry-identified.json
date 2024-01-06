@@ -28,6 +28,21 @@
         }
       }
     },
+    "ring.charge.lightning": {
+      "idenGroup": "ring1",
+      "name": "ring of lightning charge",
+      "pluralName": "rings of lightning charge",
+      "category": "ring",
+      "equipmentFor": "ring",
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "intrinsic.ProcChargeRegen": {
+          "element": "LIGHTNING",
+          "rate": 25
+        }
+      }
+    },
     "ring.telepathy": {
       "idenGroup": "ring1",
       "name": "ring of telepathy",

@@ -58,7 +58,11 @@ public class UnidMapping {
             iden.glyphName = unid.glyphName;
             iden.palette = unid.palette;
             // TODO material?
-
+        }
+        for (String groupKey : groupUnid.keySet()) {
+            for (String unidKey : groupUnid.get(groupKey)) {
+                Itempedia.map.remove(unidKey);
+            }
         }
     }
 }

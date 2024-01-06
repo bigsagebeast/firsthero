@@ -26,6 +26,15 @@
         "white",
         "lightgreen"
       ]
+    },
+    "potion.chartreuse": {
+      "unidGroup": "potion1",
+      "unidentifiedName": "chartreuse potion",
+      "glyphName": "potion.large",
+      "palette": [
+        "white",
+        "chartreuse"
+      ]
     }
   }
 }

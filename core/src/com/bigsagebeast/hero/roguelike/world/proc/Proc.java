@@ -175,5 +175,15 @@ public class Proc {
 
     public Float getJitter(Entity entity) { return null; }
 
-    public Proc clone() { return null; }
+    public Proc clone(Entity entity) {
+        Proc clone = null;
+        try {
+            clone = this.getClass().getDeclaredConstructor().newInstance();
+            clone.initialize(entity);
+        } catch (Exception e) {
+            System.out.println("ERR: Trouble constructing clone of " + this.getClass().getName());
+            return null;
+        }
+        return clone;
+    }
 }

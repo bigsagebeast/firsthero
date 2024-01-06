@@ -115,8 +115,28 @@ public class Entity {
         return body.getParts().stream().map(body::getEquipment).filter(e -> e != null).collect(Collectors.toList());
     }
 
+    public Entity getContainer() {
+        if (containingEntity < 0) {
+            return null;
+        }
+        return EntityTracker.get(containingEntity);
+    }
+
+    public Entity getTopLevelContainer() {
+        Entity currentEntity = this;
+        while (currentEntity.containingEntity >= 0) {
+            currentEntity = EntityTracker.get(currentEntity.containingEntity);
+        }
+        return currentEntity;
+    }
+
     public void addProc(Proc proc)
     {
+        procs.add(proc);
+        proc.initialize(this);
+    }
+
+    public void addProcWithoutInitialize(Proc proc) {
         procs.add(proc);
     }
 
@@ -132,11 +152,29 @@ public class Entity {
         return null;
     }
 
+    public List<Proc> getProcsByType(List<Class> classes) {
+        ArrayList<Proc> matchingProcs = new ArrayList<>();
+        for (Class<Proc> clazz : classes) {
+            matchingProcs.addAll(procs.stream()
+                    .filter(p -> clazz.isAssignableFrom(p.getClass())).collect(Collectors.toList()));
+        }
+        return matchingProcs;
+    }
+
     // only returns the first
     public Proc getProcByTypeIncludingEquipment(Class clazz) {
         EntityProc found = allEntityProcsIncludingEquipment().filter(ep -> clazz.isAssignableFrom(ep.proc.getClass()))
                 .findFirst().orElse(null);
         return found == null ? null : found.proc;
+    }
+
+    public List<Proc> getProcByTypeIncludingEquipment(List<Class> classes) {
+        ArrayList<Proc> matchingProcs = new ArrayList<>();
+        for (Class<Proc> clazz : classes) {
+            matchingProcs.addAll(allEntityProcsIncludingEquipment()
+                    .filter(ep -> clazz.isAssignableFrom(ep.proc.getClass())).map(ep -> ep.proc).collect(Collectors.toList()));
+        }
+        return matchingProcs;
     }
 
     public Beatitude getBeatitude() {
@@ -436,6 +474,10 @@ public class Entity {
         }
         for (BodyPart alreadyEquippedBodyPart : allToUnequip.keySet()) {
             Entity alreadyEquipped = allToUnequip.get(alreadyEquippedBodyPart);
+            if (alreadyEquipped.getItem().beatitude == Beatitude.CURSED) {
+                Game.announce("Your " + alreadyEquipped.getVisibleName() + " is stuck to you!");
+                return false;
+            }
             for (Proc p : this.procs) {
                 Boolean val = p.preDoUnequip(this, alreadyEquippedBodyPart, alreadyEquipped);
                 if (val != null && !val) {
@@ -518,6 +560,20 @@ public class Entity {
             }
         }
 
+        if (bp != BodyPart.RANGED_AMMO && pi.beatitude == Beatitude.CURSED) {
+            String weldpart;
+            if (bp == BodyPart.TWO_HAND) {
+                weldpart = "hands";
+            } else if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND) {
+                // include ranged?
+                weldpart = "hand";
+            } else {
+                weldpart = "body";
+            }
+            Game.announce(actualTarget.getVisibleNameDefinite() + " welds itself to your " + weldpart + "!");
+            actualTarget.identifyItemBeatitude();
+        }
+
         for (Proc p : this.procs) {
             p.postDoEquip(this, bp, actualTarget);
         }
@@ -571,6 +627,12 @@ public class Entity {
         if (containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
         }
+    }
+
+    public void identifyItemBeatitude() {
+        ProcItem pi = getItem();
+        pi.identified = true;
+        // TODO should be distinct
     }
 
     public Entity acquireWithStacking(Entity target) {
@@ -963,11 +1025,7 @@ public class Entity {
         if (!itemType.stackable) {
             return false;
         }
-        if (thisItem.identified != otherItem.identified ||
-            thisItem.status != otherItem.status) {
-            return false;
-        }
-        return true;
+        return thisItem.canStackWith(otherItem);
     }
 
     public void beStackedWith(Entity other) {
@@ -1000,12 +1058,12 @@ public class Entity {
         other.glyphName = glyphName;
         other.palette = palette;
         for (Proc p : procs) {
-            Proc op = p.clone();
+            Proc op = p.clone(other);
             if (op != null) {
                 other.procs.add(op);
             }
         }
-        ProcItem opi = other.getItem();
+        ProcItem opi = (ProcItem)other.getItem();
         pi.quantity -= quantity;
         opi.quantity = quantity;
         return other;

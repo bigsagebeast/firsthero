@@ -27,6 +27,8 @@ public class ItemType {
     public boolean identityHidden = false;
     public boolean identified = false;
     public boolean hasBeatitude = true;
+    public int curseChance = 10;
+    public int blessChance = 10;
     public int minCount = 1;
     public int maxCount = 1;
     public int frequency = 100;

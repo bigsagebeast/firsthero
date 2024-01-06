@@ -26,6 +26,15 @@
         "tan",
         "red"
       ]
+    },
+    "ring.opal": {
+      "unidGroup": "ring1",
+      "unidentifiedName": "opal ring",
+      "glyphName": "ring.jeweled",
+      "palette": [
+        "tan",
+        "white"
+      ]
     }
   }
 }

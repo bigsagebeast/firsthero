@@ -190,10 +190,8 @@ public class Level {
 
 	public List<EntityProc> getEntityProcs() {
 		List<EntityProc> procEntities = new ArrayList<>();
-		for (Entity e : getEntities()) {
-			for (Proc p : e.procs) {
-				procEntities.add(new EntityProc(e, p));
-			}
+		for (Entity entity : getEntities()) {
+			procEntities.addAll(entity.allEntityProcsIncludingEquipmentAndInventory().collect(Collectors.toList()));
 		}
 		return procEntities;
 	}

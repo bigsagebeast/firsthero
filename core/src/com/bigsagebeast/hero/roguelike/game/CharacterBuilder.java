@@ -116,6 +116,7 @@ public class CharacterBuilder {
             case "wizard":
                 equip(entity, "armor.body.whiterobe", BodyPart.TORSO);
                 equip(entity, "dagger", BodyPart.PRIMARY_HAND);
+                equip(entity, "ring.charge.lightning", BodyPart.RIGHT_RING);
                 Game.spellbook.addSpell("magic missile");
                 Game.spellbook.addSpell("firebeam");
                 Game.spellbook.addSpell("water blast");
@@ -132,6 +133,8 @@ public class CharacterBuilder {
     }
 
     private static void equip(Entity entity, String key, BodyPart bodyPart, int quantity) {
-        entity.equip(Itempedia.create(key, quantity), bodyPart);
+        Entity equipment = Itempedia.create(key, quantity);
+        entity.equip(equipment, bodyPart);
+        equipment.identifyItemFully();
     }
 }

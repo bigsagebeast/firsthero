@@ -19,6 +19,26 @@
         "tan",
         "darkgreen"
       ]
+    },
+    "scroll.verpverp": {
+      "unidGroup": "scroll1",
+      "unidentifiedName": "scroll labeled VERP VERP",
+      "unidentifiedPluralName": "scrolls labeled VERP VERP",
+      "glyphName": "scroll.standard",
+      "palette": [
+        "tan",
+        "lightgreen"
+      ]
+    },
+    "scroll.yipyapyop": {
+      "unidGroup": "scroll1",
+      "unidentifiedName": "scroll labeled YIP YAP YOP",
+      "unidentifiedPluralName": "scrolls labeled YIP YAP YOP",
+      "glyphName": "scroll.standard",
+      "palette": [
+        "tan",
+        "orange"
+      ]
     }
   }
 }

@@ -10,7 +10,21 @@
       "level": 1,
       "procs": {
         "item.potion.ProcPotionHealing": {}
-      }
+      },
+      "maxCount": 3
+    },
+    "potion.extrahealing": {
+      "idenGroup": "potion1",
+      "name": "potion of extra healing",
+      "pluralName": "potions of extra healing",
+      "category": "potion",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.potion.ProcPotionExtraHealing": {}
+      },
+      "maxCount": 1
     },
     "potion.acid": {
       "idenGroup": "potion1",
@@ -22,7 +36,8 @@
       "level": 1,
       "procs": {
         "item.potion.ProcPotionAcid": {}
-      }
+      },
+      "maxCount": 3
     },
     "potion.regeneration": {
       "idenGroup": "potion1",
@@ -34,7 +49,8 @@
       "level": 1,
       "procs": {
         "item.potion.ProcPotionRegeneration": {}
-      }
+      },
+      "maxCount": 2
     }
   }
 }

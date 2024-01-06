@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.module;
 
 import com.badlogic.gdx.Input.Keys;
+import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.roguelike.game.GameSpecials;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.ui.*;
@@ -340,7 +341,37 @@ public class RoguelikeModule extends Module {
 					for (String key : Itempedia.map.keySet()) {
 						if (!Itempedia.map.get(key).isFeature) {
 							int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
-							Game.getPlayerEntity().acquireWithStacking(Itempedia.create(key, quantity));
+							Entity itemEnt = Itempedia.create(key, quantity);
+							itemEnt.identifyItemFully();
+							Game.getPlayerEntity().acquireWithStacking(itemEnt);
+						}
+					}
+			}
+		}
+		if (shift && ctrl && !alt) {
+			switch (keycode) {
+				case Keys.RIGHT_BRACKET:
+					for (String key : Itempedia.map.keySet()) {
+						if (!Itempedia.map.get(key).isFeature) {
+							int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
+							Entity itemEnt = Itempedia.create(key, quantity);
+							itemEnt.getItem().beatitude = Beatitude.CURSED;
+							itemEnt.identifyItemFully();
+							Game.getPlayerEntity().acquireWithStacking(itemEnt);
+						}
+					}
+			}
+		}
+		if (!shift && ctrl && alt) {
+			switch (keycode) {
+				case Keys.RIGHT_BRACKET:
+					for (String key : Itempedia.map.keySet()) {
+						if (!Itempedia.map.get(key).isFeature) {
+							int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
+							Entity itemEnt = Itempedia.create(key, quantity);
+							itemEnt.getItem().beatitude = Beatitude.BLESSED;
+							itemEnt.identifyItemFully();
+							Game.getPlayerEntity().acquireWithStacking(itemEnt);
 						}
 					}
 			}

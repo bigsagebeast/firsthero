@@ -149,7 +149,7 @@ public class GlyphEngine implements GameLogic {
 
         // TODO monster detection should probably happen outside of the graphics engine...
         if (isDirty()) {
-            boolean isTelepathic = Game.getPlayerEntity().getProcByTypeIncludingEquipment(ProcTelepathy.class) != null;
+            boolean isTelepathic = GameEntities.isTelepathic(Game.getPlayerEntity());
             for (int x = offsetX - widthInTiles; x <= offsetX + widthInTiles; x++) {
                 for (int y = offsetY - heightInTiles; y <= offsetY + heightInTiles; y++) {
                     // could these ever be different?

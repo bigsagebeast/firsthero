@@ -43,7 +43,6 @@ public class ProcDoppelganger extends Proc {
             ProcEffectConfusion confusionProc = new ProcEffectConfusion();
             confusionProc.turnsRemaining = (int)(duration * (0.5f + Game.random.nextFloat()));
             target.addProc(confusionProc);
-            confusionProc.initialize(target);
         }
     }
 }

@@ -4,13 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.world.Entity;
-import com.bigsagebeast.hero.roguelike.world.ItemStatus;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 
 public class ProcItem extends Proc {
 
-    public ItemStatus status;
-    public boolean identified;
+    public boolean identified; // split into ID stats vs beatitude?
     public Beatitude beatitude = Beatitude.UNCURSED;
     public int quantity = 1;
 
@@ -28,12 +26,16 @@ public class ProcItem extends Proc {
     }
 
     @Override
-    public Proc clone() {
+    public Proc clone(Entity other) {
         ProcItem pi = new ProcItem();
-        pi.status = status;
         pi.identified = identified;
+        pi.beatitude = beatitude;
         // careful to reset this afterwards if you're destacking
         pi.quantity = quantity;
         return pi;
+    }
+
+    public boolean canStackWith(ProcItem other) {
+        return other.identified == identified && other.beatitude == beatitude;
     }
 }

@@ -23,6 +23,18 @@
       "procs": {
         "item.scroll.ProcScrollMagicMap": {}
       }
+    },
+    "scroll.remove.curse": {
+      "idenGroup": "scroll1",
+      "name": "scroll of remove curse",
+      "pluralName": "scrolls of remove curse",
+      "category": "scroll",
+      "frequency": 300,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.scroll.ProcScrollRemoveCurse": {}
+      }
     }
   }
 }
