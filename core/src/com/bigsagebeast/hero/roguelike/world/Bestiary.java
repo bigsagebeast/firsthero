@@ -7,8 +7,8 @@ import java.util.function.Consumer;
 import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.glyphtile.Palette;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
-import com.bigsagebeast.hero.roguelike.world.ai.ChaseAndMeleeTactic;
-import com.bigsagebeast.hero.roguelike.world.ai.RangedAmmoThenMeleeTactic;
+import com.bigsagebeast.hero.roguelike.world.ai.TacticChaseAndMelee;
+import com.bigsagebeast.hero.roguelike.world.ai.TacticRangedAmmoThenMelee;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcBurningTouch;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
@@ -66,7 +66,7 @@ public class Bestiary {
 		goblinArcher.naturalArmorClass = 0;
 		goblinArcher.setup.add(e -> {
 			e.addProc(new ProcShooter("weapon.ammo.arrow"));
-			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(4)));
+			e.addProc(new ProcMonster(new TacticRangedAmmoThenMelee(4)));
 		});
 		goblinArcher.tags.add("goblin");
 		goblinArcher.tags.add("generic-fantasy");
@@ -92,7 +92,7 @@ public class Bestiary {
 		goblinSlinger.naturalArmorClass = 0;
 		goblinSlinger.setup.add(e -> {
 			e.addProc(new ProcShooter("weapon.ammo.rock"));
-			e.addProc(new ProcMonster(new RangedAmmoThenMeleeTactic(6)));
+			e.addProc(new ProcMonster(new TacticRangedAmmoThenMelee(6)));
 		});
 		goblinSlinger.tags.add("goblin");
 		goblinSlinger.tags.add("generic-fantasy");
@@ -208,6 +208,7 @@ public class Bestiary {
 		}
 		e.isManipulator = p.isManipulator;
 		e.ambulation = p.ambulation;
+		e.incorporeal = p.incorporeal;
 		e.experienceAwarded = p.experienceAwarded;
 		e.naturalWeaponDamage = p.naturalWeaponDamage;
 		e.naturalWeaponToHit = p.naturalWeaponToHit;
@@ -216,6 +217,11 @@ public class Bestiary {
 		e.naturalRangedWeaponDamage = p.naturalRangedWeaponDamage;
 		e.naturalRangedWeaponToHit = p.naturalRangedWeaponToHit;
 		e.naturalRangedWeaponRange = p.naturalRangedWeaponRange;
+
+		if (e.incorporeal) {
+			// TODO: Should have its own flag for omniscient?
+			e.visionRange = 9999;
+		}
 
 		if (p.moveCost == 0) throw new RuntimeException("Bad move cost");
 		for (Consumer<Entity> consumer : p.setup) {
@@ -239,7 +245,7 @@ public class Bestiary {
 			if (p.tacticLoader != null) {
 				p.tacticLoader.apply(e);
 			} else {
-				pm.tactic = new ChaseAndMeleeTactic();
+				pm.tactic = new TacticChaseAndMelee();
 			}
 		} else {
 			ProcMover pm = new ProcMover();

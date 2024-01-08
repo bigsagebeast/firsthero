@@ -10,11 +10,11 @@ import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 
 import java.util.List;
 
-public class RangedAmmoThenMeleeTactic extends Tactic {
+public class TacticRangedAmmoThenMelee extends Tactic {
 
 	int ammo;
 
-	public RangedAmmoThenMeleeTactic(int ammo) {
+	public TacticRangedAmmoThenMelee(int ammo) {
 		this.ammo = ammo;
 	}
 

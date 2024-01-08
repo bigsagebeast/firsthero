@@ -118,11 +118,13 @@ public class RoguelikeModule extends Module {
 		}
 
 		for (Entity e : level.getMovers()) {
+			/*
 			int wx = e.pos.x - mainWindow.getCameraX();
 			int wy = e.pos.y - mainWindow.getCameraY();
 			if (wx < 0 || wx >= mainWindow.getWidth() || wy < 0 || wy >= mainWindow.getWidth()) {
 				continue;
 			}
+			 */
 			if (level.cell(e.pos.x, e.pos.y).visible()) {
 				for (Proc p : e.procs) {
 					p.actPlayerLos(e);
@@ -140,7 +142,7 @@ public class RoguelikeModule extends Module {
 				for (Entity target : level.getMovers()) {
 					if (e == target)
 						continue;
-					if (Fov.canSee(level, e.pos, target.pos, 15)) {
+					if (e.canSee(target)) {
 						visibleMovers.add(target);
 					}
 				}
@@ -171,11 +173,13 @@ public class RoguelikeModule extends Module {
 	@Override
 	public void update(GameState state) {
 		if (dirty) {
+			Game.getLevel().recalculateJitter();
 			redraw();
 			process();
 		}
 		while (game.hasLongTask()) {
 			game.turn();
+			Game.getLevel().recalculateJitter();
 			redraw();
 			process();
 		}

@@ -12,6 +12,7 @@ defs/items/weapons.json
 defs/movers/animals.json
 defs/movers/goblins.json
 defs/movers/gods.json
+defs/movers/horror.json
 defs/movers/humanoids.json
 defs/movers/sprites.json
 defs/movers/tech.json

@@ -82,6 +82,7 @@ public class Graphics {
 		}
 		spriteBatch.setProjectionMatrix(cam.combined);
 		spriteBatch.begin();
+		spriteBatch.setColor(1, 1, 1, 1);
 		batchInProgress = true;
 	}
 

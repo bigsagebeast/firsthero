@@ -253,6 +253,11 @@ public class Game {
 		interrupted = true;
 	}
 
+	public static void interruptAndBreak() {
+		// TODO: Force the player to hit enter.
+		interrupted = true;
+	}
+
 	public static boolean hasLongTask() {
 		return restTurns > 0 || longWalkDir != null;
 	}
@@ -618,7 +623,10 @@ public class Game {
 			announce("You're out of " + shotEntity.getVisiblePluralName() + ".");
 		}
 
-		level.addEntityWithStacking(shotEntity, targetPoint);
+		//TODO break chance per ammo
+		if (Game.random.nextInt(100) < 75) {
+			level.addEntityWithStacking(shotEntity, targetPoint);
+		}
 		passTime(player.getEntity().moveCost);
 		GameLoop.targetingModule.animate(getPlayerEntity().pos, targetPoint);
 	}
@@ -644,7 +652,10 @@ public class Game {
 			CombatLogic.shoot(actor, targetEntity, rangedWeapon, ammo);
 		}
 		actor.getMover().setDelay(actor, actor.moveCost);
-		level.addEntityWithStacking(ammo, targetPoint);
+		// TODO break chance for ammo
+		if (Game.random.nextInt(100) < 50) {
+			level.addEntityWithStacking(ammo, targetPoint);
+		}
 	}
 
 	public void cmdLook() {
@@ -858,22 +869,26 @@ public class Game {
 	}
 
 	public static boolean isBlockedByTerrain(Entity actor, int tx, int ty) {
-		if (!level.cell(tx, ty).terrain.isPassable()) {
+		if (tx < 0 || tx >= level.getWidth() || ty < 0 || ty >= level.getHeight()) {
 			return true;
+		}
+		if (actor.incorporeal) {
+			return false;
 		}
 		switch (actor.ambulation) {
 			case WALKING_ONLY:
 				if (level.cell(tx, ty).terrain.getName().equals("water")) {
 					return true;
 				}
-				break;
+				return !level.cell(tx, ty).terrain.isPassable();
 			case SWIMMING_ONLY:
 				if (!level.cell(tx, ty).terrain.getName().equals("water")) {
 					return true;
 				}
-				break;
+				return !level.cell(tx, ty).terrain.isPassable();
+			default:
+				return !level.cell(tx, ty).terrain.isPassable();
 		}
-		return false;
 	}
 
 	public static boolean isBlockedByEntity(Entity actor, int tx, int ty) {
@@ -899,7 +914,7 @@ public class Game {
 		if (level.moverAt(tx, ty) != null) {
 			return false;
 		}
-		if (!level.cell(tx, ty).terrain.isPassable()) {
+		if (isBlockedByTerrain(e, tx, ty)) {
 			return false;
 		}
 

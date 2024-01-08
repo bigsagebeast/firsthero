@@ -1,0 +1,37 @@
+{
+  "movers": {
+    "neverbeast.young": {
+      "name": "young neverbeast",
+      "description": "The unnameable nothing that lives in the raw spaces exposed by the universe's fracturing push through and into crumbling stories with these small tendrils, like fingers of a great and clutching hand. There is no reward in slaying what was never there.",
+      "peaceful": false,
+      "hitPoints": 30,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "glitch.frame1",
+      "isManipulator": false,
+      "ambulation": "FLYING",
+      "incorporeal": true,
+      "wandering": false,
+      "moveCost": 1333,
+      "palette": [
+        "white",
+        "forestgreen",
+        "red"
+      ],
+      "experienceAwarded": 0,
+      "threat": 1,
+      "naturalWeaponDamage": 8,
+      "naturalWeaponToHit": 0,
+      "naturalArmorClass": 10,
+      "size": "SMALL",
+      "tags": [
+        "neverbeast"
+      ],
+      "procs": {
+        "ProcJitter": {
+          "strength": 2.0
+        }
+      }
+    }
+  }
+}

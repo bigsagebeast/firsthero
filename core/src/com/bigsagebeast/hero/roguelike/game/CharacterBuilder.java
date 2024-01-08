@@ -28,6 +28,8 @@ public class CharacterBuilder {
                 .withMargins(60, 60)
                 .withTitle("Select a race");
         box.addItem("Human     Well-rounded", "human");
+        box.addItem("Dwarf     Strong but slow", "dwarf");
+        box.addItem("Elf       Agile but weaker", "elf");
         box.autoHeight();
         GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleSelectRace);
     }
@@ -74,6 +76,26 @@ public class CharacterBuilder {
                 entity.statblock.arc = 10;
                 entity.statblock.ava = 10;
                 break;
+            case "dwarf":
+                entity.statblock.str = 12;
+                entity.statblock.tou = 12;
+                entity.statblock.dex = 8;
+                entity.statblock.agi = 6;
+                entity.statblock.per = 10;
+                entity.statblock.wil = 12;
+                entity.statblock.arc = 10;
+                entity.statblock.ava = 10;
+                break;
+            case "elf":
+                entity.statblock.str = 8;
+                entity.statblock.tou = 6;
+                entity.statblock.dex = 12;
+                entity.statblock.agi = 12;
+                entity.statblock.per = 10;
+                entity.statblock.wil = 10;
+                entity.statblock.arc = 12;
+                entity.statblock.ava = 10;
+                break;
         }
 
         switch (archetype) {
@@ -105,7 +127,7 @@ public class CharacterBuilder {
             case "warrior":
                 equip(entity, "armor.body.chain", BodyPart.TORSO);
                 equip(entity, "armor.head.leatherhat", BodyPart.HEAD);
-                equip(entity, "longsword", BodyPart.PRIMARY_HAND);
+                equip(entity, "short sword", BodyPart.PRIMARY_HAND);
                 break;
             case "archer":
                 equip(entity, "armor.body.leather", BodyPart.TORSO);

@@ -13,12 +13,12 @@ public class AStar {
 
 	private static PriorityQueue<AStarData> queue = new PriorityQueue<AStarData>();
 	private static AStar instance = new AStar();
-	private static final float MAX_DISTANCE_FROM_TARGET = 15f;
 
 	public static List<Point> path(Level level, Entity e, Point origin, Point destination) {
 		Long milliStart = System.currentTimeMillis();
 		level.clearTemp();
 		queue.clear();
+		int maxDistance = (int)e.visionRange;
 
 		check(level, instance.new AStarData(origin, 0, null, origin.distance(destination)));
 		List<Point> retval = new ArrayList<Point>();
@@ -37,7 +37,7 @@ public class AStar {
 			for (Compass dir : Compass.points()) {
 				Point newloc = dir.from(next.location);
 				float distance = newloc.distance(destination);
-				if (distance > MAX_DISTANCE_FROM_TARGET) {
+				if (distance > maxDistance) {
 					continue;
 				}
 				

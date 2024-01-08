@@ -28,6 +28,7 @@ public class Phenotype {
 	public PaletteEntry palette;
 	public boolean isManipulator;
 	public Ambulation ambulation = Ambulation.WALKING_ONLY;
+	public boolean incorporeal;
 	public int experienceAwarded;
 	public int moveCost = 1000;
 	public int naturalWeaponToHit = 0;

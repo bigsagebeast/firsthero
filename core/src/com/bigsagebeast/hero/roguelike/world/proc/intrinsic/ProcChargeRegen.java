@@ -15,6 +15,7 @@ public class ProcChargeRegen extends Proc {
     public ProcChargeRegen() { super(); }
     @Override
     public void turnPassed(Entity entity) {
+        // TODO isEquipped
         super.turnPassed(entity);
         if (entity.containingEntity == -1) {
             return;

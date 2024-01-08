@@ -10,7 +10,7 @@ import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 
-public class ChaseAndMeleeTactic extends Tactic {
+public class TacticChaseAndMelee extends Tactic {
 	@Override
 	public boolean execute(Entity e, ProcMover pm) {
 		if (pm.targetEntityId == EntityTracker.NONE) {

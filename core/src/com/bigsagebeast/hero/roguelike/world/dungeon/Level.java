@@ -34,6 +34,9 @@ public class Level {
 	public Map<Integer, List<Point>> roomMap = new HashMap<>();
 	public Map<Point, Float> jitters = new HashMap<>();
 	private int lastTurnUpdate = 0;
+
+	private int neverbeastCountdown = 51;
+	private int neverbeastSpawned = 0;
 	
 	public Level(String key, int width, int height) {
 		this.key = key;
@@ -80,6 +83,7 @@ public class Level {
 			e.wanderer = true;
 			addEntityWithStacking(e, pos);
 		}
+		handleNeverbeast();
 	}
 
 	public String getKey() {
@@ -564,5 +568,54 @@ public class Level {
 
 	public int getMaxThreat() {
 		return (Game.getPlayerEntity().level / 2) + Game.getLevel().threat + 1;
+	}
+
+	private void handleNeverbeast() {
+		neverbeastCountdown--;
+		if (neverbeastCountdown == 50 && neverbeastSpawned == 0) {
+			Game.announce("Cracks start to form in the narrative.");
+			Game.interruptAndBreak();
+		} else if (neverbeastCountdown <= 0) {
+
+			String monsterKey = "neverbeast.young";
+			Point playerPos = Game.getPlayerEntity().pos;
+			int spawnX, spawnY;
+			if (playerPos.x < width/2) {
+				spawnX = width-1;
+			} else {
+				spawnX = 0;
+			}
+			if (playerPos.y < height/2) {
+				spawnY = height-1;
+			} else {
+				spawnY = 0;
+			}
+			Point pos = new Point(spawnX, spawnY);
+			if (Game.isBlockedByEntity(null, pos.x, pos.y)) {
+				// TODO: Try at nearby points
+				System.out.println("WARN: Couldn't spawn neverbeast at " + pos);
+				return;
+			}
+
+			Game.announce("You get a really bad feeling...");
+			Game.interruptAndBreak();
+			Entity e = Game.bestiary.create(monsterKey);
+			e.summoned = true;
+			addEntityWithStacking(e, pos);
+			neverbeastSpawned++;
+			switch (neverbeastSpawned) {
+				case 1:
+					neverbeastCountdown += 200;
+					break;
+				case 2:
+					neverbeastCountdown += 150;
+					break;
+				case 3:
+					neverbeastCountdown += 100;
+					break;
+				default:
+					neverbeastCountdown += 50;
+			}
+		}
 	}
 }

@@ -87,13 +87,14 @@ public class Entity {
 
     public boolean isManipulator;
     public Ambulation ambulation;
+    public boolean incorporeal;
 
     public String itemTypeKey;
 
     public Rank stats = Rank.C;
 
-    float visionRange = 15;
-    float hearingRange = 30;
+    public float visionRange = 15;
+    public float hearingRange = 30;
 
     // to count the number of wandering monsters
     public boolean wanderer;
@@ -290,6 +291,10 @@ public class Entity {
     }
 
     public boolean canSee(Entity target) {
+        // TODO: Omniscient flag, instead of implying that incorporeal can see everything?
+        if (incorporeal) {
+            return true;
+        }
         return Fov.canSee(Game.getLevel(), pos, target.pos, visionRange);
     }
 
