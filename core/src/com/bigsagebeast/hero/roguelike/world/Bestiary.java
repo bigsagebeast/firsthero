@@ -199,7 +199,11 @@ public class Bestiary {
 		e.peaceful = p.peaceful;
 		e.moveCost = p.moveCost;
 		e.body = new Body(p.bodyPlan);
-		e.glyphName = p.glyphName;
+		if (p.glyphNames.size() > 0) {
+			e.glyphNames = p.glyphNames.toArray(new String[0]);
+		} else {
+			e.glyphNames = new String[] { p.glyphName };
+		}
 		e.palette = p.palette;
 		if (p.gender == Gender.RANDOM) {
 			e.gender = Game.random.nextInt(2) == 0 ? Gender.MALE : Gender.FEMALE;

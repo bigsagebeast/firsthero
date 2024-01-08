@@ -20,6 +20,7 @@ public class ItemType {
     public boolean isFeature = false;
     public BodyPart equipmentFor;
     public String glyphName;
+    public String[] glyphNames;
     public PaletteEntry palette;
     public ItemCategory category;
     public int level = -1;

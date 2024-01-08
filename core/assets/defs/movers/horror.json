@@ -7,7 +7,9 @@
       "hitPoints": 30,
       "isMonster": true,
       "bodyPlan": "humanoid",
-      "glyphName": "glitch.frame1",
+      "glyphNames": [
+        "glitch.frame1", "glitch.frame2", "glitch.frame3", "glitch.dog"
+      ],
       "isManipulator": false,
       "ambulation": "FLYING",
       "incorporeal": true,
@@ -15,7 +17,7 @@
       "moveCost": 1333,
       "palette": [
         "white",
-        "forestgreen",
+        "skyblue",
         "red"
       ],
       "experienceAwarded": 0,

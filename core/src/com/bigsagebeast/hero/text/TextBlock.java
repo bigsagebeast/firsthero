@@ -367,7 +367,7 @@ public class TextBlock implements GameLogic {
 	}
 
 	private void drawGlyph(Graphics g, GraphicsState gState, GlyphTile glyph, float x, float y) {
-		g.batch().draw(glyph.texture, (x * fontSize) + pixelOffsetX, Graphics.height - (((y + 1) * fontSize) + pixelOffsetY),
+		g.batch().draw(glyph.getTexture(false), (x * fontSize) + pixelOffsetX, Graphics.height - (((y + 1) * fontSize) + pixelOffsetY),
 				fontSize, fontSize * GlyphEngine.GLYPH_HEIGHT / GlyphEngine.GLYPH_WIDTH, 0, 0, GlyphEngine.GLYPH_WIDTH, GlyphEngine.GLYPH_HEIGHT, false, true);
 	}
 

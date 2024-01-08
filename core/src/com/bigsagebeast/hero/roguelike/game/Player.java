@@ -74,6 +74,9 @@ public class Player {
 				// TODO update stat window
 				// TODO update a proc on the player
 			} else {
+				if (after == Satiation.STARVING || after == Satiation.HUNGRY) {
+					Game.interruptAndBreak();
+				}
 				Game.announce(after.messageDown);
 			}
 		}

@@ -15,7 +15,7 @@ public class ProcDoppelganger extends Proc {
 
     @Override
     public void postLoad(Entity entity) {
-        entity.glyphName = Game.getPlayerEntity().glyphName;
+        entity.glyphNames = Game.getPlayerEntity().glyphNames;
         entity.palette = Game.getPlayerEntity().palette;
         entity.glyphFlipH = true;
         entity.gender = Game.getPlayerEntity().gender;

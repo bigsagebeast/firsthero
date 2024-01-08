@@ -43,14 +43,18 @@ public class AnnounceWindow extends UIWindow {
 	}
 
 	public void addLine(String line) {
+		addLine(line, Color.WHITE);
+	}
+
+	public void addLine(String line, Color color) {
 		WindowEngine.setDirty(UIManager.NAME_ANNOUNCEMENTS);
 		if (line.isEmpty()) {
 			return;
 		}
-		line = addLine(line, windowWidth);
+		line = addLine(line, windowWidth, color);
 		
 		while (!line.isEmpty()) {
-			line = addLine("  " + line, paraWidth);
+			line = addLine("  " + line, paraWidth, color);
 		}
 		
 		while (lines.size() > windowHeight) {
@@ -67,9 +71,10 @@ public class AnnounceWindow extends UIWindow {
 		lineBlocks.remove(lineBlocks.size() - 1);
 		slack++;
 		parent.compile();
+		WindowEngine.setDirty(UIManager.NAME_ANNOUNCEMENTS);
 	}
 	
-	private String addLine(String line, int width) {
+	private String addLine(String line, int width, Color color) {
 		/*
 		// remove prepended spaces
 		while (!line.isEmpty() && line.indexOf(0) == ' ') {
@@ -105,8 +110,8 @@ public class AnnounceWindow extends UIWindow {
 		
 		lines.add(thisLine);
 		
-		TextBlock lineBlock = new TextBlock("", null, RoguelikeModule.FONT_SIZE, 0, windowHeight-1, Color.WHITE);
-		TextBlock partialBlock = new TextBlock(thisLine, null, RoguelikeModule.FONT_SIZE, 0, 0, Color.WHITE);
+		TextBlock lineBlock = new TextBlock("", null, RoguelikeModule.FONT_SIZE, 0, windowHeight-1, color);
+		TextBlock partialBlock = new TextBlock(thisLine, null, RoguelikeModule.FONT_SIZE, 0, 0, color);
 		lineBlock.addChild(partialBlock);
 
 		if (slack > 0) {

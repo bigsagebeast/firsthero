@@ -45,6 +45,7 @@ public class Game {
 	public static boolean initialized = false;
 
 	public static boolean interrupted;
+	public static boolean paused;
 	public static int restTurns; // if > 0, we're waiting in place
 	public static Compass longWalkDir = null; // if non-null, we're long-walking
 
@@ -140,6 +141,7 @@ public class Game {
 
 		GameLoop.glyphEngine.initializeLevel(level);
 		level.prepare();
+		interrupted = false;
 		passTime(0);
 	}
 
@@ -160,6 +162,7 @@ public class Game {
 		Point playerPos = nextLevel.findTransitionTo(fromKey).loc;
 		level.addEntityWithStacking(player.getEntity(), playerPos, false);
 		level.prepare();
+		interrupted = false;
 
 		GameLoop.glyphEngine.initializeLevel(level);
 		passTime(0);
@@ -169,6 +172,7 @@ public class Game {
 		level = nextLevel;
 		GameLoop.glyphEngine.initializeLevel(level);
 		level.prepare();
+		interrupted = false;
 		passTime(0);
 	}
 
@@ -235,6 +239,11 @@ public class Game {
 			time = lowestTurn;
 			if (lowestProc.proc == player.getEntity().getMover()) {
 				tryLongTaskAction();
+				if (paused) {
+					// This isn't in PauseModule, to make messages go in the right order
+					Game.announceLoud("-- ENTER to continue --");
+					paused = false;
+				}
 				break;
 			}
 			lowestProc.proc.act(lowestProc.entity);
@@ -254,8 +263,9 @@ public class Game {
 	}
 
 	public static void interruptAndBreak() {
-		// TODO: Force the player to hit enter.
-		interrupted = true;
+		interrupt();
+		paused = true;
+		GameLoop.pauseModule.begin(null);
 	}
 
 	public static boolean hasLongTask() {
@@ -269,8 +279,8 @@ public class Game {
 			interrupted = false;
 			restTurns = 0;
 			longWalkDir = null;
+			return false;
 		}
-		interrupted = false;
 
 		if (restTurns-- > 0) {
 			if (hasInterruption()) {
@@ -505,7 +515,7 @@ public class Game {
 				if (chatPage == null) {
 					Game.announce(target.getVisibleNameDefinite() + " won't talk to you.");
 				} else {
-					GameLoop.CHAT_MODULE.openStory(target);
+					GameLoop.chatModule.openStory(target);
 				}
 				passTime(player.getEntity().moveCost);
 				return;
@@ -936,6 +946,13 @@ public class Game {
 			return;
 		}
 		roguelikeModule.announce(Util.capitalize(s));
+	}
+
+	public static void announceLoud(String s) {
+		if (s == null || !GameLoop.roguelikeModule.isRunning()) {
+			return;
+		}
+		roguelikeModule.announceLoud(Util.capitalize(s));
 	}
 
 	public static void unannounce() {

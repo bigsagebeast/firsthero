@@ -192,6 +192,13 @@ public class DefinitionLoader {
                     for (JsonNode entry : nodeField) {
                         phenotype.tags.add(entry.textValue());
                     }
+                } else if (fieldName == "glyphNames") {
+                    if (!nodeField.isArray()) {
+                        throw new RuntimeException("glyphNames was not an array");
+                    }
+                    for (JsonNode entry : nodeField) {
+                        phenotype.glyphNames.add(entry.textValue());
+                    }
                 } else {
                     Field phenotypeField = Phenotype.class.getDeclaredField(fieldName);
                     phenotypeField.setAccessible(true);
@@ -209,6 +216,7 @@ public class DefinitionLoader {
                     } else if (phenotypeField.getType().isAssignableFrom(boolean.class) || phenotypeField.getType().isAssignableFrom(Boolean.class)) {
                         phenotypeField.set(phenotype, Boolean.valueOf(nodeField.asText()));
                     } else if (phenotypeField.getType().isArray() && phenotypeField.getType().getComponentType().isAssignableFrom(String.class)) {
+                        // TODO broken, needs special casing
                         ArrayList<String> stringList = new ArrayList<>();
                         for (JsonNode elementNode : nodeField) {
                             stringList.add(elementNode.asText());

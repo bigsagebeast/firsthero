@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.module;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.roguelike.game.GameSpecials;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
@@ -86,12 +87,19 @@ public class RoguelikeModule extends Module {
 		experienceWindow.close();
 		statBarWindow.close();
 	}
-	
+
 	public void announce(String s) {
 		// TODO this should already be initialized!
-		// Failed when announcing an elemeng being drawn on the first turn
+		// Failed when announcing an element being drawn on the first turn
 		if (announceWindow != null) {
 			announceWindow.addLine(Util.capitalize(s));
+		}
+	}
+
+	public void announceLoud(String s) {
+		// TODO this should already be initialized!
+		if (announceWindow != null) {
+			announceWindow.addLine(Util.capitalize(s), Color.YELLOW);
 		}
 	}
 

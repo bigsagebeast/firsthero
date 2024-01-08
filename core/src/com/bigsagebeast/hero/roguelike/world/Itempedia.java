@@ -109,7 +109,11 @@ public class Itempedia {
         }
         e.pluralName = t.pluralName;
         //e.glyph = t.glyph;
-        e.glyphName = t.glyphName;
+        if (t.glyphNames != null) {
+            e.glyphNames = t.glyphNames;
+        } else {
+            e.glyphNames = new String[] { t.glyphName };
+        }
         e.palette = t.palette;
         e.itemTypeKey = t.keyName;
 

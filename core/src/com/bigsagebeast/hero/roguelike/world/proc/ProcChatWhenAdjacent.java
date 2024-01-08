@@ -10,7 +10,7 @@ public class ProcChatWhenAdjacent extends Proc {
     public void onPlayerMovesAdjacentTo(Entity entity) {
         if (!triggered) {
             triggered = true;
-            GameLoop.CHAT_MODULE.openStory(entity);
+            GameLoop.chatModule.openStory(entity);
         }
     }
 }

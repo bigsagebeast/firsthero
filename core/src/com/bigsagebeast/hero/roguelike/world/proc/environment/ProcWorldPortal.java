@@ -57,7 +57,7 @@ public class ProcWorldPortal extends Proc {
         links.add(linkOk);
         links.add(linkRefuse);
 
-        GameLoop.CHAT_MODULE.openArbitrary(chatBox, links);
+        GameLoop.chatModule.openArbitrary(chatBox, links);
     }
 
     public static void acceptWorld() {

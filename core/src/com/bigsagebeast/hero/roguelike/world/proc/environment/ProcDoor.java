@@ -75,7 +75,7 @@ public class ProcDoor extends ProcFeature {
     }
 
     public void open(Entity entity) {
-        entity.glyphName = "terrain.door_open";
+        entity.glyphNames = new String[] {"terrain.door_open"};
         entity.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TRANSPARENT, Palette.COLOR_BROWN);
         entity.name = "open door";
         EntityGlyph.updateEntity(entity);
@@ -83,7 +83,7 @@ public class ProcDoor extends ProcFeature {
     }
 
     public void close(Entity entity) {
-        entity.glyphName = "terrain.door_closed";
+        entity.glyphNames = new String[] {"terrain.door_closed"};
         entity.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_TAN, Palette.COLOR_BROWN);
         entity.name = "closed door";
         EntityGlyph.updateEntity(entity);

@@ -285,7 +285,8 @@ public class GlyphEngine implements GameLogic {
                                 jitterX = (int) (jitterMagnitude * Math.cos(angle));
                                 jitterY = (int) (jitterMagnitude * Math.sin(angle));
                             }
-                            Texture drawTexture = level.cell(cellX, cellY).visible() ? glyph.texture : glyph.grayTexture;
+                            boolean gray = !level.cell(cellX, cellY).visible();
+                            Texture drawTexture = glyph.getTexture(gray);
                             TextureRegion drawTextureRegion = new TextureRegion(drawTexture);
                             if (glyph.flipH) {
                                 // TODO: Is it slow to use TextureRegions? Verify

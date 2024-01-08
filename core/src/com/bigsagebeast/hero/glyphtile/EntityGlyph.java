@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.glyphtile;
 
 import com.bigsagebeast.hero.roguelike.world.Entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,9 +18,18 @@ public class EntityGlyph {
     }
 
     public static void updateEntity(Entity e) {
-        BaseGlyph b = GlyphIndex.get(e.glyphName);
-        GlyphTile t = b.create(e.palette, e.glyphFlipH);
-        map.put(e, t);
+        if (e.glyphNames.length == 1) {
+            BaseGlyph b = GlyphIndex.get(e.glyphNames[0]);
+            GlyphTile t = b.create(e.palette, e.glyphFlipH);
+            map.put(e, t);
+        } else {
+            ArrayList<BaseGlyph> baseGlyphs = new ArrayList<>();
+            for (String glyphName : e.glyphNames) {
+                baseGlyphs.add(GlyphIndex.get(glyphName));
+            }
+            GlyphTile t = BaseGlyph.create(baseGlyphs, e.palette, e.glyphFlipH);
+            map.put(e, t);
+        }
     }
 
     public static void forget(Entity e) {

@@ -80,7 +80,7 @@ public class Entity {
     public int spRegenDelay = 0;
 
     public String phenotypeName;
-    public String glyphName;
+    public String[] glyphNames;
     public PaletteEntry palette;
     public boolean glyphFlipH; // flip glyph horizontally
     public Gender gender = Gender.AGENDER;
@@ -1060,7 +1060,7 @@ public class Entity {
         other.name = name;
         other.pluralName = pluralName;
         other.itemTypeKey = itemTypeKey;
-        other.glyphName = glyphName;
+        other.glyphNames = glyphNames;
         other.palette = palette;
         for (Proc p : procs) {
             Proc op = p.clone(other);

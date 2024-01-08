@@ -24,6 +24,7 @@ public class Phenotype {
 	public boolean isMonster;
 	public String bodyPlan;
 	public String glyphName;
+	public List<String> glyphNames = new ArrayList<>();
 	public Gender gender = Gender.AGENDER;
 	public PaletteEntry palette;
 	public boolean isManipulator;

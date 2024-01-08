@@ -35,7 +35,7 @@ public class Level {
 	public Map<Point, Float> jitters = new HashMap<>();
 	private int lastTurnUpdate = 0;
 
-	private int neverbeastCountdown = 51;
+	private int neverbeastCountdown = 60;
 	private int neverbeastSpawned = 0;
 	
 	public Level(String key, int width, int height) {
@@ -572,8 +572,12 @@ public class Level {
 
 	private void handleNeverbeast() {
 		neverbeastCountdown--;
+		if (neverbeastCountdown == 200 && neverbeastSpawned == 0) {
+			Game.announce("Cracks start to form in the narrative. You feel like it's time to move on.");
+			Game.interruptAndBreak();
+		}
 		if (neverbeastCountdown == 50 && neverbeastSpawned == 0) {
-			Game.announce("Cracks start to form in the narrative.");
+			Game.announce("The narrative is breaking down before your eyes. You feel like it's time to leave.");
 			Game.interruptAndBreak();
 		} else if (neverbeastCountdown <= 0) {
 
@@ -598,7 +602,7 @@ public class Level {
 			}
 
 			Game.announce("You get a really bad feeling...");
-			Game.interruptAndBreak();
+			Game.interrupt();
 			Entity e = Game.bestiary.create(monsterKey);
 			e.summoned = true;
 			addEntityWithStacking(e, pos);
