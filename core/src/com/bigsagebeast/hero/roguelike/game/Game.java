@@ -548,12 +548,12 @@ public class Game {
 
 		if (rangedWeapon != null && pwr == null) {
 			announce("Invalid ranged weapon.");
-			System.out.println("ERR: Invalid ranged weapon.");
+			GameLoop.error("Invalid ranged weapon.");
 			return;
 		}
 		if (rangedAmmo != null && pwa == null) {
 			announce("Invalid ranged ammo.");
-			System.out.println("ERR: Invalid ranged ammo.");
+			GameLoop.error("Invalid ranged ammo.");
 			return;
 		}
 

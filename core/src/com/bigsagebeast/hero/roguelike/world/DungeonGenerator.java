@@ -133,11 +133,11 @@ public class DungeonGenerator {
 		}
 		if (allowedEntities.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
-			sb.append("WARN: No monsters within threat range 0 or " + minThreat + " to " + maxThreat + " with tags:");
+			sb.append("No monsters within threat range 0 or " + minThreat + " to " + maxThreat + " with tags:");
 			for (String tag : requiredTags) {
 				sb.append(" " + tag);
 			}
-			//System.out.println(sb);
+			//GameLoop.warn(sb);
 			return null;
 		}
 		int index = Game.random.nextInt(allowedEntities.size());

@@ -1,0 +1,38 @@
+{
+  "movers": {
+    "kobold.shaman.rat": {
+      "name": "kobold rat shaman",
+      "description": "Garbed in dirty yellow robes, this reptilian humanoid shakes a stick with a rattle around to call forth its minions of filth.",
+      "peaceful": false,
+      "hitPoints": 12,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.kobold.shaman",
+      "isManipulator": false,
+      "palette": [
+        "brown",
+        "chartreuse",
+        "lightgreen"
+      ],
+      "experienceAwarded": 30,
+      "threat": 5,
+      "naturalWeaponDamage": 5,
+      "naturalWeaponToHit": 5,
+      "naturalArmorClass": 5,
+      "procs": {
+        "monster.ProcCaster": {
+          "spellNames": "monster summon rats"
+        }
+      },
+      "tactic": {
+        "name": "TacticSummoner",
+        "castPercent": 50
+      },
+      "tags": [
+        "generic-fantasy",
+        "kobold",
+        "summoner"
+      ]
+    }
+  }
+}

@@ -20,7 +20,7 @@ public class GameSpecials {
             if (destination != entity.pos) break;
         }
         if (destination == null || destination.equals(entity.pos)) {
-            System.out.println("WARN: Couldn't find a teleport destination!");
+            GameLoop.warn("Couldn't find a teleport destination!");
             return false;
         } else {
             entity.pos = destination;
@@ -31,7 +31,7 @@ public class GameSpecials {
     public static boolean blink(Entity entity, int minRange, int maxRange) {
         Point destination = Game.getLevel().findOpenTileWithinRange(entity.pos, minRange, maxRange);
         if (destination == null) {
-            System.out.println("WARN: Couldn't find a blink destination!");
+            GameLoop.warn("Couldn't find a blink destination!");
             return false;
         } else {
             entity.pos = destination;

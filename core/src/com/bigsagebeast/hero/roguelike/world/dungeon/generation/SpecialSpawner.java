@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 
+import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.roguelike.world.LoadProc;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
@@ -54,10 +55,10 @@ public class SpecialSpawner {
             throw new RuntimeException("Unknown spawning rule: " + rule);
         }
         if (validLocations == null) {
-            System.out.println("ERR: Couldn't find an empty tile for special spawning in room");
+            GameLoop.error("Couldn't find an empty tile for special spawning in room");
             return;
         } else if (trueQuantity > validLocations.size()) {
-            System.out.println("WARN: Not enough empty tiles for special spawning in room " + level.rooms.get(roomId).roomType.roomName);
+            GameLoop.warn("Not enough empty tiles for special spawning in room " + level.rooms.get(roomId).roomType.roomName);
             trueQuantity = validLocations.size();
         }
         for (int i=0; i < trueQuantity; i++) {
@@ -142,7 +143,7 @@ public class SpecialSpawner {
             throw new RuntimeException("Unknown spawning rule: " + rule);
         }
         if (validLocations == null || validLocations.isEmpty()) {
-            System.out.println("ERR: Couldn't find an empty tile for special regen spawning in room");
+            GameLoop.error("Couldn't find an empty tile for special regen spawning in room");
             return;
         }
         if (!spawnNearPlayer) {

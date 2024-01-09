@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.proc;
 
+import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.enums.DamageType;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.enums.StatusType;
@@ -185,7 +186,7 @@ public class Proc {
             clone = this.getClass().getDeclaredConstructor().newInstance();
             clone.initialize(entity);
         } catch (Exception e) {
-            System.out.println("ERR: Trouble constructing clone of " + this.getClass().getName());
+            GameLoop.error("Trouble constructing clone of " + this.getClass().getName());
             return null;
         }
         return clone;

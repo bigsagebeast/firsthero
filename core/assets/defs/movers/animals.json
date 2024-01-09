@@ -3,6 +3,7 @@
     "horseshoe": {
       "name": "horseshoe crab",
       "description": "This scuttling thing the size of a small dog bears the weight of prehistoric ancestry on its form. /Limulus transarcana/ feed on distortions of reality, but unlike their larger brethren, they cannot tear such rifts open themselves.",
+      "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 10,
       "isMonster": true,
@@ -30,6 +31,7 @@
     "rat.large": {
       "name": "large rat",
       "description": "Matted brown fur, tattered ears, and standing as high as your knee. This hungry beast has turned from peaceful scavenging to blood-thirsty predation, and chitters as it stalks the halls and caves.",
+      "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 5,
       "isMonster": true,
@@ -57,6 +59,7 @@
     "rat.giant": {
       "name": "giant rat",
       "description": "Hissing and snarling, the shape of this feral creature belies its role as an opportunistic predator. Its size could easily bowl a man over.",
+      "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 18,
       "isMonster": true,
@@ -84,6 +87,7 @@
     "noctupanther": {
       "name": "noctupanther",
       "description": "Native to underground forests, this six-legged beast is a stalking predator. Its shape allows it to move low and silent, but it is repelled by loud noise.",
+      "naturalWeaponText": "claw",
       "peaceful": false,
       "hitPoints": 20,
       "isMonster": true,
@@ -110,6 +114,7 @@
     "animal.bat": {
       "name": "giant bat",
       "description": "While not truly blind, these airborne predators fly erratically nonetheless, swooping in to bite pieces of their prey before retreating to distance.",
+      "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 5,
       "isMonster": true,

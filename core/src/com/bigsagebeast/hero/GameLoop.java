@@ -213,6 +213,14 @@ public class GameLoop implements GameLogic, InputProcessor {
 		}
 	}
 
+	public static void warn(String str) {
+		System.out.println("WARN: " + str);
+	}
+
+	public static void error(String str) {
+		System.out.println("ERROR: " + str);
+	}
+
 	public void logStackTrace(Exception exception) {
 		try (FileWriter fileWriter = new FileWriter("first-hero-crashlog.txt");
 			 PrintWriter printWriter = new PrintWriter(fileWriter)) {

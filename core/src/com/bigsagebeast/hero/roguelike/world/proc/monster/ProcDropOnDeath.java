@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.proc.monster;
 
+import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
@@ -13,11 +14,11 @@ public class ProcDropOnDeath extends Proc {
     public int maxCount = 1;
     public void postBeKilled(Entity entity, Entity actor, Entity tool) {
         if (key == null) {
-            System.out.println("ERR: Drop on death with null itemKey");
+            GameLoop.error("Drop on death with null itemKey");
             return;
         }
         if (chance == 0) {
-            System.out.println("WARN: Drop on death with 0 percent chance");
+            GameLoop.warn("Drop on death with 0 percent chance");
             return;
         }
         if (Game.random.nextInt(100) >= chance) {

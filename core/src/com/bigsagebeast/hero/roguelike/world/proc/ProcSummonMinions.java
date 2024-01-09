@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+// For passively spawned minions
 public class ProcSummonMinions extends Proc {
     public int spawnMTTH = 1;
     public ArrayList<Integer> ownedEntities = new ArrayList<>();

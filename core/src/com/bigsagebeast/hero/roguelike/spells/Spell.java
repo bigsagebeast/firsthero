@@ -55,7 +55,7 @@ public abstract class Spell {
 
     public Integer getDuration(Entity caster) { return null; }
 
-    public abstract int getCost(Entity caster);
+    public int getCost(Entity caster) { return 0; };
 
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.emptyMap(); }
 

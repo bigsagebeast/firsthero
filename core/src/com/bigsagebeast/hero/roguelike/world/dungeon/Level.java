@@ -1,4 +1,5 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon;
+import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.roguelike.game.EntityProc;
 import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.SpecialSpawner;
@@ -596,7 +597,7 @@ public class Level {
 			Point pos = new Point(spawnX, spawnY);
 			if (Game.isBlockedByEntity(null, pos.x, pos.y)) {
 				// TODO: Try at nearby points
-				System.out.println("WARN: Couldn't spawn neverbeast at " + pos);
+				GameLoop.warn("Couldn't spawn neverbeast at " + pos);
 				return;
 			}
 
