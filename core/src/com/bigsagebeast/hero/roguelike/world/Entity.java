@@ -911,6 +911,10 @@ public class Entity {
         return null;
     }
 
+    public Phenotype getPhenotype() {
+        return Bestiary.get(phenotypeName);
+    }
+
     public ItemType getItemType() {
         return Itempedia.get(itemTypeKey);
     }

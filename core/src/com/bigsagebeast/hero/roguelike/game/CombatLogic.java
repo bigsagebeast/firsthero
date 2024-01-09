@@ -142,11 +142,14 @@ public class CombatLogic {
 	// T if hits, F if dodged/resisted/etc
 	public static boolean castAttempt(Entity actor, Entity target, Spell spell) {
 		// No pre/post for being cast on, that's handled in the spell
-		if (Game.random.nextInt(5) == 0) {
-			spell.announceDodged(actor, target);
+		if (spell.isDodgeable() && Game.random.nextInt(15) == 0) {
+			// SUPER hacky - slow things can't dodge
+			if (target.getPhenotype().moveCost <= 1000) {
+				spell.announceDodged(actor, target);
+			}
 			return false;
 		}
-		if (Game.random.nextInt(5) == 0) {
+		if (spell.isResistable() && Game.random.nextInt(15) == 0) {
 			spell.announceResisted(actor, target);
 			return false;
 		}

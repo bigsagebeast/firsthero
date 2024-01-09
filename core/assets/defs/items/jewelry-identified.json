@@ -51,7 +51,7 @@
       "procs": {
         "intrinsic.ProcChargeRegen": {
           "element": "LIGHTNING",
-          "rate": 25
+          "rate": 100
         }
       },
       "tags": [

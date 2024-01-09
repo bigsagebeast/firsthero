@@ -13,6 +13,8 @@ public class Spellpedia {
         map.put("firebeam", new SpellFirebeam());
         map.put("water blast", new SpellWaterBlast());
         map.put("root spear", new SpellRootSpear());
+        map.put("shocking grasp", new SpellShockingGrasp());
+        map.put("voltage cascade", new SpellVoltageCascade());
         map.put("monster spark weak", new SpellMonsterSparkWeak());
         map.put("monster fire weak", new SpellMonsterFireWeak());
         map.put("monster water weak", new SpellMonsterWaterWeak());

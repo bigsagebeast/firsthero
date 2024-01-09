@@ -66,6 +66,17 @@ public enum Compass {
 		if (c == WEST) return Arrays.asList(new Compass[] {SOUTH_WEST, NORTH_WEST});
 		/*if (c == NORTH_WEST)*/ return Arrays.asList(new Compass[] {WEST, NORTH});
 	}
+
+	public static Compass reverse(Compass c) {
+		if (c == NORTH) return SOUTH;
+		if (c == NORTH_EAST) return SOUTH_WEST;
+		if (c == EAST) return WEST;
+		if (c == SOUTH_EAST) return NORTH_WEST;
+		if (c == SOUTH) return NORTH;
+		if (c == SOUTH_WEST) return NORTH_EAST;
+		if (c == WEST) return EAST;
+		/*if (c == NORTH_WEST)*/ return SOUTH_EAST;
+	}
 	
 	public static List<Compass> points() {
 		return points;

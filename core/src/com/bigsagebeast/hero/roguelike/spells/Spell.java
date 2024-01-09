@@ -57,6 +57,10 @@ public abstract class Spell {
 
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.emptyMap(); }
 
+    public boolean isDodgeable() { return false; }
+
+    public boolean isResistable() { return false; }
+
     public void playerStartSpell() {
         if (getSpellType() == SpellType.WEAPON_SKILL || getSpellType() == SpellType.ARCANUM) {
             if (Game.getPlayerEntity().spellPoints < getCost(Game.getPlayerEntity())) {
@@ -138,18 +142,15 @@ public abstract class Spell {
         List<Entity> targets;
         if (getTargetType() == TargetType.BEAM) {
             targets = Raycasting.findAllMoversAlongRay(Game.getLevel(), ray);
-        } else if (getTargetType() == TargetType.BOLT) {
+        } else if (getTargetType() == TargetType.BOLT || getTargetType() == TargetType.MELEE) {
             targets = Raycasting.findFirstMoversAlongRay(Game.getLevel(), ray);
             if (!targets.isEmpty()) {
                 endpoint = targets.get(0).pos;
             }
-        } else if (getTargetType() == TargetType.MELEE) {
-            targets = Collections.EMPTY_LIST;
-            Game.announce("UNIMPLEMENTED MELEE SPELL");
         } else {
             throw new RuntimeException("Tried to directionally target an invalid spell");
         }
-        GameLoop.targetingModule.animate(caster.pos, endpoint, getAnimationColor(), isAnimationStars() ? "#" : null);
+        GameLoop.targetingModule.animate(caster.pos, endpoint, getAnimationColor(), getAnimationChar());
 
         affectTargets(caster, targets, dir);
         Game.turn();
@@ -174,8 +175,8 @@ public abstract class Spell {
         return Color.WHITE;
     }
 
-    public boolean isAnimationStars() {
-        return false;
+    public String getAnimationChar() {
+        return null;
     }
 
     public void announceCast(Entity caster, Entity target) {

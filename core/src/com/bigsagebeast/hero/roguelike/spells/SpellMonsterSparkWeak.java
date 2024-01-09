@@ -37,6 +37,16 @@ public class SpellMonsterSparkWeak extends Spell {
     }
 
     @Override
+    public boolean isDodgeable() {
+        return true;
+    }
+
+    @Override
+    public boolean isResistable() {
+        return true;
+    }
+
+    @Override
     public Map<Element, Integer> getElementCost(Entity caster) {
         return new HashMap<>();
     }
@@ -51,11 +61,6 @@ public class SpellMonsterSparkWeak extends Spell {
     @Override
     public Color getAnimationColor() {
         return Color.valueOf("ffff00");
-    }
-
-    @Override
-    public boolean isAnimationStars() {
-        return false;
     }
 
     @Override
