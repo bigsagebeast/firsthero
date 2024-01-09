@@ -127,17 +127,17 @@ public class CharacterBuilder {
             case "warrior":
                 equip(entity, "armor.body.chain", BodyPart.TORSO);
                 equip(entity, "armor.head.leatherhat", BodyPart.HEAD);
-                equip(entity, "short sword", BodyPart.PRIMARY_HAND);
+                equip(entity, "weapon.melee.shortsword", BodyPart.PRIMARY_HAND);
                 break;
             case "archer":
                 equip(entity, "armor.body.leather", BodyPart.TORSO);
-                equip(entity, "short sword", BodyPart.PRIMARY_HAND);
-                equip(entity, "shortbow", BodyPart.RANGED_WEAPON);
+                equip(entity, "weapon.melee.shortsword", BodyPart.PRIMARY_HAND);
+                equip(entity, "weapon.ranged.shortbow", BodyPart.RANGED_WEAPON);
                 equip(entity, "weapon.ammo.arrow", BodyPart.RANGED_AMMO, 30);
                 break;
             case "wizard":
                 equip(entity, "armor.body.whiterobe", BodyPart.TORSO);
-                equip(entity, "dagger", BodyPart.PRIMARY_HAND);
+                equip(entity, "weapon.melee.dagger", BodyPart.PRIMARY_HAND);
                 equip(entity, "ring.charge.lightning", BodyPart.RIGHT_RING);
                 Game.spellbook.addSpell("magic missile");
                 Game.spellbook.addSpell("firebeam");

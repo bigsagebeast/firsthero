@@ -306,6 +306,7 @@ public class TargetingModule extends Module {
             case Input.Keys.ESCAPE:
                 select(null);
             case Input.Keys.ENTER:
+            case Input.Keys.NUMPAD_ENTER:
             case Input.Keys.T:
                 select(targetTile);
             case Input.Keys.LEFT:

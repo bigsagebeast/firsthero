@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.roguelike.world;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -16,7 +17,7 @@ import com.bigsagebeast.hero.roguelike.game.Game;
 public class DungeonGenerator {
 
 	public static final int NUM_MONSTERS = 15;
-	public static final int NUM_ITEMS = 10;
+	public static final int NUM_ITEMS = 6;
 	public static final int SPAWN_CHANCE_PER_ROOM = 50;
 	public Map<String, Level> levels = new HashMap<String, Level>();
 	
@@ -56,9 +57,17 @@ public class DungeonGenerator {
 				}
 			}
 		}
+		List<String> boons = getBoons(level);
 		for (int i=0; i<NUM_ITEMS; i++) {
 			Point pos = level.findOpenTile();
-			Entity e = spawnLoot(level);
+			Entity e;
+			if (!boons.isEmpty()) {
+				e = Itempedia.create(boons.remove(0));
+				System.out.println("INFO: Spawned boon " + e.itemTypeKey);
+			} else {
+				e = spawnLoot(level);
+				System.out.println("INFO: Spawned non-boon " + e.itemTypeKey);
+			}
 			if (e == null) {
 				continue;
 			}
@@ -112,7 +121,7 @@ public class DungeonGenerator {
 
 	public static String getAllowedMonster(List<String> requiredTags, Level level, int threatMod, boolean wandering) {
 		int min = Math.max(0, threatMod + level.threat/2);
-		int max = Math.max(0, threatMod + level.threat + 1);
+		int max = Math.max(0, threatMod + level.threat);
 		String key = getAllowedMonster(requiredTags, min, max, level, wandering);
 		if (key == null) {
 			key = getAllowedMonster(requiredTags, 0, max, level, wandering);
@@ -167,6 +176,97 @@ public class DungeonGenerator {
 		return allowedEntities.get(index);
 	}
 
+	public static List<ItemType> getTaggedItemTypes(List<String> requiredTags, List<String> forbiddenTags, int minThreat, int maxThreat, Level level) {
+		List<ItemType> taggedTypes = new ArrayList<>();
+		// first, find tag restrictions - these are absolute
+		for (ItemType it : Itempedia.map.values()) {
+			boolean disallowed = false;
+			for (String tag : requiredTags) {
+				if (!it.tags.contains(tag)) {
+					disallowed = true;
+					break;
+				}
+			}
+			for (String tag : forbiddenTags) {
+				if (it.tags.contains(tag)) {
+					disallowed = true;
+					break;
+				}
+			}
+			if (disallowed) {
+				continue;
+			}
+			taggedTypes.add(it);
+		}
+		List<ItemType> levelledTypes = new ArrayList<>();
+		// next, try to find something between min and max threat - less absolute
+		for (ItemType it : taggedTypes) {
+			if (it.level >= minThreat && it.level <= maxThreat) {
+				levelledTypes.add(it);
+			}
+		}
+		// if nothing in range, then search lower
+		if (levelledTypes.isEmpty()) {
+			for (int i=minThreat-1; i>=0; i--) {
+				for (ItemType it : taggedTypes) {
+					if (it.level == i) {
+						levelledTypes.add(it);
+					}
+				}
+				if (levelledTypes.isEmpty()) {
+					break;
+				}
+			}
+		}
+		return levelledTypes;
+	}
+
+	public static String getUnspawnedItem(List<String> requiredTags, List<String> forbiddenTags, Level level) {
+		List<ItemType> types = getTaggedItemTypes(requiredTags, forbiddenTags, level.threat, level.threat, level);
+		types = types.stream().filter(it -> it.spawnCount == 0).collect(Collectors.toList());
+		if (types.isEmpty()) {
+			types = getTaggedItemTypes(requiredTags, forbiddenTags, level.threat / 2, level.threat, level);
+			types = types.stream().filter(it -> it.spawnCount == 0).collect(Collectors.toList());
+		}
+		Collections.shuffle(types);
+		if (types.isEmpty()) {
+			return null;
+		}
+		return types.get(0).keyName;
+	}
+
+	public static List<String> getBoons(Level level) {
+		List<String> boons = new ArrayList<>();
+		String weapon = getUnspawnedItem(Arrays.asList("weapon", "generic-fantasy"), Arrays.asList(), level);
+		String armor = getUnspawnedItem(Arrays.asList("armor", "generic-fantasy"), Arrays.asList(), level);
+		String jewelry = getUnspawnedItem(Arrays.asList("jewelry", "generic-fantasy"), Arrays.asList(), level);
+		String ranged = getUnspawnedItem(Arrays.asList("ranged", "generic-fantasy"), Arrays.asList(), level);
+		String spellbook = getUnspawnedItem(Arrays.asList("spellbook", "generic-fantasy"), Arrays.asList(), level);
+		if (weapon != null) {
+			boons.add(weapon);
+		}
+		if (armor != null) {
+			boons.add(armor);
+		}
+		List<Integer> choice = Arrays.asList(0, 1, 2);
+		Collections.shuffle(choice);
+		for (Integer i : choice) {
+			if (boons.size() >= 3) {
+				break;
+			}
+			if (i == 0 && jewelry != null) {
+				boons.add(jewelry);
+			}
+			if (i == 1 && ranged != null) {
+				boons.add(ranged);
+			}
+			if (i == 2 && spellbook != null) {
+				boons.add(spellbook);
+			}
+		}
+		return boons;
+	}
+
 	public static Entity spawnLoot(Level level) {
 		String itemKey = getAllowedItem(level);
 		if (itemKey == null) {
@@ -185,17 +285,18 @@ public class DungeonGenerator {
 			throw new RuntimeException("Invalid level name: " + key);
 		}
 		String dungeon = components[0];
-		int depth = Integer.valueOf(components[1]);
+		int depth = Integer.parseInt(components[1]);
 
 		Generator generator = new Generator();
 		Level level = null;
 		while (level == null) {
 			level = generator.generate(key, 60, 40);
 		}
+		level.neverbeastCountdown = 1500;
 
 		// Remember to add the level to the map before generating it
 		levels.put(key, level);
-		level.threat = depth-1;
+		level.threat = depth;
 		populate(level);
 		if (depth == 1) {
 			generator.addUpstairTo("out");

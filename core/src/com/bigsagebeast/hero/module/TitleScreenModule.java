@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.module;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.GameLoop;
@@ -135,6 +136,7 @@ public class TitleScreenModule extends Module {
 				updateOptions();
 				break;
 			case Keys.ENTER:
+			case Keys.NUMPAD_ENTER:
 			case Keys.SPACE:
 				switch (selectedOption) {
 					case 0:

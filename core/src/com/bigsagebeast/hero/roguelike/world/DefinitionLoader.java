@@ -29,32 +29,33 @@ public class DefinitionLoader {
         try {
             root = om.readTree(new BufferedReader(new InputStreamReader(handle.read())));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error in " + handle.path(), e);
         }
         try {
             JsonNode items = root.get("items");
             if (items != null) {
-                loadItems(items);
+                loadItems(items, handle.path());
             }
             JsonNode movers = root.get("movers");
             if (movers != null) {
-                loadMovers(movers);
+                loadMovers(movers, handle.path());
             }
             JsonNode themes = root.get("themes");
             if (themes != null) {
-                loadThemes(themes);
+                loadThemes(themes, handle.path());
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void loadItems(JsonNode items) throws NoSuchFieldException, IllegalAccessException, SetupException {
+    public static void loadItems(JsonNode items, String path) throws NoSuchFieldException, IllegalAccessException, SetupException {
         for (Iterator<String> itemNames = items.fieldNames(); itemNames.hasNext(); ) {
             String itemName = itemNames.next();
             JsonNode itemNode = items.get(itemName);
             ItemType itemType = new ItemType();
             itemType.keyName = itemName;
+            itemType.file = path;
             // TODO: This check is impossible, because Jackson strips duplicates.  Find another way.
             if (Itempedia.map.get(itemType.keyName) != null) {
                 throw new SetupException("Duplicate item key: " + itemName);
@@ -133,7 +134,7 @@ public class DefinitionLoader {
     }
 
 
-    public static void loadMovers(JsonNode movers) throws NoSuchFieldException, IllegalAccessException, SetupException {
+    public static void loadMovers(JsonNode movers, String path) throws NoSuchFieldException, IllegalAccessException, SetupException {
         for (Iterator<String> moverNames = movers.fieldNames(); moverNames.hasNext(); ) {
             String moverName = moverNames.next();
             JsonNode moverNode = movers.get(moverName);
@@ -231,7 +232,7 @@ public class DefinitionLoader {
 
 
 
-    public static void loadThemes(JsonNode themes) throws NoSuchFieldException, IllegalAccessException, SetupException {
+    public static void loadThemes(JsonNode themes, String path) throws NoSuchFieldException, IllegalAccessException, SetupException {
         for (Iterator<String> themeNames = themes.fieldNames(); themeNames.hasNext(); ) {
             String themeName = themeNames.next();
             JsonNode themeNode = themes.get(themeName);

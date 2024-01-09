@@ -35,8 +35,8 @@ public class Level {
 	public Map<Point, Float> jitters = new HashMap<>();
 	private int lastTurnUpdate = 0;
 
-	private int neverbeastCountdown = 60;
-	private int neverbeastSpawned = 0;
+	public int neverbeastCountdown = -1;
+	public int neverbeastSpawned = 0;
 	
 	public Level(String key, int width, int height) {
 		this.key = key;
@@ -567,10 +567,13 @@ public class Level {
 	}
 
 	public int getMaxThreat() {
-		return (Game.getPlayerEntity().level / 2) + Game.getLevel().threat + 1;
+		return ((Game.getPlayerEntity().level - 1) / 2) + Game.getLevel().threat + 1;
 	}
 
 	private void handleNeverbeast() {
+		if (neverbeastCountdown < 0) {
+			return;
+		}
 		neverbeastCountdown--;
 		if (neverbeastCountdown == 200 && neverbeastSpawned == 0) {
 			Game.announce("Cracks start to form in the narrative. You feel like it's time to move on.");

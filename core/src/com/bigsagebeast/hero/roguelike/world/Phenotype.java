@@ -47,6 +47,7 @@ public class Phenotype {
 	public int corpseSpawnPercent = 50;
 	public String corpseMessage;
 	public String corpseMethod;
+	public String corpseMethodPre;
 	public BodySize size = BodySize.MEDIUM;
 	public PaletteEntry corpseSpawnColors = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_BROWN);
 	public String chatPage;

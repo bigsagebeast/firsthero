@@ -177,7 +177,7 @@ public class TextEntryBox {
             if (textEntry.length() > 0) {
                 textEntry = textEntry.substring(0, textEntry.length() - 1);
             }
-        } else if (keycode == Input.Keys.ENTER) {
+        } else if (keycode == Input.Keys.ENTER || keycode == Input.Keys.NUMPAD_ENTER) {
 
             close();
         }

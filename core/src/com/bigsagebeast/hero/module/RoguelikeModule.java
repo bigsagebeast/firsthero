@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.module;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Beatitude;
@@ -185,8 +186,15 @@ public class RoguelikeModule extends Module {
 			redraw();
 			process();
 		}
-		while (game.hasLongTask()) {
-			game.turn();
+		while (Game.getPlayerEntity().isParalyzed()) {
+			Game.passTime(Game.ONE_TURN);
+			Game.turn();
+			Game.getLevel().recalculateJitter();
+			redraw();
+			process();
+		}
+		while (Game.hasLongTask()) {
+			Game.turn();
 			Game.getLevel().recalculateJitter();
 			redraw();
 			process();
@@ -256,7 +264,7 @@ public class RoguelikeModule extends Module {
 				case Keys.L:
 					game.cmdLook();
 					break;
-				case Keys.M:
+				case Keys.Z:
 					game.cmdMagic();
 					break;
 				case Keys.I:
@@ -281,6 +289,7 @@ public class RoguelikeModule extends Module {
 					game.cmdWield();
 					break;
 				case Keys.ENTER:
+				case Input.Keys.NUMPAD_ENTER:
 					popupCommands();
 			}
 		}
@@ -406,13 +415,13 @@ public class RoguelikeModule extends Module {
 		box.addItem("g            Pick up an item", "g");
 		box.addItem("i            Check inventory", "i");
 		box.addItem("l            Look around", "l");
-		box.addItem("m            Cast a magic spell", "m");
 		box.addItem("o            Open or close a door", "o");
 		box.addItem("p            Pray", "p");
 		box.addItem("q            Quaff a potion", "q");
 		box.addItem("r            Read a scroll or book", "r");
 		box.addItem("t            Target ranged attack", "t");
 		box.addItem("w            Wear or wield", "w");
+		box.addItem("z            Cast a magic spell", "z");
 		box.addItem("<            Go up stairs", "<");
 		box.addItem(">            Go down stairs", ">");
 		box.autoHeight();
@@ -449,9 +458,6 @@ public class RoguelikeModule extends Module {
 			case "l":
 				game.cmdLook();
 				break;
-			case "m":
-				game.cmdMagic();
-				break;
 			case "o":
 				game.cmdOpen();
 				break;
@@ -469,6 +475,9 @@ public class RoguelikeModule extends Module {
 				break;
 			case "w":
 				game.cmdWield();
+				break;
+			case "z":
+				game.cmdMagic();
 				break;
 			case "<":
 				game.cmdStairsUp();

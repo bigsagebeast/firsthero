@@ -14,7 +14,12 @@
           "armorClass": 0,
           "armorThickness": 0
         }
-      }
+      },
+      "tags": [
+        "clothing",
+        "head",
+        "generic-fantasy"
+      ]
     },
     "armor.head.leatherhat": {
       "name": "leather helm",
@@ -31,7 +36,12 @@
           "armorClass": 1,
           "armorThickness": 1
         }
-      }
+      },
+      "tags": [
+        "armor",
+        "head",
+        "generic-fantasy"
+      ]
     },
     "armor.head.helm": {
       "name": "metal helm",
@@ -48,7 +58,12 @@
           "armorClass": 2,
           "armorThickness": 2
         }
-      }
+      },
+      "tags": [
+        "armor",
+        "head",
+        "generic-fantasy"
+      ]
     },
     "armor.head.spikedhelm": {
       "name": "spiked helm",
@@ -65,7 +80,12 @@
           "armorClass": 1,
           "armorThickness": 1
         }
-      }
+      },
+      "tags": [
+        "armor",
+        "head",
+        "generic-fantasy"
+      ]
     },
     "armor.head.plumed": {
       "name": "plumed helmet",
@@ -83,7 +103,12 @@
           "armorClass": 1,
           "armorThickness": 1
         }
-      }
+      },
+      "tags": [
+        "armor",
+        "head",
+        "generic-fantasy"
+      ]
     },
     "armor.body.whiterobe": {
       "name": "white robe",
@@ -100,7 +125,12 @@
           "armorClass": 1,
           "armorThickness": 0
         }
-      }
+      },
+      "tags": [
+        "clothing",
+        "torso",
+        "generic-fantasy"
+      ]
     },
     "armor.body.leather": {
       "name": "leather armor",
@@ -117,7 +147,12 @@
           "armorClass": 1,
           "armorThickness": 1
         }
-      }
+      },
+      "tags": [
+        "armor",
+        "torso",
+        "generic-fantasy"
+      ]
     },
     "armor.body.chain": {
       "name": "chainmail armor",
@@ -135,7 +170,12 @@
           "armorClass": 1,
           "armorThickness": 2
         }
-      }
+      },
+      "tags": [
+        "armor",
+        "torso",
+        "generic-fantasy"
+      ]
     },
     "armor.shield.buckler": {
       "name": "buckler",
@@ -153,7 +193,12 @@
           "armorClass": 2,
           "armorThickness": 1
         }
-      }
+      },
+      "tags": [
+        "armor",
+        "shield",
+        "generic-fantasy"
+      ]
     },
     "armor.shield.metal": {
       "name": "metal shield",
@@ -171,7 +216,12 @@
           "armorClass": 2,
           "armorThickness": 2
         }
-      }
+      },
+      "tags": [
+        "armor",
+        "shield",
+        "generic-fantasy"
+      ]
     }
   }
 }

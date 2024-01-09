@@ -11,7 +11,12 @@
       "procs": {
         "item.potion.ProcPotionHealing": {}
       },
-      "maxCount": 3
+      "tags": [
+        "potion",
+        "helpful",
+        "generic-fantasy"
+      ],
+      "maxCount": 2
     },
     "potion.extrahealing": {
       "idenGroup": "potion1",
@@ -24,6 +29,11 @@
       "procs": {
         "item.potion.ProcPotionExtraHealing": {}
       },
+      "tags": [
+        "potion",
+        "helpful",
+        "generic-fantasy"
+      ],
       "maxCount": 1
     },
     "potion.acid": {
@@ -37,6 +47,11 @@
       "procs": {
         "item.potion.ProcPotionAcid": {}
       },
+      "tags": [
+        "potion",
+        "harmful",
+        "generic-fantasy"
+      ],
       "maxCount": 3
     },
     "potion.regeneration": {
@@ -50,6 +65,11 @@
       "procs": {
         "item.potion.ProcPotionRegeneration": {}
       },
+      "tags": [
+        "potion",
+        "helpful",
+        "generic-fantasy"
+      ],
       "maxCount": 2
     }
   }

@@ -12,7 +12,13 @@
         "intrinsic.ProcResistStatus": {
           "status": "CONFUSION"
         }
-      }
+      },
+      "tags": [
+        "ring",
+        "jewelry",
+        "helpful",
+        "generic-fantasy"
+      ]
     },
     "ring.resist.acid": {
       "idenGroup": "ring1",
@@ -26,7 +32,13 @@
         "intrinsic.ProcResistDamageType": {
           "damageType": "ACID"
         }
-      }
+      },
+      "tags": [
+        "ring",
+        "jewelry",
+        "helpful",
+        "generic-fantasy"
+      ]
     },
     "ring.charge.lightning": {
       "idenGroup": "ring1",
@@ -41,7 +53,13 @@
           "element": "LIGHTNING",
           "rate": 25
         }
-      }
+      },
+      "tags": [
+        "ring",
+        "jewelry",
+        "helpful",
+        "generic-fantasy"
+      ]
     },
     "ring.telepathy": {
       "idenGroup": "ring1",
@@ -53,7 +71,13 @@
       "level": 1,
       "procs": {
         "intrinsic.ProcTelepathy": {}
-      }
+      },
+      "tags": [
+        "ring",
+        "jewelry",
+        "helpful",
+        "generic-fantasy"
+      ]
     }
   }
 }

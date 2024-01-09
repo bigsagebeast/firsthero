@@ -51,7 +51,11 @@
         "item.book.ProcBookSpell": {
           "spell": "magic missile"
         }
-      }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
     },
     "book.firebeam": {
       "idenGroup": "book1",
@@ -64,7 +68,11 @@
         "item.book.ProcBookSpell": {
           "spell": "firebeam"
         }
-      }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
     },
     "book.waterblast": {
       "idenGroup": "book1",
@@ -77,7 +85,11 @@
         "item.book.ProcBookSpell": {
           "spell": "water blast"
         }
-      }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
     },
     "book.rootspear": {
       "idenGroup": "book1",
@@ -90,7 +102,11 @@
         "item.book.ProcBookSpell": {
           "spell": "root spear"
         }
-      }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
     }
   }
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public class ItemType {
+    public String file;
     public String keyName;
     public String idenGroup;
     public String unidGroup;
@@ -38,4 +39,7 @@ public class ItemType {
     Set<Consumer<Entity>> setup = new HashSet<>();
     public List<LoadProc> procLoaders = new ArrayList<>();
     public List<String> tags = new ArrayList<>();
+
+    // How many have spawned this game?
+    public int spawnCount = 0;
 }

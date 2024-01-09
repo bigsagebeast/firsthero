@@ -1,5 +1,95 @@
 {
   "items": {
+    "weapon.melee.shortsword": {
+      "name": "short sword",
+      "glyphName": "weapon.shortsword",
+      "palette": [
+        "white",
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "averageDamage": 6,
+          "toHitBonus": 3
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.longsword": {
+      "name": "longsword",
+      "glyphName": "weapon.longsword",
+      "palette": [
+        "white",
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "averageDamage": 8,
+          "toHitBonus": 2
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.dagger": {
+      "name": "dagger",
+      "glyphName": "weapon.dagger",
+      "palette": [
+        "white",
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "averageDamage": 5,
+          "toHitBonus": 3
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.ranged.shortbow": {
+      "name": "wooden shortbow",
+      "frequency": 100,
+      "glyphName": "weapon.shortbow",
+      "palette": [
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "ranged weapon",
+      "category": "rangedweapon",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponRanged": {
+          "averageDamage": 0,
+          "toHitBonus": 0,
+          "range": 10,
+          "ammoType": "ARROW"
+        }
+      },
+      "tags": [
+        "ranged",
+        "generic-fantasy"
+      ]
+    },
     "weapon.ammo.arrow": {
       "name": "wooden arrow",
       "glyphName": "weapon.arrow",
@@ -18,7 +108,11 @@
           "toHitBonus": 0,
           "ammoType": "ARROW"
         }
-      }
+      },
+      "tags": [
+        "ammo",
+        "generic-fantasy"
+      ]
     },
     "weapon.ammo.rock": {
       "name": "rock",
@@ -40,7 +134,11 @@
           "throwRange": 5,
           "ammoType": "STONE"
         }
-      }
+      },
+      "tags": [
+        "ammo",
+        "generic-fantasy"
+      ]
     },
     "weapon.ranged.sling": {
       "name": "sling",
@@ -59,7 +157,11 @@
           "range": 6,
           "ammoType": "STONE"
         }
-      }
+      },
+      "tags": [
+        "ranged",
+        "generic-fantasy"
+      ]
     }
   }
 }

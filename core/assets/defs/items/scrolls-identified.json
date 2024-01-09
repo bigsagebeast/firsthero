@@ -10,7 +10,12 @@
       "level": 1,
       "procs": {
         "item.scroll.ProcScrollIdentify": {}
-      }
+      },
+      "tags": [
+        "scroll",
+        "helpful",
+        "generic-fantasy"
+      ]
     },
     "scroll.magic.map": {
       "idenGroup": "scroll1",
@@ -22,7 +27,12 @@
       "level": 1,
       "procs": {
         "item.scroll.ProcScrollMagicMap": {}
-      }
+      },
+      "tags": [
+        "scroll",
+        "helpful",
+        "generic-fantasy"
+      ]
     },
     "scroll.remove.curse": {
       "idenGroup": "scroll1",
@@ -34,7 +44,12 @@
       "level": 1,
       "procs": {
         "item.scroll.ProcScrollRemoveCurse": {}
-      }
+      },
+      "tags": [
+        "scroll",
+        "helpful",
+        "generic-fantasy"
+      ]
     }
   }
 }

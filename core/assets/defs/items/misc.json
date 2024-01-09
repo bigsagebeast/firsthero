@@ -1,5 +1,16 @@
 {
   "items": {
+    "gold": {
+      "name": "gold piece",
+      "glyphName": "misc.gold",
+      "palette": [
+        "orange", "yellow", "white"
+      ],
+      "category": "gold",
+      "level":-1,
+      "frequency": 0,
+      "hasBeatitude": false
+    },
     "food.bone": {
       "name": "bone",
       "glyphName": "food.bone",

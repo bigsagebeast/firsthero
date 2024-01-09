@@ -3,8 +3,9 @@
     "doppelganger.normal": {
       "name": "doppelganger",
       "description": "This plastic-faced being seems to bear your clothes and your weapons, and even mimics your fighting style. It's unnerving to fight against a form that so closely resembles your own.",
+      "corpseMethodPre": "doppelganger",
       "peaceful": false,
-      "hitPoints": 4,
+      "hitPoints": 16,
       "isMonster": true,
       "bodyPlan": "humanoid",
       /*"glyphName": "",*/

@@ -34,6 +34,7 @@ public class PauseModule extends Module {
     public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
         switch (keycode) {
             case Input.Keys.ENTER:
+            case Input.Keys.NUMPAD_ENTER:
                 end();
                 Game.unannounce();
                 if (runnable != null) {

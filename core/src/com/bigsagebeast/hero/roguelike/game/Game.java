@@ -281,6 +281,7 @@ public class Game {
 			longWalkDir = null;
 			return false;
 		}
+		interrupted = false;
 
 		if (restTurns-- > 0) {
 			if (hasInterruption()) {

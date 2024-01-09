@@ -8,6 +8,7 @@ import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectConfusion;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectParalysis;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcItem;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.util.Fov;
@@ -746,7 +747,7 @@ public class Entity {
         for (Proc p : target.procs) {
             Boolean result = p.preBeEaten(target, Game.getPlayerEntity());
             if (result == Boolean.FALSE) {
-                break;
+                return;
             }
         }
 
@@ -1095,5 +1096,9 @@ public class Entity {
     // status tests
     public boolean isConfused() {
         return getProcByType(ProcEffectConfusion.class) != null;
+    }
+
+    public boolean isParalyzed() {
+        return getProcByType(ProcEffectParalysis.class) != null;
     }
 }

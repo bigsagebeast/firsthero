@@ -281,7 +281,7 @@ public class DialogueBox {
             selectPrevious();
         } else if (keycode == Input.Keys.DOWN || keycode == Input.Keys.NUMPAD_2) {
             selectNext();
-        } else if (keycode == Input.Keys.ENTER) {
+        } else if (keycode == Input.Keys.ENTER || keycode == Input.Keys.NUMPAD_ENTER) {
             if (selection >= 0) {
                 finalValue = mapping.get(lines.get(selection).value);
             } else {

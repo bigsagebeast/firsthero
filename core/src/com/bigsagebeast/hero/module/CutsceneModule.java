@@ -122,7 +122,7 @@ public class CutsceneModule extends Module {
 	}
 
 	public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
-		if (keycode == Keys.ENTER) {
+		if (keycode == Keys.ENTER || keycode == Keys.NUMPAD_ENTER) {
 			if (lastSeconds > letterEndTime) {
 				end();
 			}

@@ -45,6 +45,8 @@ public class Bestiary {
 		goblinWarrior.naturalArmorClass = 5;
 		goblinWarrior.tags.add("goblin");
 		goblinWarrior.tags.add("generic-fantasy");
+		goblinWarrior.corpseMessage = "Ulch - that was beyond foul.";
+		goblinWarrior.corpseMethod = "procVomit";
 
 		goblinArcher.name = "sea-withered goblin archer";
 		goblinArcher.description = "Their bows have been crafted on the mainland; such wood and sinew would have scarcely survived the trip. Their arrows are meant not for hunting, but for war.";
@@ -70,6 +72,8 @@ public class Bestiary {
 		});
 		goblinArcher.tags.add("goblin");
 		goblinArcher.tags.add("generic-fantasy");
+		goblinArcher.corpseMessage = "Ulch - that was beyond foul.";
+		goblinArcher.corpseMethod = "procVomit";
 
 		Phenotype goblinSlinger = new Phenotype();
 		goblinSlinger.name = "sea-withered goblin slinger";
@@ -96,6 +100,8 @@ public class Bestiary {
 		});
 		goblinSlinger.tags.add("goblin");
 		goblinSlinger.tags.add("generic-fantasy");
+		goblinSlinger.corpseMessage = "Ulch - that was beyond foul.";
+		goblinSlinger.corpseMethod = "procVomit";
 		map.put("goblin.slinger", goblinSlinger);
 
 		wolf.name = "dungeon wolf";
@@ -133,6 +139,7 @@ public class Bestiary {
 		fungusRed.setup.add((e) -> {e.addProc(new ProcBurningTouch(3, 3, 0));});
 		fungusRed.tags.add("generic-fantasy");
 		fungusRed.tags.add("plant");
+		fungusRed.corpseMessage = "gainFireMedium";
 
 		fungusGreenFunglet.name = "green funglet";
 		fungusGreenFunglet.description = "A small overgrowth of green globules, the fruiting bodies of this slow-moving fungal creature have not yet emerged.";

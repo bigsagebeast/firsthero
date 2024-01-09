@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.module;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
@@ -151,7 +152,7 @@ public class IntroModule extends Module {
 	}
 
 	public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
-		if (keycode == Keys.ENTER) {
+		if (keycode == Keys.ENTER || keycode == Input.Keys.NUMPAD_ENTER) {
 			musicResource.setPosition(45.95f);
 			end();
 			GameLoop.titleModule.start();
