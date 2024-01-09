@@ -150,7 +150,7 @@
       "isMonster": true,
       "bodyPlan": "humanoid",
       "glyphName": "animal.spider",
-      "isManipulator": false,
+      "moveCost": 1500,
       "palette": [
         "gray",
         "teal",
@@ -173,6 +173,38 @@
         "generic-fantasy",
         "animal",
         "spider"
+      ]
+    },
+    "cube.gelatinous": {
+      "name": "gelatinous cube",
+      "description": "Dragging its way through corridors and halls with a 'schlorp', this cube of paralyzing jelly sucks organics from the nooks and crannies of the dungeon. They prefer carrion and nonliving food to live prey.",
+      "peaceful": false,
+      "hitPoints": 20,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "jelly.cube",
+      "isManipulator": false,
+      "palette": [
+        "lightgreen",
+        "darkgreen",
+        "white"
+      ],
+      "experienceAwarded": 30,
+      "corpseSpawnPercent": 0,
+      "threat": 7,
+      "naturalWeaponDamage": 5,
+      "naturalWeaponToHit": 5,
+      "naturalArmorClass": -5,
+      "size": "LARGE",
+      "procs": {
+        "monster.ProcGelatinousCube": { }
+      },
+      "tactic": {
+        "name": "TacticGelatinousCube"
+      },
+      "tags": [
+        "generic-fantasy",
+        "jelly"
       ]
     }
   }

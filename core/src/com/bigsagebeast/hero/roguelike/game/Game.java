@@ -908,6 +908,21 @@ public class Game {
 		}
 	}
 
+	public static boolean isBlockedByNonManipulable(Entity actor, int tx, int ty) {
+		if (actor.isManipulator) {
+			return false;
+		}
+
+		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
+			if ((actor.isManipulator && target.isObstructiveToManipulators()) ||
+					(!actor.isManipulator && target.isObstructive())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public static boolean isBlockedByEntity(Entity actor, int tx, int ty) {
 		if (level.moverAt(tx, ty) != null) {
 			return true;

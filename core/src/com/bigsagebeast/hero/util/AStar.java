@@ -43,8 +43,9 @@ public class AStar {
 				
 				if (level.contains(newloc)) {
 					float moveCost = dir.isDiagonal() ? 1.0001f : 1.0f;
-					if (!Game.isBlockedByTerrain(e, newloc.x, newloc.y) || destination.equals(newloc)) {
+					if ((!Game.isBlockedByTerrain(e, newloc.x, newloc.y) && !Game.isBlockedByNonManipulable(e, newloc.x, newloc.y)) || destination.equals(newloc)) {
 						if (Game.isBlockedByEntity(e, newloc.x, newloc.y)) {
+							// TODO: Things are pathing through obstacles that they shouldn't
 							moveCost += 10;
 						}
 						check(level, instance.new AStarData(newloc, next.cost + moveCost, next.location, distance));
@@ -86,10 +87,10 @@ public class AStar {
 
 		@Override
 		public int compareTo(AStarData other) {
-			if (estimate < other.estimate) {
+			if (cost < other.cost) {
 				return -1;
 			}
-			if (estimate == other.estimate) {
+			if (cost == other.cost) {
 				return 0;
 			}
 			return 1;
