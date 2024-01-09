@@ -15,6 +15,8 @@ public class Spellpedia {
         map.put("magic missile", new SpellMagicMissile());
         map.put("root spear", new SpellRootSpear());
         map.put("shocking grasp", new SpellShockingGrasp());
+        map.put("voltage cascade", new SpellVoltageCascade());
+        map.put("shocking grasp", new SpellShockingGrasp());
         map.put("water blast", new SpellWaterBlast());
         map.put("voltage cascade", new SpellVoltageCascade());
 
