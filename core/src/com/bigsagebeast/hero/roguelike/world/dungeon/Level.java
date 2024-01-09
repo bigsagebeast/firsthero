@@ -80,9 +80,22 @@ public class Level {
 			if (pos == null || monsterKey == null) {
 				return;
 			}
-			Entity e = Game.bestiary.create(monsterKey);
+			Entity e = Bestiary.create(monsterKey);
+			e.getTactic().canWander = true;
 			e.wanderer = true;
 			addEntityWithStacking(e, pos);
+			// TODO: Merge with the code in DungeonGenerator
+			int packSize = (int) (Bestiary.map.get(monsterKey).packSize * (Game.random.nextFloat() + 0.4f));
+			for (int j = 1; j < packSize; j++) {
+				Point packSpawnPos = findPackSpawnTile(pos, Bestiary.map.get(monsterKey).packSpawnArea);
+				if (packSpawnPos != null) {
+					Entity packmember = Game.bestiary.create(monsterKey);
+					e.getTactic().canWander = true;
+					packmember.wanderer = true;
+					addEntityWithStacking(packmember, packSpawnPos, false);
+				}
+			}
+
 		}
 		handleNeverbeast();
 	}

@@ -15,7 +15,7 @@ public class AStar {
 	private static AStar instance = new AStar();
 
 	public static List<Point> path(Level level, Entity e, Point origin, Point destination) {
-		Long milliStart = System.currentTimeMillis();
+		long milliStart = System.currentTimeMillis();
 		level.clearTemp();
 		queue.clear();
 		int maxDistance = (int)e.visionRange;

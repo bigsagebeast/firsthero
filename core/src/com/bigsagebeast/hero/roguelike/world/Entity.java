@@ -4,12 +4,14 @@ import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.enums.*;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
 import com.bigsagebeast.hero.roguelike.game.*;
+import com.bigsagebeast.hero.roguelike.world.ai.Tactic;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectConfusion;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectParalysis;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcItem;
+import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcMonster;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.util.Fov;
 import com.bigsagebeast.hero.util.Point;
@@ -943,6 +945,11 @@ public class Entity {
             }
         }
         return null;
+    }
+
+    public Tactic getTactic() {
+        ProcMonster monster = (ProcMonster)getProcByType(ProcMonster.class);
+        return monster.tactic;
     }
 
     public Phenotype getPhenotype() {

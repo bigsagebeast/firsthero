@@ -2,13 +2,8 @@ package com.bigsagebeast.hero.roguelike.world.ai;
 
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
-import com.bigsagebeast.hero.util.AStar;
-import com.bigsagebeast.hero.util.Compass;
-import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
-
-import java.util.List;
 
 public class TacticRangedAmmoThenMelee extends Tactic {
 
@@ -45,11 +40,11 @@ public class TacticRangedAmmoThenMelee extends Tactic {
 		if (pm.targetEntityId == EntityTracker.NONE) {
 			if (lastSeen != null) {
 				if (!huntLastSeen(e, pm)) {
-					return wander(e, pm);
+					return idle(e, pm);
 				}
 			}
 			else {
-				return wander(e, pm);
+				return idle(e, pm);
 			}
 		} else {
 			return chaseSeenPlayer(e, pm);

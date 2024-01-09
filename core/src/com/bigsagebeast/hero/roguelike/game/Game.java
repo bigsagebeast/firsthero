@@ -293,6 +293,7 @@ public class Game {
 				announce("You finish resting.");
 				return false;
 			} else {
+				// TODO: This is putting a ton on the stack!
 				GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
 			}
 			return true;
@@ -753,6 +754,10 @@ public class Game {
 		return true;
 	}
 
+	public static void npcMoveBy(Entity actor, ProcMover pm, Compass dir) {
+		npcMoveBy(actor, pm, dir.getX(), dir.getY());
+	}
+
 	public static void npcMoveBy(Entity actor, ProcMover pm, int dx, int dy) {
 		int tx = actor.pos.x + dx;
 		int ty = actor.pos.y + dy;
@@ -765,7 +770,7 @@ public class Game {
 			ProcDoor door = (ProcDoor)target.getProcByType(ProcDoor.class);
 			if (door != null && !door.isOpen) {
 				// TODO some creatures can destroy doors?
-				if (target.isManipulator) {
+				if (actor.isManipulator) {
 					target.tryOpen(actor);
 				} else {
 					/*

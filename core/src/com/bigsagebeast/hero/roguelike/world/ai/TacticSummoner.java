@@ -8,7 +8,6 @@ import com.bigsagebeast.hero.roguelike.world.proc.ProcHasMinions;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcCaster;
 import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcMonster;
-import com.bigsagebeast.hero.util.Compass;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +40,7 @@ public class TacticSummoner extends Tactic {
         minionsHunt(e);
         if (pm.targetEntityId == EntityTracker.NONE) {
             if (lastSeen == null) {
-                return wander(e, pm);
+                return idle(e, pm);
             } else {
                 if (Game.random.nextInt(100) < castPercent && canSummon(e, pm)) {
                     summon(e, pm);
@@ -62,7 +61,7 @@ public class TacticSummoner extends Tactic {
             if (target.pos.distance(e.pos) < 2) {
                 return chaseSeenPlayer(e, pm);
             }
-            return wander(e, pm);
+            return guard(e, pm);
         }
     }
 
@@ -97,6 +96,7 @@ public class TacticSummoner extends Tactic {
         minions.clean();
         for (Entity minion : minions.ownedEntities.stream().map(EntityTracker::get).collect(Collectors.toList())) {
             ProcMonster monster = (ProcMonster)minion.getProcByType(ProcMonster.class);
+            // TODO is this working?
             monster.tactic.lastSeen = lastSeen;
         }
     }

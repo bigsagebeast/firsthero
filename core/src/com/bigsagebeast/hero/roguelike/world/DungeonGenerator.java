@@ -46,6 +46,7 @@ public class DungeonGenerator {
 				Point pos = level.findEmptyTileInRoom(r.roomId);
 				Entity e = Game.bestiary.create(chosenMonster);
 				e.wanderer = true;
+				e.getTactic().canWander = true;
 				level.addEntityWithStacking(e, pos, false);
 				int packSize = (int) (Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
 				for (int j = 1; j < packSize; j++) {
