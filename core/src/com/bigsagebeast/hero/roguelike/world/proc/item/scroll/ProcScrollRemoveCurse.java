@@ -37,6 +37,7 @@ public class ProcScrollRemoveCurse extends ImmutableProc {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to uncurse")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         boolean anyUnsafeTarget = false;
         equipment = equipment.stream().filter(ent ->

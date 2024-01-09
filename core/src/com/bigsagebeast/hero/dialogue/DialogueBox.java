@@ -8,6 +8,7 @@ import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.glyphtile.GlyphTile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DialogueBox {
@@ -33,6 +34,7 @@ public class DialogueBox {
     private int selection = -1;
     private Object finalValue = null;
     private boolean cancelable = true;
+    private boolean allowLetters = false;
     private int linesFit;
 
     private TextBlock title;
@@ -42,6 +44,9 @@ public class DialogueBox {
     private TextBlock moreBottom;
     private List<DialogueLine> lines = new ArrayList<>();
     private List<Object> mapping = new ArrayList<>();
+
+    private HashMap<String, Integer> letterForLine = new HashMap<>();
+    private int curLetterIndex = 0;
 
     public DialogueBox() {
     }
@@ -89,6 +94,11 @@ public class DialogueBox {
         return this;
     }
 
+    public DialogueBox withAllowLetters(boolean allowLetters) {
+        this.allowLetters = allowLetters;
+        return this;
+    }
+
     public void addHeader(String text) {
         if (lines.size() > 0) {
             DialogueLine spacer = new DialogueLine();
@@ -104,19 +114,40 @@ public class DialogueBox {
 
     public void addItem(String text, Object value) {
         DialogueLine line = new DialogueLine();
-        line.text = "  " + text;
+        if (allowLetters) {
+            if (curLetterIndex < 26) {
+                line.text = "  " + letterForIndex(curLetterIndex) + ":" + text;
+            } else {
+                line.text = "   :" + text;
+            }
+        } else {
+            line.text = "  " + text;
+        }
         line.value = mapping.size();
+        letterForLine.put(letterForIndex(curLetterIndex), lines.size());
         mapping.add(value);
         lines.add(line);
+        curLetterIndex++;
     }
 
     public void addItem(String text, GlyphTile glyph, Object value) {
         DialogueLine line = new DialogueLine();
         line.text = "  ` " + text;
+        if (allowLetters) {
+            if (curLetterIndex < 26) {
+                line.text = "  " + letterForIndex(curLetterIndex) + ":` " + text;
+            } else {
+                line.text = "   :` " + text;
+            }
+        } else {
+            line.text = "  ` " + text;
+        }
         line.value = mapping.size();
         line.glyphs = new GlyphTile[] {glyph};
+        letterForLine.put(letterForIndex(curLetterIndex), lines.size());
         mapping.add(value);
         lines.add(line);
+        curLetterIndex++;
     }
 
     public void autoHeight() {
@@ -220,6 +251,34 @@ public class DialogueBox {
         shiftLines();
     }
 
+    private void selectPageDown() {
+        int nextSelection = selection;
+        int target = Math.min(nextSelection + linesFit, lines.size());
+        for (int i = selection; i < target; i++) {
+            if (lines.get(i).value > -1) {
+                nextSelection = i;
+            }
+        }
+        lines.get(selection).textBlock.text = " " + lines.get(selection).textBlock.text.substring(1);
+        lines.get(nextSelection).textBlock.text = ">" + lines.get(nextSelection).textBlock.text.substring(1);
+        selection = nextSelection;
+        shiftLines();
+    }
+
+    private void selectPageUp() {
+        int nextSelection = selection;
+        int target = Math.max(nextSelection - linesFit, 0);
+        for (int i = selection; i >= target; i--) {
+            if (lines.get(i).value > -1) {
+                nextSelection = i;
+            }
+        }
+        lines.get(selection).textBlock.text = " " + lines.get(selection).textBlock.text.substring(1);
+        lines.get(nextSelection).textBlock.text = ">" + lines.get(nextSelection).textBlock.text.substring(1);
+        selection = nextSelection;
+        shiftLines();
+    }
+
     private int topLine() {
         int middleLine = linesFit / 2;
         if (selection < middleLine) {
@@ -251,6 +310,15 @@ public class DialogueBox {
                 lines.get(i).textBlock.hidden = false;
             }
         }
+    }
+
+    private String letterForIndex(int i) {
+        return "" + (char)('a' + i);
+    }
+
+    private int indexForLetter(String s) {
+        char c = s.charAt(0);
+        return 'a' - c;
     }
 
     public void close() {
@@ -288,8 +356,20 @@ public class DialogueBox {
                 finalValue = null;
             }
             close();
+        } else if (keycode == Input.Keys.PAGE_DOWN || keycode == Input.Keys.NUMPAD_3) {
+            selectPageDown();
+        } else if (keycode == Input.Keys.PAGE_UP || keycode == Input.Keys.NUMPAD_9) {
+            selectPageUp();
         }
+        return true;
+    }
 
+    public boolean keyTyped(char character) {
+        Integer line = letterForLine.get("" + character);
+        if (line != null) {
+            finalValue = mapping.get(lines.get(line).value);
+            close();
+        }
         return true;
     }
 

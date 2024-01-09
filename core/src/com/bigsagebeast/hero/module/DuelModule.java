@@ -25,6 +25,7 @@ public class DuelModule extends Module {
         DialogueBox box = new DialogueBox()
                 .withCancelable(true)
                 .withMargins(60, 60)
+                .withAllowLetters(true)
                 .withTitle("Select a player archetype, space to stop testing");
         box.addItem("Warrior   High strength, armored", "warrior");
         box.addItem("Archer    Quick, armed with ranged weapons", "archer");

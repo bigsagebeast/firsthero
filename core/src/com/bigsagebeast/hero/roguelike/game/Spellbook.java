@@ -49,6 +49,7 @@ public class Spellbook {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select spell to cast")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         String format = "%-15s %-8s %-5s %-3s %-5s";
         box.addHeader(String.format("  " + format, "Name", "Type", "Range", "Dur", "Cost"));

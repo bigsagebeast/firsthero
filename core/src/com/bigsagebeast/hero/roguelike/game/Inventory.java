@@ -32,6 +32,7 @@ public class Inventory {
         DialogueBox box = new DialogueBox()
                 .withFooterClosableAndSelectable()
                 .withTitle("Select slot to wear or wield an item")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
 
         for (BodyPart bp : Game.getPlayerEntity().body.getParts()) {
@@ -78,6 +79,7 @@ public class Inventory {
         DialogueBox box = new DialogueBox()
                 .withFooterClosableAndSelectable()
                 .withTitle("Select item to equip") // TODO show selected slot?
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         // Use player entity as a special value
         box.addItem("Nothing", null, Game.getPlayerEntity());
@@ -122,6 +124,7 @@ public class Inventory {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to drop")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
@@ -159,6 +162,7 @@ public class Inventory {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to pick up")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = floorInventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
@@ -187,6 +191,7 @@ public class Inventory {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to eat")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
 
         List<Entity> floorFood = new ArrayList<>();
@@ -258,6 +263,7 @@ public class Inventory {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to drink")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
@@ -300,6 +306,7 @@ public class Inventory {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to read")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
@@ -345,6 +352,7 @@ public class Inventory {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Inventory")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         for (ItemCategory cat : ItemCategory.categories) {
             List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());

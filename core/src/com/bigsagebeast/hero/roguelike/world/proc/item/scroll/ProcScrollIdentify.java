@@ -36,6 +36,7 @@ public class ProcScrollIdentify extends ImmutableProc {
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
                 .withTitle("Select item to identify")
+                .withAllowLetters(true)
                 .withMargins(60, 60);
         boolean anyUnidentified = false;
         equipment = equipment.stream().filter(ent ->

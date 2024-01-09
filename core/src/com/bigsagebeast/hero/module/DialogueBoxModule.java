@@ -72,4 +72,11 @@ public class DialogueBoxModule extends Module {
         return false;
     }
 
+    @Override
+    public boolean keyTyped(char key, boolean ctrl, boolean alt) {
+        if (!ctrl && !alt) {
+            dialogueBox.keyTyped(key);
+        }
+        return true;
+    }
 }

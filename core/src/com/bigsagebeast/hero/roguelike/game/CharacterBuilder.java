@@ -27,6 +27,7 @@ public class CharacterBuilder {
         DialogueBox box = new DialogueBox()
                 .withCancelable(false)
                 .withMargins(60, 60)
+                .withAllowLetters(true)
                 .withTitle("Select a race");
         box.addItem("Human     Well-rounded", "human");
         box.addItem("Dwarf     Strong but slow", "dwarf");
@@ -44,6 +45,7 @@ public class CharacterBuilder {
         DialogueBox box = new DialogueBox()
                 .withCancelable(false)
                 .withMargins(60, 60)
+                .withAllowLetters(true)
                 .withTitle("Select an archetype");
         box.addItem("Warrior   High strength, armored", "warrior");
         box.addItem("Archer    Quick, armed with ranged weapons", "archer");
