@@ -37,6 +37,16 @@ public class SpellFirebeam extends Spell {
     }
 
     @Override
+    public boolean isDodgeable() {
+        return true;
+    }
+
+    @Override
+    public boolean isResistable() {
+        return true;
+    }
+
+    @Override
     public Map<Element, Integer> getElementCost(Entity caster) {
         HashMap<Element, Integer> cost = new HashMap<>();
         cost.put(Element.FIRE, 1);
@@ -56,8 +66,8 @@ public class SpellFirebeam extends Spell {
     }
 
     @Override
-    public boolean isAnimationStars() {
-        return true;
+    public String getAnimationChar() {
+        return "#";
     }
 
     public void announceHitWithoutKill(Entity caster, Entity target) {

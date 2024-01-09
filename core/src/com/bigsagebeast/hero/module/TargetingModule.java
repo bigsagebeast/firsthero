@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 
 public class TargetingModule extends Module {
 
-    private static final int ANIMATION_STEP_TIME = 1;
+    private static final int ANIMATION_STEP_TIME = 2;
     private static final int Y_OFFSET = -16;
     private OperationMode operationMode;
     public TargetMode targetMode;
@@ -40,12 +40,12 @@ public class TargetingModule extends Module {
     private TextBlock animationBlock;
     private List<Point> ray;
     private TargetingAnimation currentAnimation;
-    private List<TargetingAnimation> queue = new ArrayList<>();
+    private final List<TargetingAnimation> queue = new ArrayList<>();
 
     public TargetingModule() {
     }
 
-    private class TargetingAnimation {
+    private static class TargetingAnimation {
         public Point origin;
         public Point target;
         public Color color;

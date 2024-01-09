@@ -40,6 +40,16 @@
         "orange"
       ]
     },
+    "book.unid.cerulean": {
+      "unidGroup": "book1",
+      "unidentifiedName": "cerulean spellbook",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "cerulean",
+        "white"
+      ]
+    },
     "book.magicmissile": {
       "idenGroup": "book1",
       "name": "book of Magic Missile",
@@ -101,6 +111,23 @@
       "procs": {
         "item.book.ProcBookSpell": {
           "spell": "root spear"
+        }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
+    },
+    "book.shockinggrasp": {
+      "idenGroup": "book1",
+      "name": "book of Shocking Grasp",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "shocking grasp"
         }
       },
       "tags": [

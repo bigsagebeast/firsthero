@@ -567,7 +567,7 @@ public class Level {
 	}
 
 	public int getMaxThreat() {
-		return ((Game.getPlayerEntity().level - 1) / 2) + Game.getLevel().threat + 1;
+		return ((Game.getPlayerEntity().level - 1) / 2) + Game.getLevel().threat;
 	}
 
 	private void handleNeverbeast() {

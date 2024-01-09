@@ -172,7 +172,12 @@
       },
       "tags": [
         "paradox"
-      ]
+      ],
+      "procs": {
+        "ProcJitter": {
+          "strength": 1.0
+        }
+      }
     }
   }
 }

@@ -31,6 +31,16 @@ public class SpellMagicMissile extends Spell {
     }
 
     @Override
+    public boolean isDodgeable() {
+        return true;
+    }
+
+    @Override
+    public boolean isResistable() {
+        return true;
+    }
+
+    @Override
     public void affectTarget(Entity actor, Entity target, Compass dir) {
         if (CombatLogic.castAttempt(actor, target, this)) {
             CombatLogic.castDamage(actor, target, this, 10);

@@ -42,6 +42,16 @@ public class SpellWaterBlast extends Spell {
     }
 
     @Override
+    public boolean isDodgeable() {
+        return true;
+    }
+
+    @Override
+    public boolean isResistable() {
+        return true;
+    }
+
+    @Override
     public Map<Element, Integer> getElementCost(Entity caster) {
         HashMap<Element, Integer> cost = new HashMap<>();
         cost.put(Element.WATER, 1);
@@ -76,11 +86,6 @@ public class SpellWaterBlast extends Spell {
     @Override
     public Color getAnimationColor() {
         return Color.CYAN;
-    }
-
-    @Override
-    public boolean isAnimationStars() {
-        return false;
     }
 
     public void announceHitWithoutKill(Entity caster, Entity target) {

@@ -89,8 +89,6 @@ public class DungeonGenerator {
 		if (level.threat < 0) {
 			return Collections.EMPTY_LIST;
 		}
-		//int minThreatAllowed = Math.max(0, threat - 1);
-		//int maxThreatAllowed = threat + 1;
 		ArrayList<String> allowedEntities = new ArrayList<>();
 		for (String key : Game.bestiary.map.keySet()) {
 			Phenotype p = Game.bestiary.map.get(key);

@@ -143,6 +143,8 @@ public class CharacterBuilder {
                 Game.spellbook.addSpell("firebeam");
                 Game.spellbook.addSpell("water blast");
                 Game.spellbook.addSpell("root spear");
+                Game.spellbook.addSpell("shocking grasp");
+                Game.spellbook.addSpell("voltage cascade");
                 break;
         }
         Game.spellbook.addSpell("divine banish");
