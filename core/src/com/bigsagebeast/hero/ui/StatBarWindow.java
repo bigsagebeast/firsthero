@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.engine.WindowEngine;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.module.RoguelikeModule;
 import com.bigsagebeast.hero.roguelike.game.Profile;
 import com.bigsagebeast.hero.roguelike.game.Statblock;
@@ -70,9 +71,9 @@ public class StatBarWindow extends UIWindow {
 		tbStatDt = new TextBlock("20", 13, 0, Color.WHITE);
 		tbStatLevel = new TextBlock("1", 24, 0, Color.WHITE);
 		tbElementWater = new TextBlock("W 8/8", 0, 0, Color.CYAN);
-		tbElementFire = new TextBlock("F 8/8", 8, 0, Color.RED);
-		tbElementLightning = new TextBlock("L 8/8", 16, 0, Color.YELLOW);
-		tbElementNaturae = new TextBlock("P 8/8", 24, 0, Color.GREEN);
+		tbElementFire = new TextBlock("F 8/8", 9, 0, Color.RED);
+		tbElementLightning = new TextBlock("L 8/8", 18, 0, Color.YELLOW);
+		tbElementNaturae = new TextBlock("P 8/8", 27, 0, Color.GREEN);
 
 		statRows.add(new TextBlock("", 0, 0, Color.WHITE));
 		statRows.add(new TextBlock("", 0, 1, Color.WHITE));
@@ -149,14 +150,23 @@ public class StatBarWindow extends UIWindow {
 			roomDesc.text = Game.getLevel().rooms.get(entity.roomId).roomType.roomName;
 		}
 
-		tbStatSt.text = "" + statblock.str;
-		tbStatTo.text = "" + statblock.tou;
-		tbStatDx.text = "" + statblock.dex;
-		tbStatAg.text = "" + statblock.agi;
-		tbStatPe.text = "" + statblock.per;
-		tbStatWi.text = "" + statblock.wil;
-		tbStatAr.text = "" + statblock.arc;
-		tbStatAv.text = "" + statblock.ava;
+		tbStatSt.text = "" + entity.getStat(Stat.STRENGTH);
+		tbStatTo.text = "" + entity.getStat(Stat.TOUGHNESS);
+		tbStatDx.text = "" + entity.getStat(Stat.DEXTERITY);
+		tbStatAg.text = "" + entity.getStat(Stat.AGILITY);
+		tbStatPe.text = "" + entity.getStat(Stat.PERCEPTION);
+		tbStatWi.text = "" + entity.getStat(Stat.WILLPOWER);
+		tbStatAr.text = "" + entity.getStat(Stat.ARCANUM);
+		tbStatAv.text = "" + entity.getStat(Stat.AVATAR);
+		tbStatSt.color = colorForStat(Stat.STRENGTH);
+		tbStatTo.color = colorForStat(Stat.TOUGHNESS);
+		tbStatDx.color = colorForStat(Stat.DEXTERITY);
+		tbStatAg.color = colorForStat(Stat.AGILITY);
+		tbStatPe.color = colorForStat(Stat.PERCEPTION);
+		tbStatWi.color = colorForStat(Stat.WILLPOWER);
+		tbStatAr.color = colorForStat(Stat.ARCANUM);
+		tbStatAv.color = colorForStat(Stat.AVATAR);
+
 		tbStatDr.text = "" + statblock.dr;
 		tbStatDt.text = "" + statblock.dt;
 		tbStatLevel.text = "" + entity.level;
@@ -193,6 +203,19 @@ public class StatBarWindow extends UIWindow {
 
 		WindowEngine.setDirty(UIManager.NAME_STATBOX);
 		parent.compile();
+	}
+
+	private Color colorForStat(Stat stat) {
+		Entity entity = Game.getPlayerEntity();
+		int originalStat = entity.statblock.get(stat);
+		int modifiedStat = entity.getStat(stat);
+		if (originalStat > modifiedStat) {
+			return Color.RED;
+		} else if (originalStat < modifiedStat) {
+			return Color.GREEN;
+		} else {
+			return Color.WHITE;
+		}
 	}
 
 	@Override

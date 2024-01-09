@@ -25,8 +25,8 @@ public class SpellRootSpear extends Spell {
     }
 
     @Override
-    public float getRange(Entity caster) {
-        return 8;
+    public Float getRange(Entity caster) {
+        return 8.0f;
     }
 
     @Override

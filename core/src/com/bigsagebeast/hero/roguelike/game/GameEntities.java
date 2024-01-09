@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.enums.Beatitude;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Phenotype;
@@ -42,4 +43,17 @@ public class GameEntities {
         return entity.getProcByTypeIncludingEquipment(ProcTelepathy.class) != null ||
                 entity.getProcByTypeIncludingEquipment(ProcEffectTimedTelepathy.class) != null;
     }
+
+    public static float hitPointsPerLevel(Entity entity) {
+        return entity.getStat(Stat.TOUGHNESS) / 2.0f;
+    }
+
+    public static float spellPointsPerLevel(Entity entity) {
+        return (entity.getStat(Stat.WILLPOWER) + entity.getStat(Stat.ARCANUM)) / 4.0f;
+    }
+
+    public static float divinePoints(Entity entity) {
+        return entity.getStat(Stat.AVATAR) * 50;
+    }
+
 }

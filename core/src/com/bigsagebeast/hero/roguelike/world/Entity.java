@@ -822,6 +822,14 @@ public class Entity {
         return naturalRangedWeaponToHit;
     }
 
+    public int getStat(Stat stat) {
+        int val = statblock.get(stat);
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            val += ep.proc.getStatModifier(ep.entity, this, stat);
+        }
+        return Statblock.normalize(stat, val);
+    }
+
     public float getSpeed() {
         float speed = statblock.speed;
         for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
@@ -1107,9 +1115,9 @@ public class Entity {
 
     public void recalculateSecondaryStats() {
         int effectiveLevel = level == 0 ? 0 : level + 2;
-        int newMaxHitPoints = (int)(Bestiary.get(phenotypeName).hitPoints + (effectiveLevel * statblock.hitPointsPerLevel()));
-        int newMaxSpellPoints = (int)(Bestiary.get(phenotypeName).spellPoints + (effectiveLevel * statblock.spellPointsPerLevel()));
-        int newMaxDivinePoints = (int)(Bestiary.get(phenotypeName).divinePoints + statblock.divinePoints());
+        int newMaxHitPoints = (int)(Bestiary.get(phenotypeName).hitPoints + (effectiveLevel * GameEntities.hitPointsPerLevel(this)));
+        int newMaxSpellPoints = (int)(Bestiary.get(phenotypeName).spellPoints + (effectiveLevel * GameEntities.spellPointsPerLevel(this)));
+        int newMaxDivinePoints = (int)(Bestiary.get(phenotypeName).divinePoints + GameEntities.divinePoints(this));
         int deltaHitPoints = newMaxHitPoints - maxHitPoints;
         int deltaSpellPoints = newMaxSpellPoints - maxSpellPoints;
         int deltaDivinePoints = newMaxDivinePoints - maxDivinePoints;

@@ -51,7 +51,9 @@ public abstract class Spell {
         return getTargetType().name;
     }
 
-    public abstract float getRange(Entity caster);
+    public Float getRange(Entity caster) { return null; }
+
+    public Integer getDuration(Entity caster) { return null; }
 
     public abstract int getCost(Entity caster);
 

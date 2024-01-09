@@ -32,8 +32,8 @@ public class SpellWaterBlast extends Spell {
     }
 
     @Override
-    public float getRange(Entity caster) {
-        return 6;
+    public Float getRange(Entity caster) {
+        return 6.0f;
     }
 
     @Override

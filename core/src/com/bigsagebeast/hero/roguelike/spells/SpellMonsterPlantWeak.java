@@ -27,8 +27,8 @@ public class SpellMonsterPlantWeak extends Spell {
     }
 
     @Override
-    public float getRange(Entity caster) {
-        return 5;
+    public Float getRange(Entity caster) {
+        return 5.0f;
     }
 
     @Override

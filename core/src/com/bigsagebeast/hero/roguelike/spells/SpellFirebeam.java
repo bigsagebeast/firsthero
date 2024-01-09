@@ -27,8 +27,8 @@ public class SpellFirebeam extends Spell {
     }
 
     @Override
-    public float getRange(Entity caster) {
-        return 3;
+    public Float getRange(Entity caster) {
+        return 3.0f;
     }
 
     @Override

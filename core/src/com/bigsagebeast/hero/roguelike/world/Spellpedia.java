@@ -13,6 +13,7 @@ public class Spellpedia {
         map.put("flicker", new SpellFlicker());
         map.put("icebeam", new SpellIceBeam());
         map.put("magic missile", new SpellMagicMissile());
+        map.put("oak strength", new SpellOakStrength());
         map.put("root spear", new SpellRootSpear());
         map.put("shocking grasp", new SpellShockingGrasp());
         map.put("voltage cascade", new SpellVoltageCascade());

@@ -50,8 +50,8 @@ public class Spellbook {
                 .withFooterClosable()
                 .withTitle("Select spell to cast")
                 .withMargins(60, 60);
-        String format = "%-15s %-8s %-5s %-5s";
-        box.addHeader(String.format("  " + format, "Name", "Type", "Range", "Cost"));
+        String format = "%-15s %-8s %-5s %-3s %-5s";
+        box.addHeader(String.format("  " + format, "Name", "Type", "Range", "Dur", "Cost"));
         for (Spell.SpellType type : Spell.SpellType.values()) {
             List<Spell> spellsOfType = getSpells().stream().filter(s -> s.getSpellType() == type).collect(Collectors.toList());
             if (!spellsOfType.isEmpty()) {
@@ -64,9 +64,27 @@ public class Spellbook {
                             elementString.append(element.symbol);
                         }
                     }
+                    String rangeString;
+                    Float actualRange = spell.getRange(Game.getPlayerEntity());
+                    if (actualRange == null) {
+                        rangeString = "-";
+                    } else {
+                        if (actualRange == actualRange.intValue()) {
+                            rangeString = "" + actualRange.intValue();
+                        } else {
+                            rangeString = "" + actualRange;
+                        }
+                    }
+                    String durationString;
+                    Integer actualDuration = spell.getDuration(Game.getPlayerEntity());
+                    if (actualDuration == null) {
+                        durationString = "-";
+                    } else {
+                        durationString = "" + actualDuration;
+                    }
                     box.addItem(String.format(format,
                                     spell.getName(), spell.getTypeDescription(),
-                                    spell.getRange(Game.getPlayerEntity()), spell.getCost(Game.getPlayerEntity()) + " " + elementString)
+                                    rangeString, durationString, spell.getCost(Game.getPlayerEntity()) + " " + elementString)
                             , spell);
                 }
             }

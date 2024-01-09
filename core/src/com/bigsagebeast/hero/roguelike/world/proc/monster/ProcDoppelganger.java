@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.proc.monster;
 
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.roguelike.game.CombatLogic;
@@ -38,7 +39,7 @@ public class ProcDoppelganger extends Proc {
         }
 
         boolean resist = entity.testResistStatus(StatusType.CONFUSION);
-        resist |= CombatLogic.tryResist(target, difficulty, target.statblock.wil);
+        resist |= CombatLogic.tryResist(target, difficulty, target.getStat(Stat.WILLPOWER));
         if (!resist) {
             ProcEffectConfusion confusionProc = new ProcEffectConfusion();
             confusionProc.turnsRemaining = (int)(duration * (0.5f + Game.random.nextFloat()));

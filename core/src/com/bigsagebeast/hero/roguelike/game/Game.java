@@ -4,6 +4,7 @@ import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.HeroGame;
 import com.bigsagebeast.hero.SetupException;
 import com.bigsagebeast.hero.enums.Gender;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.module.RoguelikeModule;
 import com.bigsagebeast.hero.module.TargetingModule;
 import com.bigsagebeast.hero.persistence.Persistence;
@@ -73,8 +74,8 @@ public class Game {
 
 	public void startIntro() {
 		Entity pc = bestiary.create("pc.farmboy");
-		pc.statblock.arc = 5;
-		pc.statblock.ava = 0;
+		pc.statblock.set(Stat.ARCANUM, 5);
+		pc.statblock.set(Stat.AVATAR, 0);
 		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
 		Entity pitchfork = itempedia.create("pitchfork");

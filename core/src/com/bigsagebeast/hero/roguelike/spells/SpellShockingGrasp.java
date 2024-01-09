@@ -27,8 +27,8 @@ public class SpellShockingGrasp extends Spell {
     }
 
     @Override
-    public float getRange(Entity caster) {
-        return 1;
+    public Float getRange(Entity caster) {
+        return 1.0f;
     }
 
     @Override

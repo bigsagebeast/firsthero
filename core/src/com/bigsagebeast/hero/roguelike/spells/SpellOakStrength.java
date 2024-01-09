@@ -2,17 +2,16 @@ package com.bigsagebeast.hero.roguelike.spells;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Stat;
-import com.bigsagebeast.hero.roguelike.game.CombatLogic;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
-import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectSlow;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectOakStrength;
 import com.bigsagebeast.hero.util.Compass;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SpellIceBeam extends Spell {
+public class SpellOakStrength extends Spell {
     @Override
     public SpellType getSpellType() {
         return SpellType.ARCANUM;
@@ -20,23 +19,20 @@ public class SpellIceBeam extends Spell {
 
     @Override
     public TargetType getTargetType() {
-        return TargetType.BEAM;
+        return TargetType.PERSONAL;
     }
 
     @Override
     public String getName() {
-        return "Icebeam";
-    }
-
-    @Override
-    public Float getRange(Entity caster) {
-        return 5.0f;
+        return "Oak Strength";
     }
 
     @Override
     public Integer getDuration(Entity caster) {
         int turns = 5;
-        turns += (Math.max(caster.getStat(Stat.ARCANUM), 6) - 8) / 2;
+        if (caster.getStat(Stat.ARCANUM) > 10) {
+            turns += caster.getStat(Stat.ARCANUM) - 10;
+        }
         return turns;
     }
 
@@ -46,36 +42,22 @@ public class SpellIceBeam extends Spell {
     }
 
     @Override
-    public boolean isDodgeable() {
-        return true;
-    }
-
-    @Override
-    public boolean isResistable() {
-        return true;
-    }
-
-    @Override
     public Map<Element, Integer> getElementCost(Entity caster) {
         HashMap<Element, Integer> cost = new HashMap<>();
-        cost.put(Element.WATER, 3);
+        cost.put(Element.NATURAE, 1);
         return cost;
     }
 
     @Override
     public void affectTarget(Entity actor, Entity target, Compass dir) {
-        if (CombatLogic.castAttempt(actor, target, this)) {
-            CombatLogic.castDamage(actor, target, this, 8);
-            if (!target.dead) {
-                ProcEffectSlow existing = (ProcEffectSlow) target.getProcByType(ProcEffectSlow.class);
-                if (existing != null) {
-                    existing.turnsRemaining = Math.max(existing.turnsRemaining, getDuration(actor));
-                } else {
-                    ProcEffectSlow proc = new ProcEffectSlow();
-                    proc.turnsRemaining = getDuration(actor);
-                    target.addProc(proc);
-                }
-            }
+
+        ProcEffectOakStrength existing = (ProcEffectOakStrength) target.getProcByType(ProcEffectOakStrength.class);
+        if (existing != null) {
+            existing.turnsRemaining = Math.max(existing.turnsRemaining, getDuration(actor));
+        } else {
+            ProcEffectOakStrength proc = new ProcEffectOakStrength();
+            proc.turnsRemaining = getDuration(actor);
+            target.addProc(proc);
         }
     }
 

@@ -21,8 +21,8 @@ public class SpellDivineTimeStop extends Spell {
     }
 
     @Override
-    public float getRange(Entity caster) {
-        return 0;
+    public Integer getDuration(Entity caster) {
+        return 6;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SpellDivineTimeStop extends Spell {
 
     @Override
     public void affectTarget(Entity caster, Entity target, Compass dir) {
-        target.getMover().nextAction -= Game.ONE_TURN * 6;
+        target.getMover().nextAction -= Game.ONE_TURN * getDuration(caster);
         Game.announceVis(target, target, "Everything around you slows to a crawl.",
                 null,
                 target.getVisibleNameDefinite() + " moves with a divine, blinding speed.",

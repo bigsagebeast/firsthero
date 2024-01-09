@@ -21,11 +21,6 @@ public class SpellDivineHealing extends Spell {
     }
 
     @Override
-    public float getRange(Entity caster) {
-        return 0;
-    }
-
-    @Override
     public int getCost(Entity caster) {
         return 300;
     }

@@ -1,14 +1,13 @@
 package com.bigsagebeast.hero.roguelike.game;
 
+import com.bigsagebeast.hero.enums.Stat;
+
+import java.util.HashMap;
+
 public class Statblock {
-    public int str = 20; // strength
-    public int tou = 20; // toughness
-    public int dex = 20; // dexterity
-    public int agi = 20; // agility
-    public int per = 20; // perception
-    public int wil = 20; // will
-    public int arc = 20; // arcanum
-    public int ava = 20; // avatar
+    public HashMap<Stat, Integer> map = new HashMap<Stat, Integer>();
+    public static final int MIN_STAT = 1;
+    public static final int MAX_STAT = 99;
 
     public int speed = 100;
 
@@ -16,28 +15,32 @@ public class Statblock {
     public int dt = 0; // defense thickness
 
     public Statblock(int baseline) {
-        str = baseline;
-        tou = baseline;
-        dex = baseline;
-        agi = baseline;
-        per = baseline;
-        wil = baseline;
-        arc = baseline;
-        ava = baseline;
+        for (Stat stat : Stat.values()) {
+            map.put(stat, baseline);
+        }
 
         dr = 0;
         dt = 0;
     }
 
-    public float hitPointsPerLevel() {
-        return tou / 2.0f;
+    public int get(Stat stat) {
+        return map.get(stat);
     }
 
-    public float spellPointsPerLevel() {
-        return (wil + arc) / 4.0f;
+    public void set(Stat stat, int val) {
+        map.put(stat, normalize(stat, val));
     }
 
-    public float divinePoints() {
-        return ava * 50;
+    public void change(Stat stat, int delta) {
+        set(stat, normalize(stat, get(stat) + delta));
+    }
+
+    public static int normalize(Stat stat, int val) {
+        // avatar can have a value of 0, as a treat
+        if (stat == Stat.AVATAR) {
+            return Math.min(Math.max(val, 0), MAX_STAT);
+        } else {
+            return Math.min(Math.max(val, MIN_STAT), MAX_STAT);
+        }
     }
 }

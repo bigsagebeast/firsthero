@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
@@ -67,57 +68,57 @@ public class CharacterBuilder {
     public static void setStats(Entity entity, String race, String archetype) {
         switch (race) {
             case "human":
-                entity.statblock.str = 10;
-                entity.statblock.tou = 10;
-                entity.statblock.dex = 10;
-                entity.statblock.agi = 10;
-                entity.statblock.per = 10;
-                entity.statblock.wil = 10;
-                entity.statblock.arc = 10;
-                entity.statblock.ava = 10;
+                entity.statblock.set(Stat.STRENGTH, 10);
+                entity.statblock.set(Stat.TOUGHNESS, 10);
+                entity.statblock.set(Stat.DEXTERITY, 10);
+                entity.statblock.set(Stat.AGILITY, 10);
+                entity.statblock.set(Stat.PERCEPTION, 10);
+                entity.statblock.set(Stat.WILLPOWER, 10);
+                entity.statblock.set(Stat.ARCANUM, 10);
+                entity.statblock.set(Stat.AVATAR, 10);
                 break;
             case "dwarf":
-                entity.statblock.str = 12;
-                entity.statblock.tou = 12;
-                entity.statblock.dex = 8;
-                entity.statblock.agi = 6;
-                entity.statblock.per = 10;
-                entity.statblock.wil = 12;
-                entity.statblock.arc = 10;
-                entity.statblock.ava = 10;
+                entity.statblock.set(Stat.STRENGTH, 12);
+                entity.statblock.set(Stat.TOUGHNESS, 12);
+                entity.statblock.set(Stat.DEXTERITY, 8);
+                entity.statblock.set(Stat.AGILITY, 6);
+                entity.statblock.set(Stat.PERCEPTION, 10);
+                entity.statblock.set(Stat.WILLPOWER, 12);
+                entity.statblock.set(Stat.ARCANUM, 10);
+                entity.statblock.set(Stat.AVATAR, 10);
                 break;
             case "elf":
-                entity.statblock.str = 8;
-                entity.statblock.tou = 6;
-                entity.statblock.dex = 12;
-                entity.statblock.agi = 12;
-                entity.statblock.per = 10;
-                entity.statblock.wil = 10;
-                entity.statblock.arc = 12;
-                entity.statblock.ava = 10;
+                entity.statblock.set(Stat.STRENGTH, 8);
+                entity.statblock.set(Stat.TOUGHNESS, 6);
+                entity.statblock.set(Stat.DEXTERITY, 12);
+                entity.statblock.set(Stat.AGILITY, 12);
+                entity.statblock.set(Stat.PERCEPTION, 10);
+                entity.statblock.set(Stat.WILLPOWER, 10);
+                entity.statblock.set(Stat.ARCANUM, 12);
+                entity.statblock.set(Stat.AVATAR, 10);
                 break;
         }
 
         switch (archetype) {
             case "warrior":
-                entity.statblock.str += 6;
-                entity.statblock.tou += 6;
-                entity.statblock.dex += 4;
-                entity.statblock.agi += 4;
-                entity.statblock.wil += 4;
-                entity.statblock.arc -= 2;
+                entity.statblock.change(Stat.STRENGTH, 6);
+                entity.statblock.change(Stat.TOUGHNESS, 6);
+                entity.statblock.change(Stat.DEXTERITY, 4);
+                entity.statblock.change(Stat.AGILITY, 4);
+                entity.statblock.change(Stat.WILLPOWER, 4);
+                entity.statblock.change(Stat.ARCANUM, -2);
                 break;
             case "archer":
-                entity.statblock.tou += 2;
-                entity.statblock.dex += 6;
-                entity.statblock.agi += 6;
-                entity.statblock.per += 6;
+                entity.statblock.change(Stat.TOUGHNESS, 2);
+                entity.statblock.change(Stat.DEXTERITY, 6);
+                entity.statblock.change(Stat.AGILITY, 6);
+                entity.statblock.change(Stat.PERCEPTION, 6);
                 break;
             case "wizard":
-                entity.statblock.str -= 2;
-                entity.statblock.agi -= 2;
-                entity.statblock.wil += 4;
-                entity.statblock.arc += 6;
+                entity.statblock.change(Stat.STRENGTH, 2);
+                entity.statblock.change(Stat.AGILITY, -2);
+                entity.statblock.change(Stat.WILLPOWER, 4);
+                entity.statblock.change(Stat.ARCANUM, 6);
         }
         entity.recalculateSecondaryStats();
     }

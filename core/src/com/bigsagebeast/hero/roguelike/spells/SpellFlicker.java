@@ -27,8 +27,8 @@ public class SpellFlicker extends Spell {
     }
 
     @Override
-    public float getRange(Entity caster) {
-        return 8;
+    public Float getRange(Entity caster) {
+        return 8.0f;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SpellFlicker extends Spell {
     @Override
     public void affectTarget(Entity actor, Entity target, Compass dir) {
         boolean canSeeBefore = Game.getPlayerEntity().canSee(target);
-        boolean result = GameSpecials.blink(target, 3, (int)getRange(actor));
+        boolean result = GameSpecials.blink(target, 3, getRange(actor).intValue());
         if (result) {
             boolean canSeeAfter = Game.getPlayerEntity().canSee(target);
             if (Game.getPlayerEntity() == actor) {
