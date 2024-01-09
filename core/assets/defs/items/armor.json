@@ -2,6 +2,7 @@
   "items": {
     "armor.head.hat": {
       "name": "hat",
+      "description": "This cloth hat won't protect you very well.",
       "glyphName": "armor.head.bowler",
       "palette": [
         "tan"
@@ -23,6 +24,7 @@
     },
     "armor.head.leatherhat": {
       "name": "leather helm",
+      "description": "This leather helm can protect you from cuts and abrasions.",
       "glyphName": "armor.head.leatherhat",
       "palette": [
         "tan",
@@ -45,6 +47,7 @@
     },
     "armor.head.helm": {
       "name": "metal helm",
+      "description": "This metal helm provides good protection.",
       "glyphName": "armor.head.helm",
       "palette": [
         "white",
@@ -67,6 +70,7 @@
     },
     "armor.head.spikedhelm": {
       "name": "spiked helm",
+      "description": "The design of this spiked helm is common to plains raiders, who see it as a connection to their herds.",
       "glyphName": "armor.head.spikedhelm",
       "palette": [
         "white",
@@ -89,6 +93,7 @@
     },
     "armor.head.plumed": {
       "name": "plumed helmet",
+      "description": "This showy, plumed design is common among military leaders.",
       "glyphName": "armor.head.plumed",
       "palette": [
         "gray",
@@ -112,6 +117,7 @@
     },
     "armor.body.whiterobe": {
       "name": "white robe",
+      "description": "These light robes are common for both peasants and arcanum casters, but won't protect you much.",
       "glyphName": "armor.body.robe",
       "palette": [
         "white",
@@ -134,6 +140,7 @@
     },
     "armor.body.leather": {
       "name": "leather armor",
+      "description": "Leather armor provides basic protection to deflect and cushion blows.",
       "glyphName": "armor.body.leather",
       "palette": [
         "brown",
@@ -156,6 +163,7 @@
     },
     "armor.body.chain": {
       "name": "chainmail armor",
+      "description": "Chain mail can soften many dangerous incoming blows.",
       "glyphName": "armor.body.chain",
       "palette": [
         "white",
@@ -179,6 +187,7 @@
     },
     "armor.shield.buckler": {
       "name": "buckler",
+      "description": "A small shield to deflect arrows and melee strikes.",
       "glyphName": "shield.buckler",
       "palette": [
         "white",
@@ -202,6 +211,7 @@
     },
     "armor.shield.metal": {
       "name": "metal shield",
+      "description": "A heavy shield to serve as a bulwark against heavy attacks.",
       "glyphName": "shield.metal",
       "palette": [
         "white",

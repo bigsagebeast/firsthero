@@ -33,6 +33,8 @@ public class UnidMapping {
                 registerIden(it.idenGroup, it.keyName);
             } else if (it.unidGroup != null) {
                 registerUnid(it.unidGroup, it.keyName);
+            } else {
+                it.identified = true;
             }
         }
     }
@@ -55,6 +57,7 @@ public class UnidMapping {
             ItemType unid = Itempedia.get(mappings.get(key));
             iden.unidentifiedName = unid.unidentifiedName;
             iden.unidentifiedPluralName = unid.unidentifiedPluralName;
+            iden.unidDescription = unid.unidDescription;
             iden.glyphName = unid.glyphName;
             iden.palette = unid.palette;
             // TODO material?

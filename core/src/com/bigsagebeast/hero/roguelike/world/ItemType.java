@@ -1,6 +1,11 @@
 package com.bigsagebeast.hero.roguelike.world;
 
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
+import com.bigsagebeast.hero.roguelike.game.Game;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcArmor;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +22,8 @@ public class ItemType {
     public String pluralName;
     public String unidentifiedName;
     public String unidentifiedPluralName;
-    public String description;
+    public String unidDescription = "Placeholder Unid Description";
+    public String description = "Placeholder Description";
     public boolean isFeature = false;
     public BodyPart equipmentFor;
     public String glyphName;

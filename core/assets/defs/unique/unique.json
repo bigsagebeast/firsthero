@@ -2,6 +2,7 @@
   "items": {
     "pitchfork": {
       "name": "pitchfork",
+      "description": "A humble farmer's tool, now repurposed as a weapon of war.",
       "glyphName": "weapon.pitchfork",
       "palette": [
         "brown",
@@ -28,6 +29,7 @@
     },
     "misc.corpse": {
       "name": "generic corpse (error)",
+      "description": "The body of a fallen creature.",
       "glyphName": "misc.corpse",
       "category": "food",
       "sortOrder": 0,

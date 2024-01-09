@@ -2,6 +2,7 @@
   "items": {
     "weapon.melee.shortsword": {
       "name": "short sword",
+      "description": "An accurate, light weapon for stabbing through defenses.",
       "glyphName": "weapon.shortsword",
       "palette": [
         "white",
@@ -24,6 +25,7 @@
     },
     "weapon.melee.longsword": {
       "name": "longsword",
+      "description": "A large, slashing weapon good against lightly armored targets.",
       "glyphName": "weapon.longsword",
       "palette": [
         "white",
@@ -46,6 +48,7 @@
     },
     "weapon.melee.dagger": {
       "name": "dagger",
+      "description": "A short, close-range weapon that relies on dexterity.",
       "glyphName": "weapon.dagger",
       "palette": [
         "white",
@@ -68,6 +71,7 @@
     },
     "weapon.ranged.shortbow": {
       "name": "wooden shortbow",
+      "description": "A short-ranged weapon that fires arrows.",
       "frequency": 100,
       "glyphName": "weapon.shortbow",
       "palette": [
@@ -92,6 +96,7 @@
     },
     "weapon.ammo.arrow": {
       "name": "wooden arrow",
+      "description": "Simple ammunition for a bow.",
       "glyphName": "weapon.arrow",
       "palette": [
         "brown",
@@ -116,6 +121,7 @@
     },
     "weapon.ammo.rock": {
       "name": "rock",
+      "description": "Half the size of a fist, this is ammunition for a sling, or to be thrown by hand.",
       "frequency": 100,
       "glyphName": "weapon.stone",
       "palette": [
@@ -142,6 +148,7 @@
     },
     "weapon.ranged.sling": {
       "name": "sling",
+      "description": "Launches rocks with high accuracy.",
       "frequency": 100,
       "glyphName": "weapon.sling",
       "palette": [

@@ -190,7 +190,7 @@ public class TargetingModule extends Module {
                     description.text = "You see " + Game.getLevel().cell(targetTile).terrain.getDescription() + ".";
                 }
                 if (targetMode.look && !targetItems.isEmpty()) {
-                    //GameLoop.descriptionModule.lookAtEntity(targetItems.get(0));
+                    GameLoop.descriptionModule.lookAtEntity(targetItems.get(0));
                 }
             }
         } else {

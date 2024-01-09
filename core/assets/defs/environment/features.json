@@ -2,6 +2,7 @@
   "items": {
     "feature.door": {
       "name": "door",
+      "description": "Doors can be opened and closed with 'o'. They won't stop intelligent creatures.",
       "glyphName": "terrain.door_closed",
       "isFeature": true,
       "palette": [
@@ -16,6 +17,7 @@
     },
     "feature.moss": {
       "name": "patch of moss",
+      "description": "Moss provides a small amount of naturae charges, before needing to regrow.",
       "glyphName": "feature.moss",
       "isFeature": true,
       "palette": [
@@ -28,6 +30,7 @@
     },
     "feature.pool": {
       "name": "reflecting pool",
+      "description": "This pool provides an unlimited supply of water charges.",
       "glyphName": "feature.pool",
       "isFeature": true,
       "palette": [
@@ -42,6 +45,7 @@
     },
     "feature.forge": {
       "name": "forge",
+      "description": "The only thing you can use this forge for is as a supply of fire charges.",
       "glyphName": "feature.forge",
       "isFeature": true,
       "palette": [
@@ -57,6 +61,7 @@
     },
     "feature.campfire": {
       "name": "campfire",
+      "description": "For others, this is a cooking fire. For you, this is a source of fire charges.",
       "glyphName": "feature.campfire",
       "isFeature": true,
       "palette": [
@@ -72,6 +77,7 @@
     },
     "feature.tree": {
       "name": "tree",
+      "description": "You can draw naturae charges from this tree.",
       "glyphName": "terrain.tree",
       "isFeature": true,
       "palette": [
@@ -91,6 +97,7 @@
     },
     "feature.altar": {
       "name": "altar",
+      "description": "This altar is sacred to many gods. Use 'p' to pray at it.",
       "glyphName": "feature.altar",
       "isFeature": true,
       "palette": [
@@ -104,6 +111,7 @@
     },
     "feature.worldportal": {
       "name": "world portal",
+      "description": "Through here, you can enter the narrative of a mortal realm somewhere in the multiverse.",
       "glyphName": "feature.worldportal",
       "isFeature": true,
       "palette": [

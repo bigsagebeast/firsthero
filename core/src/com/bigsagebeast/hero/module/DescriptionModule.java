@@ -11,6 +11,7 @@ import com.bigsagebeast.hero.gfx.GfxRectBorder;
 import com.bigsagebeast.hero.gfx.GfxRectFilled;
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.glyphtile.GlyphTile;
+import com.bigsagebeast.hero.roguelike.game.GameEntities;
 import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
@@ -35,7 +36,7 @@ public class DescriptionModule extends Module {
         if (entity.getMover() != null) {
             text = Bestiary.get(entity.phenotypeName).description;
         } else {
-            text = entity.getItemType().description;
+            text = GameEntities.describeItem(entity);
         }
         if (text == null) {
             text = entity.getVisibleName() + " - WARN: no description";

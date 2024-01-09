@@ -454,7 +454,7 @@ public class Game {
 	}
 
 	public void cmdInventory() {
-		Inventory.openInventory();
+		Inventory.openInventoryToInspect();
 	}
 
 	public void cmdDrop() {

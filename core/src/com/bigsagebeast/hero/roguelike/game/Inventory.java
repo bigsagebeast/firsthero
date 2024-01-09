@@ -1,14 +1,17 @@
 package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
+import com.bigsagebeast.hero.chat.ChatLink;
+import com.bigsagebeast.hero.dialogue.ChatBox;
 import com.bigsagebeast.hero.dialogue.TextEntryBox;
-import com.bigsagebeast.hero.roguelike.world.Entity;
-import com.bigsagebeast.hero.roguelike.world.ItemCategory;
+import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
-import com.bigsagebeast.hero.roguelike.world.Itempedia;
-import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcArmor;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -347,7 +350,7 @@ public class Inventory {
 
 
 
-    public static void openInventory() {
+    public static void openInventoryToInspect() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
@@ -363,10 +366,27 @@ public class Inventory {
                 box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
             }
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryResponse);
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryInspectResponse);
     }
 
-    public static void handleInventoryResponse(Object chosenEntity) {
+    public static void handleInventoryInspectResponse(Object chosenEntity) {
+        if (chosenEntity == null) {
+            return;
+        }
+        Entity ent = (Entity)chosenEntity;
+        String description = GameEntities.describeItem(ent);
+
+        ChatBox chatBox = new ChatBox()
+                .withMargins(60, 60)
+                .withTitle("` " + ent.getVisibleNameIndefiniteOrSpecific(), EntityGlyph.getGlyph(ent))
+                .withText(description);
+
+        ArrayList<ChatLink> links = new ArrayList<>();
+        ChatLink linkOk = new ChatLink();
+        linkOk.text = "OK";
+        links.add(linkOk);
+
+        GameLoop.chatModule.openArbitrary(chatBox, links);
     }
 
     public static void promptQuantity(String command, Entity entity, BiConsumer<Entity, Integer> handler) {

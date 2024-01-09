@@ -3,6 +3,7 @@
     "book.unid.green": {
       "unidGroup": "book1",
       "unidentifiedName": "green spellbook",
+      "unidDescription": "An unknown spellbook with a green cover.",
       "glyphName": "book.standard",
       "palette": [
         "white",
@@ -13,6 +14,7 @@
     "book.unid.red": {
       "unidGroup": "book1",
       "unidentifiedName": "red spellbook",
+      "unidDescription": "An unknown spellbook with a red cover.",
       "glyphName": "book.standard",
       "palette": [
         "white",
@@ -23,6 +25,7 @@
     "book.unid.orange": {
       "unidGroup": "book1",
       "unidentifiedName": "orange spellbook",
+      "unidDescription": "An unknown spellbook with an orange cover.",
       "glyphName": "book.standard",
       "palette": [
         "white",
@@ -33,6 +36,7 @@
     "book.unid.sparkling": {
       "unidGroup": "book1",
       "unidentifiedName": "sparkling spellbook",
+      "unidDescription": "An unknown spellbook with a sparkling cover.",
       "glyphName": "book.standard",
       "palette": [
         "white",
@@ -43,6 +47,7 @@
     "book.unid.cerulean": {
       "unidGroup": "book1",
       "unidentifiedName": "cerulean spellbook",
+      "unidDescription": "An unknown spellbook with a cerulean cover.",
       "glyphName": "book.standard",
       "palette": [
         "white",
@@ -53,6 +58,7 @@
     "book.magicmissile": {
       "idenGroup": "book1",
       "name": "book of Magic Missile",
+      "description": "This spellbook can teach you Magic Missile.",
       "category": "book",
       "frequency": 100,
       "identityHidden": true,
@@ -70,6 +76,7 @@
     "book.firebeam": {
       "idenGroup": "book1",
       "name": "book of Firebeam",
+      "description": "This spellbook can teach you Firebeam.",
       "category": "book",
       "frequency": 100,
       "identityHidden": true,
@@ -87,6 +94,7 @@
     "book.waterblast": {
       "idenGroup": "book1",
       "name": "book of Water Blast",
+      "description": "This spellbook can teach you Water Blast.",
       "category": "book",
       "frequency": 100,
       "identityHidden": true,
@@ -104,6 +112,7 @@
     "book.rootspear": {
       "idenGroup": "book1",
       "name": "book of Root Spear",
+      "description": "This spellbook can teach you Root Spear.",
       "category": "book",
       "frequency": 100,
       "identityHidden": true,
@@ -121,6 +130,7 @@
     "book.shockinggrasp": {
       "idenGroup": "book1",
       "name": "book of Shocking Grasp",
+      "description": "This spellbook can teach you Shocking Grasp.",
       "category": "book",
       "frequency": 100,
       "identityHidden": true,

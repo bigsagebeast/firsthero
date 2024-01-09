@@ -2,6 +2,7 @@
   "items": {
     "gold": {
       "name": "gold piece",
+      "description": "Coveted in most civilized societies, and quite a few others as well.",
       "glyphName": "misc.gold",
       "palette": [
         "orange", "yellow", "white"
@@ -13,6 +14,7 @@
     },
     "food.bone": {
       "name": "bone",
+      "description": "Low nutritional value.",
       "glyphName": "food.bone",
       "palette": [
         "white"
@@ -31,6 +33,7 @@
     },
     "food.meat": {
       "name": "cooked meat",
+      "description": "Delicious and, more importantly, safe to eat.",
       "glyphName": "food.meat",
       "palette": [
         "white", "red", "brown"

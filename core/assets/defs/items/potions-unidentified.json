@@ -3,6 +3,7 @@
     "potion.yellow": {
       "unidGroup": "potion1",
       "unidentifiedName": "yellow potion",
+      "unidDescription": "This unidentified potion is full of a yellow liquid.",
       "glyphName": "potion.large",
       "palette": [
         "white",
@@ -12,6 +13,7 @@
     "potion.red": {
       "unidGroup": "potion1",
       "unidentifiedName": "red potion",
+      "unidDescription": "This unidentified potion is full of a red liquid.",
       "glyphName": "potion.large",
       "palette": [
         "white",
@@ -21,6 +23,7 @@
     "potion.cerulean": {
       "unidGroup": "potion1",
       "unidentifiedName": "cerulean potion",
+      "unidDescription": "This unidentified potion is full of a cerulean liquid.",
       "glyphName": "potion.large",
       "palette": [
         "white",
@@ -30,6 +33,7 @@
     "potion.pink": {
       "unidGroup": "potion1",
       "unidentifiedName": "pink potion",
+      "unidDescription": "This unidentified potion is full of a pink liquid.",
       "glyphName": "potion.large",
       "palette": [
         "white",
@@ -39,6 +43,7 @@
     "potion.green": {
       "unidGroup": "potion1",
       "unidentifiedName": "green potion",
+      "unidDescription": "This unidentified potion is full of a green liquid.",
       "glyphName": "potion.large",
       "palette": [
         "white",
@@ -48,6 +53,7 @@
     "potion.chartreuse": {
       "unidGroup": "potion1",
       "unidentifiedName": "chartreuse potion",
+      "unidDescription": "This unidentified potion is full of a chartreuse liquid.",
       "glyphName": "potion.large",
       "palette": [
         "white",

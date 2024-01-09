@@ -3,6 +3,7 @@
     "ring.amber": {
       "unidGroup": "ring1",
       "unidentifiedName": "amber ring",
+      "unidDescription": "A magical ring with an amber stone.",
       "glyphName": "ring.jeweled",
       "palette": [
         "tan",
@@ -12,6 +13,7 @@
     "ring.sapphire": {
       "unidGroup": "ring1",
       "unidentifiedName": "sapphire ring",
+      "unidDescription": "A magical ring with a sapphire stone.",
       "glyphName": "ring.jeweled",
       "palette": [
         "tan",
@@ -21,6 +23,7 @@
     "ring.ruby": {
       "unidGroup": "ring1",
       "unidentifiedName": "ruby ring",
+      "unidDescription": "A magical ring with a ruby stone.",
       "glyphName": "ring.jeweled",
       "palette": [
         "tan",
@@ -30,6 +33,7 @@
     "ring.opal": {
       "unidGroup": "ring1",
       "unidentifiedName": "opal ring",
+      "unidDescription": "A magical ring with an opal stone.",
       "glyphName": "ring.jeweled",
       "palette": [
         "tan",

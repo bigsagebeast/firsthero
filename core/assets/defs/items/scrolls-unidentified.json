@@ -4,6 +4,7 @@
       "unidGroup": "scroll1",
       "unidentifiedName": "scroll labeled TEMBOR",
       "unidentifiedPluralName": "scrolls labeled TEMBOR",
+      "unidDescription": "This unknown scroll is written in bold letters.",
       "glyphName": "scroll.standard",
       "palette": [
         "tan",
@@ -14,6 +15,7 @@
       "unidGroup": "scroll1",
       "unidentifiedName": "scroll labeled PORGUND",
       "unidentifiedPluralName": "scrolls labeled PORGUND",
+      "unidDescription": "This unknown scroll is written in big, rounded letters.",
       "glyphName": "scroll.standard",
       "palette": [
         "tan",
@@ -24,6 +26,7 @@
       "unidGroup": "scroll1",
       "unidentifiedName": "scroll labeled VERP VERP",
       "unidentifiedPluralName": "scrolls labeled VERP VERP",
+      "unidDescription": "This unknown scroll is written in slanted letters.",
       "glyphName": "scroll.standard",
       "palette": [
         "tan",
@@ -34,6 +37,7 @@
       "unidGroup": "scroll1",
       "unidentifiedName": "scroll labeled YIP YAP YOP",
       "unidentifiedPluralName": "scrolls labeled YIP YAP YOP",
+      "unidDescription": "This unknown scroll is partially smudged by animal prints.",
       "glyphName": "scroll.standard",
       "palette": [
         "tan",
