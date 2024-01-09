@@ -61,6 +61,9 @@ public class SpellWaterBlast extends Spell {
         if (CombatLogic.castAttempt(caster, target, this)) {
             CombatLogic.castDamage(caster, target, this, 8);
         }
+        if (target.dead) {
+            return;
+        }
         boolean pushed = Game.pushBy(target, dir.getX(), dir.getY());
         if (pushed) {
             announceVis(target, caster, "You are pushed back!",

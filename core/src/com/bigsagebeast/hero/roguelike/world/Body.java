@@ -12,7 +12,7 @@ public class Body {
     //public BodyPlan bodyPlan;
 
     //private HashMap<BodyPart, Integer> equipment = new HashMap<>();
-    private HashMap<String, Integer> equipment = new HashMap();
+    public HashMap<String, Integer> equipment = new HashMap();
 
     // deserialization
     protected Body() {}

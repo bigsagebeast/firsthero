@@ -149,7 +149,7 @@ public abstract class Spell {
         } else {
             throw new RuntimeException("Tried to directionally target an invalid spell");
         }
-        GameLoop.targetingModule.animate(ray.get(0), endpoint, getAnimationColor(), isAnimationStars());
+        GameLoop.targetingModule.animate(caster.pos, endpoint, getAnimationColor(), isAnimationStars() ? "#" : null);
 
         affectTargets(caster, targets, dir);
         Game.turn();

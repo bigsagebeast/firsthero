@@ -2,7 +2,9 @@ package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.roguelike.spells.Spell;
+import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.roguelike.world.Phenotype;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
@@ -11,7 +13,7 @@ public class CombatLogic {
 
 	// TODO split into trySwing, doHit, doMiss
 	public static void swing(Entity actor, Entity target, Entity tool) {
-
+		Phenotype actorPhenotype = Bestiary.get(actor.phenotypeName);
 		int damage, accuracy;
 		float randomFactor = generateWeaponRandomness();
 		String withWeaponString = "";
@@ -27,8 +29,8 @@ public class CombatLogic {
 			if (actor == Game.getPlayerEntity()) {
 				withWeaponString = " with your " + tool.getVisibleNameWithQuantity();
 			} else {
-				// TODO pronouns...
-				withWeaponString = " with their " + tool.getVisibleNameWithQuantity();
+				String pronoun = actor.gender.possessive;
+				withWeaponString = " with " + pronoun + " " + tool.getVisibleNameWithQuantity();
 			}
 		} else {
 			damage = Math.round(actor.getNaturalWeaponDamage() * randomFactor);
@@ -91,11 +93,19 @@ public class CombatLogic {
 							actor.getVisibleNameDefinite() + " critically hits " + target.getVisibleNameDefinite() + withWeaponString + "!",
 							null);
 				} else {
-					Game.announceVis(actor, target,
-							"You hit " + target.getVisibleNameDefinite() + withWeaponString + ".",
-							actor.getVisibleNameDefinite() + " hits you" + withWeaponString + ".",
-							actor.getVisibleNameDefinite() + " hits " + target.getVisibleNameDefinite() + withWeaponString + ".",
-							null);
+					if (actorPhenotype.naturalWeaponText != null && withWeaponString.isEmpty()) {
+						Game.announceVis(actor, target,
+								"You " + actorPhenotype.naturalWeaponText + " " + target.getVisibleNameDefinite() + ".",
+								actor.getVisibleNameDefinite() + " " + actorPhenotype.naturalWeaponText  + "s you.",
+								actor.getVisibleNameDefinite() + " " + actorPhenotype.naturalWeaponText  + "s " + target.getVisibleNameDefinite() + ".",
+								null);
+					} else {
+						Game.announceVis(actor, target,
+								"You hit " + target.getVisibleNameDefinite() + withWeaponString + ".",
+								actor.getVisibleNameDefinite() + " hits you" + withWeaponString + ".",
+								actor.getVisibleNameDefinite() + " hits " + target.getVisibleNameDefinite() + withWeaponString + ".",
+								null);
+					}
 				}
 				actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
 				target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));

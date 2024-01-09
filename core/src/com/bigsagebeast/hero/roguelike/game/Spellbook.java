@@ -2,9 +2,8 @@ package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.roguelike.spells.Spell;
-import com.bigsagebeast.hero.roguelike.world.Element;
+import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
-import com.bigsagebeast.hero.roguelike.world.Spellpedia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,17 @@ public class Spellbook {
 
     public void addSpell(String key) {
         spells.add(key);
+
+        // ensure that the spellbook is identified, even if the player learned the spell some other way
+        for (ItemType it : Itempedia.map.values()) {
+            LoadProc procLoader = it.procLoaders.stream().filter(pl -> pl.procName.equals("item.book.ProcBookSpell")).findAny().orElse(null);
+            if (procLoader != null) {
+                String spell = procLoader.fields.get("spell");
+                if (spell.equals(key)) {
+                    it.identified = true;
+                }
+            }
+        }
     }
 
     public boolean hasSpell(String key) {

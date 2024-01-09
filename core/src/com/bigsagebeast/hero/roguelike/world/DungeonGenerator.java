@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bigsagebeast.hero.roguelike.game.Dice;
+import com.bigsagebeast.hero.roguelike.game.Spellbook;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.Generator;
@@ -228,11 +229,23 @@ public class DungeonGenerator {
 			types = getTaggedItemTypes(requiredTags, forbiddenTags, level.threat / 2, level.threat, level);
 			types = types.stream().filter(it -> it.spawnCount == 0).collect(Collectors.toList());
 		}
-		Collections.shuffle(types);
-		if (types.isEmpty()) {
+		List<ItemType> typesFiltered = new ArrayList<>();
+		for (ItemType type : types) {
+			LoadProc procLoader = type.procLoaders.stream().filter(pl -> pl.procName.equals("item.book.ProcBookSpell")).findAny().orElse(null);
+			if (procLoader != null) {
+				String spell = procLoader.fields.get("spell");
+				if (Game.spellbook.spells.contains(spell)) {
+					continue;
+				}
+			}
+			typesFiltered.add(type);
+		}
+		Collections.shuffle(typesFiltered);
+
+		if (typesFiltered.isEmpty()) {
 			return null;
 		}
-		return types.get(0).keyName;
+		return typesFiltered.get(0).keyName;
 	}
 
 	public static List<String> getBoons(Level level) {

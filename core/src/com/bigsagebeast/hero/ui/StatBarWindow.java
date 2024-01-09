@@ -33,6 +33,7 @@ public class StatBarWindow extends UIWindow {
 	TextBlock tbStatAv;
 	TextBlock tbStatDr;
 	TextBlock tbStatDt;
+	TextBlock tbStatLevel;
 
 	TextBlock tbElementWater;
 	TextBlock tbElementFire;
@@ -67,6 +68,7 @@ public class StatBarWindow extends UIWindow {
 		tbStatAv = new TextBlock("20", 29, 0, Color.WHITE);
 		tbStatDr = new TextBlock("20", 5, 0, Color.WHITE);
 		tbStatDt = new TextBlock("20", 13, 0, Color.WHITE);
+		tbStatLevel = new TextBlock("1", 24, 0, Color.WHITE);
 		tbElementWater = new TextBlock("W 8/8", 0, 0, Color.CYAN);
 		tbElementFire = new TextBlock("F 8/8", 8, 0, Color.RED);
 		tbElementLightning = new TextBlock("L 8/8", 16, 0, Color.YELLOW);
@@ -87,9 +89,10 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(4).addChild(tbStatWi);
 		statRows.get(4).addChild(tbStatAr);
 		statRows.get(4).addChild(tbStatAv);
-		statRows.add(new TextBlock("DR:     DT:     ", 0, 5, Color.WHITE));
+		statRows.add(new TextBlock("DR:     DT:     Level:     ", 0, 5, Color.WHITE));
 		statRows.get(5).addChild(tbStatDr);
 		statRows.get(5).addChild(tbStatDt);
+		statRows.get(5).addChild(tbStatLevel);
 
 		statRows.add(new TextBlock("HP:    /      SP:    /      DP:    /   ", 0, 6, Color.WHITE));
 		tbNumHp = new TextBlock("", 3, 0);
@@ -156,6 +159,7 @@ public class StatBarWindow extends UIWindow {
 		tbStatAv.text = "" + statblock.ava;
 		tbStatDr.text = "" + statblock.dr;
 		tbStatDt.text = "" + statblock.dt;
+		tbStatLevel.text = "" + entity.level;
 
 		tbNumHp.text = String.format("%4d", entity.hitPoints);
 		tbNumMaxHp.text = String.format("%-4d", entity.maxHitPoints);

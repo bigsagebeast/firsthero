@@ -39,6 +39,7 @@ public class Phenotype {
 	public int naturalRangedWeaponRange = 0;
 	public int naturalArmorClass = 5;
 	public int naturalArmorThickness = 0;
+	public String naturalWeaponText;
 	public int threat;
 	public int packSize = 1;
 	public int packSpawnArea = 3;

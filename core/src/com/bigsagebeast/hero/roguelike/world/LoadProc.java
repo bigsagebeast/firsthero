@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class LoadProc {
     private static final String BASE_PACKAGE = "com.bigsagebeast.hero.roguelike.world.proc";
-    private String procName;
-    private Map<String, String> fields;
+    public String procName;
+    public Map<String, String> fields;
 
     public LoadProc(String procName, Map<String, String> fields) {
         this.procName = procName;

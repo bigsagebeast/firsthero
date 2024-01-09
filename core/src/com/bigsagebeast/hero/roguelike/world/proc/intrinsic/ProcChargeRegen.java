@@ -17,7 +17,7 @@ public class ProcChargeRegen extends Proc {
     public void turnPassed(Entity entity) {
         // TODO isEquipped
         super.turnPassed(entity);
-        if (entity.containingEntity == -1) {
+        if (entity.containingEntity == -1 || !entity.isEquipped()) {
             return;
         }
         Entity containingEntity = EntityTracker.get(entity.containingEntity);

@@ -58,6 +58,7 @@
     "jackal.trained": {
       "name": "trained jackal",
       "description": "Wearing a spiked collar, this beast was barely weaned when it was taught to kill the enemies of the goblin horde.",
+      "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 3,
       "isMonster": true,

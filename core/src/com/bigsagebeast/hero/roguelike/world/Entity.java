@@ -114,7 +114,15 @@ public class Entity {
         if (body == null) {
             return Collections.emptyList();
         }
-        return body.getParts().stream().map(body::getEquipment).filter(e -> e != null).collect(Collectors.toList());
+        return body.getParts().stream().map(body::getEquipment).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public boolean isEquipped() {
+        if (containingEntity != EntityTracker.NONE) {
+            // TODO: Better way to implement than searching every time?
+            return EntityTracker.get(containingEntity).body.equipment.containsValue(entityId);
+        }
+        return false;
     }
 
     public Entity getContainer() {
@@ -751,12 +759,19 @@ public class Entity {
             }
         }
 
-        Game.announce("You eat " + ((Entity)target).getVisibleNameDefinite() + ".");
-
-        for (Proc p : target.procs) {
-            p.postBeEaten(target, Game.getPlayerEntity());
+        ProcItem pi = target.getItem();
+        Entity eatenEntity;
+        if (pi.quantity == 1) {
+            eatenEntity = target;
+        } else {
+            eatenEntity = target.split(1);
         }
-        target.destroy();
+        Game.announce("You eat " + eatenEntity.getVisibleNameDefinite() + ".");
+
+        for (Proc p : eatenEntity.procs) {
+            p.postBeEaten(eatenEntity, Game.getPlayerEntity());
+        }
+        eatenEntity.destroy();
         getMover().setDelay(this, Game.ONE_TURN);
     }
 
