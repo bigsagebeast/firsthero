@@ -4,6 +4,7 @@ import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.TextEntryBox;
 import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.util.Point;
+import com.bigsagebeast.hero.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameSpecials {
-    public static void teleportRandomly(Entity entity) {
+    public static boolean teleportRandomly(Entity entity) {
         Point destination = null;
         for (int i=0; i<5; i++) {
             destination = Game.getLevel().findOpenTile();
@@ -20,17 +21,21 @@ public class GameSpecials {
         }
         if (destination == null || destination.equals(entity.pos)) {
             System.out.println("WARN: Couldn't find a teleport destination!");
+            return false;
         } else {
             entity.pos = destination;
+            return true;
         }
     }
 
-    public static void blink(Entity entity) {
-        Point destination = Game.getLevel().findOpenTileWithinRange(entity.pos, 8, false);
+    public static boolean blink(Entity entity, int minRange, int maxRange) {
+        Point destination = Game.getLevel().findOpenTileWithinRange(entity.pos, minRange, maxRange);
         if (destination == null) {
             System.out.println("WARN: Couldn't find a blink destination!");
+            return false;
         } else {
             entity.pos = destination;
+            return true;
         }
     }
 

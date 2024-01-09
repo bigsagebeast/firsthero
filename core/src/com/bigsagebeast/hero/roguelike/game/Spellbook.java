@@ -6,16 +6,20 @@ import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Spellbook {
-
     public List<String> spells = new ArrayList<>();
 
     public void addSpell(String key) {
+        if (spells.contains(key)) {
+            return;
+        }
         spells.add(key);
+        Collections.sort(spells);
 
         // ensure that the spellbook is identified, even if the player learned the spell some other way
         for (ItemType it : Itempedia.map.values()) {

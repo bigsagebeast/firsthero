@@ -64,10 +64,8 @@ public class DungeonGenerator {
 			Entity e;
 			if (!boons.isEmpty()) {
 				e = Itempedia.create(boons.remove(0));
-				System.out.println("INFO: Spawned boon " + e.itemTypeKey);
 			} else {
 				e = spawnLoot(level);
-				System.out.println("INFO: Spawned non-boon " + e.itemTypeKey);
 			}
 			if (e == null) {
 				continue;

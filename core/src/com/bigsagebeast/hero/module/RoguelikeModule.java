@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.roguelike.game.GameSpecials;
+import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
+import com.bigsagebeast.hero.roguelike.world.Spellpedia;
 import com.bigsagebeast.hero.ui.*;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.GameState;
@@ -19,7 +21,6 @@ import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.util.Compass;
-import com.bigsagebeast.hero.util.Fov;
 import com.bigsagebeast.hero.util.Util;
 
 import java.util.ArrayList;
@@ -347,6 +348,13 @@ public class RoguelikeModule extends Module {
 				case Keys.BACKSLASH:
 					Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.magic.map", 100));
 					Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.identify", 100));
+					Game.getPlayer().gainStatElement(Element.FIRE, 99, 99);
+					Game.getPlayer().gainStatElement(Element.WATER, 99, 99);
+					Game.getPlayer().gainStatElement(Element.LIGHTNING, 99, 99);
+					Game.getPlayer().gainStatElement(Element.NATURAE, 99, 99);
+					for (String key : Spellpedia.keys()) {
+						Game.spellbook.addSpell(key);
+					}
 					break;
 				case Keys.LEFT_BRACKET:
 					GameSpecials.wishSummon();

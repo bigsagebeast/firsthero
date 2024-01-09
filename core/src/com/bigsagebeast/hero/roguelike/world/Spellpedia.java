@@ -9,12 +9,15 @@ public class Spellpedia {
     private static HashMap<String, Spell> map = new HashMap<>();
 
     static {
-        map.put("magic missile", new SpellMagicMissile());
         map.put("firebeam", new SpellFirebeam());
-        map.put("water blast", new SpellWaterBlast());
+        map.put("flicker", new SpellFlicker());
+        map.put("icebeam", new SpellIceBeam());
+        map.put("magic missile", new SpellMagicMissile());
         map.put("root spear", new SpellRootSpear());
         map.put("shocking grasp", new SpellShockingGrasp());
+        map.put("water blast", new SpellWaterBlast());
         map.put("voltage cascade", new SpellVoltageCascade());
+
         map.put("monster spark weak", new SpellMonsterSparkWeak());
         map.put("monster fire weak", new SpellMonsterFireWeak());
         map.put("monster water weak", new SpellMonsterWaterWeak());

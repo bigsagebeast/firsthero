@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world.proc;
 
 import com.bigsagebeast.hero.enums.DamageType;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.text.TextBlock;
@@ -45,7 +46,7 @@ public class Proc {
         if (delay == 0 && entity != Game.getPlayerEntity()) {
             //throw new RuntimeException("Set delay of 0 for " + this.getClass() + " on " + entity.name);
         }
-        nextAction = Game.time + (delay * 100 / entity.statblock.speed);
+        nextAction = Game.time + (int)(delay * 100 / entity.getSpeed());
     }
 
     public void initialize(Entity entity) {
@@ -165,6 +166,9 @@ public class Proc {
     // null actor and target = can you even consider it?  For precalculating a list
     public Boolean canOfferAt(Entity entity, Entity actor, Entity target) { return null; }
     public void offerAt(Entity entity, Entity actor, Entity target) { }
+
+    public float getSpeedMultiplier(Entity entity, Entity actor) { return 1.0f; }
+    public int getStatModifier(Entity entity, Entity actor, Stat stat) { return 0; }
 
     // Is this a valid target to draw an element from?  If null, ignore it.
     public Element providesElement(Entity entity) { return null; }

@@ -822,6 +822,17 @@ public class Entity {
         return naturalRangedWeaponToHit;
     }
 
+    public float getSpeed() {
+        float speed = statblock.speed;
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            Float speedMod = ep.proc.getSpeedMultiplier(ep.entity, this);
+            if (speedMod != null) {
+                speed *= speedMod;
+            }
+        }
+        return speed;
+    }
+
     public int getArmorClass() {
         int ac = naturalArmorClass;
         for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {

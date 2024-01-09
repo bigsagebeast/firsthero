@@ -328,21 +328,17 @@ public class Level {
 		return points;
 	}
 
-	public Point findOpenTileWithinRange(Point center, int range, boolean includeCenter) {
-		int minX = Math.max(center.x - range, 0);
-		int maxX = Math.min(center.x + range, width - 1);
-		int minY = Math.max(center.y - range, 0);
-		int maxY = Math.min(center.y + range, height - 1);
+	public Point findOpenTileWithinRange(Point center, int minRange, int maxRange) {
 		for (int i=0; i<10000; i++) {
-			// TODO not stochastic?
-			int x = Util.randomBetween(minX, maxX);
-			int y = Util.randomBetween(minY, maxY);
-			if (!includeCenter && x == center.x && y == center.y) {
+			int x = Util.randomBetween(center.x - maxRange, center.x + maxRange);
+			int y = Util.randomBetween(center.y - maxRange, center.y + maxRange);
+			Point p = new Point(x, y);
+			if (p.distance(center) < minRange) {
 				continue;
 			}
-			if (cell[x][y].terrain.isPassable() && cell[x][y].terrain.isSpawnable()) {
+			if (Game.getLevel().cell(p).terrain.isPassable() && Game.getLevel().cell(p).terrain.isSpawnable()) {
 				boolean blockingEntity = false;
-				for (Entity e : getEntitiesOnTile(new Point(x, y))) {
+				for (Entity e : Game.getLevel().getEntitiesOnTile(p)) {
 					if (e.getMover() != null || e.isObstructive()) {
 						blockingEntity = true;
 						break;
@@ -351,7 +347,7 @@ public class Level {
 				if (blockingEntity) {
 					continue;
 				}
-				return new Point(x, y);
+				return p;
 			}
 		}
 		return null;
