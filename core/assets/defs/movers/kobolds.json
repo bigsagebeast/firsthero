@@ -3,6 +3,8 @@
     "kobold.shaman.rat": {
       "name": "kobold rat shaman",
       "description": "Garbed in dirty yellow robes, this reptilian humanoid shakes a stick with a rattle around to call forth its minions of filth.",
+      "corpseMessage": "Beneath the scales, this meat holds the metallic tang of poison.",
+      "corpseMethod": "procPoison",
       "peaceful": false,
       "hitPoints": 12,
       "isMonster": true,

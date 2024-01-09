@@ -34,6 +34,8 @@
     "undead.zombie": {
       "name": "zombie",
       "description": "Slow and ungainly, this is meat and muscle given purpose anew. Its wrenching blows threaten to tear itself apart, but it does not care.",
+      "corpseMessage": "That was beyond rotten!",
+      "corpseMethod": "procPoison",
       "peaceful": false,
       "hitPoints": 20,
       "isMonster": true,

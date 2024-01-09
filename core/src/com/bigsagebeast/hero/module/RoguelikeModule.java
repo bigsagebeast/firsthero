@@ -290,8 +290,12 @@ public class RoguelikeModule extends Module {
 					game.cmdWield();
 					break;
 				case Keys.ENTER:
-				case Input.Keys.NUMPAD_ENTER:
+				case Keys.NUMPAD_ENTER:
 					popupCommands();
+					break;
+				case Keys.ESCAPE:
+					popupEscapeMenu();
+					break;
 			}
 		}
 		if (shift && !ctrl && !alt) {
@@ -407,6 +411,26 @@ public class RoguelikeModule extends Module {
 		}
 		game.turn();
 		return true;
+	}
+
+	public void popupEscapeMenu() {
+		DialogueBox box = new DialogueBox()
+				.withMargins(60, 60)
+				.withFooterSelectable()
+				.withCancelable(false)
+				.withTitle("Menu");
+		box.addItem("Return to game", "r");
+		box.addItem("Quit to main menu", "q");
+		box.autoHeight();
+		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleEscapeMenu);
+	}
+
+	public void handleEscapeMenu(Object o) {
+		String response = (String)o;
+		if (response.equals("q")) {
+			end();
+			GameLoop.titleModule.start();
+		}
 	}
 
 	public void popupCommands() {

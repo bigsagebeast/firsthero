@@ -84,6 +84,11 @@ public class DialogueBox {
         return this;
     }
 
+    public DialogueBox withFooterSelectable() {
+        footerText = "Arrow keys to move, ENTER to select";
+        return this;
+    }
+
     public DialogueBox withTitle(String title) {
         titleText = title;
         return this;

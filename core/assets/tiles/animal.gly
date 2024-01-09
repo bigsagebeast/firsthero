@@ -1,4 +1,4 @@
-1 8
+1 9
 0 0 animal.canine
 0 1 plant.fungus
 0 2 animal.horseshoe
@@ -7,3 +7,4 @@
 0 5 animal.rat # brown, brown, red
 0 6 animal.spider # gray, teal, orange
 0 7 jelly.cube # lightgreen, darkgreen, white
+0 8 jelly.slime # tan, gray

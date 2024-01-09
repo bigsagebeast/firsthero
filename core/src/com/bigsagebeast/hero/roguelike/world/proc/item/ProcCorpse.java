@@ -86,6 +86,19 @@ public class ProcCorpse extends Proc {
         }
     }
 
+    public void procPoison(Entity entity, Entity actor) {
+        ProcEffectPoisoned effect = (ProcEffectPoisoned)actor.getProcByType(ProcEffectPoisoned.class);
+        if (effect == null) {
+            effect = new ProcEffectPoisoned();
+            effect.strength = 5;
+            effect.turnsRemaining = 25;
+            actor.addProc(effect);
+            effect.damageCountdown = 3;
+        } else {
+            effect.increaseDuration(actor, 25);
+        }
+    }
+
     public void procConfusion(Entity entity, Entity actor) {
         if (actor.testResistStatus(StatusType.CONFUSION)) {
             return;

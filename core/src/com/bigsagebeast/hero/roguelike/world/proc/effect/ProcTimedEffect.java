@@ -24,4 +24,9 @@ public class ProcTimedEffect extends Proc {
             entity.removeProc(this);
         }
     }
+
+    public void expireEarly(Entity entity) {
+        expire(entity);
+        entity.removeProc(this);
+    }
 }

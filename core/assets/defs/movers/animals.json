@@ -3,6 +3,7 @@
     "horseshoe": {
       "name": "horseshoe crab",
       "description": "This scuttling thing the size of a small dog bears the weight of prehistoric ancestry on its form. /Limulus transarcana/ feed on distortions of reality, but unlike their larger brethren, they cannot tear such rifts open themselves.",
+      "corpseMessage": "The meat is succulent beneath the thick shell.",
       "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 10,
@@ -31,6 +32,7 @@
     "rat.large": {
       "name": "large rat",
       "description": "Matted brown fur, tattered ears, and standing as high as your knee. This hungry beast has turned from peaceful scavenging to blood-thirsty predation, and chitters as it stalks the halls and caves.",
+      "corpseMessage": "Rats. Dungeon pork.",
       "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 5,
@@ -59,6 +61,7 @@
     "rat.giant": {
       "name": "giant rat",
       "description": "Hissing and snarling, the shape of this feral creature belies its role as an opportunistic predator. Its size could easily bowl a man over.",
+      "corpseMessage": "Rats. Dungeon pork.",
       "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 18,
@@ -87,6 +90,7 @@
     "noctupanther": {
       "name": "noctupanther",
       "description": "Native to underground forests, this six-legged beast is a stalking predator. Its shape allows it to move low and silent, but it is repelled by loud noise.",
+      "corpseMessage": "Tough and gristly.",
       "naturalWeaponText": "claw",
       "peaceful": false,
       "hitPoints": 20,
@@ -114,6 +118,7 @@
     "animal.bat": {
       "name": "giant bat",
       "description": "While not truly blind, these airborne predators fly erratically nonetheless, swooping in to bite pieces of their prey before retreating to distance.",
+      "corpseMessage": "Tastes like chicken!  The world spins...",
       "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 5,
@@ -145,6 +150,7 @@
     "animal.spider.hunting": {
       "name": "hunting spider",
       "description": "This skittering beast, the size of a turkey, is plated with a shiny gray exoskeleton. It hunts down its prey instead of spinning webs.",
+      "corpseMessage": "You open it like a crab.",
       "peaceful": false,
       "hitPoints": 5,
       "isMonster": true,
@@ -175,7 +181,7 @@
         "spider"
       ]
     },
-    "cube.gelatinous": {
+    "jelly.cube.gelatinous": {
       "name": "gelatinous cube",
       "description": "Dragging its way through corridors and halls with a 'schlorp', this cube of paralyzing jelly sucks organics from the nooks and crannies of the dungeon. They prefer carrion and nonliving food to live prey.",
       "peaceful": false,
@@ -201,6 +207,35 @@
       },
       "tactic": {
         "name": "TacticGelatinousCube"
+      },
+      "tags": [
+        "generic-fantasy",
+        "jelly"
+      ]
+    },
+    "jelly.slime.gray": {
+      "name": "gray slime",
+      "description": "What might seem at first sight to be a puddle of liquid on the ground is actually more sinister. This is a kind of living ooze, an acidic slime that seeps across the floor and puddles after living prey.",
+      "peaceful": false,
+      "hitPoints": 8,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "jelly.slime",
+      "isManipulator": false,
+      "palette": [
+        "tan",
+        "gray"
+      ],
+      "experienceAwarded": 5,
+      "corpseSpawnPercent": 0,
+      "threat": 5,
+      "frequency": 50,
+      "corpseSpawnPercent": 0,
+      "naturalWeaponDamage": 4,
+      "naturalWeaponToHit": 0,
+      "naturalArmorClass": 0,
+      "tactic": {
+        "name": "TacticSlime"
       },
       "tags": [
         "generic-fantasy",

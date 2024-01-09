@@ -18,6 +18,24 @@
         "red"
       ]
     },
+    "potion.cerulean": {
+      "unidGroup": "potion1",
+      "unidentifiedName": "cerulean potion",
+      "glyphName": "potion.large",
+      "palette": [
+        "white",
+        "cerulean"
+      ]
+    },
+    "potion.pink": {
+      "unidGroup": "potion1",
+      "unidentifiedName": "pink potion",
+      "glyphName": "potion.large",
+      "palette": [
+        "white",
+        "pink"
+      ]
+    },
     "potion.green": {
       "unidGroup": "potion1",
       "unidentifiedName": "green potion",

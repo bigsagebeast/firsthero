@@ -71,6 +71,40 @@
         "generic-fantasy"
       ],
       "maxCount": 2
+    },
+    "potion.curepoison": {
+      "idenGroup": "potion1",
+      "name": "potion of cure poison",
+      "pluralName": "potions of cure poison",
+      "category": "potion",
+      "frequency": 300,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.potion.ProcPotionCurePoison": {}
+      },
+      "tags": [
+        "potion",
+        "helpful",
+        "generic-fantasy"
+      ]
+    },
+    "potion.poison": {
+      "idenGroup": "potion1",
+      "name": "potion of poison",
+      "pluralName": "potions of poison",
+      "category": "potion",
+      "frequency": 300,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.potion.ProcPotionPoison": {}
+      },
+      "tags": [
+        "potion",
+        "harmful",
+        "generic-fantasy"
+      ]
     }
   }
 }
