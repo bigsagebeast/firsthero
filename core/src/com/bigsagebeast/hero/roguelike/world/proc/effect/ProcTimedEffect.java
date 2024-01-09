@@ -6,12 +6,12 @@ import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 public class ProcTimedEffect extends Proc {
     public int turnsRemaining = 0;
 
-    public void setDuration(int duration) {
-        turnsRemaining += duration;
+    public void setDuration(Entity entity, int duration) {
+        turnsRemaining = duration;
     }
 
-    public void increaseDuration(int duration) {
-        turnsRemaining += duration;
+    public void increaseDuration(Entity entity, int duration) {
+        setDuration(entity, turnsRemaining + duration);
     }
 
     public void expire(Entity entity) {}

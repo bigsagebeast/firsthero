@@ -178,7 +178,7 @@ public class Entity {
         return found == null ? null : found.proc;
     }
 
-    public List<Proc> getProcByTypeIncludingEquipment(List<Class> classes) {
+    public List<Proc> getProcsByTypeIncludingEquipment(List<Class> classes) {
         ArrayList<Proc> matchingProcs = new ArrayList<>();
         for (Class<Proc> clazz : classes) {
             matchingProcs.addAll(allEntityProcsIncludingEquipment()
@@ -278,13 +278,20 @@ public class Entity {
         hitPoints = Math.min(hitPoints + amount, maxHitPoints);
     }
 
-    public void hurt(int amount) {
+    public void hurt(int amount, boolean announceDeath) {
         hitPoints = Math.max(hitPoints - amount, 0);
-        if (this == Game.getPlayerEntity()) {
-            return;
-        }
         if (hitPoints <= 0) {
             dead = true;
+            if (announceDeath) {
+                // TODO move player death elsewhere?
+                Game.announceVis(this, null, "You have died...",
+                        null,
+                        getVisibleNameDefinite() + " dies.",
+                        null);
+            }
+        }
+        if (this == Game.getPlayerEntity()) {
+            return;
         }
         if (dead && GameLoop.roguelikeModule.isRunning()) {
             // tests to make sure we're not in a test duel
@@ -293,10 +300,18 @@ public class Entity {
         }
     }
 
-    public void hurt(int amount, DamageType damageType) {
+    public void hurt(int amount, DamageType damageType, boolean announceDeath) {
         ResistanceLevel resistLevel = getDamageTypeResist(damageType);
         amount = (int)Math.ceil(resistLevel.multiplier * amount);
-        hurt(amount);
+        hurt(amount, announceDeath);
+    }
+
+    public void hurt(int amount) {
+        hurt(amount, false);
+    }
+
+    public void hurt(int amount, DamageType damageType) {
+        hurt(amount, damageType, false);
     }
 
     public boolean canSee(Entity target) {

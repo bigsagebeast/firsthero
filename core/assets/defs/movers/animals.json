@@ -18,13 +18,67 @@
       "threat": 1,
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": -4,
-      "naturalArmorClass": 8,
+      "naturalArmorClass": 10,
       "packSize": 1,
       "packSpawnArea": 3,
       "size": "SMALL",
       "tags": [
         "generic-fantasy",
         "animal"
+      ]
+    },
+    "rat.large": {
+      "name": "large rat",
+      "description": "Matted brown fur, tattered ears, and standing as high as your knee. This hungry beast has turned from peaceful scavenging to blood-thirsty predation, and chitters as it stalks the halls and caves.",
+      "peaceful": false,
+      "hitPoints": 5,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.rat",
+      "isManipulator": false,
+      "palette": [
+        "brown",
+        "brown",
+        "red"
+      ],
+      "experienceAwarded": 5,
+      "threat": 1,
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": -4,
+      "naturalArmorClass": 4,
+      "packSize": 1,
+      "size": "SMALL",
+      "tags": [
+        "generic-fantasy",
+        "animal",
+        "rat"
+      ]
+    },
+    "rat.giant": {
+      "name": "giant rat",
+      "description": "Hissing and snarling, the shape of this feral creature belies its role as an opportunistic predator. Its size could easily bowl a man over.",
+      "peaceful": false,
+      "hitPoints": 18,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.rat",
+      "isManipulator": false,
+      "palette": [
+        "tan",
+        "brown",
+        "red"
+      ],
+      "experienceAwarded": 10,
+      "threat": 3,
+      "naturalWeaponDamage": 6,
+      "naturalWeaponToHit": 1,
+      "naturalArmorClass": -2,
+      "packSize": 1,
+      "size": "MEDIUM",
+      "tags": [
+        "generic-fantasy",
+        "animal",
+        "rat"
       ]
     },
     "noctupanther": {
@@ -47,7 +101,7 @@
       "naturalArmorClass": 2,
       "packSize": 1,
       "packSpawnArea": 3,
-      "size": "SMALL",
+      "size": "LARGE",
       "tags": [
         "generic-fantasy",
         "animal"
@@ -79,7 +133,41 @@
         "name": "TacticBat"
       },
       "tags": [
-        "generic-fantasy"
+        "generic-fantasy",
+        "animal"
+      ]
+    },
+    "animal.spider.hunting": {
+      "name": "hunting spider",
+      "description": "This skittering beast, the size of a turkey, is plated with a shiny gray exoskeleton. It hunts down its prey instead of spinning webs.",
+      "peaceful": false,
+      "hitPoints": 5,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.spider",
+      "isManipulator": false,
+      "palette": [
+        "gray",
+        "teal",
+        "orange"
+      ],
+      "experienceAwarded": 10,
+      "threat": 1,
+      "naturalWeaponDamage": 2,
+      "naturalWeaponToHit": -4,
+      "naturalArmorClass": 7,
+      "size": "TINY",
+      "corpseMethod": "poisonAndGainResistance",
+      "procs": {
+        "monster.ProcPoisonAttack": {
+          "strength": 3,
+          "duration": 25
+        }
+      },
+      "tags": [
+        "generic-fantasy",
+        "animal",
+        "spider"
       ]
     }
   }

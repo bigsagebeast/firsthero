@@ -1,6 +1,8 @@
-1 5
+1 7
 0 0 animal.canine
 0 1 plant.fungus
 0 2 animal.horseshoe
 0 3 animal.noctupanther # teal, purple
 0 4 animal.bat # brown, tan
+0 5 animal.rat # brown, brown, red
+0 6 animal.spider # gray, teal, orange

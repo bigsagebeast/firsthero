@@ -23,9 +23,9 @@ public class ProcPotionRegeneration extends ImmutableProc {
             actor.addProc(effect);
         }
         switch (entity.getBeatitude()) {
-            case CURSED: effect.increaseDuration(5); break;
-            case UNCURSED: effect.increaseDuration(10); break;
-            case BLESSED: effect.increaseDuration(20); break;
+            case CURSED: effect.increaseDuration(actor, 5); break;
+            case UNCURSED: effect.increaseDuration(actor, 10); break;
+            case BLESSED: effect.increaseDuration(actor, 20); break;
         }
         Game.announceVis(actor, null, "You start to regenerate more quickly!",
                 null,

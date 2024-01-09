@@ -12,7 +12,7 @@ import java.util.List;
 public class ProcTelepathy extends Proc {
     @Override
     public void postBeEquipped(Entity entity, BodyPart bp, Entity actor) {
-        List<Proc> telepathyProcs = actor.getProcByTypeIncludingEquipment(
+        List<Proc> telepathyProcs = actor.getProcsByTypeIncludingEquipment(
                 Arrays.asList(ProcEffectTimedTelepathy.class, ProcTelepathy.class)
         );
         telepathyProcs.remove(this);
@@ -23,7 +23,7 @@ public class ProcTelepathy extends Proc {
 
     @Override
     public void postBeUnequipped(Entity entity, BodyPart bp, Entity actor) {
-        List<Proc> telepathyProcs = actor.getProcByTypeIncludingEquipment(
+        List<Proc> telepathyProcs = actor.getProcsByTypeIncludingEquipment(
                 Arrays.asList(ProcEffectTimedTelepathy.class, ProcTelepathy.class)
         );
         telepathyProcs.remove(this);

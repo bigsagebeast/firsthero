@@ -15,7 +15,7 @@ public class ProcEffectTimedTelepathy extends ProcTimedEffect {
         if (user == null) {
             return;
         }
-        List<Proc> telepathyProcs = user.getProcByTypeIncludingEquipment(
+        List<Proc> telepathyProcs = user.getProcsByTypeIncludingEquipment(
                 Arrays.asList(ProcEffectTimedTelepathy.class, ProcTelepathy.class)
         );
         telepathyProcs.remove(this);
@@ -30,7 +30,7 @@ public class ProcEffectTimedTelepathy extends ProcTimedEffect {
         if (user == null) {
             return;
         }
-        List<Proc> telepathyProcs = user.getProcByTypeIncludingEquipment(
+        List<Proc> telepathyProcs = user.getProcsByTypeIncludingEquipment(
                 Arrays.asList(ProcEffectTimedTelepathy.class, ProcTelepathy.class)
         );
         telepathyProcs.remove(this);

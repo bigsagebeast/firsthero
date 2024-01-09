@@ -1,15 +1,24 @@
 package com.bigsagebeast.hero.roguelike.world.proc.item;
 
+import com.bigsagebeast.hero.enums.DamageType;
 import com.bigsagebeast.hero.enums.StatusType;
+import com.bigsagebeast.hero.roguelike.game.EntityProc;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectConfusion;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectPoisoned;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectTimedTelepathy;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectVomit;
+import com.bigsagebeast.hero.roguelike.world.proc.intrinsic.ProcResistDamageType;
+import com.bigsagebeast.hero.roguelike.world.proc.intrinsic.ProcTelepathy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class ProcCorpse extends Proc {
 
@@ -95,6 +104,24 @@ public class ProcCorpse extends Proc {
     public Boolean doppelganger(Entity entity, Entity actor) {
         Game.announce("You can't bear to eat yourself.");
         return Boolean.FALSE;
+    }
+
+    public void poisonAndGainResistance(Entity entity, Entity actor) {
+        if (actor == Game.getPlayerEntity()) {
+            boolean alreadyResists = actor.getProcsByTypeIncludingEquipment(Collections.singletonList(ProcResistDamageType.class)).stream()
+                    .anyMatch(proc -> proc.provideDamageTypeResist(actor).contains(DamageType.POISON));
+            if (!alreadyResists) {
+                ProcResistDamageType procResistant = new ProcResistDamageType();
+                procResistant.damageType = DamageType.POISON;
+                actor.addProc(procResistant);
+                Game.announce("You build up a tolerance to the poison, and feel resistant.");
+            }
+
+            ProcEffectPoisoned procPoisoned = new ProcEffectPoisoned();
+            procPoisoned.strength = 3;
+            procPoisoned.turnsRemaining = 25;
+            actor.addProc(procPoisoned);
+        }
     }
 
     public void gainFireSmall(Entity entity, Entity actor) {

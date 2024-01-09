@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class ProcResistDamageType extends Proc {
-    List<DamageType> damageTypes;
-    DamageType damageType;
+    public List<DamageType> damageTypes;
+    public DamageType damageType;
     @Override
     public List<DamageType> provideDamageTypeResist(Entity entity) {
         if (damageTypes != null) {
