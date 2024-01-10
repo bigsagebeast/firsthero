@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.dungeon.RoomType;
 import com.bigsagebeast.hero.util.Compass;
@@ -133,7 +134,7 @@ public class RoomPacker {
                 Point doorLocation = packRoom.doorLocation.get(neighbor);
                 if (packRoom.neighbors.get(neighbor) && doorLocation != null) {
                     level.cell(doorLocation).terrain = doorway;
-                    Entity door = Game.itempedia.create("feature.door");
+                    Entity door = Itempedia.create("feature.door");
                     level.addEntityWithStacking(door, doorLocation);
                     if (Game.random.nextInt(4) != 0) {
                         ((ProcDoor)door.getProcByType(ProcDoor.class)).close(door);

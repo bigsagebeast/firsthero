@@ -41,9 +41,9 @@ public class Entity {
     public String name;
     public String pluralName;
 
-    //public Glyph glyph;
     public Point pos;
     public int roomId = -1;
+    public ArrayList<Entity> visibleEntities = new ArrayList<>();
 
     public List<Proc> procs = new ArrayList<>();
     public Collection<Integer> inventoryIds = new ArrayList<>();
@@ -96,7 +96,7 @@ public class Entity {
 
     public Rank stats = Rank.C;
 
-    public float visionRange = 15;
+    public float visionRange = 7;
     public float hearingRange = 30;
 
     // to count the number of wandering monsters
@@ -321,7 +321,7 @@ public class Entity {
         if (incorporeal) {
             return true;
         }
-        return Fov.canSee(Game.getLevel(), pos, target.pos, visionRange);
+        return visibleEntities.contains(target);
     }
 
     public boolean canHear(Entity target) {

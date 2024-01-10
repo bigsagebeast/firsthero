@@ -213,6 +213,8 @@ public class TargetingModule extends Module {
             if (currentRay == null) {
                 valid = false;
                 continue;
+            } else if (origin.distance(currentRay) > /*Game.getPlayerEntity().visionRange*/ Game.getLevel().ambientLight) {
+                valid = false;
             }
             Point centerPixel = GameLoop.glyphEngine.getTileCenterPixelInWindow(currentRay);
             float fontSize = RoguelikeModule.FONT_SIZE * 1.2f * GameLoop.glyphEngine.zoom;

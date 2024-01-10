@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.dungeon.RoomType;
 import com.bigsagebeast.hero.util.Compass;
@@ -178,7 +179,7 @@ public class Generator {
                 return false;
             }
             Point forgePoint = openFloorTiles.get(0);
-            Entity forge = Game.itempedia.create("feature.forge");
+            Entity forge = Itempedia.create("feature.forge");
             level.addEntityWithStacking(forge, forgePoint);
         } else if (roomType == RoomType.POOL) {
             List<Point> openFloorTiles = level.getEmptyRoomMapOpenFloor(roomId);
@@ -186,14 +187,14 @@ public class Generator {
                 return false;
             }
             Point poolPoint = openFloorTiles.get(0);
-            Entity pool = Game.itempedia.create("feature.pool");
+            Entity pool = Itempedia.create("feature.pool");
             level.addEntityWithStacking(pool, poolPoint);
         } else if (roomType == RoomType.MOSSY) {
             List<Point> wallFloorTiles = level.getEmptyRoomMapAlongWall(roomId);
             Collections.shuffle(wallFloorTiles);
             int mossyTiles = 4 + Game.random.nextInt(4);
             for (int i = 0; i < mossyTiles && i < wallFloorTiles.size(); i++) {
-                level.addEntityWithStacking(Game.itempedia.create("feature.moss"), wallFloorTiles.get(i));
+                level.addEntityWithStacking(Itempedia.create("feature.moss"), wallFloorTiles.get(i));
             }
         } else if (roomType == RoomType.UNDERGROUND_GROVE) {
             List<Point> groveStarts = level.getEmptyRoomMapOpenFloor(roomId);
@@ -233,7 +234,7 @@ public class Generator {
             List<Point> validTreeCells = grassCells.stream().filter(groveStarts::contains).collect(Collectors.toList());
             Collections.shuffle(validTreeCells);
             for (int i=0; i<3 && i < validTreeCells.size(); i++) {
-                Entity tree = Game.itempedia.create("feature.tree");
+                Entity tree = Itempedia.create("feature.tree");
                 level.addEntityWithStacking(tree, validTreeCells.get(i));
             }
         } else if (roomType == RoomType.FRACTAL_COPPER) {

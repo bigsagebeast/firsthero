@@ -21,6 +21,7 @@ import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcShooter;
 import com.bigsagebeast.hero.util.Compass;
+import com.bigsagebeast.hero.util.Fov;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.util.Util;
@@ -36,8 +37,6 @@ public class Game {
 	private static Player player = new Player();
 	public static RoguelikeModule roguelikeModule;
 	public static final DungeonGenerator dungeon = new DungeonGenerator();
-	public static final Bestiary bestiary = new Bestiary();
-	public static final Itempedia itempedia = new Itempedia();
 	public static final UnidMapping unidMapping = new UnidMapping();
 	public static long time = 0;
 	public static long lastTurnProc = 0;
@@ -73,35 +72,37 @@ public class Game {
 	}
 
 	public void startIntro() {
-		Entity pc = bestiary.create("pc.farmboy");
+		Entity pc = Bestiary.create("pc.farmboy");
 		pc.statblock.set(Stat.ARCANUM, 5);
 		pc.statblock.set(Stat.AVATAR, 0);
 		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
-		Entity pitchfork = itempedia.create("pitchfork");
+		Entity pitchfork = Itempedia.create("pitchfork");
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.getLevel("start").setFriendlyName("Besieged Farm");
+		dungeon.getLevel("start").ambientLight = 15;
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.getLevel("cave-entry").setFriendlyName("Goblin cave entrance");
+		dungeon.getLevel("cave-entry").ambientLight = 15;
 		dungeon.generateFromFile("cave", "cave.fhm");
 		dungeon.getLevel("cave").setFriendlyName("Goblin caves");
 		changeLevel(dungeon.getLevel("start"), new Point(26, 27));
 		level.addEntityWithStacking(pitchfork, new Point(29, 24));
 		level = dungeon.getLevel("start");
 		Level cave = dungeon.getLevel("cave");
-		cave.addEntityWithStacking(itempedia.create("feature.intro.altar"), new Point(4, 3));
+		cave.addEntityWithStacking(Itempedia.create("feature.intro.altar"), new Point(4, 3));
 		level.prepare();
 	}
 
 	public void startAurex() {
-		Entity pc = bestiary.create("pc.deity");
+		Entity pc = Bestiary.create("pc.deity");
 		pc.name = Profile.getString("godName");
 		pc.recalculateSecondaryStats();
 		player.setEntityId(pc.entityId);
 		dungeon.generateFromFile("aurex", "aurex.fhm");
 		dungeon.getLevel("aurex").setFriendlyName("Aurex, Realm of the Gods");
 		changeLevel(dungeon.getLevel("aurex"), new Point(107, 30));
-		level.addEntityWithStacking(itempedia.create("feature.worldportal"), new Point(105, 30));
+		level.addEntityWithStacking(Itempedia.create("feature.worldportal"), new Point(105, 30));
 		level.prepare();
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			GameLoop.roguelikeModule.start();
@@ -205,6 +206,7 @@ public class Game {
 	
 	public static void turn() {
 		HeroGame.resetTimer("astar");
+		HeroGame.resetTimer("fov");
 		// at the start of the turn, the player has just acted
 		for (Proc p : getPlayerEntity().procs) {
 			p.onAction(getPlayerEntity());
@@ -247,6 +249,7 @@ public class Game {
 				}
 				break;
 			}
+			Fov.calculateFOV(level, /*lowestProc.entity.visionRange*/  level.ambientLight, lowestProc.entity);
 			lowestProc.proc.act(lowestProc.entity);
 			for (Proc onActProc : lowestProc.entity.procs) {
 				onActProc.onAction(lowestProc.entity);
@@ -651,7 +654,7 @@ public class Game {
 			// TODO debug message and abort safely?
 			throw new RuntimeException("No ammo type for shooter: " + actor.name);
 		}
-		Entity oneAmmo = itempedia.create(itemKeyAmmo, 1);
+		Entity oneAmmo = Itempedia.create(itemKeyAmmo, 1);
 		GameLoop.targetingModule.animate(actor.pos, targetPoint);
 		npcShootConsequence(actor, targetPoint, oneAmmo);
 	}

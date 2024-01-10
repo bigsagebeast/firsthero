@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world.proc;
 
 import com.bigsagebeast.hero.roguelike.game.Game;
+import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 import com.bigsagebeast.hero.util.Point;
@@ -27,7 +28,7 @@ public class ProcSummonMinions extends Proc {
             return;
         }
         // TODO tags instead?
-        Entity minion = Game.bestiary.create(minionKey);
+        Entity minion = Bestiary.create(minionKey);
         ownedEntities.add(minion.entityId);
         minion.summoned = true;
         Collection<Point> spawnPoints = Game.getLevel().surroundingTiles(entity.pos);

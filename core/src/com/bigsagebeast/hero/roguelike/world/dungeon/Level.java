@@ -35,6 +35,7 @@ public class Level {
 	public Map<Integer, List<Point>> roomMap = new HashMap<>();
 	public Map<Point, Float> jitters = new HashMap<>();
 	private int lastTurnUpdate = 0;
+	public int ambientLight = 7; // TODO: Find a better way of handling this
 
 	public int neverbeastCountdown = -1;
 	public int neverbeastSpawned = 0;
@@ -89,7 +90,7 @@ public class Level {
 			for (int j = 1; j < packSize; j++) {
 				Point packSpawnPos = findPackSpawnTile(pos, Bestiary.map.get(monsterKey).packSpawnArea);
 				if (packSpawnPos != null) {
-					Entity packmember = Game.bestiary.create(monsterKey);
+					Entity packmember = Bestiary.create(monsterKey);
 					e.getTactic().canWander = true;
 					packmember.wanderer = true;
 					addEntityWithStacking(packmember, packSpawnPos, false);
@@ -286,11 +287,7 @@ public class Level {
 	}
 	
 	public void updateVis() {
-		for (LevelCell cell : allCells) {
-			cell.light = 0f;
-		}
-		Entity pc = Game.getPlayerEntity();
-		Fov.calculateFOV(this, pc.pos.x, pc.pos.y, 15f);
+		Fov.calculateFOV(this, /*Game.getPlayerEntity().visionRange*/  Game.getLevel().ambientLight, Game.getPlayerEntity());
 	}
 	
 	public boolean isOpaque(int x, int y) {
@@ -614,24 +611,27 @@ public class Level {
 				return;
 			}
 
-			Game.announce("You get a really bad feeling...");
-			Game.interrupt();
-			Entity e = Game.bestiary.create(monsterKey);
-			e.summoned = true;
-			addEntityWithStacking(e, pos);
-			neverbeastSpawned++;
-			switch (neverbeastSpawned) {
-				case 1:
-					neverbeastCountdown += 200;
-					break;
-				case 2:
-					neverbeastCountdown += 150;
-					break;
-				case 3:
-					neverbeastCountdown += 100;
-					break;
-				default:
-					neverbeastCountdown += 50;
+			int countOnLevel = (int) Game.getLevel().getEntities().stream().filter(c -> c.phenotypeName != null && c.phenotypeName.equals("neverbeast")).count();
+			if (countOnLevel < 6) {
+				Game.announce("You get a really bad feeling...");
+				Game.interrupt();
+				Entity e = Bestiary.create(monsterKey);
+				e.summoned = true;
+				addEntityWithStacking(e, pos);
+				neverbeastSpawned++;
+				switch (neverbeastSpawned) {
+					case 1:
+						neverbeastCountdown += 200;
+						break;
+					case 2:
+						neverbeastCountdown += 150;
+						break;
+					case 3:
+						neverbeastCountdown += 100;
+						break;
+					default:
+						neverbeastCountdown += 50;
+				}
 			}
 		}
 	}

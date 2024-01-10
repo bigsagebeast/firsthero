@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.roguelike.game;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.enums.Stat;
+import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
@@ -60,7 +61,7 @@ public class CharacterBuilder {
     }
 
     private void finish() {
-        pcEntity = Game.bestiary.create("pc.avatar");
+        pcEntity = Bestiary.create("pc.avatar");
         setStats(pcEntity, race, archetype);
         setEquipment(pcEntity, race, archetype);
 

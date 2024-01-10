@@ -43,7 +43,7 @@ public class GlyphTile {
         if (glitchNextChange == -1) {
             glitchNextChange = System.currentTimeMillis();
         } else if (System.currentTimeMillis() > glitchNextChange) {
-            glitchNextChange = glitchNextChange + Util.randomBetween(glitchStayLengthMin, glitchStayLengthMin + glitchStayLengthRandom);
+            glitchNextChange = System.currentTimeMillis() + Util.randomBetween(glitchStayLengthMin, glitchStayLengthMin + glitchStayLengthRandom);
             lastGlitch = Game.random.nextInt(textures.length);
         }
         return gray ? grayTextures[lastGlitch] : textures[lastGlitch];

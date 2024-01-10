@@ -1,12 +1,9 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 
 import com.bigsagebeast.hero.GameLoop;
-import com.bigsagebeast.hero.roguelike.world.LoadProc;
+import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
-import com.bigsagebeast.hero.roguelike.world.DungeonGenerator;
-import com.bigsagebeast.hero.roguelike.world.Entity;
-import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.util.Util;
 
@@ -83,10 +80,10 @@ public class SpecialSpawner {
                 }
             }
             if (isMover) {
-                entity = Game.bestiary.create(key);
+                entity = Bestiary.create(key);
             } else {
                 // item
-                entity = Game.itempedia.create(key);
+                entity = Itempedia.create(key);
             }
             if (entity == null) {
                 throw new RuntimeException("No entity to spawn during special spawning: " + key + " " + isMover);
@@ -170,10 +167,10 @@ public class SpecialSpawner {
             }
         }
         if (isMover) {
-            entity = Game.bestiary.create(key);
+            entity = Bestiary.create(key);
         } else {
             // item
-            entity = Game.itempedia.create(key);
+            entity = Itempedia.create(key);
         }
         if (entity == null) {
             throw new RuntimeException("No entity to spawn during special regen spawning");

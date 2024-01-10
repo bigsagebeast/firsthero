@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 
+import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Point;
@@ -165,7 +166,7 @@ public class Brogue {
                         // TODO brogue should only add doors to its own doorways!
                         continue;
                     }
-                    Entity door = Game.itempedia.create("feature.door");
+                    Entity door = Itempedia.create("feature.door");
                     level.addEntityWithStacking(door, new Point(i, j));
                     if (Game.random.nextInt(2) == 0) {
                         ((ProcDoor)door.getProcByType(ProcDoor.class)).close(door);

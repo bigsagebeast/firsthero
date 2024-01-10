@@ -44,7 +44,7 @@ public class DungeonGenerator {
 					return;
 				}
 				Point pos = level.findEmptyTileInRoom(r.roomId);
-				Entity e = Game.bestiary.create(chosenMonster);
+				Entity e = Bestiary.create(chosenMonster);
 				e.wanderer = true;
 				e.getTactic().canWander = true;
 				level.addEntityWithStacking(e, pos, false);
@@ -52,7 +52,7 @@ public class DungeonGenerator {
 				for (int j = 1; j < packSize; j++) {
 					Point packSpawnPos = level.findPackSpawnTile(pos, Bestiary.map.get(chosenMonster).packSpawnArea);
 					if (packSpawnPos != null) {
-						Entity packmember = Game.bestiary.create(chosenMonster);
+						Entity packmember = Bestiary.create(chosenMonster);
 						packmember.wanderer = true;
 						level.addEntityWithStacking(packmember, packSpawnPos, false);
 					}
@@ -77,7 +77,7 @@ public class DungeonGenerator {
 		for (int i=0; i<goldPiles; i++) {
 			int quantity = Dice.roll(level.threat * 2 + 1, 8, 5);
 			Point pos = level.findOpenTile();
-			Entity e = Game.itempedia.create("gold", quantity);
+			Entity e = Itempedia.create("gold", quantity);
 			level.addEntityWithStacking(e, pos, false);
 		}
 	}
@@ -89,8 +89,8 @@ public class DungeonGenerator {
 			return Collections.EMPTY_LIST;
 		}
 		ArrayList<String> allowedEntities = new ArrayList<>();
-		for (String key : Game.bestiary.map.keySet()) {
-			Phenotype p = Game.bestiary.map.get(key);
+		for (String key : Bestiary.map.keySet()) {
+			Phenotype p = Bestiary.map.get(key);
 			if (p.peaceful) continue;
 			if ((p.wandering || !wandering) && p.threat >= minThreat && p.threat <= maxThreat) {
 				if (requiredTags != null) {
@@ -285,7 +285,7 @@ public class DungeonGenerator {
 		}
 		ItemType itemType = Itempedia.get(itemKey);
 		int quantity = itemType.minCount + Game.random.nextInt(itemType.maxCount - itemType.minCount + 1);
-		Entity loot = Game.itempedia.create(itemKey, quantity);
+		Entity loot = Itempedia.create(itemKey, quantity);
 		return loot;
 	}
 
@@ -388,7 +388,7 @@ public class DungeonGenerator {
 			if (creatureSplit.length > 3) {
 				creatureName = creatureSplit[3].replace("_", " ");
 			}
-			Entity c = Game.bestiary.create(phenotype, creatureName);
+			Entity c = Bestiary.create(phenotype, creatureName);
 			level.addEntityWithStacking(c, new Point(x, y));
 		}
 
@@ -506,11 +506,11 @@ public class DungeonGenerator {
 				String phenotype = creatureTypes.get(row.substring(x, x+1));
 				String itemType = itemTypes.get(row.substring(x, x+1));
 				if (phenotype != null) {
-					Entity creature = Game.bestiary.create(phenotype, null);
+					Entity creature = Bestiary.create(phenotype, null);
 					level.addEntityWithStacking(creature, new Point(x, y));
 				}
 				if (itemType != null) {
-					Entity item = Game.itempedia.create(itemType, null);
+					Entity item = Itempedia.create(itemType, null);
 					level.addEntityWithStacking(item, new Point(x, y));
 				}
 

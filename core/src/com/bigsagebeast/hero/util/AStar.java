@@ -20,7 +20,7 @@ public class AStar {
 		queue.clear();
 		int maxDistance = (int)e.visionRange;
 
-		check(level, instance.new AStarData(origin, 0, null, origin.distance(destination)));
+		check(level, instance.new AStarData(origin, 0, null));
 		List<Point> retval = new ArrayList<Point>();
 
 		while (!queue.isEmpty()) {
@@ -44,11 +44,14 @@ public class AStar {
 				if (level.contains(newloc)) {
 					float moveCost = dir.isDiagonal() ? 1.0001f : 1.0f;
 					if ((!Game.isBlockedByTerrain(e, newloc.x, newloc.y) && !Game.isBlockedByNonManipulable(e, newloc.x, newloc.y)) || destination.equals(newloc)) {
-						if (Game.isBlockedByEntity(e, newloc.x, newloc.y)) {
-							// TODO: Things are pathing through obstacles that they shouldn't
+						if (!destination.equals(newloc) && Game.isBlockedByEntity(e, newloc.x, newloc.y)) {
+							if (e.incorporeal) {
+								// incorporeals step around doors and monsters
+								continue;
+							}
 							moveCost += 10;
 						}
-						check(level, instance.new AStarData(newloc, next.cost + moveCost, next.location, distance));
+						check(level, instance.new AStarData(newloc, e.incorporeal ? distance : (next.cost + moveCost), next.location));
 					}
 				}
 			}
@@ -78,11 +81,10 @@ public class AStar {
 		Point from;
 		float estimate;
 
-		public AStarData(Point location, float cost, Point from, float estimate) {
+		public AStarData(Point location, float cost, Point from) {
 			this.location = location;
 			this.cost = cost;
 			this.from = from;
-			this.estimate = estimate;
 		}
 
 		@Override
