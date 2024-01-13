@@ -28,6 +28,7 @@ public class ItemType {
     public BodyPart equipmentFor;
     public String glyphName;
     public String[] glyphNames;
+    public boolean hide = false;
     public PaletteEntry palette;
     public ItemCategory category;
     public int level = -1;

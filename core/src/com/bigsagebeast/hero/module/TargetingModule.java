@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class TargetingModule extends Module {
 
@@ -108,7 +109,7 @@ public class TargetingModule extends Module {
             }
         }
 
-        Collections.sort(moversInLOS, Comparator.comparingDouble(entity -> moverDistance(entity)));
+        moversInLOS.sort(Comparator.comparingDouble(this::moverDistance));
 
         if (!moversInLOS.isEmpty() && targetMode.trackMovers) {
             trackMoverIndex = 0;
@@ -167,7 +168,7 @@ public class TargetingModule extends Module {
 
         if (Game.getLevel().cell(targetTile).visible()) {
             Entity targetMover = Game.getLevel().moverAt(targetTile.x, targetTile.y);
-            if (targetMover != null) {
+            if (targetMover != null && !targetMover.hide) {
                 // TODO fetch a text block, child it to description
                 if (targetMover == Game.getPlayerEntity()) {
                     description.text = "This is you.";
@@ -179,7 +180,7 @@ public class TargetingModule extends Module {
                 }
             } else {
                 // TODO fetch a text block etc
-                List<Entity> targetItems = Game.getLevel().getItemsOnTile(targetTile);
+                List<Entity> targetItems = Game.getLevel().getItemsOnTile(targetTile).stream().filter(e -> !e.hide).collect(Collectors.toList());
                 if (targetItems.size() > 2) {
                     description.text = "You see " + targetItems.get(0).getVisibleNameIndefiniteOrVague() + " and " + (targetItems.size() - 1) + " other items.";
                 } else if (targetItems.size() == 2) {

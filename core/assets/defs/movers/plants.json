@@ -1,0 +1,66 @@
+{
+  "movers": {
+    "plant.fungus.red": {
+      "name": "red fungus",
+      "description": "An overgrowth of globules and stalks that somehow finds the motility to slowly pursue and consume dead or slow prey. The air around it shimmers with dangerous heat.",
+      "corpseMessage": "Mmm, hot soup!",
+      "peaceful": false,
+      "hitPoints": 25,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "plant.fungus",
+      "moveCost": 20000,
+      "palette": [
+        "red",
+        "tan",
+        "brown"
+      ],
+      "experienceAwarded": 15,
+      "threat": 2,
+      "naturalWeaponDamage": 0,
+      "naturalWeaponToHit": -5,
+      "naturalArmorClass": -5,
+      "corpseMethod": "gainFireMedium",
+      "procs": {
+        "monster.ProcBurningTouch": {
+          "dice": 3,
+          "sides": 3,
+          "modifier": 0
+        }
+      },
+      "tags": [
+        "generic-fantasy",
+        "plant",
+        "fungus"
+      ]
+    }
+  },
+  "plant.fungus.green.funglet": {
+    "name": "green funglet",
+    "description": "A small overgrowth of green globules, the fruiting bodies of this slow-moving fungal creature have not yet emerged.",
+    "corpseMessage": "Tastes like a gooey salad.",
+    "peaceful": false,
+    "hitPoints": 10,
+    "isMonster": true,
+    "bodyPlan": "humanoid",
+    "glyphName": "plant.fungus",
+    "moveCost": 20000,
+    "palette": [
+      "darkgreen",
+      "lightgreen",
+      "brown"
+    ],
+    "experienceAwarded": 5,
+    "threat": 0,
+    "packSize": 2,
+    "packSpawnArea": 7,
+    "naturalWeaponDamage": 0,
+    "naturalWeaponToHit": -5,
+    "naturalArmorClass": -10,
+    "tags": [
+      "generic-fantasy",
+      "plant",
+      "fungus"
+    ]
+  }
+}

@@ -27,6 +27,15 @@
         }
       }
     },
+    "unique.feature.intro.restingHint": {
+      "isFeature": true,
+      "hide": true,
+      "procs": {
+        "ProcMessageOnStepOn": {
+          "text": "To rest, press 5 on the keypad to wait one turn, or shift-5 to wait 50 turns."
+        }
+      }
+    },
     "misc.corpse": {
       "name": "generic corpse (error)",
       "description": "The body of a fallen creature.",
@@ -35,7 +44,7 @@
       "sortOrder": 0,
       "stackable": false
     },
-    "feature.intro.altar": {
+    "unique.feature.intro.altar": {
       "name": "altar",
       "glyphName": "feature.altar",
       "isFeature": true,
@@ -103,6 +112,20 @@
       "naturalArmorClass": 7,
       "gender": "NONBINARY",
       "wandering": false
+    },
+    "unique.intro.farmer": {
+      "name": "Farmer",
+      "description": "Your parents are hard-working farmers who keep to themselves. When the goblins landed from the acid sea, their farm was in the way, and now they are in danger of losing their land and their lives.",
+      "peaceful": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "creature.humanoid",
+      "palette": [
+        "yellow",
+        "tan",
+        "brown"
+      ],
+      "threat": -1,
+      "chatPage": "intro.farmer.landing"
     }
   }
 }

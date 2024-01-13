@@ -3,10 +3,7 @@ package com.bigsagebeast.hero.roguelike.game;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.enums.Stat;
-import com.bigsagebeast.hero.roguelike.world.Bestiary;
-import com.bigsagebeast.hero.roguelike.world.BodyPart;
-import com.bigsagebeast.hero.roguelike.world.Entity;
-import com.bigsagebeast.hero.roguelike.world.Itempedia;
+import com.bigsagebeast.hero.roguelike.world.*;
 
 import java.util.function.Consumer;
 
@@ -61,6 +58,7 @@ public class CharacterBuilder {
     }
 
     private void finish() {
+        EntityTracker.cleanUp();
         pcEntity = Bestiary.create("pc.avatar");
         setStats(pcEntity, race, archetype);
         setEquipment(pcEntity, race, archetype);
@@ -163,6 +161,6 @@ public class CharacterBuilder {
     private static void equip(Entity entity, String key, BodyPart bodyPart, int quantity) {
         Entity equipment = Itempedia.create(key, quantity);
         entity.equip(equipment, bodyPart);
-        equipment.identifyItemFully();
+        equipment.silentIdentifyItemFully();
     }
 }

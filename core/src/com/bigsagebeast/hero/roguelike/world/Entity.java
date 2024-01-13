@@ -86,6 +86,7 @@ public class Entity {
     public String[] glyphNames;
     public PaletteEntry palette;
     public boolean glyphFlipH; // flip glyph horizontally
+    public boolean hide;
     public Gender gender = Gender.AGENDER;
 
     public boolean isManipulator;
@@ -658,6 +659,22 @@ public class Entity {
         }
     }
 
+    public void silentIdentifyItemFully() {
+        ItemType it = getItemType();
+        ProcItem pi = getItem();
+        if (it == null) {
+            throw new RuntimeException("Tried to identify a non-item");
+        }
+        if ((!it.hasBeatitude || pi.identifiedBeatitude) && (!it.identityHidden || it.identified)) {
+            return;
+        }
+        it.identified = true;
+        pi.identifiedBeatitude = true;
+        if (containingEntity >= 0) {
+            EntityTracker.get(containingEntity).restack(this);
+        }
+    }
+
     public void identifyItemBeatitude() {
         ProcItem pi = getItem();
         pi.identifiedBeatitude = true;
@@ -1129,6 +1146,7 @@ public class Entity {
         other.pluralName = pluralName;
         other.itemTypeKey = itemTypeKey;
         other.glyphNames = glyphNames;
+        other.hide = hide;
         other.palette = palette;
         for (Proc p : procs) {
             Proc op = p.clone(other);

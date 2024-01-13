@@ -60,7 +60,7 @@ public class SpellMonsterWaterWeak extends Spell {
 
     @Override
     public Color getAnimationColor() {
-        return Color.valueOf("0000ff");
+        return Color.CYAN;
     }
 
     @Override

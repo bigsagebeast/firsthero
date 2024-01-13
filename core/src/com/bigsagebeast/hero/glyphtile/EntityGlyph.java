@@ -18,6 +18,9 @@ public class EntityGlyph {
     }
 
     public static void updateEntity(Entity e) {
+        if (e.glyphNames == null) {
+            return;
+        }
         if (e.glyphNames.length == 1) {
             BaseGlyph b = GlyphIndex.get(e.glyphNames[0]);
             GlyphTile t = b.create(e.palette, e.glyphFlipH);

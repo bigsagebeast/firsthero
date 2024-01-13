@@ -1,5 +1,7 @@
 package com.bigsagebeast.hero.roguelike.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.HeroGame;
 import com.bigsagebeast.hero.SetupException;
@@ -13,6 +15,7 @@ import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.enums.Satiation;
+import com.bigsagebeast.hero.roguelike.world.dungeon.generation.Themepedia;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcDoor;
@@ -26,6 +29,9 @@ import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.util.Util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -62,16 +68,72 @@ public class Game {
 			initialized = true;
 			try {
 				BodyPlanpedia.initialize();
-				unidMapping.scan();
-				unidMapping.randomize();
-				unidMapping.apply();
+				// TODO: Rescan these when starting a new run
 			} catch (SetupException e) {
 				throw new RuntimeException(e);
 			}
 		}
 	}
 
+	public static void loadFiles() {
+		try {
+			ArrayList<FileHandle> files = new ArrayList<>();
+			ArrayList<FileHandle> dirs = new ArrayList<>();
+			dirs.add(Gdx.files.internal("defs"));
+
+			Itempedia.map.clear();
+			Bestiary.map.clear();
+			Themepedia.map.clear();
+
+			FileHandle assetDefsHandle = Gdx.files.internal("assets-defs.txt");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(assetDefsHandle.read()));
+			List<String> defFilePaths = new ArrayList<>();
+			while (true) {
+				String line;
+				try {
+					line = reader.readLine();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				if (line == null) break;
+				if (line.length() > 0) {
+					defFilePaths.add(line);
+				}
+			}
+
+			while (!dirs.isEmpty()) {
+				FileHandle[] dirFiles = dirs.remove(0).list();
+				for (FileHandle dirFile : dirFiles) {
+					if (dirFile.isDirectory()) {
+						dirs.add(dirFile);
+					} else {
+						files.add(dirFile);
+					}
+				}
+			}
+			if (files.size() > 0 && files.size() != defFilePaths.size()) {
+				throw new RuntimeException("Incorrect assets-defs manifest! " + files.size() + " vs " + defFilePaths.size());
+			}
+			for (String defFilePath : defFilePaths) {
+				FileHandle defFileHandle = Gdx.files.internal(defFilePath);
+				DefinitionLoader.loadFile(defFileHandle);
+			}
+
+			initializeItems();
+		} catch (SetupException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void initializeItems() throws SetupException {
+		unidMapping.scan();
+		unidMapping.randomize();
+		unidMapping.apply();
+	}
+
 	public void startIntro() {
+		loadFiles();
+		time = 0;
 		Entity pc = Bestiary.create("pc.farmboy");
 		pc.statblock.set(Stat.ARCANUM, 5);
 		pc.statblock.set(Stat.AVATAR, 0);
@@ -90,11 +152,12 @@ public class Game {
 		level.addEntityWithStacking(pitchfork, new Point(29, 24));
 		level = dungeon.getLevel("start");
 		Level cave = dungeon.getLevel("cave");
-		cave.addEntityWithStacking(Itempedia.create("feature.intro.altar"), new Point(4, 3));
 		level.prepare();
 	}
 
 	public void startAurex() {
+		loadFiles();
+		time = 0;
 		Entity pc = Bestiary.create("pc.deity");
 		pc.name = Profile.getString("godName");
 		pc.recalculateSecondaryStats();
@@ -113,6 +176,7 @@ public class Game {
 
 	public void handleStartCaves(Entity pc) {
 		pc.name = Profile.getString("godName") + "'s avatar";
+		time = 0;
 		player.setEntityId(pc.entityId);
 		dungeon.generateClassic("dungeon.1");
 		changeLevel("dungeon.1", "out");
@@ -123,6 +187,8 @@ public class Game {
 	}
 
 	public void startCaves() {
+		loadFiles();
+		time = 0;
 		CharacterBuilder cb = new CharacterBuilder(this::handleStartCaves);
 		cb.begin();
 	}
@@ -829,7 +895,7 @@ public class Game {
 
 		List<Entity> items = level.getItemsOnTile(newPos);
 		List<Entity> itemsToMention = new ArrayList<>(items);
-		itemsToMention.removeIf(e -> e.getItemType().hideWalkOver);
+		itemsToMention.removeIf(e -> e.getItemType().hideWalkOver || e.hide);
 
 		if (!items.isEmpty()) {
 			longWalkDir = null; // stop when walking over items

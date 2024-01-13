@@ -42,7 +42,6 @@ public class GlyphEngine implements GameLogic {
     private FrameBuffer buffer;
     private TextureRegion texRegion;
     private TerrainGlyph terrainGlyph;
-    private EntityGlyph entityGlyph;
     private Level level;
 
     private Boolean dirty = true;
@@ -75,7 +74,6 @@ public class GlyphEngine implements GameLogic {
 
         // should be initialized by now, since it's static
         terrainGlyph = new TerrainGlyph(Terrain.map);
-        entityGlyph = new EntityGlyph();
     }
 
     private void loadGlyphFile(String filename) throws SetupException {
@@ -159,7 +157,7 @@ public class GlyphEngine implements GameLogic {
 
                         Entity e = level.getMoversOnTile(new Point(x, y)).stream().findAny().orElse(null);
                         GlyphTile moverTile = null;
-                        boolean canSeeTelepathic = isTelepathic && e != null && GameEntities.isTelepathicallyVisible(e);
+                        boolean canSeeTelepathic = isTelepathic && e != null && !e.hide && GameEntities.isTelepathicallyVisible(e);
                         boolean explored = level.cell(x, y).explored;
 
                         if (!explored && !canSeeTelepathic) {
@@ -187,13 +185,15 @@ public class GlyphEngine implements GameLogic {
 
                             itemTiles = new ArrayList<>();
                             for (Entity item : level.getItemsOnTile(new Point(x, y))) {
-                                GlyphTile itemTile = entityGlyph.getGlyph(item);
-                                itemTiles.add(itemTile);
+                                if (!item.hide) {
+                                    GlyphTile itemTile = EntityGlyph.getGlyph(item);
+                                    itemTiles.add(itemTile);
+                                }
                             }
                         }
 
                         if (e != null) {
-                            moverTile = entityGlyph.getGlyph(e);
+                            moverTile = EntityGlyph.getGlyph(e);
                         }
                         boolean canSee = moverTile != null && level.cell(x, y).visible();
                         if (canSee || canSeeTelepathic) {
@@ -319,7 +319,7 @@ public class GlyphEngine implements GameLogic {
     }
 
     public void destroyEntity(Entity e) {
-        entityGlyph.forget(e);
+        EntityGlyph.forget(e);
     }
 
     public float getTileCenterPixelX(int x, int y) {

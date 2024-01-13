@@ -52,48 +52,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 		try {
 			glyphEngine.initialize();
 
-			ArrayList<FileHandle> files = new ArrayList<>();
-			ArrayList<FileHandle> dirs = new ArrayList<>();
-			dirs.add(Gdx.files.internal("defs"));
 
-			FileHandle assetDefsHandle = Gdx.files.internal("assets-defs.txt");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(assetDefsHandle.read()));
-			List<String> defFilePaths = new ArrayList<>();
-			while (true) {
-				String line;
-				try {
-					line = reader.readLine();
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-				if (line == null) break;
-				if (line.length() > 0) {
-					defFilePaths.add(line);
-				}
-			}
-
-			while (!dirs.isEmpty()) {
-				FileHandle[] dirFiles = dirs.remove(0).list();
-				for (FileHandle dirFile : dirFiles) {
-					if (dirFile.isDirectory()) {
-						dirs.add(dirFile);
-					} else {
-						files.add(dirFile);
-					}
-				}
-			}
-			if (files.size() > 0 && files.size() != defFilePaths.size()) {
-				throw new RuntimeException("Incorrect assets-defs manifest! " + files.size() + " vs " + defFilePaths.size());
-			}
-			/*
-			for (FileHandle file : files) {
-				DefinitionLoader.loadFile(file);
-			};
-			 */
-			for (String defFilePath : defFilePaths) {
-				FileHandle defFileHandle = Gdx.files.internal(defFilePath);
-				DefinitionLoader.loadFile(defFileHandle);
-			}
 
 			Game.initialize();
 		} catch (SetupException e) {

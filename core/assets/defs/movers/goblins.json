@@ -27,6 +27,138 @@
         "generic-fantasy"
       ]
     },
+    "goblin.lackey": {
+      "name": "sea-withered goblin lackey",
+      "description": "Bearing the brunt of their master's wrath and of the acid seas they rowed, these footsoldiers of the invasion are little threat.",
+      "corpseMessage": "Ulch - That was beyond foul.",
+      "corpseMethod": "procVomit",
+      "peaceful": false,
+      "hitPoints": 4,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.grunt",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "red",
+        "brown"
+      ],
+      "gender": "RANDOM",
+      "experienceAwarded": 10,
+      "threat": 1,
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": -2,
+      "naturalArmorClass": 7,
+      "tags": [
+        "goblin",
+        "generic-fantasy"
+      ]
+    },
+    "goblin.archer": {
+      "name": "sea-withered goblin archer",
+      "description": "Their bows have been crafted on the mainland; such wood and sinew would have scarcely survived the trip. Their arrows are meant not for hunting, but for war.",
+      "corpseMessage": "Ulch - That was beyond foul.",
+      "corpseMethod": "procVomit",
+      "peaceful": false,
+      "hitPoints": 8,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.archer",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "red",
+        "brown"
+      ],
+      "gender": "RANDOM",
+      "experienceAwarded": 15,
+      "threat": 2,
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": -2,
+      "naturalRangedWeaponDamage": 0,
+      "naturalRangedWeaponToHit": -1,
+      "naturalRangedWeaponRange": 6,
+      "naturalArmorClass": 0,
+      "procs": {
+        "monster.ProcShooter": {
+          "projectile": "weapon.ammo.arrow"
+        }
+      },
+      "tactic": {
+        "name": "TacticRangedAmmoThenMelee",
+        "ammo": 4
+      },
+      "tags": [
+        "goblin",
+        "generic-fantasy"
+      ]
+    },
+    "goblin.slinger": {
+      "name": "sea-withered goblin slinger",
+      "description": "Even half-blinded by the acid sea, these goblins with their leather straps can hurl projectiles with forcefully enough to break bones.",
+      "corpseMessage": "Ulch - That was beyond foul.",
+      "corpseMethod": "procVomit",
+      "peaceful": false,
+      "hitPoints": 4,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.slinger",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "red",
+        "brown"
+      ],
+      "gender": "RANDOM",
+      "experienceAwarded": 10,
+      "threat": 1,
+      "naturalWeaponDamage": 3,
+      "naturalWeaponToHit": -2,
+      "naturalRangedWeaponDamage": 0,
+      "naturalRangedWeaponToHit": -4,
+      "naturalRangedWeaponRange": 4,
+      "naturalArmorClass": 0,
+      "procs": {
+        "monster.ProcShooter": {
+          "projectile": "weapon.ammo.rock"
+        }
+      },
+      "tactic": {
+        "name": "TacticRangedAmmoThenMelee",
+        "ammo": 6
+      },
+      "tags": [
+        "goblin",
+        "generic-fantasy"
+      ]
+    },
+    "goblin.warrior": {
+      "name": "sea-withered goblin warrior",
+      "description": "From across the acid sea, these goblins come ready to fight. Their flesh and their weapons are scarred and pitted from exposure, but their training makes them dangerous foes.",
+      "corpseMessage": "Ulch - That was beyond foul.",
+      "corpseMethod": "procVomit",
+      "peaceful": false,
+      "hitPoints": 16,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.warrior",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "red",
+        "brown"
+      ],
+      "gender": "RANDOM",
+      "experienceAwarded": 20,
+      "threat": 2,
+      "naturalWeaponDamage": 6,
+      "naturalWeaponToHit": 1,
+      "naturalArmorClass": 5,
+      "tags": [
+        "goblin",
+        "generic-fantasy"
+      ]
+    },
     "goblin.butcher": {
       "name": "goblin butcher",
       "description": "Wielding a jagged and rusting cleaver, this goblin is strong from good eating.",

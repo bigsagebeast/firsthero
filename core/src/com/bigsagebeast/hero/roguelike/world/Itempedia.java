@@ -39,9 +39,12 @@ public class Itempedia {
         //e.glyph = t.glyph;
         if (t.glyphNames != null) {
             e.glyphNames = t.glyphNames;
-        } else {
+        } else if (t.glyphName != null) {
             e.glyphNames = new String[] { t.glyphName };
+        } else {
+            e.glyphNames = null;
         }
+        e.hide = t.hide;
         e.palette = t.palette;
         e.itemTypeKey = t.keyName;
 

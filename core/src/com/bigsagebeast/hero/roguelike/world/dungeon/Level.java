@@ -175,6 +175,7 @@ public class Level {
 	}
 
 	public Stream<Entity> getEntityStream() {
+		entityIds.removeIf(eid -> EntityTracker.get(eid) == null);
 		return entityIds.stream().map(EntityTracker::get);
 	}
 

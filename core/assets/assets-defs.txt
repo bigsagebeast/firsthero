@@ -15,6 +15,7 @@ defs/movers/gods.json
 defs/movers/horror.json
 defs/movers/humanoids.json
 defs/movers/kobolds.json
+defs/movers/plants.json
 defs/movers/sprites.json
 defs/movers/tech.json
 defs/movers/undead.json

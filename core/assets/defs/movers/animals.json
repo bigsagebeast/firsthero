@@ -1,5 +1,32 @@
 {
   "movers": {
+    "wolf.dungeon": {
+      "name": "dungeon wolf",
+      "description": "Prey runs barely thick enough in the strange dungeon ecosystem to support a pack of these hungry predators. Any meat they can find is a meal. Dungeon wolves are heavy beasts with bone-crushing teeth.",
+      "corpseMessage": "This meat tastes tough.",
+      "naturalWeaponText": "bite",
+      "peaceful": false,
+      "hitPoints": 20,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.canine",
+      "isManipulator": false,
+      "palette": [
+        "gray",
+        "white",
+        "red"
+      ],
+      "experienceAwarded": 40,
+      "threat": 3,
+      "naturalWeaponDamage": 8,
+      "naturalWeaponToHit": 1,
+      "naturalArmorClass": 5,
+      "tags": [
+        "generic-fantasy",
+        "animal",
+        "canine"
+      ]
+    },
     "horseshoe": {
       "name": "horseshoe crab",
       "description": "This scuttling thing the size of a small dog bears the weight of prehistoric ancestry on its form. /Limulus transarcana/ feed on distortions of reality, but unlike their larger brethren, they cannot tear such rifts open themselves.",

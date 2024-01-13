@@ -9,9 +9,7 @@ public class TacticRangedAmmoThenMelee extends Tactic {
 
 	int ammo;
 
-	public TacticRangedAmmoThenMelee(int ammo) {
-		this.ammo = ammo;
-	}
+	public TacticRangedAmmoThenMelee() {}
 
 	@Override
 	public boolean execute(Entity e, ProcMover pm) {

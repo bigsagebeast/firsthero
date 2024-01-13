@@ -1,10 +1,23 @@
 package com.bigsagebeast.hero.roguelike.world;
-import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class EntityTracker {
     public static final int NONE = -1;
     public static int lastCreated = 1;
-    public static IntObjectHashMap<Entity> entities = new IntObjectHashMap<>();
+    public static HashMap<Integer, Entity> entities = new HashMap<>();
+
+    public static void cleanUp() {
+        List<Integer> keys = new ArrayList<>(entities.keySet());
+        for (int key : keys) {
+            if (entities.get(key).destroyed) {
+                entities.get(key).destroy();
+            }
+            entities.remove(key);
+        }
+    }
 
     public static Entity create() {
         // we may have loaded stuff in

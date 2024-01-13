@@ -210,6 +210,9 @@ public class RoguelikeModule extends Module {
 
 	@Override
 	public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
+		if (Game.getLevel() == null) {
+			return false;
+		}
 		GameLoop.glyphEngine.dirty();
 		if (!shift && !ctrl && !alt) {
 			switch (keycode) {
