@@ -5,6 +5,7 @@ import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.roguelike.game.CombatLogic;
 import com.bigsagebeast.hero.roguelike.game.Game;
+import com.bigsagebeast.hero.roguelike.game.SwingResult;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectConfusion;
@@ -24,7 +25,7 @@ public class ProcDoppelganger extends Proc {
     }
 
     @Override
-    public void postDoHit(Entity entity, Entity target, Entity tool) {
+    public void postDoHit(Entity entity, Entity target, Entity tool, SwingResult result) {
         if (chance < Game.random.nextInt(100)) {
             return;
         }

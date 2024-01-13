@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.roguelike.world.proc;
 
 import com.bigsagebeast.hero.roguelike.game.Dice;
 import com.bigsagebeast.hero.roguelike.game.Game;
+import com.bigsagebeast.hero.roguelike.game.SwingResult;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 
@@ -19,7 +20,7 @@ public class ProcBurningTouch extends Proc {
     }
 
     @Override
-    public void postBeHit(Entity entity, Entity actor, Entity tool) {
+    public void postBeHit(Entity entity, Entity actor, Entity tool, SwingResult result) {
         if (tool != null && tool.getEquippable().equipmentFor == BodyPart.RANGED_AMMO) {
             return;
         }
@@ -32,7 +33,7 @@ public class ProcBurningTouch extends Proc {
     }
 
     @Override
-    public void postDoHit(Entity entity, Entity target, Entity tool) {
+    public void postDoHit(Entity entity, Entity target, Entity tool, SwingResult result) {
         Game.announceVis(entity, target,
                 "They burn!",
                 "You burn!",

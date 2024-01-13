@@ -4,6 +4,8 @@ import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.enums.DamageType;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.enums.StatusType;
+import com.bigsagebeast.hero.roguelike.game.CombatLogic;
+import com.bigsagebeast.hero.roguelike.game.SwingResult;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.game.Game;
@@ -122,10 +124,10 @@ public class Proc {
     public Boolean preBeUnlocked(Entity entity, Entity actor) { return null; }
     public void postBeUnlocked(Entity entity, Entity actor) { }
 
-    public Boolean preBeHit(Entity entity, Entity actor, Entity tool) { return null; }
-    public void postBeHit(Entity entity, Entity actor, Entity tool) { }
-    public Boolean preDoHit(Entity entity, Entity target, Entity tool) { return null; }
-    public void postDoHit(Entity entity, Entity target, Entity tool) { }
+    public Boolean preBeHit(Entity entity, Entity actor, Entity tool, SwingResult result) { return null; }
+    public void postBeHit(Entity entity, Entity actor, Entity tool, SwingResult result) { }
+    public Boolean preDoHit(Entity entity, Entity target, Entity tool, SwingResult result) { return null; }
+    public void postDoHit(Entity entity, Entity target, Entity tool, SwingResult result) { }
 
     public Boolean preBeShot(Entity entity, Entity actor, Entity tool) { return null; }
     public void postBeShot(Entity entity, Entity actor, Entity tool) { }

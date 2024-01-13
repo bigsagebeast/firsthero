@@ -71,9 +71,11 @@ public class Entity {
     // TODO update all natural weapons to proc-based?
     public int naturalWeaponDamage;
     public int naturalWeaponToHit;
+    public int naturalWeaponPenetration;
     public int naturalRangedWeaponDamage;
     public int naturalRangedWeaponToHit;
     public int naturalRangedWeaponRange;
+    public int naturalRangedWeaponPenetration;
     public int naturalArmorClass;
     public int naturalArmorThickness;
     public Statblock statblock = new Statblock(20);
@@ -846,12 +848,20 @@ public class Entity {
         return naturalWeaponToHit;
     }
 
+    public int getNaturalWeaponPenetration() {
+        return naturalWeaponPenetration;
+    }
+
     public int getNaturalRangedWeaponDamage() {
         return naturalRangedWeaponDamage;
     }
 
     public int getNaturalRangedWeaponToHit() {
         return naturalRangedWeaponToHit;
+    }
+
+    public int getNaturalRangedWeaponPenetration() {
+        return naturalRangedWeaponPenetration;
     }
 
     public int getStat(Stat stat) {
@@ -1036,14 +1046,29 @@ public class Entity {
     }
 
     public void forEachProc(BiConsumer<Entity, Proc> lambda) {
-        for (EntityProc ep : allEntityProcsIncludingEquipmentAndInventory().collect(Collectors.toList())) {
-            lambda.accept(this, ep.proc);
+        for (Proc proc : procs) {
+            lambda.accept(this, proc);
         }
     }
 
-    public boolean forEachProcFailOnFalse(BiFunction<Entity, Proc, Boolean> lambda) {
+    public void forEachProcIncludingEquipment(BiConsumer<Entity, Proc> lambda) {
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            lambda.accept(ep.entity, ep.proc);
+        }
+    }
+
+    public boolean forEachProcIncludingEquipmentAndInventoryFailOnFalse(BiFunction<Entity, Proc, Boolean> lambda) {
         for (EntityProc ep : allEntityProcsIncludingEquipmentAndInventory().collect(Collectors.toList())) {
-            if (lambda.apply(this, ep.proc) == Boolean.FALSE) {
+            if (lambda.apply(ep.entity, ep.proc) == Boolean.FALSE) {
+                return false;
+            };
+        }
+        return true;
+    }
+
+    public boolean forEachProcIncludingEquipmentFailOnFalse(BiFunction<Entity, Proc, Boolean> lambda) {
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            if (lambda.apply(ep.entity, ep.proc) == Boolean.FALSE) {
                 return false;
             };
         }
@@ -1143,6 +1168,8 @@ public class Entity {
         }
         Entity other = EntityTracker.create();
         other.name = name;
+
+        other.containingEntity = containingEntity;
         other.pluralName = pluralName;
         other.itemTypeKey = itemTypeKey;
         other.glyphNames = glyphNames;
@@ -1154,7 +1181,7 @@ public class Entity {
                 other.procs.add(op);
             }
         }
-        ProcItem opi = (ProcItem)other.getItem();
+        ProcItem opi = (ProcItem)other.getItem().clone();
         pi.quantity -= quantity;
         opi.quantity = quantity;
         return other;

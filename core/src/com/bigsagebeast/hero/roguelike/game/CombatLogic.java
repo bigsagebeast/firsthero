@@ -12,53 +12,50 @@ import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 public class CombatLogic {
 
 	// TODO split into trySwing, doHit, doMiss
-	public static void swing(Entity actor, Entity target, Entity tool) {
-		Phenotype actorPhenotype = Bestiary.get(actor.phenotypeName);
+	public static SwingResult swing(Entity actor, Entity target, Entity tool) {
+		SwingResult result = new SwingResult();
+		result.tool = tool;
+
 		float damage, accuracy, penetration;
 		float randomFactor = generateWeaponRandomness();
-		String withWeaponString = "";
 		ProcWeaponMelee pwm = null;
 		if (tool != null) {
 			pwm = (ProcWeaponMelee)tool.getProcByType(ProcWeaponMelee.class);
 		}
 		// TODO should do this stuff across all procs, not just PWMs
 		if (pwm != null) {
-			damage = Math.round(pwm.getDamage(actor) * randomFactor);
+			damage = pwm.getDamage(actor) * randomFactor;
 			accuracy = pwm.getToHit(actor) + Game.random.nextInt(20);
 			penetration = pwm.getPenetration(actor);
-			// TODO should be a TextBlock
-			if (actor == Game.getPlayerEntity()) {
-				withWeaponString = " with your " + tool.getVisibleNameWithQuantity();
-			} else {
-				String pronoun = actor.gender.possessive;
-				withWeaponString = " with " + pronoun + " " + tool.getVisibleNameWithQuantity();
-			}
 		} else {
-			damage = Math.round(actor.getNaturalWeaponDamage() * randomFactor);
+			damage = actor.getNaturalWeaponDamage() * randomFactor;
 			accuracy = actor.getNaturalWeaponToHit() + Game.random.nextInt(20);
-			penetration = 0;
-			if (actor == Game.getPlayerEntity()) {
-				// alert the player that they're unarmed - disable for monks, etc
-				withWeaponString = " with your bare hands";
-			}
+			penetration = actor.getNaturalWeaponPenetration();
 		}
 
 		accuracy += actor.getToHitBonus();
 		damage += actor.getDamageBonus();
+		result.damage = (int)Math.floor(damage);
+		if (damage < 0) {
+			damage = 0;
+		}
 
 		int dodge = target.getArmorClass();
+		result.critical = Game.random.nextInt(20) == 0;
 
-		boolean critical = Game.random.nextInt(20) == 0;
 		if (accuracy >= dodge) {
-
 			// Rely on these to generate their own messages
 			// Is something preventing the attacker from hitting?
-			boolean canHit = actor.forEachProcFailOnFalse((e, p) -> p.preDoHit(e, target, tool));
+			boolean canHit = actor.forEachProcIncludingEquipmentFailOnFalse((e, p) -> p.preDoHit(e, target, tool, result));
 
 			// Is something preventing the defender from being hit?
 			if (canHit) {
-				canHit = target.forEachProcFailOnFalse((e, p) -> p.preBeHit(e, actor, tool));
+				canHit = target.forEachProcIncludingEquipmentFailOnFalse((e, p) -> p.preBeHit(e, actor, tool, result));
 			}
+			if (!canHit) {
+				result.cancelled = true;
+			}
+			result.hit = canHit;
 
 			// Does the attack fail to penetrate?
 			if (canHit) {
@@ -68,76 +65,63 @@ public class CombatLogic {
 						canHit = false;
 					}
 				}
-				if (!canHit) {
-					Game.announceVis(actor, target,
-							"You hit " + target.getVisibleNameDefinite() + withWeaponString + ", but don't penetrate their armor.",
-							actor.getVisibleNameDefinite() + "'s blow doesn't penetrate your armor.",
-							actor.getVisibleNameDefinite() + "'s blow doesn't penetrate " + target.getVisibleNameDefinite() + "'s armor.",
-							null);
-					actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
-					target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
-				}
-			}
-
-			if (canHit) {
-
-				// TODO What does critting even do?
-
-				if (damage <= 0) {
-					damage = 0;
-				} else {
-					hurt(target, (int) damage);
-				}
-
-				if (damage == 0 && actor.naturalWeaponDamage == 0) {
-					Game.announceVis(actor, target,
-							"You touch " + target.getVisibleNameDefinite() + withWeaponString + ".",
-							actor.getVisibleNameDefinite() + " touches you" + withWeaponString + ".",
-							actor.getVisibleNameDefinite() + " touches " + target.getVisibleNameDefinite() + withWeaponString + ".",
-							null);
-					actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
-					target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
-				} else {
-					// TODO: Damage type indicators instead of 'hit', for example 'slash' and 'crush'
-					// TODO: Resistance and weakly modifiers, like "you stab the skeleton moderately" or "you crush the skeleton powerfully"
-					if (critical) {
-						Game.announceVis(actor, target,
-								"You critically hit " + target.getVisibleNameDefinite() + withWeaponString + "!",
-								actor.getVisibleNameDefinite() + " critically hits you" + withWeaponString + "!",
-								actor.getVisibleNameDefinite() + " critically hits " + target.getVisibleNameDefinite() + withWeaponString + "!",
-								null);
-					} else {
-						if (actorPhenotype.naturalWeaponText != null && withWeaponString.isEmpty()) {
-							Game.announceVis(actor, target,
-									"You " + actorPhenotype.naturalWeaponText + " " + target.getVisibleNameDefinite() + ".",
-									actor.getVisibleNameDefinite() + " " + actorPhenotype.naturalWeaponText + "s you.",
-									actor.getVisibleNameDefinite() + " " + actorPhenotype.naturalWeaponText + "s " + target.getVisibleNameDefinite() + ".",
-									null);
-						} else {
-							Game.announceVis(actor, target,
-									"You hit " + target.getVisibleNameDefinite() + withWeaponString + ".",
-									actor.getVisibleNameDefinite() + " hits you" + withWeaponString + ".",
-									actor.getVisibleNameDefinite() + " hits " + target.getVisibleNameDefinite() + withWeaponString + ".",
-									null);
-						}
-					}
-					actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
-					target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
-				}
+				result.penetrationFailed = !canHit;
 			}
 		} else {
-			Game.announceVis(actor, target,
-					"You miss " + target.getVisibleNameDefinite() + withWeaponString + ".",
-					actor.getVisibleNameDefinite() + " misses you" + withWeaponString + ".",
-					actor.getVisibleNameDefinite() + " misses " + target.getVisibleNameDefinite() + withWeaponString + ".",
-					null);
+			result.hit = false;
+		}
+		return result;
+	}
 
-			actor.forEachProc((e, p) -> p.postDoMiss(e, target, tool));
-			target.forEachProc((e, p) -> p.postBeMissed(e, actor, tool));
+	public static void doHit(Entity actor, Entity target, SwingResult result) {
+		Entity tool = result.tool;
+		Phenotype actorPhenotype = Bestiary.get(actor.phenotypeName);
+		String withWeaponString = getWeaponString(actor, tool);
+
+		// TODO What does critting even do?
+
+		if (result.damage > 0) {
+			hurt(target, result.damage);
+		}
+
+		if (result.damage == 0 && actor.naturalWeaponDamage == 0) {
+			Game.announceVis(actor, target,
+					"You touch " + target.getVisibleNameDefinite() + withWeaponString + ".",
+					actor.getVisibleNameDefinite() + " touches you" + withWeaponString + ".",
+					actor.getVisibleNameDefinite() + " touches " + target.getVisibleNameDefinite() + withWeaponString + ".",
+					null);
+			actor.forEachProcIncludingEquipment((e, p) -> p.postDoHit(e, target, tool, result));
+			target.forEachProcIncludingEquipment((e, p) -> p.postBeHit(e, actor, tool, result));
+		} else {
+			// TODO: Damage type indicators instead of 'hit', for example 'slash' and 'crush'
+			// TODO: Resistance and weakly modifiers, like "you stab the skeleton moderately" or "you crush the skeleton powerfully"
+			if (result.critical) {
+				Game.announceVis(actor, target,
+						"You critically hit " + target.getVisibleNameDefinite() + withWeaponString + "!",
+						actor.getVisibleNameDefinite() + " critically hits you" + withWeaponString + "!",
+						actor.getVisibleNameDefinite() + " critically hits " + target.getVisibleNameDefinite() + withWeaponString + "!",
+						null);
+			} else {
+				if (actorPhenotype.naturalWeaponText != null && withWeaponString.isEmpty()) {
+					Game.announceVis(actor, target,
+							"You " + actorPhenotype.naturalWeaponText + " " + target.getVisibleNameDefinite() + ".",
+							actor.getVisibleNameDefinite() + " " + actorPhenotype.naturalWeaponText + "s you.",
+							actor.getVisibleNameDefinite() + " " + actorPhenotype.naturalWeaponText + "s " + target.getVisibleNameDefinite() + ".",
+							null);
+				} else {
+					Game.announceVis(actor, target,
+							"You hit " + target.getVisibleNameDefinite() + withWeaponString + ".",
+							actor.getVisibleNameDefinite() + " hits you" + withWeaponString + ".",
+							actor.getVisibleNameDefinite() + " hits " + target.getVisibleNameDefinite() + withWeaponString + ".",
+							null);
+				}
+			}
+			actor.forEachProcIncludingEquipment((e, p) -> p.postDoHit(e, target, tool, result));
+			target.forEachProcIncludingEquipment((e, p) -> p.postBeHit(e, actor, tool, result));
 		}
 
 		// TODO make use of the flag...
-		if (target.hitPoints <= 0) {
+		if (target.dead) {
 			// TODO should pass the entity you killed them with as 'tool'
 			// TODO does pre kill make sense?
 
@@ -148,10 +132,74 @@ public class CombatLogic {
 					null);
 			if (GameLoop.roguelikeModule.isRunning()) {
 				// test to make sure we're not in a duel
-				actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
-				target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
+				actor.forEachProcIncludingEquipment((e, p) -> p.postDoKill(e, target, null));
+				target.forEachProcIncludingEquipment((e, p) -> p.postBeKilled(e, actor, null));
 			}
 		}
+	}
+
+	public static void doMiss(Entity actor, Entity target, SwingResult result) {
+		Entity tool = result.tool;
+		String withWeaponString = getWeaponString(actor, tool);
+
+		Game.announceVis(actor, target,
+				"You miss " + target.getVisibleNameDefinite() + withWeaponString + ".",
+				actor.getVisibleNameDefinite() + " misses you" + withWeaponString + ".",
+				actor.getVisibleNameDefinite() + " misses " + target.getVisibleNameDefinite() + withWeaponString + ".",
+				null);
+
+		actor.forEachProcIncludingEquipment((e, p) -> p.postDoMiss(e, target, tool));
+		target.forEachProcIncludingEquipment((e, p) -> p.postBeMissed(e, actor, tool));
+
+	}
+
+	public static void doPenetrationFailed(Entity actor, Entity target, SwingResult result) {
+		Entity tool = result.tool;
+		String withWeaponString = getWeaponString(actor, tool);
+
+		Game.announceVis(actor, target,
+				"You hit " + target.getVisibleNameDefinite() + withWeaponString + ", but don't penetrate their armor.",
+				actor.getVisibleNameDefinite() + "'s blow doesn't penetrate your armor.",
+				actor.getVisibleNameDefinite() + "'s blow doesn't penetrate " + target.getVisibleNameDefinite() + "'s armor.",
+				null);
+		actor.forEachProcIncludingEquipment((e, p) -> p.postDoHit(e, target, tool, result));
+		target.forEachProcIncludingEquipment((e, p) -> p.postBeHit(e, actor, tool, result));
+
+		if (target.dead) {
+			// TODO should pass the entity you killed them with as 'tool'
+			// TODO does pre kill make sense?
+
+			Game.announceVis(actor, target,
+					"You slay " + target.getVisibleNameDefinite() + ".",
+					actor.getVisibleNameDefinite() + " kills you.",
+					actor.getVisibleNameDefinite() + " kills " + target.getVisibleNameDefinite() + ".",
+					null);
+			if (GameLoop.roguelikeModule.isRunning()) {
+				// test to make sure we're not in a duel
+				actor.forEachProcIncludingEquipment((e, p) -> p.postDoKill(e, target, null));
+				target.forEachProcIncludingEquipment((e, p) -> p.postBeKilled(e, actor, null));
+			}
+		}
+	}
+
+	public static String getWeaponString(Entity actor, Entity tool) {
+		ProcWeaponMelee pwm = tool == null ? null : (ProcWeaponMelee)tool.getProcByType(ProcWeaponMelee.class);
+		// TODO should do this stuff across all procs, not just PWMs
+		if (pwm != null) {
+			// TODO should be a TextBlock
+			if (actor == Game.getPlayerEntity()) {
+				return " with your " + tool.getVisibleNameWithQuantity();
+			} else {
+				String pronoun = actor.gender.possessive;
+				return " with " + pronoun + " " + tool.getVisibleNameWithQuantity();
+			}
+		} else {
+			if (actor == Game.getPlayerEntity()) {
+				// alert the player that they're unarmed - disable for monks, etc
+				return " with your bare hands";
+			}
+		}
+		return "";
 	}
 
 	// T if hits, F if dodged/resisted/etc
@@ -178,8 +226,8 @@ public class CombatLogic {
 			spell.announceHitWithoutKill(actor, target);
 		} else {
 			if (GameLoop.roguelikeModule.isRunning()) {
-				actor.forEachProc((e, p) -> p.postDoKill(e, target, null));
-				target.forEachProc((e, p) -> p.postBeKilled(e, actor, null));
+				actor.forEachProcIncludingEquipment((e, p) -> p.postDoKill(e, target, null));
+				target.forEachProcIncludingEquipment((e, p) -> p.postBeKilled(e, actor, null));
 			}
 			spell.announceHitWithKill(actor, target);
 		}
@@ -187,8 +235,9 @@ public class CombatLogic {
 
 	public static void shoot(Entity actor, Entity target, Entity tool, Entity ammo) {
 		String withWeaponString = "";
+		SwingResult result = new SwingResult();
 
-		int damage, accuracy, penetration;
+		int accuracy, penetration;
 		float randomFactor = generateWeaponRandomness();
 		// TODO invoke all procs, not just pwa/pwr
 		int averageDamage;
@@ -202,7 +251,7 @@ public class CombatLogic {
 			averageDamage = actor.getNaturalRangedWeaponDamage() + pwa.averageDamage(actor);
 			accuracyBonus = actor.getNaturalRangedWeaponToHit() + pwa.toHitBonus(actor);
 		}
-		damage = Math.round(averageDamage * randomFactor);
+		result.damage = Math.round(averageDamage * randomFactor);
 		accuracy = accuracyBonus + Game.random.nextInt(20);
 		penetration = 0; // TODO
 		// TODO should be a TextBlock
@@ -217,10 +266,11 @@ public class CombatLogic {
 
 		if (accuracy >= dodge) {
 			// Rely on these to generate their own messages
-			boolean canHit = actor.forEachProcFailOnFalse((e, p) -> p.preDoShoot(e, target, null));
+			result.hit = true;
+			boolean canHit = actor.forEachProcIncludingEquipmentFailOnFalse((e, p) -> p.preDoShoot(e, target, null));
 
 			if (canHit) {
-				canHit = target.forEachProcFailOnFalse((e, p) -> p.preBeShot(e, actor, null));
+				canHit = target.forEachProcIncludingEquipmentFailOnFalse((e, p) -> p.preBeShot(e, actor, null));
 			}
 
 			// Does the attack fail to penetrate?
@@ -231,22 +281,23 @@ public class CombatLogic {
 						canHit = false;
 					}
 				}
+				result.penetrationFailed = !canHit;
 				if (!canHit) {
 					Game.announceVis(actor, target,
 							"You hit " + target.getVisibleNameDefinite() + withWeaponString + ", but don't penetrate their armor.",
 							actor.getVisibleNameDefinite() + "'s shot doesn't penetrate your armor.",
 							actor.getVisibleNameDefinite() + "'s shot doesn't penetrate " + target.getVisibleNameDefinite() + "'s armor.",
 							null);
-					actor.forEachProc((e, p) -> p.postDoHit(e, target, tool));
-					target.forEachProc((e, p) -> p.postBeHit(e, actor, tool));
+					actor.forEachProcIncludingEquipment((e, p) -> p.postDoHit(e, target, ammo, result));
+					target.forEachProcIncludingEquipment((e, p) -> p.postBeHit(e, actor, ammo, result));
 				}
 			}
 
 			if (canHit) {
-				if (damage <= 0) {
-					damage = 0;
+				if (result.damage <= 0) {
+					result.damage = 0;
 				} else {
-					hurt(target, damage);
+					hurt(target, result.damage);
 				}
 
 				Game.announceVis(actor, target,
@@ -254,8 +305,8 @@ public class CombatLogic {
 						actor.getVisibleNameDefinite() + " hits you" + withWeaponString + ".",
 						actor.getVisibleNameDefinite() + " hits " + target.getVisibleNameDefinite() + withWeaponString + ".",
 						null);
-				actor.forEachProc((e, p) -> p.postDoShoot(e, target, null));
-				target.forEachProc((e, p) -> p.postBeShot(e, actor, null));
+				actor.forEachProcIncludingEquipment((e, p) -> p.postDoShoot(e, target, null));
+				target.forEachProcIncludingEquipment((e, p) -> p.postBeShot(e, actor, null));
 			}
 		} else {
 			Game.announceVis(actor, target,
@@ -264,8 +315,8 @@ public class CombatLogic {
 					actor.getVisibleNameDefinite() + " misses " + target.getVisibleNameDefinite() + withWeaponString + ".",
 					null);
 
-			actor.forEachProc((e, p) -> p.postDoMiss(e, target, null));
-			target.forEachProc((e, p) -> p.postBeMissed(e, actor, null));
+			actor.forEachProcIncludingEquipment((e, p) -> p.postDoMiss(e, target, null));
+			target.forEachProcIncludingEquipment((e, p) -> p.postBeMissed(e, actor, null));
 		}
 
 		// TODO make use of the flag...
@@ -279,8 +330,8 @@ public class CombatLogic {
 					actor.getVisibleNameDefinite() + " kills " + target.getVisibleNameDefinite() + ".",
 					null);
 			if (GameLoop.roguelikeModule.isRunning()) {
-				actor.forEachProc((e, p) -> p.postDoKill(e, target, ammo));
-				target.forEachProc((e, p) -> p.postBeKilled(e, actor, ammo));
+				actor.forEachProcIncludingEquipment((e, p) -> p.postDoKill(e, target, ammo));
+				target.forEachProcIncludingEquipment((e, p) -> p.postBeKilled(e, actor, ammo));
 			}
 		}
 	}

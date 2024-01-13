@@ -53,7 +53,7 @@ public class ProcItem extends Proc {
     }
 
     @Override
-    public Proc clone(Entity other) {
+    public Proc clone() {
         ProcItem pi = new ProcItem();
         pi.identifiedBeatitude = identifiedBeatitude;
         pi.beatitude = beatitude;

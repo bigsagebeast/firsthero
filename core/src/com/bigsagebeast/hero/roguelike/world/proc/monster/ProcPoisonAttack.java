@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.roguelike.world.proc.monster;
 
 import com.bigsagebeast.hero.roguelike.game.Dice;
 import com.bigsagebeast.hero.roguelike.game.Game;
+import com.bigsagebeast.hero.roguelike.game.SwingResult;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
@@ -13,7 +14,10 @@ public class ProcPoisonAttack extends Proc {
     public ProcPoisonAttack() { super(); }
 
     @Override
-    public void postDoHit(Entity entity, Entity target, Entity tool) {
+    public void postDoHit(Entity entity, Entity target, Entity tool, SwingResult result) {
+        if (result.penetrationFailed) {
+            return;
+        }
         ProcEffectPoisoned existingProc = (ProcEffectPoisoned)target.getProcByType(ProcEffectPoisoned.class);
         if (existingProc != null) {
             // TODO: This works when the poison durations and strengths are fairly similar.

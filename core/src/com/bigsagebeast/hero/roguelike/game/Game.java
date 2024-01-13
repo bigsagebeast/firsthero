@@ -21,6 +21,7 @@ import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcDoor;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcItem;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcShooter;
 import com.bigsagebeast.hero.util.Compass;
@@ -876,9 +877,33 @@ public class Game {
 	}
 
 	public static void attack(Entity actor, Entity target) {
+		// If the first swing is cancelled, don't call anything else.
+		// If the first swing hits and penetrates, no second swing.
+		// If the first swing hits and doesn't penetrate, use second swing only if it hits.
+		// If the first swing misses, use second swing if it doesn't miss.
 		Entity weaponPrimary = actor.body.getEquipment(BodyPart.PRIMARY_HAND);
+		Entity weaponSecondary = actor.body.getEquipment(BodyPart.OFF_HAND);
+		boolean isDualWielding = weaponSecondary != null && weaponSecondary.containsProc(ProcWeaponMelee.class);
 		// TODO 2-weapon fighting: split into trySwing, doHit, doMiss
-		CombatLogic.swing(actor, target, weaponPrimary);
+		SwingResult resultSwingOne = CombatLogic.swing(actor, target, weaponPrimary);
+		SwingResult resultSwingTwo = null;
+		if (resultSwingOne.cancelled) {
+			return;
+		}
+		if (isDualWielding && (!resultSwingOne.hit || !resultSwingOne.penetrationFailed)) {
+			resultSwingTwo = CombatLogic.swing(actor, target, weaponSecondary);
+		}
+		if (resultSwingTwo != null && resultSwingTwo.hit && (!resultSwingTwo.penetrationFailed || !resultSwingOne.hit)) {
+			CombatLogic.doHit(actor, target, resultSwingTwo);
+		} else {
+			if (!resultSwingOne.hit) {
+				CombatLogic.doMiss(actor, target, resultSwingOne);
+			} else if (resultSwingOne.penetrationFailed) {
+				CombatLogic.doPenetrationFailed(actor, target, resultSwingOne);
+			} else {
+				CombatLogic.doHit(actor, target, resultSwingOne);
+			}
+		}
 	}
 
 	private static void movePlayer(int tx, int ty) {
