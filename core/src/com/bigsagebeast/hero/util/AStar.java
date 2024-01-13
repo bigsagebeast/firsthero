@@ -18,7 +18,8 @@ public class AStar {
 		long milliStart = System.currentTimeMillis();
 		level.clearTemp();
 		queue.clear();
-		int maxDistance = (int)e.visionRange;
+		//int maxDistance = (int)e.visionRange;
+		int maxDistance = Game.getLevel().ambientLight; // TODO: haaack
 
 		check(level, instance.new AStarData(origin, 0, null));
 		List<Point> retval = new ArrayList<Point>();

@@ -22,8 +22,8 @@
           "text": "Press 'w' to wield it."
         },
         "item.ProcWeaponMelee": {
-          "averageDamage": 5,
-          "toHitBonus": 20
+          "damage": 5,
+          "toHit": 20
         }
       }
     },

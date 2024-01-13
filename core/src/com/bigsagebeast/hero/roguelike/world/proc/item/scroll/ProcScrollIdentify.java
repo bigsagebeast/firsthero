@@ -8,7 +8,6 @@ import com.bigsagebeast.hero.roguelike.world.ItemCategory;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.proc.ImmutableProc;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,10 +39,10 @@ public class ProcScrollIdentify extends ImmutableProc {
                 .withMargins(60, 60);
         boolean anyUnidentified = false;
         equipment = equipment.stream().filter(ent ->
-                        (!ent.getItem().identified && ent.getItemType().hasBeatitude) || (ent.getItemType().identityHidden && !ent.getItemType().identified))
+                        (!ent.getItem().identifiedBeatitude && ent.getItemType().hasBeatitude) || (ent.getItemType().identityHidden && !ent.getItemType().identified))
                 .collect(Collectors.toList());
         inventory = inventory.stream().filter(ent ->
-                        (!ent.getItem().identified && ent.getItemType().hasBeatitude) || (ent.getItemType().identityHidden && !ent.getItemType().identified))
+                        (!ent.getItem().identifiedBeatitude && ent.getItemType().hasBeatitude) || (ent.getItemType().identityHidden && !ent.getItemType().identified))
                 .collect(Collectors.toList());
         if (!equipment.isEmpty()) {
             anyUnidentified = true;

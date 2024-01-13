@@ -41,10 +41,10 @@ public class ProcScrollRemoveCurse extends ImmutableProc {
                 .withMargins(60, 60);
         boolean anyUnsafeTarget = false;
         equipment = equipment.stream().filter(ent ->
-                        (!ent.getItem().identified && ent.getItemType().hasBeatitude) || ent.getItem().beatitude == Beatitude.CURSED)
+                        (!ent.getItem().identifiedBeatitude && ent.getItemType().hasBeatitude) || ent.getItem().beatitude == Beatitude.CURSED)
                 .collect(Collectors.toList());
         inventory = inventory.stream().filter(ent ->
-                        (!ent.getItem().identified && ent.getItemType().hasBeatitude) || ent.getItem().beatitude == Beatitude.CURSED)
+                        (!ent.getItem().identifiedBeatitude && ent.getItemType().hasBeatitude) || ent.getItem().beatitude == Beatitude.CURSED)
                 .collect(Collectors.toList());
         if (!equipment.isEmpty()) {
             anyUnsafeTarget = true;

@@ -36,7 +36,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
-          "armorThickness": 1
+          "armorThickness": 0
         }
       },
       "tags": [
@@ -59,7 +59,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,
-          "armorThickness": 2
+          "armorThickness": 0
         }
       },
       "tags": [
@@ -82,7 +82,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
-          "armorThickness": 1
+          "armorThickness": 0
         }
       },
       "tags": [
@@ -106,7 +106,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
-          "armorThickness": 1
+          "armorThickness": 0
         }
       },
       "tags": [
@@ -152,7 +152,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
-          "armorThickness": 1
+          "armorThickness": 0
         }
       },
       "tags": [
@@ -176,7 +176,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
-          "armorThickness": 2
+          "armorThickness": 1
         }
       },
       "tags": [
@@ -200,7 +200,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,
-          "armorThickness": 1
+          "armorThickness": 0
         }
       },
       "tags": [
@@ -224,7 +224,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,
-          "armorThickness": 2
+          "armorThickness": 1
         }
       },
       "tags": [

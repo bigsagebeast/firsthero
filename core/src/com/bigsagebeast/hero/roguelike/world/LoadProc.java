@@ -1,10 +1,16 @@
 package com.bigsagebeast.hero.roguelike.world;
 
+import com.bigsagebeast.hero.enums.Stat;
+import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class LoadProc {
@@ -49,6 +55,17 @@ public class LoadProc {
                     procField.set(proc, Float.valueOf(fields.get(fieldName)));
                 } else if (procField.getType().isArray() && procField.getType().getComponentType().isAssignableFrom(String.class)) {
                     procField.set(proc, Arrays.stream(fields.get(fieldName).split(",")).map(s -> s.trim()).toArray(String[]::new));
+                } else if (procField.getType().isAssignableFrom(Map.class)) {
+                    ParameterizedType genericType = (ParameterizedType) procField.getGenericType();
+                    Class<?> keyType = (Class<?>) genericType.getActualTypeArguments()[0];
+                    Class<?> valueType = (Class<?>) genericType.getActualTypeArguments()[1];
+
+                    if (keyType == Stat.class && valueType == EquipmentScaling.class) {
+                        Map<Stat, EquipmentScaling> mapValue = parseMapString(fields.get(fieldName));
+                        procField.set(proc, mapValue);
+                    } else {
+                        throw new RuntimeException("Unsupported map type for " + procName + "." + fieldName);
+                    }
                 } else {
                     throw new RuntimeException("Couldn't identify field type for " + procName + "." + fieldName);
                 }
@@ -58,5 +75,46 @@ public class LoadProc {
         }
         entity.addProc(proc);
         // Is it dangerous to call initialize here, when some procs could refer to another entity that isn't loaded yet?
+    }
+
+
+    private EquipmentScaling parseEquipmentScaling(String scalingString) {
+        EquipmentScaling equipmentScaling = new EquipmentScaling();
+
+        String[] valuePairs = scalingString.split(",");
+        for (String valuePair : valuePairs) {
+            String[] keyValue = valuePair.split("=");
+            String fieldName = keyValue[0].trim();
+            float value = Float.parseFloat(keyValue[1].trim());
+
+            // Use reflection to set the field value
+            setField(equipmentScaling, fieldName, value);
+        }
+
+        return equipmentScaling;
+    }
+
+    private void setField(EquipmentScaling equipmentScaling, String fieldName, float value) {
+        try {
+            Field field = EquipmentScaling.class.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.setFloat(equipmentScaling, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Error setting field " + fieldName + " in EquipmentScaling.", e);
+        }
+    }
+
+    private Map<Stat, EquipmentScaling> parseMapString(String mapString) {
+        Map<Stat, EquipmentScaling> result = new HashMap<>();
+
+        String[] entries = mapString.split(";");
+        for (String entry : entries) {
+            String[] keyValue = entry.split(":");
+            Stat key = Enum.valueOf(Stat.class, keyValue[0]);
+            EquipmentScaling value = parseEquipmentScaling(keyValue[1]);
+            result.put(key, value);
+        }
+
+        return result;
     }
 }

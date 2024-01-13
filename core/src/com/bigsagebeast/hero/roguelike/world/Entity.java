@@ -13,7 +13,6 @@ import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectParalysis;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcItem;
 import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcMonster;
 import com.bigsagebeast.hero.text.TextBlock;
-import com.bigsagebeast.hero.util.Fov;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcEquippable;
 import com.bigsagebeast.hero.util.Util;
@@ -22,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -93,8 +93,6 @@ public class Entity {
     public boolean incorporeal;
 
     public String itemTypeKey;
-
-    public Rank stats = Rank.C;
 
     public float visionRange = 7;
     public float hearingRange = 30;
@@ -197,7 +195,7 @@ public class Entity {
     }
 
     public String getBeatitudeString() {
-        if (getItem() == null || !getItem().identified || !getItemType().hasBeatitude) {
+        if (getItem() == null || !getItem().identifiedBeatitude || !getItemType().hasBeatitude) {
             return "";
         }
         return getBeatitude().description + " ";
@@ -647,12 +645,12 @@ public class Entity {
         if (it == null) {
             throw new RuntimeException("Tried to identify a non-item");
         }
-        if ((!it.hasBeatitude || pi.identified) && (!it.identityHidden || it.identified)) {
+        if ((!it.hasBeatitude || pi.identifiedBeatitude) && (!it.identityHidden || it.identified)) {
             return;
         }
         String preIdentified = getVisibleNameDefinite();
         it.identified = true;
-        pi.identified = true;
+        pi.identifiedBeatitude = true;
         String postIdentified = getVisibleNameIndefiniteOrSpecific();
         Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
         if (containingEntity >= 0) {
@@ -662,7 +660,7 @@ public class Entity {
 
     public void identifyItemBeatitude() {
         ProcItem pi = getItem();
-        pi.identified = true;
+        pi.identifiedBeatitude = true;
         // TODO should be distinct
     }
 
@@ -1024,6 +1022,15 @@ public class Entity {
         for (EntityProc ep : allEntityProcsIncludingEquipmentAndInventory().collect(Collectors.toList())) {
             lambda.accept(this, ep.proc);
         }
+    }
+
+    public boolean forEachProcFailOnFalse(BiFunction<Entity, Proc, Boolean> lambda) {
+        for (EntityProc ep : allEntityProcsIncludingEquipmentAndInventory().collect(Collectors.toList())) {
+            if (lambda.apply(this, ep.proc) == Boolean.FALSE) {
+                return false;
+            };
+        }
+        return true;
     }
 
     public void changeRoom(Room oldRoom, Room newRoom) {

@@ -79,11 +79,13 @@ public class ChatModule extends Module {
     }
 
     private void openPage(String key) {
+        if (key == null) {
+            return;
+        }
         ChatPage page = ChatBook.get(key);
 
         if (page == null) {
-            // TODO debug message?
-            System.out.println("No page with key " + key);
+            GameLoop.warn("No page with key " + key);
             terminate();
             return;
         }

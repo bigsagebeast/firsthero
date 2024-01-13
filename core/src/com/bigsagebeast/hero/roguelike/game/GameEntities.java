@@ -11,7 +11,9 @@ import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectTimedTelepath
 import com.bigsagebeast.hero.roguelike.world.proc.intrinsic.ProcTelepathy;
 import com.bigsagebeast.hero.roguelike.world.proc.item.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.bigsagebeast.hero.roguelike.game.Game.announce;
 
@@ -59,10 +61,28 @@ public class GameEntities {
 
 
     public static String describeItem(Entity ent) {
-        ItemType it = ent.getItemType();
         StringBuilder sb = new StringBuilder();
-        sb.append(it.identified ? it.description.trim() : it.unidDescription.trim());
+        ProcItem pi = ent.getItem();
 
+        List<Proc> procs = ent.procs.stream()
+                .sorted(Comparator.comparingInt(proc -> proc.getDescriptionPriority(ent)))
+                .collect(Collectors.toList());
+        for (Proc p : procs) {
+            if (pi.hasIdentifiedStats(ent)) {
+                String iden = p.getIdenDescription(ent);
+                if (iden != null) {
+                    sb.append("\n").append(iden);
+                }
+            }
+            String unid = p.getUnidDescription(ent);
+            if (unid != null) {
+                sb.append("\n").append(unid);
+            }
+        }
+        // delete the first \n
+        sb.delete(0, 1);
+
+        /*
         ProcArmor procArmor = (ProcArmor)ent.getProcByType(ProcArmor.class);
         ProcWeaponMelee procWeaponMelee = (ProcWeaponMelee)ent.getProcByType(ProcWeaponMelee.class);
         ProcWeaponRanged procWeaponRanged = (ProcWeaponRanged)ent.getProcByType(ProcWeaponRanged.class);
@@ -74,8 +94,8 @@ public class GameEntities {
         }
         if (procWeaponMelee != null) {
             sb.append("\n");
-            sb.append("To-Hit: " + procWeaponMelee.toHitBonus(Game.getPlayerEntity()) +
-                    ", Damage: " + procWeaponMelee.averageDamage(Game.getPlayerEntity()));
+            sb.append("To-Hit: " + procWeaponMelee.toHit(Game.getPlayerEntity()) +
+                    ", Damage: " + procWeaponMelee.damage(Game.getPlayerEntity()));
         }
         if (procWeaponRanged != null) {
             sb.append("\n");
@@ -88,6 +108,7 @@ public class GameEntities {
             sb.append("To-Hit: " + procWeaponAmmo.toHitBonus(Game.getPlayerEntity()) +
                     ", Damage: " + procWeaponAmmo.averageDamage(Game.getPlayerEntity()));
         }
+ */
         return sb.toString();
     }
 

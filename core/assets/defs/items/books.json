@@ -55,22 +55,48 @@
         "white"
       ]
     },
-    "book.magicmissile": {
-      "idenGroup": "book1",
-      "name": "book of Magic Missile",
-      "description": "This spellbook can teach you Magic Missile.",
-      "category": "book",
-      "frequency": 100,
-      "identityHidden": true,
-      "level": 1,
-      "procs": {
-        "item.book.ProcBookSpell": {
-          "spell": "magic missile"
-        }
-      },
-      "tags": [
-        "spellbook",
-        "generic-fantasy"
+    "book.unid.dusty": {
+      "unidGroup": "book1",
+      "unidentifiedName": "dusty spellbook",
+      "unidDescription": "An unknown spellbook with a dusty cover.",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "gray",
+        "white"
+      ]
+    },
+    "book.unid.pink": {
+      "unidGroup": "book1",
+      "unidentifiedName": "pink spellbook",
+      "unidDescription": "An unknown spellbook with a pink cover.",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "pink",
+        "white"
+      ]
+    },
+    "book.unid.purple": {
+      "unidGroup": "book1",
+      "unidentifiedName": "purple spellbook",
+      "unidDescription": "An unknown spellbook with a purple cover.",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "purple",
+        "white"
+      ]
+    },
+    "book.unid.teal": {
+      "unidGroup": "book1",
+      "unidentifiedName": "teal spellbook",
+      "unidDescription": "An unknown spellbook with a teal cover.",
+      "glyphName": "book.standard",
+      "palette": [
+        "white",
+        "teal",
+        "white"
       ]
     },
     "book.firebeam": {
@@ -91,17 +117,71 @@
         "generic-fantasy"
       ]
     },
-    "book.waterblast": {
+    "book.flicker": {
       "idenGroup": "book1",
-      "name": "book of Water Blast",
-      "description": "This spellbook can teach you Water Blast.",
+      "name": "book of Flicker",
+      "description": "This spellbook can teach you Flicker.",
       "category": "book",
       "frequency": 100,
       "identityHidden": true,
       "level": 1,
       "procs": {
         "item.book.ProcBookSpell": {
-          "spell": "water blast"
+          "spell": "flicker"
+        }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
+    },
+    "book.icebeam": {
+      "idenGroup": "book1",
+      "name": "book of Icebeam",
+      "description": "This spellbook can teach you Icebeam.",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "icebeam"
+        }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
+    },
+    "book.magicmissile": {
+      "idenGroup": "book1",
+      "name": "book of Magic Missile",
+      "description": "This spellbook can teach you Magic Missile.",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "magic missile"
+        }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
+    },
+    "book.oakstrength": {
+      "idenGroup": "book1",
+      "name": "book of Oak Strength",
+      "description": "This spellbook can teach you Oak Strength.",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "oak strength"
         }
       },
       "tags": [
@@ -138,6 +218,42 @@
       "procs": {
         "item.book.ProcBookSpell": {
           "spell": "shocking grasp"
+        }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
+    },
+    "book.voltagecascade": {
+      "idenGroup": "book1",
+      "name": "book of Voltage Cascade",
+      "description": "This spellbook can teach you Voltage Cascade.",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "voltage cascade"
+        }
+      },
+      "tags": [
+        "spellbook",
+        "generic-fantasy"
+      ]
+    },
+    "book.waterblast": {
+      "idenGroup": "book1",
+      "name": "book of Water Blast",
+      "description": "This spellbook can teach you Water Blast.",
+      "category": "book",
+      "frequency": 100,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.book.ProcBookSpell": {
+          "spell": "water blast"
         }
       },
       "tags": [

@@ -72,6 +72,10 @@ public class Proc {
 
     public TextBlock getNameBlock(Entity entity) { return null; }
 
+    public int getDescriptionPriority(Entity entity) { return 0; }
+    public String getIdenDescription(Entity entity) { return null; }
+    public String getUnidDescription(Entity entity) { return null; }
+
     // return true if pickup is allowed, false if it's aborted, null if no opinion
     public Boolean preBePickedUp(Entity entity, Entity actor) { return null; }
     public void postBePickedUp(Entity entity, Entity actor) {}

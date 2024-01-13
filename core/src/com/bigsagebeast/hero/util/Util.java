@@ -18,6 +18,13 @@ public class Util {
         return str.substring(0, 1).toUpperCase(Locale.ROOT) + str.substring(1);
     }
 
+    public static String formatFloat(float val) {
+        if (val == (long)val) {
+            return String.format("%d",(long)val);
+        }
+        return String.format("%s",val);
+    }
+
     public static String substitute(String string, Gender gender1, Gender gender2) {
         if (string == null) {
             return null;

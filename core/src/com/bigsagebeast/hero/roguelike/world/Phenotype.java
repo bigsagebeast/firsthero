@@ -5,7 +5,6 @@ import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.glyphtile.Palette;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
 import com.bigsagebeast.hero.enums.BodySize;
-import com.bigsagebeast.hero.roguelike.game.Rank;
 
 import java.util.ArrayList;
 import java.util.HashSet;

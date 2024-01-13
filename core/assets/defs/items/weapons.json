@@ -14,8 +14,20 @@
       "level": 1,
       "procs": {
         "item.ProcWeaponMelee": {
-          "averageDamage": 6,
-          "toHitBonus": 3
+          "weaponType": "THIN_BLADE",
+          "damage": 4,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 2.5,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.25,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.5
+            }
+          }
         }
       },
       "tags": [
@@ -23,9 +35,9 @@
         "generic-fantasy"
       ]
     },
-    "weapon.melee.longsword": {
-      "name": "longsword",
-      "description": "A large, slashing weapon good against lightly armored targets.",
+    "weapon.melee.arming sword": {
+      "name": "arming sword",
+      "description": "A slashing weapon good against lightly armored targets.",
       "glyphName": "weapon.longsword",
       "palette": [
         "white",
@@ -37,8 +49,20 @@
       "level": 1,
       "procs": {
         "item.ProcWeaponMelee": {
-          "averageDamage": 8,
-          "toHitBonus": 2
+          "weaponType": "BROAD_BLADE",
+          "damage": 5,
+          "toHit": 3,
+          "defense": 2,
+          "penetration": 1,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
         }
       },
       "tags": [
@@ -60,8 +84,17 @@
       "level": 1,
       "procs": {
         "item.ProcWeaponMelee": {
-          "averageDamage": 5,
-          "toHitBonus": 3
+          "weaponType": "THIN_BLADE",
+          "damage": 3,
+          "toHit": 1,
+          "defense": 0,
+          "penetration": 3,
+          "scaling": {
+            "DEXTERITY": {
+              "damage": 0.75,
+              "penetration": 0.25
+            }
+          }
         }
       },
       "tags": [

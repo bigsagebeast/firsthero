@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class DefinitionLoader {
     public static void loadFile(FileHandle handle) throws SetupException {
@@ -80,7 +81,46 @@ public class DefinitionLoader {
                         JsonNode procNameNode = nodeField.get(procName);
                         for (Iterator<String> procField = procNameNode.fieldNames(); procField.hasNext(); ) {
                             String procFieldName = procField.next();
-                            procFields.put(procFieldName, procNameNode.get(procFieldName).asText());
+                            JsonNode procFieldNode = procNameNode.get(procFieldName);
+                            String procFieldOutput;
+                            if (procFieldNode.isObject()) {
+
+                                StringBuilder mapStringBuilder = new StringBuilder();
+
+                                Iterator<Map.Entry<String, JsonNode>> entries = procFieldNode.fields();
+                                while (entries.hasNext()) {
+                                    Map.Entry<String, JsonNode> entry = entries.next();
+                                    String key = entry.getKey();
+                                    JsonNode valuesNode = entry.getValue();
+
+                                    // Append enum constant and separator
+                                    mapStringBuilder.append(key).append(":");
+
+                                    // Append field-value pairs
+                                    Iterator<Map.Entry<String, JsonNode>> values = valuesNode.fields();
+                                    while (values.hasNext()) {
+                                        Map.Entry<String, JsonNode> valueEntry = values.next();
+                                        mapStringBuilder.append(valueEntry.getKey()).append("=").append(valueEntry.getValue().asText()).append(",");
+                                    }
+
+                                    // Remove the trailing comma before appending entry separator
+                                    if (valuesNode.size() > 0) {
+                                        mapStringBuilder.deleteCharAt(mapStringBuilder.length() - 1);
+                                    }
+
+                                    // Append entry separator
+                                    mapStringBuilder.append(";");
+                                }
+                                if (procFieldNode.size() > 0) {
+                                    // Remove the trailing semicolon if the scaling node is not empty
+                                    mapStringBuilder.deleteCharAt(mapStringBuilder.length() - 1);
+                                }
+                                procFieldOutput = mapStringBuilder.toString();
+
+                            } else {
+                                procFieldOutput = procFieldNode.asText();
+                            }
+                            procFields.put(procFieldName, procFieldOutput);
                         }
                         LoadProc procLoader = new LoadProc(procName, procFields);
                         itemType.procLoaders.add(procLoader);
