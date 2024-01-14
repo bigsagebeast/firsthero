@@ -35,6 +35,7 @@ public class StatBarWindow extends UIWindow {
 	TextBlock tbStatAv;
 	TextBlock tbStatDr;
 	TextBlock tbStatDt;
+	TextBlock tbStatSpeed;
 	TextBlock tbStatLevel;
 
 	TextBlock tbElementWater;
@@ -70,7 +71,8 @@ public class StatBarWindow extends UIWindow {
 		tbStatAv = new TextBlock("20", 29, 0, Color.WHITE);
 		tbStatDr = new TextBlock("20", 5, 0, Color.WHITE);
 		tbStatDt = new TextBlock("20", 13, 0, Color.WHITE);
-		tbStatLevel = new TextBlock("1", 24, 0, Color.WHITE);
+		tbStatSpeed = new TextBlock("100", 23, 0, Color.WHITE);
+		tbStatLevel = new TextBlock("1", 35, 0, Color.WHITE);
 		tbElementWater = new TextBlock("W 8/8", 0, 0, Color.CYAN);
 		tbElementFire = new TextBlock("F 8/8", 9, 0, Color.RED);
 		tbElementLightning = new TextBlock("L 8/8", 18, 0, Color.YELLOW);
@@ -91,9 +93,10 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(4).addChild(tbStatWi);
 		statRows.get(4).addChild(tbStatAr);
 		statRows.get(4).addChild(tbStatAv);
-		statRows.add(new TextBlock("DR:     DT:     Level:     ", 0, 5, Color.WHITE));
+		statRows.add(new TextBlock("DR:     DT:     Speed:      Level:     ", 0, 5, Color.WHITE));
 		statRows.get(5).addChild(tbStatDr);
 		statRows.get(5).addChild(tbStatDt);
+		statRows.get(5).addChild(tbStatSpeed);
 		statRows.get(5).addChild(tbStatLevel);
 
 		statRows.add(new TextBlock("HP:    /      SP:    /      DP:    /   ", 0, 6, Color.WHITE));
@@ -116,8 +119,7 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(7).addChild(tbElementLightning);
 		statRows.get(7).addChild(tbElementNaturae);
 
-		statRows.add(new TextBlock("", 0, 8, Color.YELLOW));
-		statRows.add(new TextBlock("", 0, 9)); // parent for status?
+		statRows.add(new TextBlock("", 0, 8));
 
 		for (TextBlock statRow : statRows) {
 			parent.addChild(statRow);
@@ -171,6 +173,8 @@ public class StatBarWindow extends UIWindow {
 
 		tbStatDr.text = "" + statblock.dr;
 		tbStatDt.text = "" + statblock.dt;
+		tbStatSpeed.text = "" + (int)entity.getSpeed();
+		tbStatSpeed.color = colorForSpeed();
 		tbStatLevel.text = "" + entity.level;
 
 		tbNumHp.text = String.format("%4d", entity.hitPoints);
@@ -188,23 +192,16 @@ public class StatBarWindow extends UIWindow {
 			tbNumHp.color = Color.RED;
 		}
 
-		Satiation satiation = player.getSatiationStatus();
-		if (satiation.description != null) {
-			statRows.get(8).color = satiation.statusColor;
-			statRows.get(8).text = satiation.description;
-		} else {
-			statRows.get(8).text = "";
-		}
 		int statusChars = 0;
-		statRows.get(9).close();
-		statRows.set(9, new TextBlock("", 0, 9));
-		parent.addChild(statRows.get(9));
+		statRows.get(8).close();
+		statRows.set(8, new TextBlock("", 0, 8));
+		parent.addChild(statRows.get(8));
 		for (Proc p : entity.procs) {
 			TextBlock tb = p.getStatusBlock(entity);
 			if (tb != null) {
 				tb.x = statusChars;
 				statusChars += tb.text.length() + 1;
-				statRows.get(9).addChild(tb);
+				statRows.get(8).addChild(tb);
 			}
 		}
 
@@ -223,6 +220,19 @@ public class StatBarWindow extends UIWindow {
 		Entity entity = Game.getPlayerEntity();
 		int originalStat = entity.statblock.get(stat);
 		int modifiedStat = entity.getStat(stat);
+		if (originalStat > modifiedStat) {
+			return Color.RED;
+		} else if (originalStat < modifiedStat) {
+			return Color.GREEN;
+		} else {
+			return Color.WHITE;
+		}
+	}
+
+	private Color colorForSpeed() {
+		Entity entity = Game.getPlayerEntity();
+		int originalStat = entity.statblock.speed;
+		int modifiedStat = (int)entity.getSpeed();
 		if (originalStat > modifiedStat) {
 			return Color.RED;
 		} else if (originalStat < modifiedStat) {

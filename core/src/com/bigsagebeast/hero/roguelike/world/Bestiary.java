@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.roguelike.world.ai.TacticChaseAndMelee;
+import com.bigsagebeast.hero.roguelike.world.proc.ProcEffectHunger;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcEveryTurn;
@@ -85,6 +86,7 @@ public class Bestiary {
 
 		if (key.startsWith("pc.")) {
 			e.addProc(new ProcPlayer());
+			e.addProc(new ProcEffectHunger());
 		}
 		else if (p.isMonster && e.getProcByType(ProcMonster.class) == null) {
 			//e.addProc(new ProcMonster(new ChaseAndMeleeTactic()));

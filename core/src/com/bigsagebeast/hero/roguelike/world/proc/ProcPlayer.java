@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.proc;
 
+import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;

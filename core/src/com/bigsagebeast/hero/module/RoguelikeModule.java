@@ -167,13 +167,15 @@ public class RoguelikeModule extends Module {
 		if (Game.getPlayerEntity() == null) {
 			return;
 		}
-		equipWindow.update();
-		hitPointWindow.update();
-		spellPointWindow.update();
-		experienceWindow.update();
-		statBarWindow.update();
+		if (equipWindow != null) {
+			equipWindow.update();
+			hitPointWindow.update();
+			spellPointWindow.update();
+			experienceWindow.update();
+			statBarWindow.update();
 
-		Game.getLevel().updateVis();
+			Game.getLevel().updateVis();
+		}
 	}
 
 	public void setDirty() {

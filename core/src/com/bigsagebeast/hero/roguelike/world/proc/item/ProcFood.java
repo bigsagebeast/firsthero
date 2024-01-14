@@ -16,10 +16,13 @@ public class ProcFood extends Proc {
     public String eatMessage;
     public String eatMethod;
 
-    public ProcFood() { super(); }
-    public ProcFood(String eatMessage, String eatMethod) {
+    public ProcFood() {
+        super();
+    }
+    public ProcFood(String eatMessage, String eatMethod, int satiation) {
         this.eatMessage = eatMessage;
         this.eatMethod = eatMethod;
+        this.satiation = satiation;
     }
 
     @Override
@@ -46,5 +49,10 @@ public class ProcFood extends Proc {
         if (actor == Game.getPlayerEntity()) {
             Game.getPlayer().changeSatiation(satiation);
         }
+    }
+
+    @Override
+    public ProcFood clone(Entity entity) {
+        return new ProcFood(eatMessage, eatMethod, satiation);
     }
 }

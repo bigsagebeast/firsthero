@@ -4,6 +4,7 @@ import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 import com.bigsagebeast.hero.enums.Satiation;
+import com.bigsagebeast.hero.roguelike.world.proc.ProcEffectHunger;
 
 import java.util.HashMap;
 
@@ -80,6 +81,7 @@ public class Player {
 				Game.announce(after.messageDown);
 			}
 		}
+		((ProcEffectHunger)getEntity().getProcByType(ProcEffectHunger.class)).setSatiation(Satiation.getStatus(satiation));
 	}
 
 	public void setEntityId(int entityId) {

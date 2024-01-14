@@ -279,8 +279,9 @@ public class Game {
 		for (Proc p : getPlayerEntity().procs) {
 			p.onAction(getPlayerEntity());
 		}
+		GameLoop.roguelikeModule.redraw();
 
-		// TODO maybe check state here?
+		// TODO maybe check state here? like death etc
 
 		while (true) {
 			roguelikeModule.setDirty();
