@@ -17,7 +17,7 @@ public class ProcMessageOnPickup extends Proc {
     public void postBePickedUp(Entity entity, Entity actor) {
         if (active) {
             // TODO only for player?
-            Game.announce(text);
+            Game.announceLoud(text);
         }
         active = false;
     }

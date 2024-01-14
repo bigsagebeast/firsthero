@@ -4,6 +4,7 @@ import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.GameState;
 import com.bigsagebeast.hero.Graphics;
 import com.bigsagebeast.hero.GraphicsState;
+import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.Profile;
 
 public class FlowModule extends Module {
@@ -18,7 +19,7 @@ public class FlowModule extends Module {
             case "newGameIntroQuest":
                 GameLoop.roguelikeModule.initialize();
                 GameLoop.roguelikeModule.start();
-                GameLoop.roguelikeModule.game.startIntro();
+                Game.startIntro();
                 break;
             case "newGameCutscene2":
                 Profile.setString("mode", "newGameAurexFirstVisit");
@@ -28,12 +29,12 @@ public class FlowModule extends Module {
             case "newGameAurexFirstVisit":
                 GameLoop.roguelikeModule.initialize();
                 GameLoop.roguelikeModule.start();
-                GameLoop.roguelikeModule.game.startAurex();
+                Game.startAurex();
                 break;
             case "enterWorld":
                 GameLoop.roguelikeModule.initialize();
                 GameLoop.roguelikeModule.start();
-                GameLoop.roguelikeModule.game.startCaves();
+                Game.startCaves();
                 break;
         }
         end();

@@ -9,6 +9,7 @@ import com.bigsagebeast.hero.GameState;
 import com.bigsagebeast.hero.Graphics;
 import com.bigsagebeast.hero.GraphicsState;
 import com.bigsagebeast.hero.dialogue.TextEntryBox;
+import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.Profile;
 import com.bigsagebeast.hero.story.StoryManager;
 import com.bigsagebeast.hero.text.TextBlock;
@@ -160,13 +161,13 @@ public class TitleScreenModule extends Module {
 						IntroModule.musicResource.stop();
 						end();
 						GameLoop.roguelikeModule.initialize();
-						GameLoop.roguelikeModule.game.startCaves();
+						Game.startCaves();
 						break;
 					case 3:
 						IntroModule.musicResource.stop();
 						end();
 						GameLoop.roguelikeModule.initialize();
-						GameLoop.roguelikeModule.game.startAurex();
+						Game.startAurex();
 						break;
 					case 4:
 						IntroModule.musicResource.stop();

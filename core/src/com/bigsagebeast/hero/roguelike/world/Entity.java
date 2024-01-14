@@ -545,7 +545,7 @@ public class Entity {
             }
             if (this == Game.getPlayerEntity())
             {
-                Game.roguelikeModule.updateEquipmentWindow();
+                GameLoop.roguelikeModule.updateEquipmentWindow();
             }
         }
 
@@ -618,7 +618,7 @@ public class Entity {
         }
         if (this == Game.getPlayerEntity())
         {
-            Game.roguelikeModule.updateEquipmentWindow();
+            GameLoop.roguelikeModule.updateEquipmentWindow();
         }
         getMover().setDelay(this, Game.ONE_TURN);
         return true;

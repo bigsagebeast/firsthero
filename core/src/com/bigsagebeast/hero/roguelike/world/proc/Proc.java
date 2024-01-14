@@ -170,6 +170,9 @@ public class Proc {
     public Boolean canPrayAt(Entity entity, Entity actor) { return null; }
     public void prayAt(Entity entity, Entity actor) { }
 
+    public Boolean stairsUp(Entity entity, Entity actor) { return null; }
+    public Boolean stairsDown(Entity entity, Entity actor) { return null; }
+
     // null actor and target = can you even consider it?  For precalculating a list
     public Boolean canOfferAt(Entity entity, Entity actor, Entity target) { return null; }
     public void offerAt(Entity entity, Entity actor, Entity target) { }

@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bigsagebeast.hero.roguelike.game.Dice;
-import com.bigsagebeast.hero.roguelike.game.Spellbook;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.Generator;
+import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcStairs;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
 
@@ -409,9 +409,17 @@ public class DungeonGenerator {
 			int toY = Integer.parseInt(transitionSplit[5]);
 
 			if (transitionType.equals("up")) {
-				level.addTransition(new LevelTransition("up", new Point(fromX, fromY), destination, new Point(toX, toY)));
+				Entity stairsUp = Itempedia.create("feature.stairsUp");
+				ProcStairs procStairs = (ProcStairs)stairsUp.getProcByType(ProcStairs.class);
+				procStairs.upToMap = destination;
+				procStairs.upToPos = new Point(toX, toY);
+				level.addEntityWithStacking(stairsUp, new Point(fromX, fromY));
 			} else if (transitionType.equals("down")) {
-				level.addTransition(new LevelTransition("down", new Point(fromX, fromY), destination, new Point(toX, toY)));
+				Entity stairsDown = Itempedia.create("feature.stairsDown");
+				ProcStairs procStairs = (ProcStairs)stairsDown.getProcByType(ProcStairs.class);
+				procStairs.downToMap = destination;
+				procStairs.downToPos = new Point(toX, toY);
+				level.addEntityWithStacking(stairsDown, new Point(fromX, fromY));
 			} else {
 				throw new RuntimeException("Invalid transition type: " + transitionType);
 			}
@@ -535,9 +543,17 @@ public class DungeonGenerator {
 			int toY = Integer.parseInt(transitionSplit[5]);
 
 			if (transitionType.equals("up")) {
-				level.addTransition(new LevelTransition("up", new Point(fromX, fromY), destination, new Point(toX, toY)));
+				Entity stairsUp = Itempedia.create("feature.stairsUp");
+				ProcStairs procStairs = (ProcStairs)stairsUp.getProcByType(ProcStairs.class);
+				procStairs.upToMap = destination;
+				procStairs.upToPos = new Point(toX, toY);
+				level.addEntityWithStacking(stairsUp, new Point(fromX, fromY));
 			} else if (transitionType.equals("down")) {
-				level.addTransition(new LevelTransition("down", new Point(fromX, fromY), destination, new Point(toX, toY)));
+				Entity stairsDown = Itempedia.create("feature.stairsDown");
+				ProcStairs procStairs = (ProcStairs)stairsDown.getProcByType(ProcStairs.class);
+				procStairs.downToMap = destination;
+				procStairs.downToPos = new Point(toX, toY);
+				level.addEntityWithStacking(stairsDown, new Point(fromX, fromY));
 			} else {
 				throw new RuntimeException("Invalid transition type: " + transitionType);
 			}

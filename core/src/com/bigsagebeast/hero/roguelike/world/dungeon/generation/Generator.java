@@ -4,10 +4,10 @@ import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.dungeon.RoomType;
+import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcStairs;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
-import com.bigsagebeast.hero.roguelike.world.LevelTransition;
 import com.bigsagebeast.hero.roguelike.world.Terrain;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.dungeon.LevelCell;
@@ -259,8 +259,14 @@ public class Generator {
             stairRoom.setRoomType(RoomType.GENERIC_UPSTAIR);
         }
         Point stairPoint = findEmptyPointInRoom(stairRoom);
-        level.cell(stairPoint).terrain = Terrain.get("upstair");
-        level.addTransition(new LevelTransition("up", stairPoint, level.getKey(), levelKey));
+
+        Entity stairsUp = Itempedia.create("feature.stairsUp");
+        ProcStairs procStairs = (ProcStairs)stairsUp.getProcByType(ProcStairs.class);
+        if (levelKey.equals("out")) {
+            procStairs.upSpecialMessage = "You can't leave the dungeon!";
+        }
+        procStairs.upToMap = levelKey;
+        level.addEntityWithStacking(stairsUp, stairPoint);
     }
 
     public void addDownstairTo(String levelKey) {
@@ -275,8 +281,11 @@ public class Generator {
             stairRoom.setRoomType(RoomType.GENERIC_DOWNSTAIR);
         }
         Point stairPoint = findEmptyPointInRoom(stairRoom);
-        level.cell(stairPoint).terrain = Terrain.get("downstair");
-        level.addTransition(new LevelTransition("down", stairPoint, level.getKey(), levelKey));
+
+        Entity stairsDown = Itempedia.create("feature.stairsDown");
+        ProcStairs procStairs = (ProcStairs)stairsDown.getProcByType(ProcStairs.class);
+        procStairs.downToMap = levelKey;
+        level.addEntityWithStacking(stairsDown, stairPoint);
     }
 
     private Point findEmptyPointInRoom(Room room) {

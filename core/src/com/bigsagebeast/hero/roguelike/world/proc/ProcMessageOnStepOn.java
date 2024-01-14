@@ -18,7 +18,7 @@ public class ProcMessageOnStepOn extends Proc {
         if (active) {
             // TODO messages for NPCs as well?
             if (actor == Game.getPlayerEntity()) {
-                Game.announce(text);
+                Game.announceLoud(text);
             }
         }
         active = false;

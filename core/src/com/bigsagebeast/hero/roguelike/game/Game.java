@@ -42,7 +42,6 @@ public class Game {
 	// current level
 	private static Level level;
 	private static Player player = new Player();
-	public static RoguelikeModule roguelikeModule;
 	public static final DungeonGenerator dungeon = new DungeonGenerator();
 	public static final UnidMapping unidMapping = new UnidMapping();
 	public static long time = 0;
@@ -57,10 +56,6 @@ public class Game {
 	public static Compass longWalkDir = null; // if non-null, we're long-walking
 
 	public static Spellbook spellbook = new Spellbook();
-
-	public Game(RoguelikeModule module) {
-		Game.roguelikeModule = module;
-	}
 
 	public static void initialize() {
 		time = 0;
@@ -132,7 +127,7 @@ public class Game {
 		unidMapping.apply();
 	}
 
-	public void startIntro() {
+	public static void startIntro() {
 		loadFiles();
 		time = 0;
 		Entity pc = Bestiary.create("pc.farmboy");
@@ -156,7 +151,7 @@ public class Game {
 		level.prepare();
 	}
 
-	public void startAurex() {
+	public static void startAurex() {
 		loadFiles();
 		time = 0;
 		Entity pc = Bestiary.create("pc.deity");
@@ -175,7 +170,7 @@ public class Game {
 	}
 
 
-	public void handleStartCaves(Entity pc) {
+	public static void handleStartCaves(Entity pc) {
 		pc.name = Profile.getString("godName") + "'s avatar";
 		time = 0;
 		player.setEntityId(pc.entityId);
@@ -187,14 +182,14 @@ public class Game {
 		}
 	}
 
-	public void startCaves() {
+	public static void startCaves() {
 		loadFiles();
 		time = 0;
-		CharacterBuilder cb = new CharacterBuilder(this::handleStartCaves);
+		CharacterBuilder cb = new CharacterBuilder(Game::handleStartCaves);
 		cb.begin();
 	}
 
-	public void changeLevel(Level nextLevel, Point playerPos) {
+	public static void changeLevel(Level nextLevel, Point playerPos) {
 		if (level != null) {
 			for (EntityProc tuple : level.getEntityProcs()) {
 				if (tuple.proc.hasAction()) {
@@ -215,7 +210,7 @@ public class Game {
 		passTime(0);
 	}
 
-	public void changeLevel(String toKey, String fromKey) {
+	public static void changeLevel(String toKey, String fromKey) {
 		if (level != null) {
 			for (EntityProc tuple : level.getEntityProcs()) {
 				if (tuple.proc.hasAction()) {
@@ -229,7 +224,7 @@ public class Game {
 		Game.lastTurnProc = 0;
 		Level nextLevel = dungeon.getLevel(toKey);
 		level = nextLevel;
-		Point playerPos = nextLevel.findTransitionTo(fromKey).loc;
+		Point playerPos = nextLevel.findTransitionTo(fromKey).pos;
 		level.addEntityWithStacking(player.getEntity(), playerPos, false);
 		level.prepare();
 		interrupted = false;
@@ -238,7 +233,7 @@ public class Game {
 		passTime(0);
 	}
 
-	public void changeLevel(Level nextLevel) {
+	public static void changeLevel(Level nextLevel) {
 		level = nextLevel;
 		GameLoop.glyphEngine.initializeLevel(level);
 		level.prepare();
@@ -247,7 +242,7 @@ public class Game {
 	}
 
 	// TODO should specify a profile name or slot or something
-	public void load() {
+	public static void load() {
 		PersistentProfile profile = Persistence.loadProfile();
 		profile.load();
 		Level loadedlevel = Persistence.loadLevel(profile.levelName);
@@ -284,7 +279,7 @@ public class Game {
 		// TODO maybe check state here? like death etc
 
 		while (true) {
-			roguelikeModule.setDirty();
+			GameLoop.roguelikeModule.setDirty();
 
 			level.timePassed(time);
 
@@ -366,7 +361,7 @@ public class Game {
 				return false;
 			} else {
 				// TODO: This is putting a ton on the stack!
-				GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
+				Game.passTime(Game.ONE_TURN);
 			}
 			return true;
 		} else if (longWalkDir != null) {
@@ -393,67 +388,63 @@ public class Game {
 		return false;
 	}
 
-	public void cmdMoveLeft() {
+	public static void cmdMoveLeft() {
 		playerCmdMoveBy(-1, 0);
 	}
 	
-	public void cmdMoveRight() {
+	public static void cmdMoveRight() {
 		playerCmdMoveBy(+1, 0);
 	}
 	
-	public void cmdMoveUp() {
+	public static void cmdMoveUp() {
 		playerCmdMoveBy(0, -1);
 	}
 	
-	public void cmdMoveDown() {
+	public static void cmdMoveDown() {
 		playerCmdMoveBy(0, +1);
 	}
 	
-	public void cmdMoveUpLeft() {
+	public static void cmdMoveUpLeft() {
 		playerCmdMoveBy(-1, -1);
 	}
 	
-	public void cmdMoveDownLeft() {
+	public static void cmdMoveDownLeft() {
 		playerCmdMoveBy(-1, +1);
 	}
 	
-	public void cmdMoveDownRight() {
+	public static void cmdMoveDownRight() {
 		playerCmdMoveBy(+1, +1);
 	}
 	
-	public void cmdMoveUpRight() {
+	public static void cmdMoveUpRight() {
 		playerCmdMoveBy(+1, -1);
 	}
 	
-	public void cmdStairsUp() {
-		LevelTransition transition = level.findTransition("up", player.getEntity().pos);
-		if (transition == null) {
-			announce("You can't go up here.");
-		} else if (transition.toMap.equals("out")) {
-			announce("You can't leave the dungeon!");
-		} else {
-			if (transition.arrival != null) {
-				changeLevel(Game.dungeon.getLevel(transition.toMap), transition.arrival);
-			} else {
-				changeLevel(transition.toMap, transition.fromMap);
+	public static void cmdStairsUp() {
+		for (Entity e : level.getEntitiesOnTile(getPlayerEntity().pos)) {
+			for (Proc p : e.procs) {
+				Boolean result = p.stairsUp(e, getPlayerEntity());
+				if (result != null) {
+					return;
+				}
 			}
 		}
-	}
-	
-	public void cmdStairsDown() {
-		LevelTransition transition = level.findTransition("down", player.getEntity().pos);
-		if (transition == null) {
-			announce("You can't go down here.");
-		} else {
-			if (transition.arrival != null) {
-				changeLevel(Game.dungeon.getLevel(transition.toMap), transition.arrival);
-			} else {
-				changeLevel(transition.toMap, transition.fromMap);
-			}
-		}
+		announce("You can't go up here.");
 	}
 
-	public void cmdPickup() {
+	public static void cmdStairsDown() {
+		for (Entity e : level.getEntitiesOnTile(getPlayerEntity().pos)) {
+			for (Proc p : e.procs) {
+				Boolean result = p.stairsDown(e, getPlayerEntity());
+				if (result != null) {
+					return;
+				}
+			}
+		}
+		announce("You can't go down here.");
+	}
+
+	public static void cmdPickup() {
 		List<Entity> itemsHere = level.getItemsOnTile(player.getEntity().pos);
 		itemsHere = itemsHere.stream().filter(i -> !i.getItemType().isFeature).collect(Collectors.toList());
 		if (itemsHere.isEmpty()) {
@@ -487,7 +478,7 @@ public class Game {
 		}
 	}
 
-	public void cmdWait() {
+	public static void cmdWait() {
 		if (player.getEntity().isConfused()) {
 			playerCmdMoveBy(0, 0);
 		} else {
@@ -495,7 +486,7 @@ public class Game {
 		}
 	}
 
-	public void cmdRest() {
+	public static void cmdRest() {
 		if (hasInterruption()) {
 			announce("You can't rest right now.");
 		} else {
@@ -504,7 +495,7 @@ public class Game {
 		}
 	}
 
-	public void cmdLongWalk(Compass dir) {
+	public static void cmdLongWalk(Compass dir) {
 		if (hasInterruption()) {
 			announce("You are interrupted.");
 			return; // TODO does this skip a turn?
@@ -513,27 +504,27 @@ public class Game {
 		playerCmdMoveBy(dir);
 	}
 
-	public void cmdWield() {
+	public static void cmdWield() {
 		Inventory.doWield();
 	}
 
-	public void cmdQuaff() {
+	public static void cmdQuaff() {
 		Inventory.doQuaff();
 	}
 
-	public void cmdRead() {
+	public static void cmdRead() {
 		Inventory.doRead();
 	}
 
-	public void cmdInventory() {
+	public static void cmdInventory() {
 		Inventory.openInventoryToInspect();
 	}
 
-	public void cmdDrop() {
+	public static void cmdDrop() {
 		Inventory.openInventoryToDrop();
 	}
 
-	public void cmdEat() {
+	public static void cmdEat() {
 		if (player.getSatiationStatus() == Satiation.STUFFED) {
 			announce("You are too stuffed to eat!");
 			return;
@@ -541,13 +532,13 @@ public class Game {
 		Inventory.openInventoryToEat();
 	}
 
-	public void cmdRegenerate() { startCaves(); }
+	public static void cmdRegenerate() { startCaves(); }
 
-	public void cmdOpen() {
-		GameLoop.directionModule.begin("Open or close a door in what direction?", this::cmdOpenHandle);
+	public static void cmdOpen() {
+		GameLoop.directionModule.begin("Open or close a door in what direction?", Game::cmdOpenHandle);
 	}
 
-	public void cmdOpenHandle(Compass dir) {
+	public static void cmdOpenHandle(Compass dir) {
 		if (dir == Compass.OTHER) {
 			Game.announce("Canceled.");
 			return;
@@ -573,11 +564,11 @@ public class Game {
 		}
 	}
 
-	public void cmdChat() {
-		GameLoop.directionModule.begin("Chat in what direction?", this::cmdChatHandle);
+	public static void cmdChat() {
+		GameLoop.directionModule.begin("Chat in what direction?", Game::cmdChatHandle);
 	}
 
-	public void cmdChatHandle(Compass dir) {
+	public static void cmdChatHandle(Compass dir) {
 		if (dir == Compass.OTHER) {
 			Game.announce("Canceled.");
 			return;
@@ -609,11 +600,11 @@ public class Game {
 
 	}
 
-	public void cmdMagic() {
+	public static void cmdMagic() {
 		spellbook.openSpellbookToCast();
 	}
 
-	public void cmdTarget() {
+	public static void cmdTarget() {
 		Entity rangedWeapon = getPlayerEntity().body.getEquipment(BodyPart.RANGED_WEAPON);
 		Entity rangedAmmo = getPlayerEntity().body.getEquipment(BodyPart.RANGED_AMMO);
 		ProcWeaponRanged pwr = (rangedWeapon != null) ? (ProcWeaponRanged)rangedWeapon.getProcByType(ProcWeaponRanged.class) : null;
@@ -651,10 +642,10 @@ public class Game {
 			range = pwa.throwRange;
 		}
 		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, true, true, true, range);
-		GameLoop.targetingModule.begin(tm, this::handleTarget);
+		GameLoop.targetingModule.begin(tm, Game::handleTarget);
 	}
 
-	public void cmdPray() {
+	public static void cmdPray() {
 		boolean prayingAtProc = false;
 		for (Entity e : getLevel().getEntitiesOnTile(getPlayerEntity().pos)) {
 			for (Proc p : e.procs) {
@@ -675,7 +666,7 @@ public class Game {
 		}
 	}
 
-	public void handleTarget(Point targetPoint) {
+	public static void handleTarget(Point targetPoint) {
 		if (targetPoint == null) {
 			announce("Cancelled.");
 			return;
@@ -743,7 +734,7 @@ public class Game {
 		}
 	}
 
-	public void cmdLook() {
+	public static void cmdLook() {
 		TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(true, false, false, false, -1);
 		GameLoop.targetingModule.begin(tm, null);
 	}
@@ -1063,18 +1054,18 @@ public class Game {
 		if (s == null || !GameLoop.roguelikeModule.isRunning()) {
 			return;
 		}
-		roguelikeModule.announce(Util.capitalize(s));
+		GameLoop.roguelikeModule.announce(Util.capitalize(s));
 	}
 
 	public static void announceLoud(String s) {
 		if (s == null || !GameLoop.roguelikeModule.isRunning()) {
 			return;
 		}
-		roguelikeModule.announceLoud(Util.capitalize(s));
+		GameLoop.roguelikeModule.announceLoud(Util.capitalize(s));
 	}
 
 	public static void unannounce() {
-		roguelikeModule.unannounce();
+		GameLoop.roguelikeModule.unannounce();
 	}
 	
 	public static void announceVis(Visibility vis, String actor, String target, String visible, String audible) {

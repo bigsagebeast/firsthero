@@ -1,6 +1,5 @@
 package com.bigsagebeast.hero.module;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Beatitude;
@@ -36,8 +35,6 @@ public class RoguelikeModule extends Module {
 
 	private float zoom = 1.0f;
 
-	public Game game;
-
 	public static MainWindow mainWindow;
 	public static AnnounceWindow announceWindow;
 	public static EquipmentWindow equipWindow;
@@ -51,7 +48,6 @@ public class RoguelikeModule extends Module {
 	public static TextBlock topBorder = null;
 
 	public void initialize() {
-		game = new Game(this);
 	}
 
 	@Override
@@ -112,7 +108,7 @@ public class RoguelikeModule extends Module {
 	
 	private void process() {
 		// main window
-		Level level = game.getLevel();
+		Level level = Game.getLevel();
 
 		for (Entity e : level.getNonMovers()) {
 			int wx = e.pos.x - mainWindow.getCameraX();
@@ -220,79 +216,79 @@ public class RoguelikeModule extends Module {
 			switch (keycode) {
 				case Keys.LEFT:
 				case Keys.NUMPAD_4:
-					game.cmdMoveLeft();
+					Game.cmdMoveLeft();
 					break;
 				case Keys.RIGHT:
 				case Keys.NUMPAD_6:
-					game.cmdMoveRight();
+					Game.cmdMoveRight();
 					break;
 				case Keys.UP:
 				case Keys.NUMPAD_8:
-					game.cmdMoveUp();
+					Game.cmdMoveUp();
 					break;
 				case Keys.DOWN:
 				case Keys.NUMPAD_2:
-					game.cmdMoveDown();
+					Game.cmdMoveDown();
 					break;
 				case Keys.HOME:
 				case Keys.NUMPAD_7:
-					game.cmdMoveUpLeft();
+					Game.cmdMoveUpLeft();
 					break;
 				case Keys.END:
 				case Keys.NUMPAD_1:
-					game.cmdMoveDownLeft();
+					Game.cmdMoveDownLeft();
 					break;
 				case Keys.PAGE_UP:
 				case Keys.NUMPAD_9:
-					game.cmdMoveUpRight();
+					Game.cmdMoveUpRight();
 					break;
 				case Keys.PAGE_DOWN:
 				case Keys.NUMPAD_3:
-					game.cmdMoveDownRight();
+					Game.cmdMoveDownRight();
 					break;
 				case Keys.UNKNOWN:
 				case Keys.NUMPAD_5:
 				case Keys.PERIOD:
-					game.cmdWait();
+					Game.cmdWait();
 					break;
 				case Keys.C:
-					game.cmdChat();
+					Game.cmdChat();
 					break;
 				case Keys.D:
-					game.cmdDrop();
+					Game.cmdDrop();
 					break;
 				case Keys.E:
-					game.cmdEat();
+					Game.cmdEat();
 					break;
 				case Keys.G:
-					game.cmdPickup();
+					Game.cmdPickup();
 					break;
 				case Keys.L:
-					game.cmdLook();
+					Game.cmdLook();
 					break;
 				case Keys.Z:
-					game.cmdMagic();
+					Game.cmdMagic();
 					break;
 				case Keys.I:
-					game.cmdInventory();
+					Game.cmdInventory();
 					break;
 				case Keys.O:
-					game.cmdOpen();
+					Game.cmdOpen();
 					break;
 				case Keys.P:
-					game.cmdPray();
+					Game.cmdPray();
 					break;
 				case Keys.Q:
-					game.cmdQuaff();
+					Game.cmdQuaff();
 					break;
 				case Keys.R:
-					game.cmdRead();
+					Game.cmdRead();
 					break;
 				case Keys.T:
-					game.cmdTarget();
+					Game.cmdTarget();
 					break;
 				case Keys.W:
-					game.cmdWield();
+					Game.cmdWield();
 					break;
 				case Keys.ENTER:
 				case Keys.NUMPAD_ENTER:
@@ -307,52 +303,52 @@ public class RoguelikeModule extends Module {
 			switch (keycode) {
 				case Keys.LEFT:
 				case Keys.NUMPAD_4:
-					game.cmdLongWalk(Compass.WEST);
+					Game.cmdLongWalk(Compass.WEST);
 					break;
 				case Keys.RIGHT:
 				case Keys.NUMPAD_6:
-					game.cmdLongWalk(Compass.EAST);
+					Game.cmdLongWalk(Compass.EAST);
 					break;
 				case Keys.UP:
 				case Keys.NUMPAD_8:
-					game.cmdLongWalk(Compass.NORTH);
+					Game.cmdLongWalk(Compass.NORTH);
 					break;
 				case Keys.DOWN:
 				case Keys.NUMPAD_2:
-					game.cmdLongWalk(Compass.SOUTH);
+					Game.cmdLongWalk(Compass.SOUTH);
 					break;
 				case Keys.HOME:
 				case Keys.NUMPAD_7:
-					game.cmdLongWalk(Compass.NORTH_WEST);
+					Game.cmdLongWalk(Compass.NORTH_WEST);
 					break;
 				case Keys.END:
 				case Keys.NUMPAD_1:
-					game.cmdLongWalk(Compass.SOUTH_WEST);
+					Game.cmdLongWalk(Compass.SOUTH_WEST);
 					break;
 				case Keys.PAGE_UP:
 				case Keys.NUMPAD_9:
-					game.cmdLongWalk(Compass.NORTH_EAST);
+					Game.cmdLongWalk(Compass.NORTH_EAST);
 					break;
 				case Keys.PAGE_DOWN:
 				case Keys.NUMPAD_3:
-					game.cmdLongWalk(Compass.SOUTH_EAST);
+					Game.cmdLongWalk(Compass.SOUTH_EAST);
 					break;
 				case Keys.NUMPAD_5:
-					game.cmdRest();
+					Game.cmdRest();
 				case Keys.L:
-					game.cmdLoad();
+					Game.cmdLoad();
 					break;
 				case Keys.R:
-					game.cmdRegenerate();
+					Game.cmdRegenerate();
 					break;
 				case Keys.S:
-					game.cmdSave();
+					Game.cmdSave();
 					break;
 				case Keys.PERIOD:
-					game.cmdStairsDown();
+					Game.cmdStairsDown();
 					break;
 				case Keys.COMMA:
-					game.cmdStairsUp();
+					Game.cmdStairsUp();
 					break;
 				case Keys.BACKSLASH:
 					Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.magic.map", 100));
@@ -414,7 +410,7 @@ public class RoguelikeModule extends Module {
 					}
 			}
 		}
-		game.turn();
+		Game.turn();
 		return true;
 	}
 
@@ -424,7 +420,7 @@ public class RoguelikeModule extends Module {
 				.withFooterSelectable()
 				.withCancelable(false)
 				.withTitle("Menu");
-		box.addItem("Return to game", "r");
+		box.addItem("Return to Game", "r");
 		box.addItem("Quit to main menu", "q");
 		box.autoHeight();
 		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleEscapeMenu);
@@ -472,55 +468,55 @@ public class RoguelikeModule extends Module {
 		String key = (String)o;
 		switch (key) {
 			case "5":
-				game.cmdWait();
+				Game.cmdWait();
 				break;
 			case "~":
-				game.cmdRest();
+				Game.cmdRest();
 				break;
 			case "c":
-				game.cmdChat();
+				Game.cmdChat();
 				break;
 			case "d":
-				game.cmdDrop();
+				Game.cmdDrop();
 				break;
 			case "e":
-				game.cmdEat();
+				Game.cmdEat();
 				break;
 			case "g":
-				game.cmdPickup();
+				Game.cmdPickup();
 				break;
 			case "i":
-				game.cmdInventory();
+				Game.cmdInventory();
 				break;
 			case "l":
-				game.cmdLook();
+				Game.cmdLook();
 				break;
 			case "o":
-				game.cmdOpen();
+				Game.cmdOpen();
 				break;
 			case "p":
-				game.cmdPray();
+				Game.cmdPray();
 				break;
 			case "q":
-				game.cmdQuaff();
+				Game.cmdQuaff();
 				break;
 			case "r":
-				game.cmdRead();
+				Game.cmdRead();
 				break;
 			case "t":
-				game.cmdTarget();
+				Game.cmdTarget();
 				break;
 			case "w":
-				game.cmdWield();
+				Game.cmdWield();
 				break;
 			case "z":
-				game.cmdMagic();
+				Game.cmdMagic();
 				break;
 			case "<":
-				game.cmdStairsUp();
+				Game.cmdStairsUp();
 				break;
 			case ">":
-				game.cmdStairsDown();
+				Game.cmdStairsDown();
 				break;
 			default:
 				break;

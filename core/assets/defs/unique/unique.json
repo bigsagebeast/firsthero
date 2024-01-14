@@ -36,6 +36,18 @@
         }
       }
     },
+    "unique.feature.intro.stairHint": {
+      "isFeature": true,
+      "hide": true,
+      "procs": {
+        "ProcPopupOnSeen": {
+          "text": "Descend to the next area"
+        },
+        "ProcMessageOnStepOn": {
+          "text": "To descend to the next area, press the > key (shift-period).  To return, press the < key."
+        }
+      }
+    },
     "misc.corpse": {
       "name": "generic corpse (error)",
       "description": "The body of a fallen creature.",
@@ -113,9 +125,25 @@
       "gender": "NONBINARY",
       "wandering": false
     },
-    "unique.intro.farmer": {
-      "name": "Farmer",
+    "unique.intro.farmerhusband": {
+      "name": "Farmer Husband",
       "description": "Your parents are hard-working farmers who keep to themselves. When the goblins landed from the acid sea, their farm was in the way, and now they are in danger of losing their land and their lives.",
+      "gender": "MALE",
+      "peaceful": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "creature.humanoid",
+      "palette": [
+        "yellow",
+        "tan",
+        "brown"
+      ],
+      "threat": -1,
+      "chatPage": "intro.farmer.landing"
+    },
+    "unique.intro.farmerwife": {
+      "name": "Farmer Wife",
+      "description": "Your parents are hard-working farmers who keep to themselves. When the goblins landed from the acid sea, their farm was in the way, and now they are in danger of losing their land and their lives.",
+      "gender": "FEMALE",
       "peaceful": true,
       "bodyPlan": "humanoid",
       "glyphName": "creature.humanoid",

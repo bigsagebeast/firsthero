@@ -15,6 +15,30 @@
       },
       "hideWalkOver": true
     },
+    "feature.stairsUp": {
+      "name": "staircase leading upward",
+      "description": "This staircase leads upward. Use it by standing on it and pressing <",
+      "glyphName": "terrain.upstair",
+      "isFeature": true,
+      "palette": [
+        "white"
+      ],
+      "procs": {
+        "environment.ProcStairs": {}
+      }
+    },
+    "feature.stairsDown": {
+      "name": "staircase leading downward",
+      "description": "This staircase leads downward. Use it by standing on it and pressing >",
+      "glyphName": "terrain.downstair",
+      "isFeature": true,
+      "palette": [
+        "white"
+      ],
+      "procs": {
+        "environment.ProcStairs": {}
+      }
+    },
     "feature.moss": {
       "name": "patch of moss",
       "description": "Moss provides a small amount of naturae charges, before needing to regrow.",

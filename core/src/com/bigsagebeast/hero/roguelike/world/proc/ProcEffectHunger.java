@@ -13,7 +13,7 @@ import com.bigsagebeast.hero.util.Point;
 
 import java.util.List;
 
-public class ProcEffectHunger extends ProcMover {
+public class ProcEffectHunger extends Proc {
 
     public Satiation satiation = Satiation.FULL;
 

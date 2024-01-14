@@ -4,6 +4,7 @@ import com.bigsagebeast.hero.roguelike.game.EntityProc;
 import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.SpecialSpawner;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
+import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcStairs;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Fov;
 import com.bigsagebeast.hero.util.Point;
@@ -25,8 +26,6 @@ public class Level {
 
 	private LevelCell[][] cell;
 	private LevelCell[] allCells;
-	private List<LevelTransition> transitions;
-	private int lastEntityId = 0;
 	public int threat = -1;
 	private long lastWander = 0;
 	public long wanderRate = 50000;
@@ -56,8 +55,6 @@ public class Level {
 				allCells[(x*height) + y] = cell[x][y];
 			}
 		}
-		
-		transitions = new ArrayList<>();
 	}
 
 	public void timePassed(long time) {
@@ -138,29 +135,19 @@ public class Level {
 
 		recalculateJitter();
 	}
-	
-	public void addTransition(LevelTransition transition) {
-		transitions.add(transition);
-	}
-	
-	public LevelTransition findTransition(String direction, Point loc) {
-		for (LevelTransition transition : transitions) {
-			if (transition.direction.equals(direction) && transition.loc.equals(loc)) {
-				return transition;
-			}
-		}
-		return null;
-	}
 
-	public LevelTransition findTransitionTo(String toKey) {
-		for (LevelTransition transition : transitions) {
-			if (transition.toMap.equals(toKey)) {
-				return transition;
+	public Entity findTransitionTo(String toKey) {
+		for (EntityProc ep : getEntityProcs()) {
+			if (ep.proc.getClass().isAssignableFrom(ProcStairs.class)) {
+				ProcStairs stairs = (ProcStairs)ep.proc;
+				if (toKey.equals(stairs.upToMap) || toKey.equals(stairs.downToMap)) {
+					return ep.entity;
+				}
 			}
 		}
 		throw new RuntimeException("Failed to find 'to' transition when moving levels from " + toKey + " to " + key);
 	}
-	
+
 	public int getWidth() {
 		return width;
 	}

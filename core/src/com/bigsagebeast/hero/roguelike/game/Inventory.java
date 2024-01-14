@@ -117,7 +117,7 @@ public class Inventory {
             Game.getPlayerEntity().equip(null, chosenBodyPartForDialogue);
         } else if (chosenEntity != null) {
             Game.getPlayerEntity().equip(chosenEntity, chosenBodyPartForDialogue);
-            GameLoop.roguelikeModule.game.passTime(Game.ONE_TURN);
+            Game.passTime(Game.ONE_TURN);
         }
     }
 
@@ -344,7 +344,7 @@ public class Inventory {
         Entity e = (Entity)chosenEntity;
         if (e != null) {
             Game.getPlayerEntity().readItem(e);
-            GameLoop.roguelikeModule.game.turn();
+            Game.turn();
         }
     }
 
