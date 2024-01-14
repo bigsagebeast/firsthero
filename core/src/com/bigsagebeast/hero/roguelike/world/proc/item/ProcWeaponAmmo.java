@@ -87,7 +87,7 @@ public class ProcWeaponAmmo extends Proc {
     }
 
     @Override
-    public Proc clone() {
+    public Proc clone(Entity entity) {
         ProcWeaponAmmo pw = new ProcWeaponAmmo(averageDamage, toHitBonus, ammoType, canThrow, throwRange);
         return pw;
     }

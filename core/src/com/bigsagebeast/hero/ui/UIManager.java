@@ -15,7 +15,7 @@ public class UIManager {
     private static final int EQUIPMENT_WIDTH_IN_CHARS = WIDTH_IN_CHARS - STATS_WIDTH_IN_CHARS - 1;
     private static final int EQUIPMENT_WIDTH_IN_PIXELS = RoguelikeModule.FONT_SIZE * EQUIPMENT_WIDTH_IN_CHARS;
     private static final int PROGRESS_HEIGHT_IN_PIXELS = RoguelikeModule.FONT_SIZE;
-    private static final int STATBOX_HEIGHT_IN_CHARS = 10;
+    private static final int STATBOX_HEIGHT_IN_CHARS = 11;
     private static final int STATBOX_HEIGHT_IN_PIXELS = RoguelikeModule.FONT_SIZE * STATBOX_HEIGHT_IN_CHARS;
 
     public static final int MIN_RESIZE_X = RIGHT_SIDE_WIDTH_IN_PIXELS + 100;

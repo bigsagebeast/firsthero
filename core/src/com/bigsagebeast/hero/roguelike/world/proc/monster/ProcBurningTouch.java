@@ -1,10 +1,11 @@
-package com.bigsagebeast.hero.roguelike.world.proc;
+package com.bigsagebeast.hero.roguelike.world.proc.monster;
 
 import com.bigsagebeast.hero.roguelike.game.Dice;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.SwingResult;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 
 public class ProcBurningTouch extends Proc {
     int dice;

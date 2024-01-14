@@ -53,7 +53,7 @@ public class ProcShield extends Proc {
     }
 
     @Override
-    public Proc clone() {
+    public Proc clone(Entity entity) {
         return new ProcShield(armorClass, armorThickness, deflectionMelee, deflectionRanged);
     }
 }

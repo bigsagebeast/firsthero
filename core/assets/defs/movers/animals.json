@@ -183,7 +183,6 @@
       "isMonster": true,
       "bodyPlan": "humanoid",
       "glyphName": "animal.spider",
-      "moveCost": 1500,
       "palette": [
         "gray",
         "teal",

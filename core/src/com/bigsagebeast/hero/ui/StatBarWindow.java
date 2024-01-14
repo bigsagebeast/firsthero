@@ -8,6 +8,7 @@ import com.bigsagebeast.hero.roguelike.game.Profile;
 import com.bigsagebeast.hero.roguelike.game.Statblock;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.enums.Satiation;
+import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.Player;
@@ -116,6 +117,7 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(7).addChild(tbElementNaturae);
 
 		statRows.add(new TextBlock("", 0, 8, Color.YELLOW));
+		statRows.add(new TextBlock("", 0, 9)); // parent for status?
 
 		for (TextBlock statRow : statRows) {
 			parent.addChild(statRow);
@@ -192,6 +194,18 @@ public class StatBarWindow extends UIWindow {
 			statRows.get(8).text = satiation.description;
 		} else {
 			statRows.get(8).text = "";
+		}
+		int statusChars = 0;
+		statRows.get(9).close();
+		statRows.set(9, new TextBlock("", 0, 9));
+		parent.addChild(statRows.get(9));
+		for (Proc p : entity.procs) {
+			TextBlock tb = p.getStatusBlock(entity);
+			if (tb != null) {
+				tb.x = statusChars;
+				statusChars += tb.text.length() + 1;
+				statRows.get(9).addChild(tb);
+			}
 		}
 
 		if (player.maxElementCharges.get(Element.WATER) != null) {

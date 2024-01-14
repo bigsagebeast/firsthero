@@ -1,8 +1,10 @@
 package com.bigsagebeast.hero.roguelike.world.proc.effect;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.DamageType;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.util.Util;
 
 public class ProcEffectPoisoned extends ProcTimedEffect {
@@ -66,5 +68,10 @@ public class ProcEffectPoisoned extends ProcTimedEffect {
                 null,
                 entity.getVisibleNameDefinite() + " is no longer poisoned.",
                 null);
+    }
+
+    @Override
+    public TextBlock getStatusBlock(Entity entity) {
+        return new TextBlock("Poisoned", Color.LIME);
     }
 }

@@ -1103,14 +1103,16 @@ public class Entity {
 
         if (containingEntity > -1) {
             Entity container = EntityTracker.get(containingEntity);
-            if (container.inventoryIds.contains(entityId)) {
-                container.inventoryIds.remove(entityId);
-            } else {
-                BodyPart bp = container.body.getParts().stream().filter(b -> container.body.getEquipment(b) == this).findFirst().orElse(null);
-                if (bp != null) {
-                    container.body.putEquipment(bp, -1);
+            if (container != null) {
+                if (container.inventoryIds.contains(entityId)) {
+                    container.inventoryIds.remove(entityId);
                 } else {
-                    //throw new RuntimeException("Tried to destroy a " + name + " contained by " + container.name + " that wasn't in inventory or equipped");
+                    BodyPart bp = container.body.getParts().stream().filter(b -> container.body.getEquipment(b) == this).findFirst().orElse(null);
+                    if (bp != null) {
+                        container.body.putEquipment(bp, -1);
+                    } else {
+                        //throw new RuntimeException("Tried to destroy a " + name + " contained by " + container.name + " that wasn't in inventory or equipped");
+                    }
                 }
             }
         } else if (containingLevel != null) {
@@ -1181,7 +1183,7 @@ public class Entity {
                 other.procs.add(op);
             }
         }
-        ProcItem opi = (ProcItem)other.getItem().clone();
+        ProcItem opi = other.getItem();
         pi.quantity -= quantity;
         opi.quantity = quantity;
         return other;

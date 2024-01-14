@@ -182,6 +182,8 @@ public class Proc {
     // Attempt to draw up to 'max' charges.  Return the actual charges that were drawn.
     public int drawElement(Entity entity, Entity actor, int requested) { return 0; }
 
+    public TextBlock getStatusBlock(Entity entity) { return null; }
+
     public void beDestroyed() {}
 
     public Float getJitter(Entity entity) { return null; }

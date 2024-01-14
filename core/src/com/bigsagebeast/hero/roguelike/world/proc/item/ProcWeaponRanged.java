@@ -85,7 +85,7 @@ public class ProcWeaponRanged extends Proc {
     }
 
     @Override
-    public Proc clone() {
+    public Proc clone(Entity entity) {
         ProcWeaponRanged pw = new ProcWeaponRanged(averageDamage, toHitBonus, range, ammoType);
         return pw;
     }

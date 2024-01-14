@@ -17,7 +17,7 @@ public class ProcEquippable extends Proc {
     public void postBeUnequipped(BodyPart bp, Entity actor) {}
 
     @Override
-    public Proc clone() {
+    public Proc clone(Entity entity) {
         return new ProcEquippable(equipmentFor);
     }
 }
