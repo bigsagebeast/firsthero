@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 public enum Satiation {
     DEAD("Starved", Color.FIREBRICK, 0, null, "You have died of hunger..."),
     STARVING("Starving", Color.RED, 500, null, "You are starving!"),
-    HUNGRY("Hungry", Color.YELLOW, 1000, "You are no longer starving, but you're still hungry.", "You are hungry."),
+    HUNGRY("Hungry", Color.YELLOW, 1000, "You are no longer starving, but you're still weak with hunger.", "You are weak with hunger."),
     PECKISH("Peckish", Color.WHITE, 2000, "You are only a little peckish now.", "You feel a little hungry."),
     FULL(null, null, 4000, "You aren't hungry anymore.", "You no longer feel so full."),
     SATIATED("Satiated", Color.WHITE, 5000, "You are satiated.", "You're not so stuffed anymore."),

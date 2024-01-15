@@ -10,8 +10,8 @@ import com.bigsagebeast.hero.util.Util;
 public class ProcEffectPoisoned extends ProcTimedEffect {
     public int strength;
     public int damageCountdown;
-    public static final int MAX_TURNS_BETWEEN = 20;
-    public static final int MIN_TURNS_BETWEEN = 10;
+    public static final int MAX_TURNS_BETWEEN = 10;
+    public static final int MIN_TURNS_BETWEEN = 5;
 
     public ProcEffectPoisoned() {
     }

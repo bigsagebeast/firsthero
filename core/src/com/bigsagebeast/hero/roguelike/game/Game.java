@@ -57,6 +57,8 @@ public class Game {
 
 	public static Spellbook spellbook = new Spellbook();
 
+	public static Entity lastSelectedInventory; // for use with throwing, maybe others, but not default
+
 	public static void initialize() {
 		time = 0;
 		lastTurnProc = 0;
@@ -190,18 +192,9 @@ public class Game {
 	}
 
 	public static void changeLevel(Level nextLevel, Point playerPos) {
-		if (level != null) {
-			for (EntityProc tuple : level.getEntityProcs()) {
-				if (tuple.proc.hasAction()) {
-					tuple.proc.nextAction = tuple.proc.nextAction - Game.time;
-				}
-			}
-			level.removeEntity(player.getEntity());
-		}
+		changeLevelGeneral();
 
 		level = nextLevel;
-		Game.time = 0;
-		Game.lastTurnProc = 0;
 		level.addEntityWithStacking(player.getEntity(), playerPos, false);
 
 		GameLoop.glyphEngine.initializeLevel(level);
@@ -211,17 +204,8 @@ public class Game {
 	}
 
 	public static void changeLevel(String toKey, String fromKey) {
-		if (level != null) {
-			for (EntityProc tuple : level.getEntityProcs()) {
-				if (tuple.proc.hasAction()) {
-					tuple.proc.nextAction = tuple.proc.nextAction - Game.time;
-				}
-			}
-			level.removeEntity(player.getEntity());
-		}
+		changeLevelGeneral();
 
-		Game.time = 0;
-		Game.lastTurnProc = 0;
 		Level nextLevel = dungeon.getLevel(toKey);
 		level = nextLevel;
 		Point playerPos = nextLevel.findTransitionTo(fromKey).pos;
@@ -234,11 +218,29 @@ public class Game {
 	}
 
 	public static void changeLevel(Level nextLevel) {
+		changeLevelGeneral();
+
 		level = nextLevel;
 		GameLoop.glyphEngine.initializeLevel(level);
 		level.prepare();
 		interrupted = false;
 		passTime(0);
+	}
+
+	private static void changeLevelGeneral() {
+		if (level != null) {
+			for (EntityProc tuple : level.getEntityProcs()) {
+				if (tuple.proc.hasAction()) {
+					tuple.proc.nextAction = tuple.proc.nextAction - Game.time;
+				}
+				if (tuple.proc.getClass().isAssignableFrom(ProcMover.class)) {
+					((ProcMover)tuple.proc).lastAttackedByPlayer -= Game.time;
+				}
+			}
+			level.removeEntity(player.getEntity());
+		}
+		Game.time = 0;
+		Game.lastTurnProc = 0;
 	}
 
 	// TODO should specify a profile name or slot or something
@@ -313,7 +315,9 @@ public class Game {
 				}
 				break;
 			}
-			Fov.calculateFOV(level, /*lowestProc.entity.visionRange*/  level.ambientLight, lowestProc.entity);
+			//lowestProc.entity.visionRange
+			int vision = lowestProc.entity.incorporeal ? 9999 : level.ambientLight;
+			Fov.calculateFOV(level, vision, lowestProc.entity);
 			lowestProc.proc.act(lowestProc.entity);
 			for (Proc onActProc : lowestProc.entity.procs) {
 				onActProc.onAction(lowestProc.entity);
@@ -645,6 +649,42 @@ public class Game {
 		GameLoop.targetingModule.begin(tm, Game::handleTarget);
 	}
 
+	public static void cmdThrow() {
+		Inventory.openInventoryToThrow();
+	}
+
+	public static void handleThrowInventory(Object selectedObject) {
+		if (selectedObject != null) {
+			lastSelectedInventory = (Entity)selectedObject;
+			int range = 6;
+			TargetingModule.TargetMode tm = GameLoop.targetingModule.new TargetMode(false, true, true, true, range);
+			GameLoop.targetingModule.begin(tm, range, Game::handleThrowTarget);
+		}
+	}
+
+	public static void handleThrowTarget(Point target) {
+		Entity thrownEntity;
+		ProcItem pi = lastSelectedInventory.getItem();
+		if (pi.quantity == 1) {
+			thrownEntity = lastSelectedInventory;
+		} else {
+			thrownEntity = lastSelectedInventory.split(1);
+		}
+
+		Entity targetMover = level.moverAt(target);
+		if (target != null) {
+			ProcMover pm = targetMover.getMover();
+			// TODO: Only for harmful effects
+			pm.logRecentlyAttacked();
+			// skip preBeQuaffed
+			for (Proc p : thrownEntity.procs) {
+				p.postBeQuaffed(thrownEntity, targetMover);
+			}
+			thrownEntity.destroy();
+		}
+		passTime(ONE_TURN);
+	}
+
 	public static void cmdPray() {
 		boolean prayingAtProc = false;
 		for (Entity e : getLevel().getEntitiesOnTile(getPlayerEntity().pos)) {
@@ -694,6 +734,7 @@ public class Game {
 
 		if (target != null) {
 			CombatLogic.shoot(player.getEntity(), target, rangedWeapon, shotEntity);
+			target.getMover().logRecentlyAttacked();
 		}
 		if (lastShot) {
 			announce("You're out of " + shotEntity.getVisiblePluralName() + ".");
@@ -869,6 +910,9 @@ public class Game {
 	}
 
 	public static void attack(Entity actor, Entity target) {
+		if (actor == getPlayerEntity()) {
+			target.getMover().logRecentlyAttacked();
+		}
 		// If the first swing is cancelled, don't call anything else.
 		// If the first swing hits and penetrates, no second swing.
 		// If the first swing hits and doesn't penetrate, use second swing only if it hits.

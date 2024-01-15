@@ -22,6 +22,7 @@ public class DuelModule extends Module {
     @Override
     public void start() {
         super.start();
+        Game.loadFiles();
         DialogueBox box = new DialogueBox()
                 .withCancelable(true)
                 .withMargins(60, 60)

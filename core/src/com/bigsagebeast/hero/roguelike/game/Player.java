@@ -5,6 +5,7 @@ import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcEffectHunger;
+import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
 
 import java.util.HashMap;
 
@@ -139,5 +140,13 @@ public class Player {
 		}
 		fillCharges(element);
 
+	}
+
+	public void registerExperienceForKill(Entity target) {
+		Entity pc = getEntity();
+		pc.experience += target.experienceAwarded;
+		if (pc.experience >= pc.experienceToNext) {
+			((ProcPlayer)(pc.getProcByType(ProcPlayer.class))).levelUp(pc);
+		}
 	}
 }

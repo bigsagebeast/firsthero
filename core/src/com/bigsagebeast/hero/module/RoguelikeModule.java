@@ -344,6 +344,9 @@ public class RoguelikeModule extends Module {
 				case Keys.S:
 					Game.cmdSave();
 					break;
+				case Keys.T:
+					Game.cmdThrow();
+					break;
 				case Keys.PERIOD:
 					Game.cmdStairsDown();
 					break;

@@ -167,6 +167,10 @@ public abstract class Spell {
 
     public void affectTargets(Entity caster, Collection<Entity> targets, Compass dir) {
         for (Entity target : targets) {
+            // TODO: only for harmful spells
+            if (caster == Game.getPlayerEntity()) {
+                target.getMover().logRecentlyAttacked();
+            }
             affectTarget(caster, target, dir);
         }
     }

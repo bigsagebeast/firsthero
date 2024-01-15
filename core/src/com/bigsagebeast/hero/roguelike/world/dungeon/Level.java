@@ -262,6 +262,15 @@ public class Level {
 		}
 		return null;
 	}
+
+	public Entity moverAt(Point p) {
+		for (Entity e : getMovers()) {
+			if (e.pos.equals(p)) {
+				return e;
+			}
+		}
+		return null;
+	}
 	
 	public Visibility checkVis(Entity player, Entity actor, Entity target) {
 		if (player == actor) {

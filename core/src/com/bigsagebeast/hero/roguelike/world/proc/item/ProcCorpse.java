@@ -91,7 +91,7 @@ public class ProcCorpse extends Proc {
         if (effect == null) {
             effect = new ProcEffectPoisoned();
             effect.strength = 5;
-            effect.turnsRemaining = 25;
+            effect.turnsRemaining = 13;
             actor.addProc(effect);
             effect.damageCountdown = 3;
         } else {
@@ -132,7 +132,7 @@ public class ProcCorpse extends Proc {
 
             ProcEffectPoisoned procPoisoned = new ProcEffectPoisoned();
             procPoisoned.strength = 3;
-            procPoisoned.turnsRemaining = 25;
+            procPoisoned.turnsRemaining = 13;
             actor.addProc(procPoisoned);
         }
     }

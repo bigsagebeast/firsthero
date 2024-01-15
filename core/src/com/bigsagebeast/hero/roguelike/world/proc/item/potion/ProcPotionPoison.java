@@ -17,16 +17,20 @@ public class ProcPotionPoison extends ImmutableProc {
 
     @Override
     public void postBeQuaffed(Entity entity, Entity actor) {
+        int strength = 5;
+        if (entity != Game.getPlayerEntity()) {
+            strength *= 2;
+        }
         ProcEffectPoisoned effect = (ProcEffectPoisoned)actor.getProcByType(ProcEffectPoisoned.class);
         int duration = 0;
         switch (entity.getBeatitude()) {
-            case CURSED: duration = 33; break;
-            case UNCURSED: duration = 18; break;
+            case CURSED: duration = 17; break;
+            case UNCURSED: duration = 9; break;
             case BLESSED: duration = 5; break;
         }
         if (effect == null) {
             effect = new ProcEffectPoisoned();
-            effect.strength = 5;
+            effect.strength = strength;
             effect.turnsRemaining = duration;
             actor.addProc(effect);
             effect.damageCountdown = 3;

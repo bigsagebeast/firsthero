@@ -76,16 +76,9 @@ public class ProcPlayer extends ProcMover {
 
     @Override
     public void postDoKill(Entity entity, Entity target, Entity tool) {
-        entity.experience += target.experienceAwarded;
-        if (target.peaceful) {
-            Game.announce("If only talking was implemented.");
-        }
-        if (entity.experience >= entity.experienceToNext) {
-            levelUp(entity);
-        }
     }
 
-    private void levelUp(Entity entity) {
+    public void levelUp(Entity entity) {
         entity.level++;
         entity.experience -= entity.experienceToNext;
         entity.experienceToNext *= 2;

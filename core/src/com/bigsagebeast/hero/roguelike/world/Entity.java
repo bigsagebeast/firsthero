@@ -292,6 +292,10 @@ public class Entity {
                         getVisibleNameDefinite() + " dies.",
                         null);
             }
+            if (getMover().wasRecentlyAttacked()) {
+                // Maybe this should be setting death at the end of a turn, so, after death messages are processed
+                Game.getPlayer().registerExperienceForKill(this);
+            }
         }
         if (this == Game.getPlayerEntity()) {
             return;
@@ -310,11 +314,11 @@ public class Entity {
     }
 
     public void hurt(int amount) {
-        hurt(amount, false);
+        hurt(amount, true);
     }
 
     public void hurt(int amount, DamageType damageType) {
-        hurt(amount, damageType, false);
+        hurt(amount, damageType, true);
     }
 
     public boolean canSee(Entity target) {

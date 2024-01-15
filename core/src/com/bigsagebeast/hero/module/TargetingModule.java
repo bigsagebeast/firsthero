@@ -100,6 +100,10 @@ public class TargetingModule extends Module {
     }
 
     public void begin(TargetMode targetMode, Consumer<Point> handler) {
+        begin(targetMode, 999, handler);
+    }
+
+    public void begin(TargetMode targetMode, float range, Consumer<Point> handler) {
         operationMode = OperationMode.TARGETING;
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
         moversInLOS = new ArrayList<>();

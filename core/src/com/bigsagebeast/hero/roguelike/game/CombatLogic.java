@@ -132,6 +132,7 @@ public class CombatLogic {
 					null);
 			if (GameLoop.roguelikeModule.isRunning()) {
 				// test to make sure we're not in a duel
+				// note: postDoKill might be called multiple times, and this is likely the SECOND time
 				actor.forEachProcIncludingEquipment((e, p) -> p.postDoKill(e, target, null));
 				target.forEachProcIncludingEquipment((e, p) -> p.postBeKilled(e, actor, null));
 			}
@@ -221,7 +222,7 @@ public class CombatLogic {
 
 	public static void castDamage(Entity actor, Entity target, Spell spell, int rawDamage) {
 		// No pre/post for being cast on, that's handled in the spell
-		target.hurt(rawDamage);
+		target.hurt(rawDamage, false);
 		if (target.hitPoints > 0) {
 			spell.announceHitWithoutKill(actor, target);
 		} else {
@@ -341,7 +342,7 @@ public class CombatLogic {
 			// TODO should be a debug log
 			System.out.println("Less than 1 damage dealt");
 		}
-		target.hurt(damage);
+		target.hurt(damage, false);
 	}
 
 	public static boolean tryResist(Entity target, int difficulty, int statValue) {

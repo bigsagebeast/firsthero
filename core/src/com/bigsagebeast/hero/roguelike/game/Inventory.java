@@ -152,11 +152,43 @@ public class Inventory {
         }
     }
 
+
     public static void dropWithQuantity(Entity entity, int quantity) {
         if (quantity > 0) {
             Game.getPlayerEntity().dropItemWithQuantity(entity, quantity);
             Game.passTime(Game.ONE_TURN);
         }
+    }
+
+    public static void openInventoryToThrow() {
+        Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
+        DialogueBox box = new DialogueBox()
+                .withFooterClosable()
+                .withTitle("Select item to throw (use ranged attacks instead for ammo)")
+                .withAllowLetters(true)
+                .withMargins(60, 60);
+
+        // potions first
+        List<Entity> potionEnts = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == ItemCategory.CATEGORY_POTION).collect(Collectors.toList());
+        if (potionEnts.size() > 0) {
+            box.addHeader("*** " + ItemCategory.CATEGORY_POTION.getName() + " ***");
+        }
+        for (Entity ent : potionEnts) {
+            box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+        }
+
+        // TODO: Special handling for rocks as ammo?
+
+        for (ItemCategory cat : ItemCategory.categories.stream().filter(cat -> cat != ItemCategory.CATEGORY_POTION).collect(Collectors.toList())) {
+            List<Entity> ents = inventory.stream().filter(e -> Itempedia.get(e.itemTypeKey).category == cat).collect(Collectors.toList());
+            if (ents.size() > 0) {
+                box.addHeader("*** " + cat.getName() + " ***");
+            }
+            for (Entity ent : ents) {
+                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+            }
+        }
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Game::handleThrowInventory);
     }
 
 
