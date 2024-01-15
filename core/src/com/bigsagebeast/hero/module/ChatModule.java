@@ -5,9 +5,7 @@ import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.GameState;
 import com.bigsagebeast.hero.Graphics;
 import com.bigsagebeast.hero.GraphicsState;
-import com.bigsagebeast.hero.chat.ChatBook;
-import com.bigsagebeast.hero.chat.ChatLink;
-import com.bigsagebeast.hero.chat.ChatPage;
+import com.bigsagebeast.hero.chat.*;
 import com.bigsagebeast.hero.dialogue.ChatBox;
 import com.bigsagebeast.hero.gfx.GfxRectBorder;
 import com.bigsagebeast.hero.gfx.GfxRectFilled;
@@ -20,6 +18,7 @@ import com.bigsagebeast.hero.roguelike.world.Entity;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ChatModule extends Module {
@@ -90,20 +89,27 @@ public class ChatModule extends Module {
             return;
         }
         validLinks.clear();
-        for (ChatLink link : page.links) {
+        List<ChatLink> links = new ArrayList<>();
+        links.addAll(page.links);
+        if (page.inheritLinks != null) {
+            links.addAll(ChatBook.get(page.inheritLinks).links);
+        }
+        for (ChatLink link : links) {
             // filter out links that don't meet the conditions
             // 'auto' pages are usually the landing pages, and redirect to real pages based on story flags
             if (page.auto) {
                 openPage(link.nextPage);
                 return;
             } else {
-                validLinks.add(link);
-            }
-        }
-        if (page.inheritLinks != null) {
-            ChatPage inheritPage = ChatBook.get(page.inheritLinks);
-            for (ChatLink link : inheritPage.links) {
-                validLinks.add(link);
+                boolean canShow = true;
+                for (ChatComparator test : link.tests) {
+                    if (!ChatState.compare(test)) {
+                        canShow = false;
+                    }
+                }
+                if (canShow) {
+                    validLinks.add(link);
+                }
             }
         }
 
@@ -166,6 +172,10 @@ public class ChatModule extends Module {
                 } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
+            }
+
+            for (ChatSetter setter : link.setters) {
+                ChatState.execute(setter);
             }
 
             if (link.terminal) {

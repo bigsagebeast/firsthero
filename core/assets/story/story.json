@@ -1,7 +1,6 @@
 {
-  "pages": [
-    {
-      "key": "intro.farmer.landing",
+  "pages": {
+    "intro.farmer.landing": {
       "text": "Ye have to fight off the goblins before they kill us all.",
       "links": [
         {
@@ -14,8 +13,7 @@
         }
       ]
     },
-    {
-      "key": "intro.farmer.page2",
+    "intro.farmer.page2": {
       "text": "They took up residence in the caves to the north. Ye must fight with anything you can.",
       "links": [
         {
@@ -24,35 +22,153 @@
         }
       ]
     },
-    {
-      "key": "aurex.serifex.intro.landing",
+    "aurex.serifex.intro.landing": {
       "text": "You're alive? And after all this time. We haven't seen another Old God here since your brother. No matter - the war is over, and we haven't been properly introduced. My name is Serifex, and I bring fresh water to the Bodnam. Your kind have been gone for a long time, after all, and there's a new order to things.",
       "links": [
         {
           "text": "My brother? What has happened to Nemesis?",
-          "nextPage": "aurex.serifex.intro.nemesis"
+          "nextPage": "aurex.serifex.intro.nemesis",
+          "tests": [
+            {
+              "op": "NEX",
+              "variableA": "aurex.serifex.intro.nemesis.seen"
+            }
+          ],
+          "setters": [
+            {
+              "op": "SETINT",
+              "var": "aurex.serifex.intro.nemesis.seen",
+              "value": 1
+            }
+          ]
         },
         {
           "text": "The war is over?",
-          "nextPage": "aurex.serifex.intro.thewar"
+          "nextPage": "aurex.serifex.intro.thewar",
+          "tests": [
+            {
+              "op": "NEX",
+              "variableA": "aurex.serifex.intro.thewar.seen"
+            }
+          ],
+          "setters": [
+            {
+              "op": "SETINT",
+              "var": "aurex.serifex.intro.thewar.seen",
+              "value": 1
+            }
+          ]
         },
         {
           "text": "Serifex? Fresh water?",
-          "nextPage": "aurex.serifex.intro.serifex"
+          "nextPage": "aurex.serifex.intro.serifex",
+          "tests": [
+            {
+              "op": "NEX",
+              "variableA": "aurex.serifex.intro.serifex.seen"
+            }
+          ],
+          "setters": [
+            {
+              "op": "SETINT",
+              "var": "aurex.serifex.intro.serifex.seen",
+              "value": 1
+            }
+          ]
         },
         {
           "text": "The Bodnam?",
-          "nextPage": "aurex.serifex.intro.iamhero"
+          "nextPage": "aurex.serifex.intro.bodnam",
+          "tests": [
+            {
+              "op": "NEX",
+              "variableA": "aurex.serifex.intro.bodnam.seen"
+            }
+          ],
+          "setters": [
+            {
+              "op": "SETINT",
+              "var": "aurex.serifex.intro.bodnam.seen",
+              "value": 1
+            }
+          ]
         },
         {
           "text": "New order?",
-          "nextPage": "aurex.serifex.intro.neworder"
+          "nextPage": "aurex.serifex.intro.neworder",
+          "tests": [
+            {
+              "op": "NEX",
+              "variableA": "aurex.serifex.intro.neworder.seen"
+            }
+          ],
+          "setters": [
+            {
+              "op": "SETINT",
+              "var": "aurex.serifex.intro.neworder.seen",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "text": "I've heard enough.",
+          "nextPage": "aurex.serifex.intro.heardenough",
+          "tests": [
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.nemesis.seen"
+            },
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.thewar.seen"
+            },
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.serifex.seen"
+            },
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.bodnam.seen"
+            },
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.neworder.seen"
+            }
+          ]
         }
       ]
     },
-    {
-      "key": "aurex.loruch.intro.landing",
-      "text": "My name is Loruch, God of the trees. We never fought, but I know who you are. No matter, the world is different now. We Gods live in peace with the natural forces of the multiverse, guiding the Bodnam from afar.",
+    "aurex.serifex.intro.nemesis": {
+      "text": "Nemesis betrayed all the Old Gods, and especially you. He told us of your plans for the final assault, and we crushed you. In return, we allowed him to live.  He comes and goes as he pleases through all of Aurex and the new worlds, though he is seldom seen of late.",
+      "inheritLinks": "aurex.serifex.intro.landing"
+    },
+    "aurex.serifex.intro.thewar": {
+      "text": "We craved existence, and sources of power, so we came into your realm out of nothingness to take it. Many of us were killed, but you were overrun. Unfortunately, there were consequences. Without the Old King to keep the universe together, it shattered into countless fragments. Now, we have taken up portfolios of natural power, and rule over multiverse and all the the Bodnam which inhabit it... most of us with kindness.",
+      "inheritLinks": "aurex.serifex.intro.landing"
+    },
+    "aurex.serifex.intro.serifex": {
+      "text": "I am the Lord of fresh water. Rains, rivers and irrigation are my portfolio. But more importantly, I represent a way of good and proper life for all mortals. So long as they obey the rules of a just society, they are protected. Those who choose the path of chaos suffer floods and hurricanes. Such is my philosophy. Loruch and the Stoneheart stand beside me in this.",
+      "inheritLinks": "aurex.serifex.intro.landing"
+    },
+    "aurex.serifex.intro.bodnam": {
+      "text": "The Bodnam are all the people of mortalkind. Those who speak and live in cities, those who can worship and love. They are who the gods are meant to protect, and I take my duties seriously. I suggest you do as well.",
+      "inheritLinks": "aurex.serifex.intro.landing"
+    },
+    "aurex.serifex.intro.neworder": {
+      "inheritLinks": "aurex.serifex.intro.landing",
+      "text": "All in all, there are nine New Gods. Unlike your domains of emotion and concepts, we rule over natural forces. We have no king or queen, but there are three of us who lead the rest. I am one of them; my philosophy is that our duty is to protect and guide the Bodnam. Astrifera and Fulminar are the others, and they have their own philosophies; you will meet them in time. It is through all nine of our powers that the multiverse still cleaves together, now. It's a new multiverse, and Aurex is a new home of the gods. We have no need of your aid."
+    },
+    "aurex.serifex.intro.heardenough": {
+      "text": "You are free to go, we will not challenge you. Just don't go starting any fights. You're but one god, after all, and weak. Go, meet your new family.",
+      "links": [
+        {
+          "text": "Goodbye.",
+          "terminal": true
+        }
+      ]
+    },
+    "aurex.loruch.intro.landing": {
+      "text": "My name is Loruch, God of the trees. We never fought, but I know who you are. No matter, the world is different now. We Gods live in peace with the natural forces of the multiverse, guiding the Bodnam from afar. [UNFINISHED]",
       "links": [
         {
           "text": "God of the trees?",
@@ -72,5 +188,5 @@
         }
       ]
     }
-  ]
+  }
 }
