@@ -87,6 +87,7 @@ public class Graphics {
 	}
 
 	public void startShapeBatch(ShapeRenderer.ShapeType shapeType) {
+		shapeBatch.setProjectionMatrix(cam.combined);
 		shapeBatch.begin(shapeType);
 	}
 
