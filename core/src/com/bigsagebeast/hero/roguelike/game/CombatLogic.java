@@ -120,8 +120,7 @@ public class CombatLogic {
 			target.forEachProcIncludingEquipment((e, p) -> p.postBeHit(e, actor, tool, result));
 		}
 
-		// TODO make use of the flag...
-		if (target.dead) {
+		if (target.dead && target.hitPoints <= 0) {
 			// TODO should pass the entity you killed them with as 'tool'
 			// TODO does pre kill make sense?
 
@@ -166,7 +165,7 @@ public class CombatLogic {
 		actor.forEachProcIncludingEquipment((e, p) -> p.postDoHit(e, target, tool, result));
 		target.forEachProcIncludingEquipment((e, p) -> p.postBeHit(e, actor, tool, result));
 
-		if (target.dead) {
+		if (target.dead && target.hitPoints <= 0) {
 			// TODO should pass the entity you killed them with as 'tool'
 			// TODO does pre kill make sense?
 

@@ -605,6 +605,7 @@ public class Level {
 			if (Game.isBlockedByEntity(null, pos.x, pos.y)) {
 				// TODO: Try at nearby points
 				GameLoop.warn("Couldn't spawn neverbeast at " + pos);
+				neverbeastCountdown++;
 				return;
 			}
 

@@ -69,7 +69,7 @@ public class Bestiary {
 
 		if (e.incorporeal) {
 			// TODO: Should have its own flag for omniscient?
-			e.visionRange = 9999;
+			e.visionRange = 99;
 		}
 
 		if (p.moveCost == 0) throw new RuntimeException("Bad move cost");

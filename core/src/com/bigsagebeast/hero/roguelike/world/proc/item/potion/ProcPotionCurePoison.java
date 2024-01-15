@@ -20,7 +20,7 @@ public class ProcPotionCurePoison extends ImmutableProc {
         ProcEffectPoisoned effect = (ProcEffectPoisoned)actor.getProcByType(ProcEffectPoisoned.class);
         switch (entity.getBeatitude()) {
             case CURSED:
-                Game.announceVis(actor, null, "Something was wrong with that potion.", null, null, null);
+                Game.announceVis(actor, null, "Something was wrong with that potion.", null, "Something was wrong with that potion.", null);
                 if (effect == null) {
                     effect = new ProcEffectPoisoned();
                     effect.strength = 5;
@@ -38,6 +38,9 @@ public class ProcPotionCurePoison extends ImmutableProc {
                 }
                 break;
         }
-        entity.identifyItemType();
+        if (effect != null) {
+            Game.announceVis(actor, null, "Nothing happens.", null, "Nothing happens.", null);
+            entity.identifyItemType();
+        }
     }
 }

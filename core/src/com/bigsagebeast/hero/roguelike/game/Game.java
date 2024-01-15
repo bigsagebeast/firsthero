@@ -5,8 +5,11 @@ import com.badlogic.gdx.files.FileHandle;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.HeroGame;
 import com.bigsagebeast.hero.SetupException;
+import com.bigsagebeast.hero.chat.ChatLink;
+import com.bigsagebeast.hero.dialogue.ChatBox;
 import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.enums.Stat;
+import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.module.RoguelikeModule;
 import com.bigsagebeast.hero.module.TargetingModule;
 import com.bigsagebeast.hero.persistence.Persistence;
@@ -151,6 +154,18 @@ public class Game {
 		level = dungeon.getLevel("start");
 		Level cave = dungeon.getLevel("cave");
 		level.prepare();
+
+		ChatBox chatBox = new ChatBox()
+				.withMargins(60, 60)
+				.withTitle("Tutorial", null)
+				.withText("The First Hero is a turn-based game. To move or attack, use all eight directions of the numpad. If you don't have a full numpad, alt-left and right move in northern diagonals, and ctrl-left and right move in southern diagonals. Watch the 'Announcements' window for more information.");
+
+		ArrayList<ChatLink> links = new ArrayList<>();
+		ChatLink linkOk = new ChatLink();
+		linkOk.text = "OK";
+		links.add(linkOk);
+
+		GameLoop.chatModule.openArbitrary(chatBox, links);
 	}
 
 	public static void startAurex() {
@@ -316,7 +331,7 @@ public class Game {
 				break;
 			}
 			//lowestProc.entity.visionRange
-			int vision = lowestProc.entity.incorporeal ? 9999 : level.ambientLight;
+			int vision = lowestProc.entity.incorporeal ? 99 : level.ambientLight;
 			Fov.calculateFOV(level, vision, lowestProc.entity);
 			lowestProc.proc.act(lowestProc.entity);
 			for (Proc onActProc : lowestProc.entity.procs) {

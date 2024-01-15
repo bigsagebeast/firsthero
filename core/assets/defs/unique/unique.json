@@ -32,7 +32,7 @@
       "hide": true,
       "procs": {
         "ProcMessageOnStepOn": {
-          "text": "To rest, press 5 on the keypad to wait one turn, or shift-5 to wait 50 turns."
+          "text": "To rest, press 5 on the keypad or backspace to wait one turn, or shift-5 or shift- backspace to wait 50 turns."
         }
       }
     },

@@ -148,7 +148,7 @@ public class RoguelikeModule extends Module {
 				for (Entity target : level.getMovers()) {
 					if (e == target)
 						continue;
-					if (e.canSee(target)) {
+					if (e.incorporeal || e.canSee(target)) {
 						visibleMovers.add(target);
 					}
 				}
@@ -249,6 +249,7 @@ public class RoguelikeModule extends Module {
 				case Keys.UNKNOWN:
 				case Keys.NUMPAD_5:
 				case Keys.PERIOD:
+				case Keys.BACKSPACE:
 					Game.cmdWait();
 					break;
 				case Keys.C:
@@ -334,6 +335,7 @@ public class RoguelikeModule extends Module {
 					Game.cmdLongWalk(Compass.SOUTH_EAST);
 					break;
 				case Keys.NUMPAD_5:
+				case Keys.BACKSPACE:
 					Game.cmdRest();
 				case Keys.L:
 					Game.cmdLoad();
@@ -374,6 +376,14 @@ public class RoguelikeModule extends Module {
 		}
 		if (!shift && ctrl && !alt) {
 			switch (keycode) {
+				case Keys.LEFT:
+				case Keys.NUMPAD_4:
+					Game.cmdMoveDownLeft();
+					break;
+				case Keys.RIGHT:
+				case Keys.NUMPAD_6:
+					Game.cmdMoveDownRight();
+					break;
 				case Keys.RIGHT_BRACKET:
 					for (String key : Itempedia.map.keySet()) {
 						if (!Itempedia.map.get(key).isFeature) {
@@ -385,8 +395,28 @@ public class RoguelikeModule extends Module {
 					}
 			}
 		}
+		if (!shift && !ctrl && alt) {
+			switch (keycode) {
+				case Keys.LEFT:
+				case Keys.NUMPAD_4:
+					Game.cmdMoveUpLeft();
+					break;
+				case Keys.RIGHT:
+				case Keys.NUMPAD_6:
+					Game.cmdMoveUpRight();
+					break;
+			}
+		}
 		if (shift && ctrl && !alt) {
 			switch (keycode) {
+				case Keys.LEFT:
+				case Keys.NUMPAD_4:
+					Game.cmdLongWalk(Compass.SOUTH_WEST);
+					break;
+				case Keys.RIGHT:
+				case Keys.NUMPAD_6:
+					Game.cmdLongWalk(Compass.SOUTH_EAST);
+					break;
 				case Keys.RIGHT_BRACKET:
 					for (String key : Itempedia.map.keySet()) {
 						if (!Itempedia.map.get(key).isFeature) {
@@ -397,6 +427,18 @@ public class RoguelikeModule extends Module {
 							Game.getPlayerEntity().acquireWithStacking(itemEnt);
 						}
 					}
+			}
+		}
+		if (shift && !ctrl && alt) {
+			switch (keycode) {
+				case Keys.LEFT:
+				case Keys.NUMPAD_4:
+					Game.cmdLongWalk(Compass.NORTH_WEST);
+					break;
+				case Keys.RIGHT:
+				case Keys.NUMPAD_6:
+					Game.cmdLongWalk(Compass.NORTH_EAST);
+					break;
 			}
 		}
 		if (!shift && ctrl && alt) {

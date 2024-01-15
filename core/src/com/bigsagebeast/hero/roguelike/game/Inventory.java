@@ -164,7 +164,7 @@ public class Inventory {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
-                .withTitle("Select item to throw (use ranged attacks instead for ammo)")
+                .withTitle("Select item to throw")
                 .withAllowLetters(true)
                 .withMargins(60, 60);
 
