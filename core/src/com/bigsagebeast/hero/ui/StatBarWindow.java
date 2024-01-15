@@ -4,18 +4,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.engine.WindowEngine;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.module.RoguelikeModule;
-import com.bigsagebeast.hero.roguelike.game.Profile;
-import com.bigsagebeast.hero.roguelike.game.Statblock;
+import com.bigsagebeast.hero.roguelike.game.*;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.text.TextBlock;
-import com.bigsagebeast.hero.roguelike.game.Game;
-import com.bigsagebeast.hero.roguelike.game.Player;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StatBarWindow extends UIWindow {
 
@@ -196,8 +194,9 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(8).close();
 		statRows.set(8, new TextBlock("", 0, 8));
 		parent.addChild(statRows.get(8));
-		for (Proc p : entity.procs) {
-			TextBlock tb = p.getStatusBlock(entity);
+		// TODO multiple rows
+		for (EntityProc ep : entity.allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+			TextBlock tb = ep.proc.getStatusBlock(entity);
 			if (tb != null) {
 				tb.x = statusChars;
 				statusChars += tb.text.length() + 1;

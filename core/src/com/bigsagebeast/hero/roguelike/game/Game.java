@@ -671,16 +671,27 @@ public class Game {
 			thrownEntity = lastSelectedInventory.split(1);
 		}
 
-		Entity targetMover = level.moverAt(target);
 		if (target != null) {
-			ProcMover pm = targetMover.getMover();
-			// TODO: Only for harmful effects
-			pm.logRecentlyAttacked();
-			// skip preBeQuaffed
-			for (Proc p : thrownEntity.procs) {
-				p.postBeQuaffed(thrownEntity, targetMover);
+			Entity targetMover = level.moverAt(target);
+			if (thrownEntity.getItemType().category == ItemCategory.CATEGORY_POTION) {
+				announce(thrownEntity.getVisibleNameDefinite() + " shatters!");
+				if (targetMover != null) {
+					ProcMover pm = targetMover.getMover();
+					// TODO: Only for harmful effects
+					pm.logRecentlyAttacked();
+					// skip preBeQuaffed
+					for (Proc p : thrownEntity.procs) {
+						p.postBeQuaffed(thrownEntity, targetMover);
+					}
+				}
+				thrownEntity.destroy();
+			} else {
+				if (targetMover != null) {
+					// TODO hit things with weapons or whatever
+					announce(thrownEntity.getVisibleNameDefinite() + " misses " + targetMover.getVisibleNameDefinite() + ".");
+				}
+				level.addEntityWithStacking(thrownEntity, target);
 			}
-			thrownEntity.destroy();
 		}
 		passTime(ONE_TURN);
 	}

@@ -1,8 +1,10 @@
 package com.bigsagebeast.hero.roguelike.world.proc.effect;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.text.TextBlock;
 
 public class ProcEffectOakStrength extends ProcTimedEffect {
     public ProcEffectOakStrength() {
@@ -38,5 +40,10 @@ public class ProcEffectOakStrength extends ProcTimedEffect {
             }
         }
         return 0;
+    }
+
+    @Override
+    public TextBlock getStatusBlock(Entity entity) {
+        return new TextBlock("Strength", Color.WHITE);
     }
 }
