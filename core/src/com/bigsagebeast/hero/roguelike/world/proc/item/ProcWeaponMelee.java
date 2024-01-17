@@ -6,7 +6,6 @@ import com.bigsagebeast.hero.enums.WeaponType;
 import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.game.Game;
-import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.util.Util;
@@ -60,7 +59,7 @@ public class ProcWeaponMelee extends Proc {
     public float getDamage(Entity wielder) {
         float accum = damage;
         for (Stat stat : scaling.keySet()) {
-            accum += Stat.getScaling(wielder.statblock.get(stat), scaling.get(stat).damage);
+            accum += Stat.getScalingWithMinimum(wielder.statblock.get(stat), scaling.get(stat).damage);
         }
         return accum;
     }
@@ -68,7 +67,7 @@ public class ProcWeaponMelee extends Proc {
     public float getToHit(Entity wielder) {
         float accum = toHit;
         for (Stat stat : scaling.keySet()) {
-            accum += Stat.getScaling(wielder.statblock.get(stat), scaling.get(stat).toHit);
+            accum += Stat.getScalingWithMinimum(wielder.statblock.get(stat), scaling.get(stat).toHit);
         }
         return accum;
     }
@@ -76,7 +75,7 @@ public class ProcWeaponMelee extends Proc {
     public float getPenetration(Entity wielder) {
         float accum = penetration;
         for (Stat stat : scaling.keySet()) {
-            accum += Stat.getScaling(wielder.statblock.get(stat), scaling.get(stat).penetration);
+            accum += Stat.getScalingWithMinimum(wielder.statblock.get(stat), scaling.get(stat).penetration);
         }
         return accum;
     }
@@ -84,7 +83,7 @@ public class ProcWeaponMelee extends Proc {
     public float getDefense(Entity wielder) {
         float accum = defense;
         for (Stat stat : scaling.keySet()) {
-            accum += Stat.getScaling(wielder.statblock.get(stat), scaling.get(stat).defense);
+            accum += Stat.getScalingWithMinimum(wielder.statblock.get(stat), scaling.get(stat).defense);
         }
         return accum;
     }
@@ -97,6 +96,7 @@ public class ProcWeaponMelee extends Proc {
 
     @Override
     public TextBlock getNameBlock(Entity entity) {
+        /*
         Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
         ProcWeaponMelee p = null;
         if (pcPrimaryWeapon != null) {
@@ -117,11 +117,7 @@ public class ProcWeaponMelee extends Proc {
 
         String adString = "" + ad;
         String thString = "" + th;
-        /*
-        if (th > 0) {
-            thString = "+" + th;
-        }
-         */
+
         String entityName = entity.getVisibleNameWithQuantity();
         int adLocation = entityName.length() + 2;
         int thLocation = adLocation + adString.length() + 1;
@@ -132,13 +128,36 @@ public class ProcWeaponMelee extends Proc {
         tbMain.addChild(tbDamage);
         tbMain.addChild(tbHit);
         return tbMain;
+         */
+        String mainString = entity.getVisibleNameWithQuantity();
+        return new TextBlock(mainString, Color.WHITE);
     }
+
+    @Override
+    public String getStatline(Entity entity, Entity wielder) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(").append((int)getToHit(wielder));
+        sb.append(",").append((int)getDamage(wielder));
+        sb.append(" P").append((int)getPenetration(wielder));
+        int defense = (int)getDefense(wielder);
+        if (defense != 0) {
+            sb.append(" D").append(defense);
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
 
     @Override
     public Proc clone(Entity entity) {
         ProcWeaponMelee pw = new ProcWeaponMelee();
         pw.damage = damage;
         pw.toHit = toHit;
+        pw.penetration = penetration;
+        pw.defense = defense;
+        for (Stat key : scaling.keySet()) {
+            pw.scaling.put(key, scaling.get(key));
+        }
         return pw;
     }
 }

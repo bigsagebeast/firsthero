@@ -73,6 +73,7 @@ public class Proc {
     public void turnPassed(Entity entity) { }
 
     public TextBlock getNameBlock(Entity entity) { return null; }
+    public String getStatline(Entity entity, Entity wielder) { return null; }
 
     public int getDescriptionPriority(Entity entity) { return 0; }
     public String getIdenDescription(Entity entity) { return null; }

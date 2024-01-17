@@ -1,4 +1,4 @@
-1 13
+1 30
 0 0 weapon.pitchfork
 0 1 weapon.longsword
 0 2 weapon.shortsword
@@ -12,3 +12,20 @@
 0 10 book.standard
 0 11 weapon.stone
 0 12 weapon.sling
+0 13 weapon.rapier
+0 14 weapon.saber
+0 15 weapon.greatsword
+0 16 weapon.machete
+0 17 weapon.falchion
+0 18 weapon.khopesh
+0 19 weapon.warhammer
+0 20 weapon.mace
+0 21 weapon.maul
+0 22 weapon.spikedflail
+0 23 weapon.club
+0 24 weapon.hatchet
+0 25 weapon.battleaxe
+0 26 weapon.greataxe
+0 27 weapon.trident
+0 28 weapon.glaive
+0 29 weapon.lucernehammer

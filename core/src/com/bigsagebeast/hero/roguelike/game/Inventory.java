@@ -41,7 +41,7 @@ public class Inventory {
         for (BodyPart bp : Game.getPlayerEntity().body.getParts()) {
             String equipmentName;
             if (playerEntity.body.getEquipment(bp) != null) {
-                equipmentName = playerEntity.body.getEquipment(bp).getVisibleNameIndefiniteOrSpecific();
+                equipmentName = playerEntity.body.getEquipment(bp).getVisibleNameWithQuantity();
             } else {
                 // TODO: I don't like this test, it seems like the wielder should have an "is 2h" flag
                 if (bp == BodyPart.OFF_HAND && playerEntity.body.getEquipment(BodyPart.PRIMARY_HAND) != null &&

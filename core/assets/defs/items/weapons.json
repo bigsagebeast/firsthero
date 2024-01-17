@@ -1,5 +1,33 @@
 {
   "items": {
+    "weapon.melee.dagger": {
+      "name": "dagger",
+      "description": "A short, close-range weapon that relies on dexterity.",
+      "glyphName": "weapon.dagger",
+      "palette": [
+        "white",
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "THIN_BLADE",
+          "damage": 3,
+          "toHit": 1,
+          "defense": 0,
+          "penetration": 1.5,
+          "scaling": {
+            "DEXTERITY": {
+              "damage": 0.75,
+              "penetration": 0.25
+            }
+          }
+        }
+      }
+    },
     "weapon.melee.shortsword": {
       "name": "short sword",
       "description": "An accurate, light weapon for stabbing through defenses.",
@@ -17,7 +45,7 @@
           "weaponType": "THIN_BLADE",
           "damage": 4,
           "toHit": 2,
-          "defense": 1,
+          "defense": 0,
           "penetration": 2.5,
           "scaling": {
             "STRENGTH": {
@@ -49,11 +77,11 @@
       "level": 1,
       "procs": {
         "item.ProcWeaponMelee": {
-          "weaponType": "BROAD_BLADE",
+          "weaponType": "THIN_BLADE",
           "damage": 5,
           "toHit": 3,
-          "defense": 2,
-          "penetration": 1,
+          "defense": 1,
+          "penetration": 2,
           "scaling": {
             "STRENGTH": {
               "damage": 0.5,
@@ -70,14 +98,14 @@
         "generic-fantasy"
       ]
     },
-    "weapon.melee.dagger": {
-      "name": "dagger",
-      "description": "A short, close-range weapon that relies on dexterity.",
-      "glyphName": "weapon.dagger",
+    "weapon.melee.rapier": {
+      "name": "rapier",
+      "description": "A one-handed dueling weapon for quick thrusts and parries.",
+      "glyphName": "weapon.rapier",
       "palette": [
         "white",
         "brown",
-        "white"
+        "gray"
       ],
       "equipmentFor": "any hand",
       "category": "onehanded",
@@ -85,12 +113,287 @@
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "THIN_BLADE",
-          "damage": 3,
-          "toHit": 1,
-          "defense": 0,
-          "penetration": 3,
+          "damage": 4,
+          "toHit": 2,
+          "defense": 2,
+          "penetration": 2,
           "scaling": {
             "DEXTERITY": {
+              "damage": 1.0,
+              "penetration": 0.34
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.saber": {
+      "name": "saber",
+      "description": "A curved blade for long slashes, often used by cavalry.",
+      "glyphName": "weapon.saber",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 5,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 1,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.4,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.greatsword": {
+      "name": "greatsword",
+      "description": "A heavy, two-handed weapon that crushes as easily as it slashes.",
+      "glyphName": "weapon.greatsword",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 7,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 2,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 1,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.machete": {
+      "name": "machete",
+      "description": "A damaging, slashing weapon better suited to cutting vegetation than to penetrating armor.",
+      "glyphName": "weapon.machete",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 5,
+          "toHit": 1,
+          "defense": 0,
+          "penetration": 1.0,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.falchion": {
+      "name": "falchion",
+      "description": "A sword with a forward-swept blade, designed for powerful slashing attacks.",
+      "glyphName": "weapon.falchion",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 5,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 2.0,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.khopesh": {
+      "name": "khopesh",
+      "pluralName": "khopeshes",
+      "description": "A curved, sickle-shaped sword with a sharpened outer edge, designed both for slashing and for hooking maneuvers that make it useful in defense.",
+      "glyphName": "weapon.khopesh",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 4,
+          "toHit": 1,
+          "defense": 2,
+          "penetration": 1.5,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.4,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.warhammer": {
+      "name": "war hammer",
+      "description": "A blunt weapon with a flat head designed to penetrate armor with its narrow surface area.",
+      "glyphName": "weapon.warhammer",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BLUDGEON",
+          "damage": 5,
+          "toHit": 1,
+          "defense": 1,
+          "penetration": 4,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.mace": {
+      "name": "mace",
+      "description": "A flanged mace penetrates armor with narrow ridges, but is primarily a blunt instrument that's easy to hit with.",
+      "glyphName": "weapon.mace",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BLUDGEON",
+          "damage": 4,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 3,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.8,
+              "penetration": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.club": {
+      "name": "club",
+      "description": "A thick length of knotted wood to bash your foes with, it's not as strong as metal.",
+      "glyphName": "weapon.khopesh",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BLUDGEON",
+          "damage": 3,
+          "toHit": 0,
+          "defense": 0,
+          "penetration": 2.5,
+          "scaling": {
+            "STRENGTH": {
               "damage": 0.75,
               "penetration": 0.25
             }
@@ -102,6 +405,67 @@
         "generic-fantasy"
       ]
     },
+    "weapon.melee.maul": {
+      "name": "maul",
+      "description": "Shaped like a stone sledgehammer, this weapon uses intense strength at its full potential.",
+      "glyphName": "weapon.maul",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BLUDGEON",
+          "damage": 7,
+          "toHit": 2,
+          "defense": 0,
+          "penetration": 3.5,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 1.25,
+              "penetration": 0.34
+            }
+          }
+        }
+      }
+    },
+    "weapon.melee.spikedflail": {
+      "name": "spiked flail",
+      "description": "A chain attaches a long handle to a heavy bar of spiked metal. This unusual design is slightly more defensive than a simple bludgeon, but harder to hit with.",
+      "glyphName": "weapon.greatsword",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BLUDGEON",
+          "damage": 7,
+          "toHit": 1,
+          "defense": 1,
+          "penetration": 0.5,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.17
+            },
+            "DEXTERITY": {
+              "damage": 0.5,
+              "penetration": 0.17
+            }
+          }
+        }
+      }
+    },
+
     "weapon.ranged.shortbow": {
       "name": "wooden shortbow",
       "description": "A short-ranged weapon that fires arrows.",

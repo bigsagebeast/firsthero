@@ -1,0 +1,24 @@
+		        Stat	Type	Cool	Def	Pen TH
+Dagger		    Dex+	TB  	0   	0	2   0
+Short sword	    Dex	    TB  	1   	0	3   1
+Arming sword	Str	    TB  	1	    1	2   2
+Rapier		    Dex+	TB  	2	    2	2   1
+Saber		    Mix	    BB  	1   	1	1   2
+Greatsword	    Str	    BB2  	2	    1	2   2
+Machete		    Str 	BB  	0   	0	1   1
+Falchion	    Str 	BB  	2   	1	2   2
+Khopesh	    	Mix 	BB  	1   	2	1   1
+
+War hammer      Str     BL      1       1   4   1
+Mace            Str+    BL      2       1   3   2
+Club            Str+    BL      0       0   3   0
+Maul            Str+    BL2     2       0   4   2
+Spiked flail    Mix     BL2     2       1   3   1
+
+Hatchet         Mix     AX      0       0   1   0
+Battle axe      Str     AX      1       0   2   1
+Greataxe        Str     AX      2       0   3   1
+
+Trident         Str     PO      1       2   3   1
+Glaive          Mix     PO      1       2   2   2
+Lucerne hammer  Str     PO      1       2   3   1

@@ -102,23 +102,25 @@ public class CharacterBuilder {
 
         switch (archetype) {
             case "warrior":
-                entity.statblock.change(Stat.STRENGTH, 6);
+                entity.statblock.change(Stat.STRENGTH, 4);
                 entity.statblock.change(Stat.TOUGHNESS, 6);
-                entity.statblock.change(Stat.DEXTERITY, 4);
-                entity.statblock.change(Stat.AGILITY, 4);
-                entity.statblock.change(Stat.WILLPOWER, 4);
+                //entity.statblock.change(Stat.DEXTERITY, 2);
+                //entity.statblock.change(Stat.AGILITY, 4);
+                //entity.statblock.change(Stat.WILLPOWER, 4);
                 entity.statblock.change(Stat.ARCANUM, -2);
                 break;
             case "archer":
                 entity.statblock.change(Stat.TOUGHNESS, 2);
-                entity.statblock.change(Stat.DEXTERITY, 6);
-                entity.statblock.change(Stat.AGILITY, 6);
-                entity.statblock.change(Stat.PERCEPTION, 6);
+                entity.statblock.change(Stat.AGILITY, 2);
+                entity.statblock.change(Stat.DEXTERITY, 4);
+                entity.statblock.change(Stat.WILLPOWER, -2);
+                entity.statblock.change(Stat.ARCANUM, -2);
+                entity.statblock.change(Stat.PERCEPTION, 4);
                 break;
             case "wizard":
-                entity.statblock.change(Stat.STRENGTH, 2);
+                entity.statblock.change(Stat.STRENGTH, -2);
                 entity.statblock.change(Stat.AGILITY, -2);
-                entity.statblock.change(Stat.WILLPOWER, 4);
+                entity.statblock.change(Stat.WILLPOWER, 6);
                 entity.statblock.change(Stat.ARCANUM, 6);
         }
         entity.recalculateSecondaryStats();

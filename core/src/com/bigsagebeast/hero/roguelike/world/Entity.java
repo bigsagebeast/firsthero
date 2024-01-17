@@ -204,7 +204,27 @@ public class Entity {
         return getBeatitude().description + " ";
     }
 
+    public String getStatline() {
+        for (Proc p : procs) {
+            String statline = p.getStatline(this, Game.getPlayerEntity());
+            if (statline != null) {
+                return " " + statline;
+            }
+        }
+        return "";
+    }
+
     public String getVisibleName() {
+        String beatitude = getBeatitudeString();
+        ItemType it = getItemType();
+        if (it != null && it.identityHidden && !it.identified) {
+            return beatitude + it.unidentifiedName + getStatline();
+        }
+
+        return beatitude + name + getStatline();
+    }
+
+    public String getVisibleNameWithoutStatline() {
         String beatitude = getBeatitudeString();
         ItemType it = getItemType();
         if (it != null && it.identityHidden && !it.identified) {
@@ -214,7 +234,7 @@ public class Entity {
         return beatitude + name;
     }
 
-    public String getVisiblePluralName() {
+    public String getVisiblePluralNameWithoutStatline() {
         String beatitude = getBeatitudeString();
         ItemType it = getItemType();
         if (it != null && it.identityHidden && !it.identified) {
@@ -222,9 +242,9 @@ public class Entity {
                 return beatitude + it.unidentifiedPluralName;
             } else {
                 if (it.unidentifiedName.endsWith("s")) {
-                    return beatitude + it.unidentifiedName + "es";
+                    return beatitude + it.unidentifiedName;
                 } else {
-                    return beatitude + it.unidentifiedName + "s";
+                    return beatitude + it.unidentifiedName;
                 }
             }
         }
@@ -239,10 +259,43 @@ public class Entity {
         }
     }
 
+    public String getVisiblePluralName() {
+        String beatitude = getBeatitudeString();
+        ItemType it = getItemType();
+        if (it != null && it.identityHidden && !it.identified) {
+            if (it.unidentifiedPluralName != null) {
+                return beatitude + it.unidentifiedPluralName + getStatline();
+            } else {
+                if (it.unidentifiedName.endsWith("s")) {
+                    return beatitude + it.unidentifiedName + "es" + getStatline();
+                } else {
+                    return beatitude + it.unidentifiedName + "s" + getStatline();
+                }
+            }
+        }
+        if (pluralName != null) {
+            return beatitude + pluralName + getStatline();
+        } else {
+            if (name.endsWith("s")) {
+                return beatitude + name + "es" + getStatline();
+            } else {
+                return beatitude + name + "s" + getStatline();
+            }
+        }
+    }
+
     public String getVisibleNameWithQuantity() {
         ProcItem item = getItem();
         if (item != null && item.quantity > 1) {
             return item.quantity + " " + getVisiblePluralName();
+        }
+        return getVisibleName();
+    }
+
+    public String getVisibleNameWithQuantityWithoutStatline() {
+        ProcItem item = getItem();
+        if (item != null && item.quantity > 1) {
+            return item.quantity + " " + getVisiblePluralNameWithoutStatline();
         }
         return getVisibleName();
     }
