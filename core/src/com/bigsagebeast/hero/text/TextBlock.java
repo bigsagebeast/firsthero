@@ -29,7 +29,7 @@ public class TextBlock implements GameLogic {
 	private final Random random = new Random();
 	
 	private boolean closed;
-	private Set<TextBlock> children = new HashSet<TextBlock>();
+	public Set<TextBlock> children = new HashSet<TextBlock>();
 
 	public float x;
 	public float y;
@@ -53,7 +53,7 @@ public class TextBlock implements GameLogic {
 
 	public GlyphLayout glyphLayout;
 
-	private Float fontSize;
+	public Float fontSize;
 	public String text;
 	public GlyphTile glyph;
 
@@ -200,6 +200,10 @@ public class TextBlock implements GameLogic {
 		if (glyphIndex > 0) {
 			this.text = this.text.replace('`', ' ');
 		}
+	}
+
+	public TextBlock(String text, Color color, GlyphTile glyph) {
+		this(text, null, RoguelikeModule.FONT_SIZE, 0, 0, 0, 0, color, new GlyphTile[] {glyph});
 	}
 
 	public TextBlock(String text, String frameBufferKey, int fontSize,
@@ -473,6 +477,25 @@ public class TextBlock implements GameLogic {
 	public void compile() {
 		wantLocked = true;
 		isLocked = false;
+	}
+
+	// specific to appended strings
+	public int findAppendedWidth() {
+		if (children.isEmpty()) {
+			return (int)x + text.length();
+		}
+		return (int)x + children.stream().findFirst().get().findAppendedWidth();
+	}
+
+	public TextBlock append(TextBlock tb) {
+		tb.x = text.length();
+		addChild(tb);
+		return tb;
+	}
+
+	public void normalizeFont(float fontSize) {
+		this.fontSize = fontSize;
+		children.forEach(tb -> tb.normalizeFont(fontSize));
 	}
 
 	public float getPixelX() {

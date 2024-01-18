@@ -59,7 +59,7 @@
     "rat.large": {
       "name": "large rat",
       "description": "Matted brown fur, tattered ears, and standing as high as your knee. This hungry beast has turned from peaceful scavenging to blood-thirsty predation, and chitters as it stalks the halls and caves.",
-      "corpseMessage": "Rats. Dungeon pork.",
+      "corpseMessage": "Rat. Dungeon pork.",
       "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 5,
@@ -88,7 +88,7 @@
     "rat.giant": {
       "name": "giant rat",
       "description": "Hissing and snarling, the shape of this feral creature belies its role as an opportunistic predator. Its size could easily bowl a man over.",
-      "corpseMessage": "Rats. Dungeon pork.",
+      "corpseMessage": "Rat. Dungeon pork.",
       "naturalWeaponText": "bite",
       "peaceful": false,
       "hitPoints": 18,

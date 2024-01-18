@@ -12,6 +12,7 @@ import com.bigsagebeast.hero.roguelike.world.proc.item.ProcArmor;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
+import com.bigsagebeast.hero.text.TextBlock;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,9 +40,9 @@ public class Inventory {
                 .withMargins(60, 60);
 
         for (BodyPart bp : Game.getPlayerEntity().body.getParts()) {
-            String equipmentName;
+            String equipmentName = null;
             if (playerEntity.body.getEquipment(bp) != null) {
-                equipmentName = playerEntity.body.getEquipment(bp).getVisibleNameWithQuantity();
+                //equipmentName = playerEntity.body.getEquipment(bp).getVisibleNameWithQuantity();
             } else {
                 // TODO: I don't like this test, it seems like the wielder should have an "is 2h" flag
                 if (bp == BodyPart.OFF_HAND && playerEntity.body.getEquipment(BodyPart.PRIMARY_HAND) != null &&
@@ -52,7 +53,18 @@ public class Inventory {
                     equipmentName = "empty";
                 }
             }
-            box.addItem(String.format("%-16s: %-16s", bp.getName(), equipmentName), bp);
+            TextBlock equipmentNameBlock = null;
+            if (equipmentName != null) {
+                equipmentNameBlock = new TextBlock(equipmentName);
+            } else if (playerEntity.body.getEquipment(bp) != null) {
+                equipmentNameBlock = playerEntity.body.getEquipment(bp).getNameBlock();
+            }
+            TextBlock lineBlock = new TextBlock(String.format("%-13s: ", bp.getName()));
+            if (equipmentNameBlock != null) {
+                lineBlock.append(equipmentNameBlock);
+            }
+            //box.addItem(String.format("%-16s: %-16s", bp.getName(), equipmentName), bp);
+            box.addItem(lineBlock, bp);
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleWieldResponse);
     }
@@ -101,7 +113,8 @@ public class Inventory {
                 box.addHeader(cat.getName());
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), EntityGlyph.getGlyph(ent), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                //box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), EntityGlyph.getGlyph(ent), ent);
                 addedAnything = true;
             }
         }

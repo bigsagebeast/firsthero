@@ -863,7 +863,7 @@ public class Game {
 
 		if (level.cell(player.getEntity().pos).terrain.getName().equals("water")) {
 			announce("You flail around in the water.");
-			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost * 4L);
+			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost * 2L);
 		} else {
 			player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);
 		}
@@ -896,7 +896,8 @@ public class Game {
 		
 		//Entity targetCreature = level.moverAt(tx, ty);
 
-		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
+		Point t = new Point(tx, ty);
+		for (Entity target : level.getEntitiesOnTile(t)) {
 			ProcDoor door = (ProcDoor)target.getProcByType(ProcDoor.class);
 			if (door != null && !door.isOpen) {
 				// TODO some creatures can destroy doors?
@@ -914,7 +915,7 @@ public class Game {
 			}
 		}
 
-		if (Game.tryMoveTo(actor, tx, ty)) {
+		if (Game.tryMoveTo(actor, t)) {
 			moveNpc(actor, tx, ty);
 		}
 	}
@@ -1038,31 +1039,8 @@ public class Game {
 	}
 
 	public static boolean canMoveBy(Entity actor, Compass dir) {
-		return !isBlockedByTerrain(actor, actor.pos.x + dir.getX(), actor.pos.y + dir.getY()) &&
+		return !level.isBlockedByTerrain(actor, new Point(actor.pos.x + dir.getX(), actor.pos.y + dir.getY())) &&
 				!isBlockedByEntity(actor, actor.pos.x + dir.getX(), actor.pos.y + dir.getY());
-	}
-
-	public static boolean isBlockedByTerrain(Entity actor, int tx, int ty) {
-		if (tx < 0 || tx >= level.getWidth() || ty < 0 || ty >= level.getHeight()) {
-			return true;
-		}
-		if (actor.incorporeal) {
-			return false;
-		}
-		switch (actor.ambulation) {
-			case WALKING_ONLY:
-				if (level.cell(tx, ty).terrain.getName().equals("water")) {
-					return true;
-				}
-				return !level.cell(tx, ty).terrain.isPassable();
-			case SWIMMING_ONLY:
-				if (!level.cell(tx, ty).terrain.getName().equals("water")) {
-					return true;
-				}
-				return !level.cell(tx, ty).terrain.isPassable();
-			default:
-				return !level.cell(tx, ty).terrain.isPassable();
-		}
 	}
 
 	public static boolean isBlockedByNonManipulable(Entity actor, int tx, int ty) {
@@ -1099,15 +1077,15 @@ public class Game {
 		return false;
 	}
 
-	public static boolean tryMoveTo(Entity e, int tx, int ty) {
-		if (level.moverAt(tx, ty) != null) {
+	public static boolean tryMoveTo(Entity e, Point t) {
+		if (level.moverAt(t) != null) {
 			return false;
 		}
-		if (isBlockedByTerrain(e, tx, ty)) {
+		if (level.isBlockedByTerrain(e, t)) {
 			return false;
 		}
 
-		for (Entity target : level.getEntitiesOnTile(new Point(tx, ty))) {
+		for (Entity target : level.getEntitiesOnTile(t)) {
 			if (target.isObstructive()) {
 				announceVis(e, target, "You bump into " + target.getVisibleNameDefinite() + ".",
 						e.getVisibleNameDefinite() + " bumps into you.",

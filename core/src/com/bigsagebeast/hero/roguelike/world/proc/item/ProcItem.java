@@ -49,7 +49,14 @@ public class ProcItem extends Proc {
 
     @Override
     public TextBlock getNameBlock(Entity entity) {
-        return new TextBlock(entity.getVisibleNameWithQuantity(), Color.WHITE);
+        return new TextBlock(entity.getVisibleNameWithQuantity(), getBeatitudeColor(entity));
+    }
+
+    public Color getBeatitudeColor(Entity entity) {
+        if (identifiedBeatitude) {
+            return beatitude.color;
+        }
+        return Beatitude.UNCURSED.color;
     }
 
     @Override

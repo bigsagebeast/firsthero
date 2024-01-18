@@ -3,7 +3,11 @@ package com.bigsagebeast.hero.roguelike.world.proc.item;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.enums.WeaponType;
+import com.bigsagebeast.hero.glyphtile.EntityGlyph;
+import com.bigsagebeast.hero.glyphtile.GlyphIndex;
+import com.bigsagebeast.hero.glyphtile.IconGlyph;
 import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
+import com.bigsagebeast.hero.roguelike.world.BodyPart;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Entity;
@@ -52,7 +56,7 @@ public class ProcWeaponMelee extends Proc {
             sb.append(". ");
         }
 
-        sb.append(String.format("\nYour stats: Damage %s To-Hit %s Penetration %s Defense %s", Util.formatFloat(getDamage(Game.getPlayerEntity())), Util.formatFloat(getToHit(Game.getPlayerEntity())), Util.formatFloat(getPenetration(Game.getPlayerEntity())), Util.formatFloat(getDefense(Game.getPlayerEntity()))));
+        sb.append(String.format("\nFor you: Damage %s To-Hit %s Penetration %s Defense %s", Util.formatFloat(getDamage(Game.getPlayerEntity())), Util.formatFloat(getToHit(Game.getPlayerEntity())), Util.formatFloat(getPenetration(Game.getPlayerEntity())), Util.formatFloat(getDefense(Game.getPlayerEntity()))));
         return sb.toString();
     }
 
@@ -96,7 +100,7 @@ public class ProcWeaponMelee extends Proc {
 
     @Override
     public TextBlock getNameBlock(Entity entity) {
-        /*
+
         Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
         ProcWeaponMelee p = null;
         if (pcPrimaryWeapon != null) {
@@ -105,16 +109,24 @@ public class ProcWeaponMelee extends Proc {
 
         int ad = (int) getDamage(Game.getPlayerEntity());
         int th = (int) getToHit(Game.getPlayerEntity());
+        int pn = (int) getPenetration(Game.getPlayerEntity());
+        int de = (int) getDefense(Game.getPlayerEntity());
 
         int damageComparator = 0;
         int toHitComparator = 0;
+        int pnComparator = 0;
+        int deComparator = 0;
         if (p != null) {
             damageComparator = ad - (int)p.getDamage(Game.getPlayerEntity());
             toHitComparator = th - (int)p.getToHit(Game.getPlayerEntity());
+            pnComparator = pn - (int)p.getPenetration(Game.getPlayerEntity());
+            deComparator = de - (int)p.getDefense(Game.getPlayerEntity());
         }
         Color adColor = (damageComparator < 0) ? Color.RED : (damageComparator == 0) ? Color.WHITE : Color.GREEN;
         Color thColor = (toHitComparator < 0) ? Color.RED : (toHitComparator == 0) ? Color.WHITE : Color.GREEN;
-
+        Color pnColor = (pnComparator < 0) ? Color.RED : (pnComparator == 0) ? Color.WHITE : Color.GREEN;
+        Color deColor = (deComparator < 0) ? Color.RED : (deComparator == 0) ? Color.WHITE : Color.GREEN;
+/*
         String adString = "" + ad;
         String thString = "" + th;
 
@@ -127,10 +139,19 @@ public class ProcWeaponMelee extends Proc {
         TextBlock tbHit = new TextBlock(thString, thLocation, 0, thColor);
         tbMain.addChild(tbDamage);
         tbMain.addChild(tbHit);
+
+ */
+        TextBlock tbMain = new TextBlock(entity.getVisibleNameWithQuantity() + " (", Color.WHITE);
+        tbMain.append(new TextBlock("`" + ad, adColor, IconGlyph.DAMAGE.icon()))
+                .append(new TextBlock("`" + th, thColor, IconGlyph.TOHIT.icon()))
+                .append(new TextBlock("`" + pn, pnColor, IconGlyph.PENETRATION.icon()))
+                .append(new TextBlock("`" + de, deColor, IconGlyph.DEFENSE.icon()))
+                .append(new TextBlock(")", Color.WHITE));
+
         return tbMain;
-         */
-        String mainString = entity.getVisibleNameWithQuantity();
-        return new TextBlock(mainString, Color.WHITE);
+
+        //String mainString = entity.getVisibleNameWithQuantity();
+        //return new TextBlock(mainString, Color.WHITE);
     }
 
     @Override

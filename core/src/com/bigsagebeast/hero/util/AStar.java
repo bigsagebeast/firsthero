@@ -44,7 +44,8 @@ public class AStar {
 				
 				if (level.contains(newloc)) {
 					float moveCost = dir.isDiagonal() ? 1.0001f : 1.0f;
-					if ((!Game.isBlockedByTerrain(e, newloc.x, newloc.y) && !Game.isBlockedByNonManipulable(e, newloc.x, newloc.y)) || destination.equals(newloc)) {
+					// TODO: This call is awfully slow!
+					if ((!Game.getLevel().isBlockedByTerrain(e, newloc) && !Game.isBlockedByNonManipulable(e, newloc.x, newloc.y)) || destination.equals(newloc)) {
 						if (!destination.equals(newloc) && Game.isBlockedByEntity(e, newloc.x, newloc.y)) {
 							if (e.incorporeal) {
 								// incorporeals step around doors and monsters

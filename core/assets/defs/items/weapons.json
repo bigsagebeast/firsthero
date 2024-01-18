@@ -376,7 +376,7 @@
     "weapon.melee.club": {
       "name": "club",
       "description": "A thick length of knotted wood to bash your foes with, it's not as strong as metal.",
-      "glyphName": "weapon.khopesh",
+      "glyphName": "weapon.club",
       "palette": [
         "white",
         "brown",
@@ -436,7 +436,7 @@
     "weapon.melee.spikedflail": {
       "name": "spiked flail",
       "description": "A chain attaches a long handle to a heavy bar of spiked metal. This unusual design is slightly more defensive than a simple bludgeon, but harder to hit with.",
-      "glyphName": "weapon.greatsword",
+      "glyphName": "weapon.spikedflail",
       "palette": [
         "white",
         "brown",

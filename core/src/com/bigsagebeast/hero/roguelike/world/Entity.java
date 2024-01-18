@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.enums.*;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
@@ -110,7 +111,7 @@ public class Entity {
     }
 
     public Collection<Entity> getInventoryEntities() {
-        return inventoryIds.stream().map(EntityTracker::get).collect(Collectors.toList());
+        return inventoryIds.stream().map(EntityTracker::get).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     public Collection<Entity> getEquippedEntities() {
@@ -218,23 +219,13 @@ public class Entity {
         String beatitude = getBeatitudeString();
         ItemType it = getItemType();
         if (it != null && it.identityHidden && !it.identified) {
-            return beatitude + it.unidentifiedName + getStatline();
-        }
-
-        return beatitude + name + getStatline();
-    }
-
-    public String getVisibleNameWithoutStatline() {
-        String beatitude = getBeatitudeString();
-        ItemType it = getItemType();
-        if (it != null && it.identityHidden && !it.identified) {
             return beatitude + it.unidentifiedName;
         }
 
         return beatitude + name;
     }
 
-    public String getVisiblePluralNameWithoutStatline() {
+    public String getVisiblePluralName() {
         String beatitude = getBeatitudeString();
         ItemType it = getItemType();
         if (it != null && it.identityHidden && !it.identified) {
@@ -242,9 +233,9 @@ public class Entity {
                 return beatitude + it.unidentifiedPluralName;
             } else {
                 if (it.unidentifiedName.endsWith("s")) {
-                    return beatitude + it.unidentifiedName;
+                    return beatitude + it.unidentifiedName + "es";
                 } else {
-                    return beatitude + it.unidentifiedName;
+                    return beatitude + it.unidentifiedName + "s";
                 }
             }
         }
@@ -259,43 +250,10 @@ public class Entity {
         }
     }
 
-    public String getVisiblePluralName() {
-        String beatitude = getBeatitudeString();
-        ItemType it = getItemType();
-        if (it != null && it.identityHidden && !it.identified) {
-            if (it.unidentifiedPluralName != null) {
-                return beatitude + it.unidentifiedPluralName + getStatline();
-            } else {
-                if (it.unidentifiedName.endsWith("s")) {
-                    return beatitude + it.unidentifiedName + "es" + getStatline();
-                } else {
-                    return beatitude + it.unidentifiedName + "s" + getStatline();
-                }
-            }
-        }
-        if (pluralName != null) {
-            return beatitude + pluralName + getStatline();
-        } else {
-            if (name.endsWith("s")) {
-                return beatitude + name + "es" + getStatline();
-            } else {
-                return beatitude + name + "s" + getStatline();
-            }
-        }
-    }
-
     public String getVisibleNameWithQuantity() {
         ProcItem item = getItem();
         if (item != null && item.quantity > 1) {
             return item.quantity + " " + getVisiblePluralName();
-        }
-        return getVisibleName();
-    }
-
-    public String getVisibleNameWithQuantityWithoutStatline() {
-        ProcItem item = getItem();
-        if (item != null && item.quantity > 1) {
-            return item.quantity + " " + getVisiblePluralNameWithoutStatline();
         }
         return getVisibleName();
     }
@@ -693,7 +651,7 @@ public class Entity {
         String preIdentified = getVisibleNameDefinite();
         it.identified = true;
         String postIdentified = getVisibleNameIndefiniteOrSpecific();
-        Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
+        Game.announceLoud("You identify " + preIdentified + " as " + postIdentified + ".");
         if (containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
         }
@@ -712,7 +670,7 @@ public class Entity {
         it.identified = true;
         pi.identifiedBeatitude = true;
         String postIdentified = getVisibleNameIndefiniteOrSpecific();
-        Game.announce("You identify " + preIdentified + " as " + postIdentified + ".");
+        Game.announceLoud("You identify " + preIdentified + " as " + postIdentified + ".");
         if (containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
         }
@@ -1007,6 +965,9 @@ public class Entity {
             if (tb != null) {
                 return tb;
             }
+        }
+        if (getItem() != null) {
+            return new TextBlock(getVisibleNameWithQuantity(), getItem().getBeatitudeColor(this));
         }
         return new TextBlock(getVisibleNameWithQuantity());
     }

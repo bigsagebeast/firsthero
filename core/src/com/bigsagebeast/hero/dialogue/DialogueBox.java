@@ -49,6 +49,7 @@ public class DialogueBox {
     private int curLetterIndex = 0;
 
     public DialogueBox() {
+        lineParent = new TextBlock("", null, FONT_SIZE, 0, 0, Color.WHITE);
     }
 
     public void update(TextEngine textEngine) {
@@ -107,27 +108,34 @@ public class DialogueBox {
     public void addHeader(String text) {
         if (lines.size() > 0) {
             DialogueLine spacer = new DialogueLine();
-            spacer.text = "";
+            spacer.textBlock = new TextBlock("", null, FONT_SIZE, 0, 0,
+                    0, 0, Color.WHITE);
+            spacer.textBlock.text = "";
             spacer.value = -1;
             lines.add(spacer);
         }
         DialogueLine line = new DialogueLine();
-        line.text = text;
+        line.textBlock = new TextBlock("", null, FONT_SIZE, 0, 0,
+                0, 0, Color.WHITE);
+        line.textBlock.text = text;
         line.value = -1;
         lines.add(line);
     }
 
     public void addItem(String text, Object value) {
         DialogueLine line = new DialogueLine();
+        String lineText;
         if (allowLetters) {
             if (curLetterIndex < 26) {
-                line.text = "  " + letterForIndex(curLetterIndex) + ":" + text;
+                lineText = "  " + letterForIndex(curLetterIndex) + ":" + text;
             } else {
-                line.text = "   :" + text;
+                lineText = "   :" + text;
             }
         } else {
-            line.text = "  " + text;
+            lineText = "  " + text;
         }
+        line.textBlock = new TextBlock(lineText, null, FONT_SIZE, 0, 0,
+                0, 0, Color.WHITE);
         line.value = mapping.size();
         letterForLine.put(letterForIndex(curLetterIndex), lines.size());
         mapping.add(value);
@@ -137,18 +145,51 @@ public class DialogueBox {
 
     public void addItem(String text, GlyphTile glyph, Object value) {
         DialogueLine line = new DialogueLine();
-        line.text = "  ` " + text;
+
+        String lineText;
         if (allowLetters) {
             if (curLetterIndex < 26) {
-                line.text = "  " + letterForIndex(curLetterIndex) + ":` " + text;
+                lineText = "  " + letterForIndex(curLetterIndex) + ":` " + text;
             } else {
-                line.text = "   :` " + text;
+                lineText = "   :` " + text;
             }
         } else {
-            line.text = "  ` " + text;
+            lineText = "  ` " + text;
         }
+        line.textBlock = new TextBlock(lineText, null, FONT_SIZE, 0, 0,
+                0, 0, Color.WHITE, new GlyphTile[] {glyph});
+
         line.value = mapping.size();
-        line.glyphs = new GlyphTile[] {glyph};
+        letterForLine.put(letterForIndex(curLetterIndex), lines.size());
+        mapping.add(value);
+        lines.add(line);
+        curLetterIndex++;
+    }
+
+    public void addItem(TextBlock tb, Object value) {
+        addItem(tb, null, value);
+    }
+
+    public void addItem(TextBlock tb, GlyphTile glyph, Object value) {
+        DialogueLine line = new DialogueLine();
+
+        String lineText;
+        if (allowLetters) {
+            if (curLetterIndex < 26) {
+                lineText = "  " + letterForIndex(curLetterIndex) + ":` ";
+            } else {
+                lineText = "   :` ";
+            }
+        } else {
+            lineText = "  ` ";
+        }
+        line.textBlock = new TextBlock(lineText, null, FONT_SIZE, 0, 0,
+                0, 0, Color.WHITE, new GlyphTile[] {glyph});
+
+        tb.normalizeFont(FONT_SIZE);
+        line.textBlock.append(tb);
+
+        line.value = mapping.size();
         letterForLine.put(letterForIndex(curLetterIndex), lines.size());
         mapping.add(value);
         lines.add(line);
@@ -164,9 +205,8 @@ public class DialogueBox {
     }
 
     public void compile(TextEngine textEngine) {
-        lineParent = new TextBlock("", null, FONT_SIZE, 0, 0,
-                x + ITEM_OFFSET_FROM_LEFT, y + ITEM_OFFSET_FROM_TOP,
-                Color.WHITE);
+        lineParent.pixelOffsetX = x + ITEM_OFFSET_FROM_LEFT;
+        lineParent.pixelOffsetY = y + ITEM_OFFSET_FROM_TOP;
         title =  new TextBlock(titleText, null, FONT_SIZE, 0, 0,
                 x + width/2 - (titleText.length() * FONT_SIZE)/2, y + TITLE_OFFSET_FROM_TOP,
                 Color.YELLOW);
@@ -189,10 +229,9 @@ public class DialogueBox {
 
 
         for (int i=0; i<lines.size(); i++) {
+            lineParent.addChild(lines.get(i).textBlock);
             DialogueLine line = lines.get(i);
-            line.textBlock = new TextBlock(line.text, null, FONT_SIZE, 0, i,
-                    0, 0, Color.WHITE, line.glyphs);
-            lineParent.addChild(line.textBlock);
+            line.textBlock.y = i;
         }
         if (lines.size() > linesFit) {
             // make space for 'more'

@@ -336,6 +336,30 @@ public class Level {
 		return points;
 	}
 
+	public boolean isBlockedByTerrain(Entity actor, Point t) {
+		if (!withinBounds(t)) {
+			return true;
+		}
+		if (actor.incorporeal) {
+			return false;
+		}
+		switch (actor.ambulation) {
+			case WALKING_ONLY:
+				if (cell(t).terrain.getName().equals("water")) {
+					return true;
+				}
+				return !cell(t).terrain.isPassable();
+			case SWIMMING_ONLY:
+				if (!cell(t).terrain.getName().equals("water")) {
+					return true;
+				}
+				return !cell(t).terrain.isPassable();
+			default:
+				return !cell(t).terrain.isPassable();
+		}
+	}
+
+
 	public Point findOpenTileWithinRange(Point center, int minRange, int maxRange) {
 		for (int i=0; i<10000; i++) {
 			int x = Util.randomBetween(center.x - maxRange, center.x + maxRange);
@@ -393,6 +417,24 @@ public class Level {
 		Collections.shuffle(points);
 		for (Point p : points) {
 			if (cell(p).terrain.isPassable()) { // should always be true...
+				if (getEntitiesOnTile(p).isEmpty()) {
+					return p;
+				}
+			}
+		}
+		return null;
+	}
+
+	// no movers on the tile
+	public Point findEmptyTileInRoomForMover(int roomId, Entity e) {
+		List<Point> points = roomMap.get(roomId);
+		if (points == null || points.isEmpty()) {
+			return null;
+		}
+
+		Collections.shuffle(points);
+		for (Point p : points) {
+			if (!isBlockedByTerrain(e, p)) {
 				if (getEntitiesOnTile(p).isEmpty()) {
 					return p;
 				}

@@ -43,10 +43,10 @@ public class DungeonGenerator {
 					System.out.println("No allowed monsters");
 					return;
 				}
-				Point pos = level.findEmptyTileInRoom(r.roomId);
 				Entity e = Bestiary.create(chosenMonster);
 				e.wanderer = true;
 				e.getTactic().canWander = true;
+				Point pos = level.findEmptyTileInRoomForMover(r.roomId, e);
 				level.addEntityWithStacking(e, pos, false);
 				int packSize = (int) (Bestiary.map.get(chosenMonster).packSize * (Game.random.nextFloat() + 0.4f));
 				for (int j = 1; j < packSize; j++) {

@@ -29,6 +29,7 @@ public class EntityTracker {
         return e;
     }
 
+    // WARNING: Remember this can be null!
     public static Entity get(int id) {
         if (id == 0) {
             throw new RuntimeException("Tried to index uninitialized entityId");
