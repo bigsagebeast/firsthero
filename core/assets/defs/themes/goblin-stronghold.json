@@ -7,7 +7,15 @@
           "roomDesc": "You enter a goblin treasure vault!",
           "hardCap": 1,
           "depth": 5,
-          "loops": "NEVER"
+          "loops": "NEVER",
+          "spawn": [
+            {
+              "type": "item",
+              "tags": [
+                "jewelry"
+              ]
+            }
+          ]
         },
         "goblin.throneroom": {
           "roomName": "Throne Room",
@@ -38,6 +46,11 @@
           "spawn": [
             {
               "type": "mover",
+              "key": "goblin.lackey",
+              "quantity": 4
+            },
+            {
+              "type": "mover",
               "key": "goblin.slinger",
               "quantity": 2
             }
@@ -52,7 +65,7 @@
             {
               "type": "mover",
               "key": "goblin.lackey",
-              "quantity": 4
+              "quantity": 8
             }
           ]
         },
@@ -60,7 +73,20 @@
           "roomName": "Goblin Armory",
           "roomDesc": "Broken and rusted scraps of metal litter this goblin armory.",
           "depth": 3,
-          "loops": "OKAY"
+          "loops": "OKAY",
+          "spawn": [
+            {
+              "type": "mover",
+              "key": "goblin.lackey",
+              "quantity": 2
+            },
+            {
+              "type": "item",
+              "tags": [
+                "weapon"
+              ]
+            }
+          ]
         },
         "goblin.kitchen": {
           "roomName": "Goblin Kitchen",

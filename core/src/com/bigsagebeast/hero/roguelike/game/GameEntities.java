@@ -112,4 +112,11 @@ public class GameEntities {
         return sb.toString();
     }
 
+    public static boolean overpopulated(Phenotype phenotype) {
+		if (phenotype.maxOnLevel > 0) {
+            return Game.getLevel().getEntities().stream().filter(c -> c.phenotypeName != null && c.phenotypeName.equals(phenotype.key)).count() >= phenotype.maxOnLevel;
+        }
+        return false;
+    }
+
 }

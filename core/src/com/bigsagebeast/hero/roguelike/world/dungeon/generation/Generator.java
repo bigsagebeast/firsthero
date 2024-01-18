@@ -25,8 +25,9 @@ public class Generator {
     private Terrain floor;
     private Terrain doorway;
 
-    public Level generate(String name, int width, int height) {
+    public Level generate(String name, int width, int height, int threat) {
         level = new Level(name, width, height);
+        level.threat = threat;
 
         // TODO: This is duplicate code
         String[] components = name.split("\\.");

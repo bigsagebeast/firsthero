@@ -42,7 +42,7 @@ public class Phenotype {
 	public int threat;
 	public int packSize = 1;
 	public int packSpawnArea = 3;
-	public int maxSplitting = 8;
+	public int maxOnLevel = -1;
 	public boolean wandering = true;
 	public int frequency = 100;
 	public int corpseSpawnPercent = 50;

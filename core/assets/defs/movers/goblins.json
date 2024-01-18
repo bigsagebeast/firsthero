@@ -27,33 +27,6 @@
         "generic-fantasy"
       ]
     },
-    "goblin.lackey": {
-      "name": "sea-withered goblin lackey",
-      "description": "Bearing the brunt of their master's wrath and of the acid seas they rowed, these footsoldiers of the invasion are little threat.",
-      "corpseMessage": "Ulch - That was beyond foul.",
-      "corpseMethod": "procVomit",
-      "peaceful": false,
-      "hitPoints": 4,
-      "isMonster": true,
-      "bodyPlan": "humanoid",
-      "glyphName": "humanoid.goblin.grunt",
-      "isManipulator": true,
-      "palette": [
-        "darkgreen",
-        "red",
-        "brown"
-      ],
-      "gender": "RANDOM",
-      "experienceAwarded": 10,
-      "threat": 1,
-      "naturalWeaponDamage": 3,
-      "naturalWeaponToHit": -2,
-      "naturalArmorClass": 7,
-      "tags": [
-        "goblin",
-        "generic-fantasy"
-      ]
-    },
     "goblin.archer": {
       "name": "sea-withered goblin archer",
       "description": "Their bows have been crafted on the mainland; such wood and sinew would have scarcely survived the trip. Their arrows are meant not for hunting, but for war.",
@@ -151,8 +124,8 @@
       "gender": "RANDOM",
       "experienceAwarded": 20,
       "threat": 2,
-      "naturalWeaponDamage": 6,
-      "naturalWeaponToHit": 1,
+      "naturalWeaponDamage": 5,
+      "naturalWeaponToHit": 2,
       "naturalArmorClass": 5,
       "tags": [
         "goblin",
@@ -177,8 +150,8 @@
       ],
       "gender": "RANDOM",
       "experienceAwarded": 25,
-      "threat": 2,
-      "naturalWeaponDamage": 7,
+      "threat": 4,
+      "naturalWeaponDamage": 8,
       "naturalWeaponToHit": -2,
       "naturalArmorClass": 2,
       "wandering": false,

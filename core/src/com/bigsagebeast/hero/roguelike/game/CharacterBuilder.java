@@ -18,6 +18,7 @@ public class CharacterBuilder {
     }
 
     public void begin() {
+        Game.spellbook.spells.clear();
         selectRace();
     }
 

@@ -1,7 +1,9 @@
 package com.bigsagebeast.hero.roguelike.world;
 
+import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.glyphtile.Palette;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
+import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcEquippable;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcItem;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
@@ -63,6 +65,12 @@ public class Itempedia {
 
         if (t.equipmentFor != null && !e.containsProc(ProcEquippable.class)) {
             e.addProc(new ProcEquippable(t.equipmentFor));
+        }
+
+        if (Game.random.nextInt(100) < t.blessChance) {
+            e.getItem().beatitude = Beatitude.BLESSED;
+        } else if (Game.random.nextInt(100) < t.curseChance) {
+            e.getItem().beatitude = Beatitude.CURSED;
         }
 
         return e;

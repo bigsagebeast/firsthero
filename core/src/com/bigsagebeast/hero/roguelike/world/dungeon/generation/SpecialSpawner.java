@@ -76,7 +76,13 @@ public class SpecialSpawner {
                         return;
                     }
                 } else {
-                    throw new RuntimeException("Unsupported special spawning of item");
+                    // TODO: Do something with this threat modifier range?
+                    // At present, it will start within the named range, and then work lower if it has to
+                    key = DungeonGenerator.getAllowedItem(tags, level.threat + threatModifier,
+                            level.threat + threatModifier, level);
+                    if (key == null) {
+                        return;
+                    }
                 }
             }
             if (isMover) {

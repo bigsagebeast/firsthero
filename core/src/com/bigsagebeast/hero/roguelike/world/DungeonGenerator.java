@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bigsagebeast.hero.roguelike.game.Dice;
+import com.bigsagebeast.hero.roguelike.game.GameEntities;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.Generator;
@@ -105,6 +106,9 @@ public class DungeonGenerator {
 						continue;
 					}
 				}
+				if (GameEntities.overpopulated(p)) {
+					continue;
+				}
 				for (int i = 0; i < p.frequency; i++) {
 					allowedEntities.add(key);
 				}
@@ -163,6 +167,15 @@ public class DungeonGenerator {
 			}
 		}
 		return allowedEntities;
+	}
+
+	public static String getAllowedItem(List<String> requiredTags, int minThreat, int maxThreat, Level level) {
+		List<ItemType> allowedEntities = getTaggedItemTypes(requiredTags, Collections.EMPTY_LIST, minThreat, maxThreat, level);
+		if (allowedEntities.isEmpty()) {
+			return null;
+		}
+		int index = Game.random.nextInt(allowedEntities.size());
+		return allowedEntities.get(index).keyName;
 	}
 
 	public static String getAllowedItem(Level level) {
@@ -300,13 +313,12 @@ public class DungeonGenerator {
 		Generator generator = new Generator();
 		Level level = null;
 		while (level == null) {
-			level = generator.generate(key, 60, 40);
+			level = generator.generate(key, 60, 40, depth);
 		}
 		level.neverbeastCountdown = 1500;
 
 		// Remember to add the level to the map before generating it
 		levels.put(key, level);
-		level.threat = depth;
 		populate(level);
 		if (depth == 1) {
 			generator.addUpstairTo("out");

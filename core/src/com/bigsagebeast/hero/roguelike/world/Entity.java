@@ -1221,8 +1221,8 @@ public class Entity {
         hitPoints = Math.min(Math.max(hitPoints + deltaHitPoints, hitPoints), newMaxHitPoints);
         spellPoints = Math.min(Math.max(spellPoints + deltaSpellPoints, spellPoints), newMaxSpellPoints);
         divinePoints = Math.min(Math.max(divinePoints + deltaDivinePoints, divinePoints), newMaxDivinePoints);
-        healingDelay = 300 / maxHitPoints;
-        spRegenDelay = 100 / maxSpellPoints;
+        healingDelay = 400 / maxHitPoints;
+        spRegenDelay = 300 / maxSpellPoints;
     }
 
     // status tests

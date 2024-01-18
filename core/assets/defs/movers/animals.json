@@ -102,8 +102,8 @@
         "red"
       ],
       "experienceAwarded": 10,
-      "threat": 3,
-      "naturalWeaponDamage": 6,
+      "threat": 2,
+      "naturalWeaponDamage": 5,
       "naturalWeaponToHit": 1,
       "naturalArmorClass": -2,
       "packSize": 1,
@@ -198,7 +198,7 @@
       "procs": {
         "monster.ProcPoisonAttack": {
           "strength": 3,
-          "duration": 25
+          "duration": 20
         }
       },
       "tags": [
@@ -209,7 +209,7 @@
     },
     "jelly.cube.gelatinous": {
       "name": "gelatinous cube",
-      "description": "Dragging its way through corridors and halls with a 'schlorp', this cube of paralyzing jelly sucks organics from the nooks and crannies of the dungeon. They prefer carrion and nonliving food to live prey.",
+      "description": "Dragging its way through corridors and halls with a 'schlorp', this cube of paralyzing jelly sucks organics from the nooks and crannies of the dungeon. They prefer carrion and nonliving food to live prey, but won't hesitate to pursue something moving if it's close enough.",
       "peaceful": false,
       "hitPoints": 20,
       "isMonster": true,
@@ -224,6 +224,8 @@
       "experienceAwarded": 30,
       "corpseSpawnPercent": 0,
       "threat": 7,
+      "frequency": 50,
+      "maxOnLevel": 1,
       "naturalWeaponDamage": 5,
       "naturalWeaponToHit": 5,
       "naturalArmorClass": -5,
@@ -256,7 +258,7 @@
       "corpseSpawnPercent": 0,
       "threat": 5,
       "frequency": 50,
-      "corpseSpawnPercent": 0,
+      "maxOnLevel": 8,
       "naturalWeaponDamage": 4,
       "naturalWeaponToHit": 0,
       "naturalArmorClass": 0,
