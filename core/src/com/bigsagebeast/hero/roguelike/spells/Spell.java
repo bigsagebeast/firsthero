@@ -2,6 +2,9 @@ package com.bigsagebeast.hero.roguelike.spells;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.GameLoop;
+import com.bigsagebeast.hero.enums.Beatitude;
+import com.bigsagebeast.hero.enums.Stat;
+import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.util.Raycasting;
@@ -29,17 +32,21 @@ public abstract class Spell {
     }
 
     public enum SpellType {
-        MONSTER("Monster Ability"),
-        ARCANUM("Arcanum"),
-        WEAPON_SKILL("Weapon Skill"),
-        DIVINE("Divine Power");
+        MONSTER("Monster Ability", "SP"),
+        ARCANUM("Arcanum", "SP"),
+        WEAPON_SKILL("Weapon Skill", "SP"),
+        DIVINE("Divine Power", "DP");
 
         public String name;
+        public String cost;
 
-        SpellType(String name) {
+        SpellType(String name, String cost) {
             this.name = name;
+            this.cost = cost;
         }
     }
+
+    public Map<Stat, EquipmentScaling> scaling = new HashMap<>();
 
     public abstract TargetType getTargetType();
 
@@ -47,13 +54,11 @@ public abstract class Spell {
 
     public abstract String getName();
 
+    public String getDescription() { return "DESCRIPTION MISSING"; };
+
     public String getTypeDescription() {
         return getTargetType().name;
     }
-
-    public Float getRange(Entity caster) { return null; }
-
-    public Integer getDuration(Entity caster) { return null; }
 
     public int getCost(Entity caster) { return 0; };
 
@@ -62,6 +67,46 @@ public abstract class Spell {
     public boolean isDodgeable() { return false; }
 
     public boolean isResistable() { return false; }
+
+    public Float getBaseDamage() { return null; }
+    public Float getBaseDuration() { return null; }
+    public Float getBaseRange() { return null; }
+    public Map<Stat, EquipmentScaling> getScaling() { return scaling; }
+
+    public Float getDamage(Entity caster) {
+        if (getBaseDamage() == null) {
+            return null;
+        }
+        float accum = getBaseDamage();
+        for (Stat stat : scaling.keySet()) {
+            accum += Stat.getScalingWithMinimum(caster.statblock.get(stat), scaling.get(stat).damage);
+        }
+        return accum;
+    }
+
+    public Integer getDuration(Entity caster) {
+        if (getBaseDuration() == null) {
+            return null;
+        }
+        float accum = getBaseDuration();
+        for (Stat stat : scaling.keySet()) {
+            accum += Stat.getScalingWithMinimum(caster.statblock.get(stat), scaling.get(stat).duration);
+        }
+        return (int)accum;
+    }
+
+    public Float getRange(Entity caster) {
+        if (getBaseRange() == null) {
+            return null;
+        }
+        float accum = getBaseRange();
+        for (Stat stat : scaling.keySet()) {
+            accum += Stat.getScalingWithMinimum(caster.statblock.get(stat), scaling.get(stat).range);
+        }
+        return accum;
+    }
+
+
 
     public void playerStartSpell() {
         if (getSpellType() == SpellType.WEAPON_SKILL || getSpellType() == SpellType.ARCANUM) {

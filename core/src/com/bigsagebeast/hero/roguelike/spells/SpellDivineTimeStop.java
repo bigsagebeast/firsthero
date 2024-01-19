@@ -21,8 +21,13 @@ public class SpellDivineTimeStop extends Spell {
     }
 
     @Override
-    public Integer getDuration(Entity caster) {
-        return 6;
+    public String getDescription() {
+        return "Stops time for a moment, allowing you to move and act freely.";
+    }
+
+    @Override
+    public Float getBaseDuration() {
+        return 5f;
     }
 
     @Override
@@ -32,7 +37,7 @@ public class SpellDivineTimeStop extends Spell {
 
     @Override
     public void affectTarget(Entity caster, Entity target, Compass dir) {
-        target.getMover().nextAction -= Game.ONE_TURN * getDuration(caster);
+        target.getMover().nextAction -= Game.ONE_TURN * (getDuration(caster) + 1);
         Game.announceVis(target, target, "Everything around you slows to a crawl.",
                 null,
                 target.getVisibleNameDefinite() + " moves with a divine, blinding speed.",

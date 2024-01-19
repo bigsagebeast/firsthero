@@ -2,7 +2,9 @@ package com.bigsagebeast.hero.roguelike.spells;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.GameLoop;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.game.CombatLogic;
+import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
@@ -15,6 +17,11 @@ import java.util.*;
 import static com.bigsagebeast.hero.roguelike.game.Game.announce;
 
 public class SpellVoltageCascade extends Spell {
+    public SpellVoltageCascade() {
+        scaling.put(Stat.ARCANUM, new EquipmentScaling());
+        scaling.get(Stat.ARCANUM).damage = 0.5f;
+    }
+
     @Override
     public SpellType getSpellType() {
         return SpellType.ARCANUM;
@@ -31,7 +38,14 @@ public class SpellVoltageCascade extends Spell {
     }
 
     @Override
-    public Float getRange(Entity caster) {
+    public String getDescription() {
+        return "Fires a beam of electricity through multiple targets. At each target it hits, the beam fires additional weaker arcs to the sides or diagonally.";
+    }
+
+    public Float getBaseDamage() { return 8f; }
+
+    @Override
+    public Float getBaseRange() {
         return 5.0f;
     }
 
@@ -60,14 +74,14 @@ public class SpellVoltageCascade extends Spell {
     @Override
     public void affectTarget(Entity actor, Entity target, Compass dir) {
         if (CombatLogic.castAttempt(actor, target, this)) {
-            CombatLogic.castDamage(actor, target, this, 10);
+            CombatLogic.castDamage(actor, target, this, getDamage(actor));
             arc(actor, target.pos, dir);
         }
     }
 
     private void affectArc(Entity caster, Entity target) {
         if (CombatLogic.castAttempt(caster, target, this)) {
-            CombatLogic.castDamage(caster, target, this, 8);
+            CombatLogic.castDamage(caster, target, this, getDamage(caster) * 4f / 5f);
         }
     }
 

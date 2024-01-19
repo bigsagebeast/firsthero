@@ -21,6 +21,11 @@ public class SpellDivineHealing extends Spell {
     }
 
     @Override
+    public String getDescription() {
+        return "Restores your hit points to maximum.";
+    }
+
+    @Override
     public int getCost(Entity caster) {
         return 300;
     }

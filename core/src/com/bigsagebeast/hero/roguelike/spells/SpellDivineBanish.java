@@ -22,7 +22,12 @@ public class SpellDivineBanish extends Spell {
     }
 
     @Override
-    public Float getRange(Entity caster) {
+    public String getDescription() {
+        return "Casts a foe out of this universe entirely. You will get no reward from defeating them. May not work on enemies that are important to the narrative.";
+    }
+
+    @Override
+    public Float getBaseRange() {
         return 1.0f;
     }
 

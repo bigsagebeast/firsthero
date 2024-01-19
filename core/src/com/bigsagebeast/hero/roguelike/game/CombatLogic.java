@@ -221,9 +221,9 @@ public class CombatLogic {
 		return true;
 	}
 
-	public static void castDamage(Entity actor, Entity target, Spell spell, int rawDamage) {
+	public static void castDamage(Entity actor, Entity target, Spell spell, float rawDamage) {
 		// No pre/post for being cast on, that's handled in the spell
-		target.hurt(rawDamage, false, actor.getVisibleNameIndefiniteOrSpecific());
+		target.hurt((int)rawDamage, false, actor.getVisibleNameIndefiniteOrSpecific());
 		if (target.hitPoints > 0) {
 			spell.announceHitWithoutKill(actor, target);
 		} else {

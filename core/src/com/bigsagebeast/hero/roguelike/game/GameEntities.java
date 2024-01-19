@@ -84,33 +84,6 @@ public class GameEntities {
         // delete the first \n
         sb.delete(0, 1);
 
-        /*
-        ProcArmor procArmor = (ProcArmor)ent.getProcByType(ProcArmor.class);
-        ProcWeaponMelee procWeaponMelee = (ProcWeaponMelee)ent.getProcByType(ProcWeaponMelee.class);
-        ProcWeaponRanged procWeaponRanged = (ProcWeaponRanged)ent.getProcByType(ProcWeaponRanged.class);
-        ProcWeaponAmmo procWeaponAmmo = (ProcWeaponAmmo)ent.getProcByType(ProcWeaponAmmo.class);
-        if (procArmor != null) {
-            sb.append("\n");
-            sb.append("Armor class: " + procArmor.provideArmorClass(ent) +
-                    ", Armor thickness: " + procArmor.provideArmorThickness(ent));
-        }
-        if (procWeaponMelee != null) {
-            sb.append("\n");
-            sb.append("To-Hit: " + procWeaponMelee.toHit(Game.getPlayerEntity()) +
-                    ", Damage: " + procWeaponMelee.damage(Game.getPlayerEntity()));
-        }
-        if (procWeaponRanged != null) {
-            sb.append("\n");
-            sb.append("To-Hit bonus: " + procWeaponRanged.toHitBonus(Game.getPlayerEntity()) +
-                    ", Damage bonus: " + procWeaponRanged.averageDamage(Game.getPlayerEntity()) +
-                    ". Stats are added to ammunition.");
-        }
-        if (procWeaponAmmo != null) {
-            sb.append("\n");
-            sb.append("To-Hit: " + procWeaponAmmo.toHitBonus(Game.getPlayerEntity()) +
-                    ", Damage: " + procWeaponAmmo.averageDamage(Game.getPlayerEntity()));
-        }
- */
         return sb.toString();
     }
 

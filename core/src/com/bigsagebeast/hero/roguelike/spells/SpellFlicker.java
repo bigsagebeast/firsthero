@@ -27,7 +27,12 @@ public class SpellFlicker extends Spell {
     }
 
     @Override
-    public Float getRange(Entity caster) {
+    public String getDescription() {
+        return "Randomly teleports you a short distance to a point at least 3 tiles away, even through walls.";
+    }
+
+    @Override
+    public Float getBaseRange() {
         return 8.0f;
     }
 

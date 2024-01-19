@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.roguelike.spells;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.game.CombatLogic;
+import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
@@ -13,6 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SpellIceBeam extends Spell {
+    public SpellIceBeam() {
+        scaling.put(Stat.ARCANUM, new EquipmentScaling());
+        scaling.get(Stat.ARCANUM).duration = 0.25f;
+        scaling.get(Stat.ARCANUM).damage = 1f;
+    }
     @Override
     public SpellType getSpellType() {
         return SpellType.ARCANUM;
@@ -29,15 +35,21 @@ public class SpellIceBeam extends Spell {
     }
 
     @Override
-    public Float getRange(Entity caster) {
+    public String getDescription() {
+        return "Projects a beam of freezing cold, dealing low damage but slowing your enemies for a time.";
+    }
+
+    @Override
+    public Float getBaseDamage() { return 7.0f; }
+
+    @Override
+    public Float getBaseRange() {
         return 5.0f;
     }
 
     @Override
-    public Integer getDuration(Entity caster) {
-        int turns = 5;
-        turns += (Math.max(caster.getStat(Stat.ARCANUM), 6) - 8) / 2;
-        return turns;
+    public Float getBaseDuration() {
+        return 5f;
     }
 
     @Override
@@ -65,7 +77,7 @@ public class SpellIceBeam extends Spell {
     @Override
     public void affectTarget(Entity actor, Entity target, Compass dir) {
         if (CombatLogic.castAttempt(actor, target, this)) {
-            CombatLogic.castDamage(actor, target, this, 8);
+            CombatLogic.castDamage(actor, target, this, getDamage(actor));
             if (!target.dead) {
                 ProcEffectSlow existing = (ProcEffectSlow) target.getProcByType(ProcEffectSlow.class);
                 if (existing != null) {

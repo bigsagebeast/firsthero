@@ -1,7 +1,9 @@
 package com.bigsagebeast.hero.roguelike.spells;
 
 import com.badlogic.gdx.graphics.Color;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.game.CombatLogic;
+import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.roguelike.game.Game;
@@ -16,6 +18,11 @@ import java.util.stream.Collectors;
 import static com.bigsagebeast.hero.roguelike.game.Game.announceVis;
 
 public class SpellWaterBlast extends Spell {
+    public SpellWaterBlast() {
+        scaling.put(Stat.ARCANUM, new EquipmentScaling());
+        scaling.get(Stat.ARCANUM).damage = 0.25f;
+    }
+
     @Override
     public SpellType getSpellType() {
         return SpellType.ARCANUM;
@@ -32,7 +39,15 @@ public class SpellWaterBlast extends Spell {
     }
 
     @Override
-    public Float getRange(Entity caster) {
+    public String getDescription() {
+        return "Launches a blast of water that hits multiple enemies in a line and knocks them back.";
+    }
+
+    @Override
+    public Float getBaseDamage() { return 7f; }
+
+    @Override
+    public Float getBaseRange() {
         return 6.0f;
     }
 
@@ -69,7 +84,7 @@ public class SpellWaterBlast extends Spell {
     @Override
     public void affectTarget(Entity caster, Entity target, Compass dir) {
         if (CombatLogic.castAttempt(caster, target, this)) {
-            CombatLogic.castDamage(caster, target, this, 8);
+            CombatLogic.castDamage(caster, target, this, getDamage(caster));
         }
         if (target.dead) {
             return;
