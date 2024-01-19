@@ -466,6 +466,202 @@
       }
     },
 
+    "weapon.melee.hatchet": {
+      "name": "hatchet",
+      "description": "A small-bladed one-handed axe that's commonly used for felling trees.",
+      "glyphName": "weapon.hatchet",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "AXE",
+          "damage": 5,
+          "toHit": 0,
+          "defense": 0,
+          "penetration": 1.0,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.4,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.battleaxe": {
+      "name": "battle axe",
+      "description": "A large-bladed two-headed axe for hacking through crowds of foes.",
+      "glyphName": "weapon.battleaxe",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "AXE",
+          "damage": 6,
+          "toHit": 1,
+          "defense": 0,
+          "penetration": 2.0,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.75,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.melee.greataxe": {
+      "name": "greataxe",
+      "description": "This massive two-headed axe on a long shaft carries a great deal of weight behind its swings.",
+      "glyphName": "weapon.greataxe",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "AXE",
+          "damage": 8,
+          "toHit": 1,
+          "defense": 0,
+          "penetration": 3,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 1,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      }
+    },
+
+    "weapon.melee.trident": {
+      "name": "trident",
+      "description": "This long-handled stabbing weapon gives reach and maintains defense.",
+      "glyphName": "weapon.trident",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "POLEARM",
+          "damage": 7,
+          "toHit": 1,
+          "defense": 2,
+          "penetration": 3,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.8,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      }
+    },
+    "weapon.melee.glaive": {
+      "name": "glaive",
+      "description": "The glaive is a long blade on a long pole, allowing slashing attacks with range and defense.",
+      "glyphName": "weapon.glaive",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "POLEARM",
+          "damage": 7,
+          "toHit": 2,
+          "defense": 2,
+          "penetration": 2,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.6,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.6
+            }
+          }
+        }
+      }
+    },
+    "weapon.melee.lucernehammer": {
+      "name": "lucerne hammer",
+      "description": "This narrow-headed bludgeon gives penetration at long range and with good defense.",
+      "glyphName": "weapon.lucernehammer",
+      "palette": [
+        "white",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "POLEARM",
+          "damage": 7,
+          "toHit": 1,
+          "defense": 2,
+          "penetration": 3,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.8,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      }
+    },
+
     "weapon.ranged.shortbow": {
       "name": "shortbow",
       "description": "A short-ranged weapon that fires arrows.",

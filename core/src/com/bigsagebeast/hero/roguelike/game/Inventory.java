@@ -396,7 +396,7 @@ public class Inventory {
     public static void openInventoryToInspect() {
         Collection<Entity> inventory = Game.getPlayerEntity().getInventoryEntities();
         DialogueBox box = new DialogueBox()
-                .withFooterClosable()
+                .withFooter("SPACE to close, ENTER to inspect")
                 .withTitle("Inventory")
                 .withAllowLetters(true)
                 .withMargins(60, 60);

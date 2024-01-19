@@ -75,6 +75,11 @@ public class DialogueBox {
         return this;
     }
 
+    public DialogueBox withFooter(String text) {
+        footerText = text;
+        return this;
+    }
+
     public DialogueBox withFooterClosable() {
         footerText = "SPACE to close";
         return this;
