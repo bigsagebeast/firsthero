@@ -48,7 +48,7 @@ public class ProcItem extends Proc {
     public void postBePickedUp(Entity entity, Entity actor) {}
 
     @Override
-    public TextBlock getNameBlock(Entity entity) {
+    public TextBlock getNameBlock(Entity entity, int width) {
         return new TextBlock(entity.getVisibleNameWithQuantity(), getBeatitudeColor(entity));
     }
 

@@ -81,7 +81,7 @@
       "level": 1,
       "procs": {
         "item.ProcArmor": {
-          "armorClass": 1,
+          "armorClass": 2,
           "armorThickness": 0
         }
       },
@@ -105,7 +105,7 @@
       "level": 2,
       "procs": {
         "item.ProcArmor": {
-          "armorClass": 1,
+          "armorClass": 2,
           "armorThickness": 0
         }
       },

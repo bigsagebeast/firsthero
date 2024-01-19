@@ -40,13 +40,31 @@
       "idenGroup": "scroll1",
       "name": "scroll of remove curse",
       "pluralName": "scrolls of remove curse",
-      "description": "This scroll can remove the curse from equipped or carried items.",
+      "description": "This scroll can remove the curse from random equipped or carried items.",
       "category": "scroll",
       "frequency": 300,
       "identityHidden": true,
       "level": 1,
       "procs": {
         "item.scroll.ProcScrollRemoveCurse": {}
+      },
+      "tags": [
+        "scroll",
+        "helpful",
+        "generic-fantasy"
+      ]
+    },
+    "scroll.remove.blessing": {
+      "idenGroup": "scroll1",
+      "name": "scroll of blessing",
+      "pluralName": "scrolls of blessing",
+      "description": "This scroll can bless chosen items.",
+      "category": "scroll",
+      "frequency": 300,
+      "identityHidden": true,
+      "level": 1,
+      "procs": {
+        "item.scroll.ProcScrollBlessing": {}
       },
       "tags": [
         "scroll",

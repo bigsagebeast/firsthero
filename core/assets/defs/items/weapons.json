@@ -467,7 +467,7 @@
     },
 
     "weapon.ranged.shortbow": {
-      "name": "wooden shortbow",
+      "name": "shortbow",
       "description": "A short-ranged weapon that fires arrows.",
       "frequency": 100,
       "glyphName": "weapon.shortbow",
@@ -480,8 +480,9 @@
       "level": 1,
       "procs": {
         "item.ProcWeaponRanged": {
-          "averageDamage": 0,
-          "toHitBonus": 0,
+          "damage": 1,
+          "toHit": 1,
+          "penetration": 1,
           "range": 10,
           "ammoType": "ARROW"
         }
@@ -504,10 +505,12 @@
       "minCount": 5,
       "maxCount": 10,
       "level": 1,
+      "hasBeatitude": false,
       "procs": {
         "item.ProcWeaponAmmo": {
-          "averageDamage": 5,
-          "toHitBonus": 0,
+          "damage": 5,
+          "toHit": 0,
+          "penetration": 2,
           "ammoType": "ARROW"
         }
       },
@@ -529,10 +532,12 @@
       "minCount": 5,
       "maxCount": 10,
       "level": 1,
+      "hasBeatitude": false,
       "procs": {
         "item.ProcWeaponAmmo": {
-          "averageDamage": 3,
-          "toHitBonus": 0,
+          "damage": 3,
+          "toHit": 0,
+          "penetration": 1,
           "canThrow": true,
           "throwRange": 5,
           "ammoType": "STONE"
@@ -556,8 +561,9 @@
       "level": 1,
       "procs": {
         "item.ProcWeaponRanged": {
-          "averageDamage": 0,
-          "toHitBonus": 0,
+          "damage": 1,
+          "toHit": 1,
+          "penetration": 1,
           "range": 6,
           "ammoType": "STONE"
         }

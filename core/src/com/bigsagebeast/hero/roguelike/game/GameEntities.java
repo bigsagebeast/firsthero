@@ -2,10 +2,7 @@ package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.enums.Stat;
-import com.bigsagebeast.hero.roguelike.world.Bestiary;
-import com.bigsagebeast.hero.roguelike.world.Entity;
-import com.bigsagebeast.hero.roguelike.world.ItemType;
-import com.bigsagebeast.hero.roguelike.world.Phenotype;
+import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectTimedTelepathy;
 import com.bigsagebeast.hero.roguelike.world.proc.intrinsic.ProcTelepathy;
@@ -28,18 +25,23 @@ public class GameEntities {
         if (item.beatitude == targetBeatitude) {
             return;
         }
+        boolean plural = item.quantity > 1;
         switch (targetBeatitude) {
             case CURSED:
-                announce(entity.getVisibleNameDefinite() + " glows in a harsh black light.");
+                announce(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " in a harsh black light.");
                 break;
             case UNCURSED:
-                announce(entity.getVisibleNameDefinite() + " glows white.");
+                announce(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " white.");
                 break;
             case BLESSED:
-                announce(entity.getVisibleNameDefinite() + " glows in a smooth blue light.");
+                announce(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " in a smooth blue light.");
                 break;
         }
         item.beatitude = targetBeatitude;
+        if (entity.containingEntity >= 0) {
+            EntityTracker.get(entity.containingEntity).restack(entity);
+        }
+        entity.identifyItemBeatitude();
     }
 
     public static boolean isTelepathic(Entity entity) {

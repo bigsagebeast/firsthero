@@ -1,6 +1,10 @@
 package com.bigsagebeast.hero.roguelike.world.proc.item;
 
 import com.badlogic.gdx.graphics.Color;
+import com.bigsagebeast.hero.enums.Beatitude;
+import com.bigsagebeast.hero.enums.Stat;
+import com.bigsagebeast.hero.glyphtile.IconGlyph;
+import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
 import com.bigsagebeast.hero.roguelike.world.AmmoType;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.util.Util;
@@ -12,83 +16,74 @@ import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 public class ProcWeaponAmmo extends Proc {
 
     public ProcWeaponAmmo() { super(); }
-    public ProcWeaponAmmo(int averageDamage, int toHitBonus, AmmoType ammoType, boolean canThrow, int throwRange) {
+    public ProcWeaponAmmo(int damage, int toHit, int penetration, AmmoType ammoType, boolean canThrow, int throwRange) {
         this();
-        this.averageDamage = averageDamage;
-        this.toHitBonus = toHitBonus;
+        this.damage = damage;
+        this.toHit = toHit;
+        this.penetration = penetration;
         this.ammoType = ammoType;
         this.canThrow = canThrow;
         this.throwRange = throwRange;
     }
 
-    public int averageDamage;
-    public int toHitBonus;
+    public int damage;
+    public int toHit;
+    public int penetration;
     public AmmoType ammoType;
     public boolean canThrow;
     public int throwRange = 4;
 
-    public int averageDamage(Entity wielder) {
-        return averageDamage;
+    @Override
+    public String getUnidDescription(Entity entity) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Ammo type: " + ammoType.name());
+        sb.append(". Base stats: Damage ").append(Util.formatFloat(damage));
+        sb.append(" To-Hit ").append(Util.formatFloat(toHit));
+        sb.append(" Penetration ").append(Util.formatFloat(penetration));
+        sb.append("\n\nAmmo stats are combined with ranged weapon stats. See the ranged weapon for more details.");
+
+        return sb.toString();
     }
 
-    public int toHitBonus(Entity wielder) {
-        return toHitBonus;
+
+    public int averageDamage(Entity entity, Entity wielder) {
+        return damage;
     }
 
-    public int averageDamage() {
-        return averageDamage(Game.getPlayerEntity());
+    public int toHitBonus(Entity entity, Entity wielder) {
+        return toHit;
     }
 
-    public int toHitBonus() {
-        return toHitBonus(Game.getPlayerEntity());
-    }
+    public int penetration(Entity entity, Entity wielder) { return penetration; }
 
     @Override
     public Boolean preBePickedUp(Entity entity, Entity actor) { return true; }
 
     @Override
     public void postBePickedUp(Entity entity, Entity actor) {}
-
     @Override
-    public TextBlock getNameBlock(Entity entity) {
-        Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
-        ProcWeaponAmmo p = null;
-        if (pcPrimaryWeapon != null) {
-            p = (ProcWeaponAmmo)pcPrimaryWeapon.getProcByType(ProcWeaponAmmo.class);
-        }
+    public TextBlock getNameBlock(Entity entity, int width) {
+        int ad = (int) averageDamage(entity, Game.getPlayerEntity());
+        int th = (int) toHitBonus(entity, Game.getPlayerEntity());
+        int pn = (int) penetration(entity, Game.getPlayerEntity());
 
-        int ad = averageDamage();
-        int th = toHitBonus();
+        Color beatitudeColor = entity.getItem().identifiedBeatitude ? entity.getBeatitude().color : Color.WHITE;
+        TextBlock tbMain = new TextBlock(entity.getVisibleNameWithQuantity(), beatitudeColor);
+        tbMain.text = tbMain.text.substring(0, Math.min(width, tbMain.text.length()));
+        tbMain.append(new TextBlock(" (", Color.WHITE))
+                .append(new TextBlock("`" + ad, Color.WHITE, IconGlyph.DAMAGE.icon()))
+                .append(new TextBlock("`" + th, Color.WHITE, IconGlyph.TOHIT.icon()))
+                .append(new TextBlock("`" + pn, Color.WHITE, IconGlyph.PENETRATION.icon()))
+                .append(new TextBlock(")", Color.WHITE));
+        tbMain.children.stream().findFirst().get().x = width;
 
-        int damageComparator = 0;
-        int toHitComparator = 0;
-        if (p != null) {
-            damageComparator = ad - p.averageDamage();
-            toHitComparator = th - p.toHitBonus();
-        }
-        Color adColor = (damageComparator < 0) ? Color.RED : (damageComparator == 0) ? Color.WHITE : Color.GREEN;
-        Color thColor = (toHitComparator < 0) ? Color.RED : (toHitComparator == 0) ? Color.WHITE : Color.GREEN;
-
-        String adString = "" + ad;
-        String thString = "" + th;
-        if (th > 0) {
-            thString = "+" + th;
-        }
-        String entityName = entity.getVisibleNameWithQuantity();
-        int adLocation = entityName.length() + 2;
-        int thLocation = adLocation + adString.length() + 1;
-        String mainString = String.format("%s (%s,%s)", entityName, Util.repeat(" ", adString.length()), Util.repeat(" ", thString.length()));
-        TextBlock tbMain = new TextBlock(mainString, Color.WHITE);
-        TextBlock tbDamage = new TextBlock(adString, adLocation, 0, adColor);
-        TextBlock tbHit = new TextBlock(thString, thLocation, 0, thColor);
-        tbMain.addChild(tbDamage);
-        tbMain.addChild(tbHit);
         return tbMain;
     }
 
+
     @Override
     public Proc clone(Entity entity) {
-        ProcWeaponAmmo pw = new ProcWeaponAmmo(averageDamage, toHitBonus, ammoType, canThrow, throwRange);
+        ProcWeaponAmmo pw = new ProcWeaponAmmo(damage, toHit, penetration, ammoType, canThrow, throwRange);
         return pw;
     }
 }

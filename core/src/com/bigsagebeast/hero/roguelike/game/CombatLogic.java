@@ -9,6 +9,8 @@ import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class CombatLogic {
 
 	// TODO split into trySwing, doHit, doMiss
@@ -24,11 +26,11 @@ public class CombatLogic {
 		}
 		// TODO should do this stuff across all procs, not just PWMs
 		if (pwm != null) {
-			damage = pwm.getDamage(actor) * randomFactor;
-			accuracy = pwm.getToHit(actor) + Game.random.nextInt(20);
-			penetration = pwm.getPenetration(actor);
+			damage = pwm.getDamage(tool, actor) * randomFactor * getDamageReceivedMultiplier(target);
+			accuracy = pwm.getToHit(tool, actor) + Game.random.nextInt(20);
+			penetration = pwm.getPenetration(tool, actor);
 		} else {
-			damage = actor.getNaturalWeaponDamage() * randomFactor;
+			damage = actor.getNaturalWeaponDamage() * randomFactor * getDamageReceivedMultiplier(target);
 			accuracy = actor.getNaturalWeaponToHit() + Game.random.nextInt(20);
 			penetration = actor.getNaturalWeaponPenetration();
 		}
@@ -237,23 +239,26 @@ public class CombatLogic {
 		String withWeaponString = "";
 		SwingResult result = new SwingResult();
 
-		int accuracy, penetration;
+		int accuracy;
 		float randomFactor = generateWeaponRandomness();
 		// TODO invoke all procs, not just pwa/pwr
-		int averageDamage;
-		int accuracyBonus;
+		float averageDamage;
+		float accuracyBonus;
+		float penetration; // TODO more stuff
 		ProcWeaponAmmo pwa = (ProcWeaponAmmo)ammo.getProcByType(ProcWeaponAmmo.class);
 		if (tool != null) {
 			ProcWeaponRanged pwr = (ProcWeaponRanged)tool.getProcByType(ProcWeaponRanged.class);
-			averageDamage = pwr.averageDamage(actor) + pwa.averageDamage(actor);
-			accuracyBonus = pwr.toHitBonus(actor) + pwa.toHitBonus(actor);
+			averageDamage = pwr.getDamage(tool, actor) + pwa.averageDamage(ammo, actor);
+			accuracyBonus = pwr.getToHit(tool, actor) + pwa.toHitBonus(ammo, actor);
+			penetration = pwr.getPenetration(tool, actor) + pwa.penetration(ammo, actor);
 		} else {
-			averageDamage = actor.getNaturalRangedWeaponDamage() + pwa.averageDamage(actor);
-			accuracyBonus = actor.getNaturalRangedWeaponToHit() + pwa.toHitBonus(actor);
+			averageDamage = actor.getNaturalRangedWeaponDamage() + pwa.averageDamage(ammo, actor);
+			accuracyBonus = actor.getNaturalRangedWeaponToHit() + pwa.toHitBonus(ammo, actor);
+			penetration = 0; // TODO
 		}
-		result.damage = Math.round(averageDamage * randomFactor);
-		accuracy = accuracyBonus + Game.random.nextInt(20);
-		penetration = 0; // TODO
+		Float floatDamage = averageDamage * randomFactor * getDamageReceivedMultiplier(target);
+		result.damage = Math.round(floatDamage);
+		accuracy = Math.round(accuracyBonus + Game.random.nextInt(20));
 		// TODO should be a TextBlock
 		if (actor == Game.getPlayerEntity()) {
 			withWeaponString = " with your " + ammo.getVisibleNameWithQuantity();
@@ -373,5 +378,11 @@ public class CombatLogic {
 
 		// Ensure the generated value is within the desired range [0, 2]
 		return Math.min(Math.max(x0, 0.25f), 1.75f);
+	}
+
+	public static float getDamageReceivedMultiplier(Entity entity) {
+		AtomicReference<Float> accumulator = new AtomicReference<>(1.0f);
+		entity.forEachProcIncludingEquipment((e, p) -> accumulator.updateAndGet(val -> val *= p.provideDamageReceivedMultiplier(e)));
+		return accumulator.get();
 	}
 }

@@ -89,7 +89,7 @@ public class SpecialSpawner {
                 entity = Bestiary.create(key);
             } else {
                 // item
-                entity = Itempedia.create(key);
+                entity = Itempedia.createWithRandomBeatitude(key);
             }
             if (entity == null) {
                 throw new RuntimeException("No entity to spawn during special spawning: " + key + " " + isMover);

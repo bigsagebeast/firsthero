@@ -24,6 +24,18 @@ public class Itempedia {
         return create(key, null);
     }
 
+    public static Entity createWithRandomBeatitude(String key) {
+        Entity e = create(key, null);
+        ItemType t = map.get(key);
+
+        if (Game.random.nextInt(100) < t.blessChance) {
+            e.getItem().beatitude = Beatitude.BLESSED;
+        } else if (Game.random.nextInt(100) < t.curseChance) {
+            e.getItem().beatitude = Beatitude.CURSED;
+        }
+        return e;
+    }
+
     public static Entity create(String key, String name) {
         ItemType t = map.get(key);
         if (t == null) {
@@ -66,6 +78,13 @@ public class Itempedia {
         if (t.equipmentFor != null && !e.containsProc(ProcEquippable.class)) {
             e.addProc(new ProcEquippable(t.equipmentFor));
         }
+
+        return e;
+    }
+
+    public static Entity createWithRandomBeatitude(String key, int quantity) {
+        Entity e = create(key, quantity);
+        ItemType t = map.get(key);
 
         if (Game.random.nextInt(100) < t.blessChance) {
             e.getItem().beatitude = Beatitude.BLESSED;

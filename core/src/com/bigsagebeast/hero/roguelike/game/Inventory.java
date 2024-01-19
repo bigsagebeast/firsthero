@@ -57,13 +57,12 @@ public class Inventory {
             if (equipmentName != null) {
                 equipmentNameBlock = new TextBlock(equipmentName);
             } else if (playerEntity.body.getEquipment(bp) != null) {
-                equipmentNameBlock = playerEntity.body.getEquipment(bp).getNameBlock();
+                equipmentNameBlock = playerEntity.body.getEquipment(bp).getNameBlock(23);
             }
             TextBlock lineBlock = new TextBlock(String.format("%-13s: ", bp.getName()));
             if (equipmentNameBlock != null) {
                 lineBlock.append(equipmentNameBlock);
             }
-            //box.addItem(String.format("%-16s: %-16s", bp.getName(), equipmentName), bp);
             box.addItem(lineBlock, bp);
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleWieldResponse);
@@ -114,7 +113,6 @@ public class Inventory {
             }
             for (Entity ent : ents) {
                 box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
-                //box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), EntityGlyph.getGlyph(ent), ent);
                 addedAnything = true;
             }
         }
@@ -148,7 +146,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryToDropResponse);
@@ -198,7 +196,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Game::handleThrowInventory);
@@ -218,7 +216,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleFloorToGetResponse);
@@ -281,7 +279,7 @@ public class Inventory {
                     box.addHeader("*** " + cat.getName() + " (on floor) ***");
                 }
                 for (Entity ent : ents) {
-                    box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                    box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
                 }
             }
         }
@@ -292,7 +290,7 @@ public class Inventory {
                     box.addHeader("*** " + cat.getName() + " ***");
                 }
                 for (Entity ent : ents) {
-                    box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                    box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
                 }
             }
         }
@@ -336,7 +334,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : quaffableEnts) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleQuaff);
@@ -379,7 +377,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : readableEnts) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleRead);
@@ -408,7 +406,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryInspectResponse);

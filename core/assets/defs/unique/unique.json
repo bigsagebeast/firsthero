@@ -52,6 +52,11 @@
       "name": "generic corpse (error)",
       "description": "The body of a fallen creature.",
       "glyphName": "misc.corpse",
+      "palette": [
+        "white",
+        "red",
+        "brown"
+      ],
       "category": "food",
       "sortOrder": 0,
       "stackable": false

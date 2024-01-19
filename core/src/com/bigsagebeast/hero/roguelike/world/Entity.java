@@ -1,6 +1,5 @@
 package com.bigsagebeast.hero.roguelike.world;
 
-import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.enums.*;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
@@ -203,16 +202,6 @@ public class Entity {
             return "";
         }
         return getBeatitude().description + " ";
-    }
-
-    public String getStatline() {
-        for (Proc p : procs) {
-            String statline = p.getStatline(this, Game.getPlayerEntity());
-            if (statline != null) {
-                return " " + statline;
-            }
-        }
-        return "";
     }
 
     public String getVisibleName() {
@@ -658,6 +647,10 @@ public class Entity {
     }
 
     public void identifyItemFully() {
+        identifyItemFully(false);
+    }
+
+    public void identifyItemFully(boolean silent) {
         ItemType it = getItemType();
         ProcItem pi = getItem();
         if (it == null) {
@@ -670,7 +663,9 @@ public class Entity {
         it.identified = true;
         pi.identifiedBeatitude = true;
         String postIdentified = getVisibleNameIndefiniteOrSpecific();
-        Game.announceLoud("You identify " + preIdentified + " as " + postIdentified + ".");
+        if (!silent) {
+            Game.announceLoud("You identify " + preIdentified + " as " + postIdentified + ".");
+        }
         if (containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
         }
@@ -727,6 +722,9 @@ public class Entity {
     }
 
     public void restack(Entity target) {
+        if (target.isEquipped()) {
+            return;
+        }
         Entity foundTarget = null;
         for (int mergeTargetId : inventoryIds) {
             if (mergeTargetId == target.entityId) {
@@ -901,7 +899,7 @@ public class Entity {
     public int getArmorClass() {
         int ac = naturalArmorClass;
         for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
-            ac += ep.proc.provideArmorClass(ep.entity);
+            ac += ep.proc.provideDefense(ep.entity);
         }
         return ac;
     }
@@ -958,10 +956,14 @@ public class Entity {
     }
 
     public TextBlock getNameBlock() {
+        return getNameBlock(30);
+    }
+
+    public TextBlock getNameBlock(int width) {
         // TODO also have methods for prefixes and suffixes?
         // Maybe this method also handles overall colors for parts that aren't overridden?
         for (Proc p : procs) {
-            TextBlock tb = p.getNameBlock(this);
+            TextBlock tb = p.getNameBlock(this, width);
             if (tb != null) {
                 return tb;
             }
@@ -1127,7 +1129,7 @@ public class Entity {
                 } else {
                     BodyPart bp = container.body.getParts().stream().filter(b -> container.body.getEquipment(b) == this).findFirst().orElse(null);
                     if (bp != null) {
-                        container.body.putEquipment(bp, -1);
+                        container.body.putEquipment(bp, null);
                     } else {
                         //throw new RuntimeException("Tried to destroy a " + name + " contained by " + container.name + " that wasn't in inventory or equipped");
                     }

@@ -65,7 +65,7 @@ public class DungeonGenerator {
 			Point pos = level.findOpenTile();
 			Entity e;
 			if (!boons.isEmpty()) {
-				e = Itempedia.create(boons.remove(0));
+				e = Itempedia.createWithRandomBeatitude(boons.remove(0));
 			} else {
 				e = spawnLoot(level);
 			}
@@ -298,7 +298,7 @@ public class DungeonGenerator {
 		}
 		ItemType itemType = Itempedia.get(itemKey);
 		int quantity = itemType.minCount + Game.random.nextInt(itemType.maxCount - itemType.minCount + 1);
-		Entity loot = Itempedia.create(itemKey, quantity);
+		Entity loot = Itempedia.createWithRandomBeatitude(itemKey, quantity);
 		return loot;
 	}
 

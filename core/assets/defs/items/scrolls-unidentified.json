@@ -43,6 +43,17 @@
         "tan",
         "orange"
       ]
+    },
+    "scroll.falfon": {
+      "unidGroup": "scroll1",
+      "unidentifiedName": "scroll labeled FALFON",
+      "unidentifiedPluralName": "scrolls labeled FALFON",
+      "unidDescription": "This unknown scroll has lightning bolts scribbled in the margins.",
+      "glyphName": "scroll.standard",
+      "palette": [
+        "tan",
+        "white"
+      ]
     }
   }
 }

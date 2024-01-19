@@ -72,8 +72,7 @@ public class Proc {
     // activates every 1000
     public void turnPassed(Entity entity) { }
 
-    public TextBlock getNameBlock(Entity entity) { return null; }
-    public String getStatline(Entity entity, Entity wielder) { return null; }
+    public TextBlock getNameBlock(Entity entity, int width) { return null; }
 
     public int getDescriptionPriority(Entity entity) { return 0; }
     public String getIdenDescription(Entity entity) { return null; }
@@ -143,10 +142,11 @@ public class Proc {
     public void postBeKilled(Entity entity, Entity actor, Entity tool) { }
     public void postDoKill(Entity entity, Entity target, Entity tool) { }
 
-    public int provideArmorClass(Entity entity) { return 0; }
+    public int provideDefense(Entity entity) { return 0; }
     public int provideArmorThickness(Entity entity) { return 0; }
     public int provideToHitBonus(Entity entity) { return 0; }
     public int provideDamageBonus(Entity entity) { return 0; }
+    public float provideDamageReceivedMultiplier(Entity entity) { return 1.0f; }
 
     public List<StatusType> provideStatusResist(Entity entity) { return null; }
     public List<DamageType> provideDamageTypeResist(Entity entity) { return null; }

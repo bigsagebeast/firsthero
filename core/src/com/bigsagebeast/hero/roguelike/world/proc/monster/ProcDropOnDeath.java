@@ -28,7 +28,7 @@ public class ProcDropOnDeath extends Proc {
         if (count <= 0) {
             return;
         }
-        Entity spawn = Itempedia.create(key);
+        Entity spawn = Itempedia.createWithRandomBeatitude(key);
         spawn.getItem().quantity = count;
         Game.getLevel().addEntityWithStacking(spawn, entity.pos);
     }
