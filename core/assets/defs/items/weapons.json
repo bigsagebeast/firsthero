@@ -483,8 +483,60 @@
           "damage": 1,
           "toHit": 1,
           "penetration": 1,
+          "range": 6,
+          "ammoType": "ARROW",
+          "scaling": {
+            "STRENGTH": {
+              "penetration": 0.25,
+              "damage": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.5,
+              "toHit": 0.25
+            },
+            "PERCEPTION": {
+              "toHit": 0.75
+            }
+          }
+        }
+      },
+      "tags": [
+        "ranged",
+        "generic-fantasy"
+      ]
+    },
+    "weapon.ranged.longbow": {
+      "name": "longbow",
+      "description": "A tall, sturdy bow that relies heavily on strength.",
+      "frequency": 100,
+      "glyphName": "weapon.longbow",
+      "palette": [
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "ranged weapon",
+      "category": "rangedweapon",
+      "level": 1,
+      "procs": {
+        "item.ProcWeaponRanged": {
+          "damage": 2,
+          "toHit": 1,
+          "penetration": 2,
           "range": 10,
-          "ammoType": "ARROW"
+          "ammoType": "ARROW",
+          "scaling": {
+            "STRENGTH": {
+              "penetration": 0.5,
+              "damage": 0.5
+            },
+            "DEXTERITY": {
+              "damage": 0.25,
+              "toHit": 0.25
+            },
+            "PERCEPTION": {
+              "toHit": 0.75
+            }
+          }
         }
       },
       "tags": [
@@ -565,7 +617,20 @@
           "toHit": 1,
           "penetration": 1,
           "range": 6,
-          "ammoType": "STONE"
+          "ammoType": "STONE",
+          "scaling": {
+            "STRENGTH": {
+              "penetration": 0.25,
+              "damage": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.5,
+              "toHit": 0.75
+            },
+            "PERCEPTION": {
+              "toHit": 0.25
+            }
+          }
         }
       },
       "tags": [

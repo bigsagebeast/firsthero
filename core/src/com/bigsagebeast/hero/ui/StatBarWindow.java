@@ -169,8 +169,8 @@ public class StatBarWindow extends UIWindow {
 		tbStatAr.color = colorForStat(Stat.ARCANUM);
 		tbStatAv.color = colorForStat(Stat.AVATAR);
 
-		tbStatDr.text = "" + statblock.dr;
-		tbStatDt.text = "" + statblock.dt;
+		tbStatDr.text = "" + entity.getArmorClass();
+		tbStatDt.text = "" + entity.getArmorThickness();
 		tbStatSpeed.text = "" + (int)entity.getSpeed();
 		tbStatSpeed.color = colorForSpeed();
 		tbStatLevel.text = "" + entity.level;

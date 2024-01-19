@@ -18,6 +18,7 @@ public class ProcScrollBlessing extends ImmutableProc {
     public int countMax;
     public int count;
     public boolean isCursed;
+    private Entity ignore;
 
     @Override
     public Boolean targetForRead(Entity entity) { return Boolean.TRUE; }
@@ -29,12 +30,12 @@ public class ProcScrollBlessing extends ImmutableProc {
 
     @Override
     public void postBeRead(Entity entity, Entity actor) {
+        ignore = entity;
+        count = 1;
         if (entity.getItem().beatitude == Beatitude.BLESSED) {
             countMax = 3;
-            count = 1;
         } else {
             countMax = 1;
-            count = 1;
         }
         isCursed = entity.getItem().beatitude == Beatitude.CURSED;
         openInventoryToBless();
@@ -54,6 +55,7 @@ public class ProcScrollBlessing extends ImmutableProc {
         inventory = inventory.stream().filter(ent ->
                         (!ent.getItem().identifiedBeatitude && ent.getItemType().hasBeatitude) || ent.getItem().beatitude != Beatitude.BLESSED)
                 .collect(Collectors.toList());
+        inventory.remove(ignore);
         if (!equipment.isEmpty()) {
             anyUnsafeTarget = true;
             box.addHeader("*** Equipment ***");

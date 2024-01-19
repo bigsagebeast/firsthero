@@ -40,7 +40,7 @@ public class ProcCorpse extends Proc {
         if (age > 100) {
             entity.destroy();
             if (entity.getTopLevelContainer() == Game.getPlayerEntity()) {
-                Game.announce("Your " + entity.getVisibleNameWithQuantity() + " rot away.");
+                Game.announce("Your " + entity.getVisibleNameWithQuantity() + " rots away.");
             } else {
                 Game.announceVis(entity, entity, null, null,
                         "You see " + entity.getVisibleNameIndefiniteOrVague() + " rot away.", null);

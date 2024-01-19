@@ -1,16 +1,22 @@
 package com.bigsagebeast.hero.roguelike.game;
 
+import com.bigsagebeast.hero.GameLoop;
+import com.bigsagebeast.hero.dialogue.DialogueBox;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcEffectHunger;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
+import com.bigsagebeast.hero.util.Util;
 
 import java.util.HashMap;
 
 public class Player {
 	public int entityId = -1;
+	public int statPoints = 0;
+	public Statblock upgradedStats = new Statblock(0);
 
 	public HashMap<Element, Integer> currentElementCharges = new HashMap<>();
 	public HashMap<Element, Integer> maxElementCharges = new HashMap<>();
@@ -146,7 +152,61 @@ public class Player {
 		Entity pc = getEntity();
 		pc.experience += target.experienceAwarded;
 		if (pc.experience >= pc.experienceToNext) {
-			((ProcPlayer)(pc.getProcByType(ProcPlayer.class))).levelUp(pc);
+			Game.getPlayer().levelUp();
 		}
 	}
+
+	public void levelUp() {
+		Entity entity = getEntity();
+		entity.level++;
+		entity.experience -= entity.experienceToNext;
+		entity.experienceToNext *= 2;
+		entity.recalculateSecondaryStats();
+
+		Game.announceLoud("You have reached level " + entity.level + "!");
+
+		statPoints += 2;
+
+		levelUpDialogue(entity);
+	}
+
+	public void levelUpDialogue(Entity entity) {
+		DialogueBox box = new DialogueBox()
+				.withMargins(60, 60)
+				.withFooterClosableAndSelectable()
+				.withTitle("Select stat to level up");
+		if (statPoints == 1) {
+			box.addHeader("You have " + statPoints + " stat point to spend.");
+		} else {
+			box.addHeader("You have " + statPoints + " stat points to spend.");
+		}
+		box.addHeader("              Current   Cost");
+		for (Stat stat : Stat.values()) {
+			String current = "" + getEntity().statblock.get(stat);
+			box.addItem(Util.capitalize(stat.description()) + Util.repeat(" ", 12 - stat.description().length()) + current + Util.repeat(" ", 10 - current.length()) + getCostForStat(stat), stat.name());
+		}
+		box.addItem("Save points for next level", "SAVE");
+		box.autoHeight();
+		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleLevelUp);
+	}
+
+	private void handleLevelUp(Object result) {
+		String resultString = (String)result;
+		if (!result.equals("SAVE")) {
+			Stat stat = Stat.valueOf(resultString);
+			if (statPoints >= getCostForStat(stat)) {
+				statPoints -= getCostForStat(stat);
+				upgradedStats.change(stat, 1);
+				getEntity().statblock.change(stat, 1, true);
+				getEntity().recalculateSecondaryStats();
+			} else {
+				levelUpDialogue(getEntity());
+			}
+		}
+	}
+
+	private int getCostForStat(Stat stat) {
+		return 1 + (upgradedStats.get(stat) / 2);
+	}
+
 }

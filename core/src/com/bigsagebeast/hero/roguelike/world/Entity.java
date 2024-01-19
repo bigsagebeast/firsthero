@@ -901,6 +901,7 @@ public class Entity {
         for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
             ac += ep.proc.provideDefense(ep.entity);
         }
+        ac += Stat.getScaling(statblock.get(Stat.AGILITY), 0.5f);
         return ac;
     }
 

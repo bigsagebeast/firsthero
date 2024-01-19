@@ -32,7 +32,16 @@ public class Statblock {
     }
 
     public void change(Stat stat, int delta) {
+        change(stat, delta, false);
+    }
+
+    public void change(Stat stat, int delta, boolean silent) {
         set(stat, normalize(stat, get(stat) + delta));
+        if (!silent && delta > 0) {
+            Game.announceLoud("Your " + stat.description() + " has increased.");
+        } else if (!silent && delta < 0) {
+            Game.announceLoud("Your " + stat.description() + " has decreased.");
+        }
     }
 
     public static int normalize(Stat stat, int val) {

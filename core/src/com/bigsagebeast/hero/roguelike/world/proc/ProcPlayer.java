@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.proc;
 
+import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.util.Point;
@@ -77,17 +78,4 @@ public class ProcPlayer extends ProcMover {
     @Override
     public void postDoKill(Entity entity, Entity target, Entity tool) {
     }
-
-    public void levelUp(Entity entity) {
-        entity.level++;
-        entity.experience -= entity.experienceToNext;
-        entity.experienceToNext *= 2;
-        //entity.hitPoints += 15;
-        //entity.maxHitPoints += 15;
-        entity.recalculateSecondaryStats();
-        //entity.healingDelay = 300 / entity.maxHitPoints;
-
-        Game.announce("You have reached level " + entity.level + "!");
-    }
-
 }

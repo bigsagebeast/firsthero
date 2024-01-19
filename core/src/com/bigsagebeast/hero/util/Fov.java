@@ -137,6 +137,9 @@ public class Fov {
 				}
 				ray.add(new Point(x, y));
 			}
+			if (level.isOpaque(target.x, target.y) && !hasInsertedFailedSentinel) {
+				ray.add(null);
+			}
 			ray.add(new Point(target));
 			return ray;
 		}
@@ -148,6 +151,9 @@ public class Fov {
 					ray.add(null);
 				}
 				ray.add(new Point(x, y));
+			}
+			if (level.isOpaque(target.x, target.y) && !hasInsertedFailedSentinel) {
+				ray.add(null);
 			}
 			ray.add(new Point(target));
 			return ray;

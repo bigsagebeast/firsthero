@@ -34,9 +34,9 @@ public class ProcEffectOakStrength extends ProcTimedEffect {
     public int getStatModifier(Entity entity, Entity actor, Stat stat) {
         if (turnsRemaining > 0) {
             if (stat == Stat.STRENGTH) {
-                return 6;
+                return 4 + (int)Stat.getScaling(actor.getStat(Stat.ARCANUM), 0.5f);
             } else if (stat == Stat.TOUGHNESS) {
-                return 2;
+                return 4 + (int)Stat.getScaling(actor.getStat(Stat.ARCANUM), 0.5f);
             }
         }
         return 0;

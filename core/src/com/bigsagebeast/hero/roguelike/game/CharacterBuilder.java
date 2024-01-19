@@ -19,6 +19,7 @@ public class CharacterBuilder {
 
     public void begin() {
         Game.spellbook.spells.clear();
+        Game.resetPlayer();
         selectRace();
     }
 
@@ -103,26 +104,26 @@ public class CharacterBuilder {
 
         switch (archetype) {
             case "warrior":
-                entity.statblock.change(Stat.STRENGTH, 4);
-                entity.statblock.change(Stat.TOUGHNESS, 6);
+                entity.statblock.change(Stat.STRENGTH, 4, true);
+                entity.statblock.change(Stat.TOUGHNESS, 6, true);
                 //entity.statblock.change(Stat.DEXTERITY, 2);
                 //entity.statblock.change(Stat.AGILITY, 4);
                 //entity.statblock.change(Stat.WILLPOWER, 4);
-                entity.statblock.change(Stat.ARCANUM, -2);
+                entity.statblock.change(Stat.ARCANUM, -2, true);
                 break;
             case "archer":
-                entity.statblock.change(Stat.TOUGHNESS, 2);
-                entity.statblock.change(Stat.AGILITY, 2);
-                entity.statblock.change(Stat.DEXTERITY, 4);
-                entity.statblock.change(Stat.WILLPOWER, -2);
-                entity.statblock.change(Stat.ARCANUM, -2);
-                entity.statblock.change(Stat.PERCEPTION, 4);
+                entity.statblock.change(Stat.TOUGHNESS, 2, true);
+                entity.statblock.change(Stat.AGILITY, 2, true);
+                entity.statblock.change(Stat.DEXTERITY, 4, true);
+                entity.statblock.change(Stat.WILLPOWER, -2, true);
+                entity.statblock.change(Stat.ARCANUM, -2, true);
+                entity.statblock.change(Stat.PERCEPTION, 4, true);
                 break;
             case "wizard":
-                entity.statblock.change(Stat.STRENGTH, -2);
-                entity.statblock.change(Stat.AGILITY, -2);
-                entity.statblock.change(Stat.WILLPOWER, 6);
-                entity.statblock.change(Stat.ARCANUM, 6);
+                entity.statblock.change(Stat.STRENGTH, -2, true);
+                entity.statblock.change(Stat.AGILITY, -2, true);
+                entity.statblock.change(Stat.WILLPOWER, 6, true);
+                entity.statblock.change(Stat.ARCANUM, 6, true);
         }
         entity.recalculateSecondaryStats();
     }

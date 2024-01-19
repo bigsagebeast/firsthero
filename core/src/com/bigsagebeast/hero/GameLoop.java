@@ -143,7 +143,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 				cutsceneModule.render(g, gState);
 			}
 			g.startBatch();
-			if (roguelikeModule.isRunning()) {
+			if (roguelikeModule.isRunning() && Game.getPlayerEntity() != null) {
 				glyphEngine.render(g, gState);
 			}
 			HeroGame.updateTimer("ge", System.currentTimeMillis() - start);

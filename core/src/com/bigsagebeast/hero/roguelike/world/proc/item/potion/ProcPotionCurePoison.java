@@ -30,17 +30,17 @@ public class ProcPotionCurePoison extends ImmutableProc {
                 } else {
                     effect.increaseDuration(actor, 25);
                 }
+                entity.identifyItemType();
                 break;
             case UNCURSED:
             case BLESSED:
                 if (effect != null) {
                     effect.expireEarly(actor);
+                    entity.identifyItemType();
+                } else {
+                    Game.announceVis(actor, null, "Nothing happens.", null, "Nothing happens.", null);
                 }
                 break;
-        }
-        if (effect != null) {
-            Game.announceVis(actor, null, "Nothing happens.", null, "Nothing happens.", null);
-            entity.identifyItemType();
         }
     }
 }

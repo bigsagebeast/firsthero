@@ -254,7 +254,7 @@ public class TargetingModule extends Module {
                     0, 0, centerPixel.x - (fontSize / 3), centerPixel.y - (fontSize / 3) + Y_OFFSET,
                     color);
             // ugly!
-            if (tb.text == "|") {
+            if (tb.text.equals("|")) {
                 tb.pixelOffsetX += (fontSize / 3);
             }
 
@@ -340,10 +340,12 @@ public class TargetingModule extends Module {
             case Input.Keys.SPACE:
             case Input.Keys.ESCAPE:
                 select(null);
+                break;
             case Input.Keys.ENTER:
             case Input.Keys.NUMPAD_ENTER:
             case Input.Keys.T:
                 select(targetTile);
+                break;
             case Input.Keys.LEFT:
             case Input.Keys.NUMPAD_4:
                 moveTarget(-1, 0);
@@ -407,7 +409,7 @@ public class TargetingModule extends Module {
         GameLoop.descriptionModule.terminate();
         WindowEngine.setDirty(UIManager.NAME_MAIN_WINDOW);
 
-        if (targetMode.stopAtWall) {
+        if (targetMode.stopAtWall && p != null) {
             for (int i=1; i<ray.size(); i++) {
                 if (ray.get(i) == null) {
                     p = ray.get(i-1);

@@ -12,7 +12,7 @@ public enum IconGlyph {
     TOHIT("icon.tohit", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED)),
     PENETRATION("icon.penetration", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED)),
     DEFENSE("icon.defense", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED)),
-    THICKNESS("icon.thickness", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED));
+    THICKNESS("icon.thickness", new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_GRAY));
 
     IconGlyph(String glyphName, PaletteEntry palette) {
         this.glyphName = glyphName;

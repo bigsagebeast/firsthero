@@ -19,7 +19,7 @@
       "experienceAwarded": 30,
       "threat": 5,
       "naturalWeaponDamage": 5,
-      "naturalWeaponToHit": 5,
+      "naturalWeaponToHit": 2,
       "naturalArmorClass": 5,
       "procs": {
         "monster.ProcCaster": {

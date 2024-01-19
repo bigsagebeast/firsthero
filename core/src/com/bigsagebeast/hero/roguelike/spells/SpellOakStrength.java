@@ -29,10 +29,8 @@ public class SpellOakStrength extends Spell {
 
     @Override
     public Integer getDuration(Entity caster) {
-        int turns = 5;
-        if (caster.getStat(Stat.ARCANUM) > 10) {
-            turns += caster.getStat(Stat.ARCANUM) - 10;
-        }
+        int turns = 30;
+        turns += Stat.getScaling(caster.getStat(Stat.ARCANUM), 3);
         return turns;
     }
 

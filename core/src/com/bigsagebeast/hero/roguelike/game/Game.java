@@ -274,6 +274,8 @@ public class Game {
 		return player;
 	}
 
+	public static void resetPlayer() { player = new Player(); }
+
 	public static Entity getPlayerEntity() {
 		return player.getEntity();
 	}
@@ -285,6 +287,9 @@ public class Game {
 	}
 	
 	public static void turn() {
+		if (getPlayerEntity() == null) {
+			return;
+		}
 		HeroGame.resetTimer("astar");
 		HeroGame.resetTimer("fov");
 		// at the start of the turn, the player has just acted
@@ -770,8 +775,8 @@ public class Game {
 		if (Game.random.nextInt(100) < 75) {
 			level.addEntityWithStacking(shotEntity, targetPoint);
 		}
-		passTime(player.getEntity().moveCost);
 		GameLoop.targetingModule.animate(getPlayerEntity().pos, targetPoint);
+		passTime(player.getEntity().moveCost);
 	}
 
 	public static void npcShoot(Entity actor, Point targetPoint) {

@@ -7,6 +7,7 @@ import com.bigsagebeast.hero.roguelike.game.GameSpecials;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.Spellpedia;
+import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
 import com.bigsagebeast.hero.ui.*;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.GameState;
@@ -180,6 +181,9 @@ public class RoguelikeModule extends Module {
 	
 	@Override
 	public void update(GameState state) {
+		if (Game.getPlayerEntity() == null) {
+			return;
+		}
 		if (dirty) {
 			Game.getLevel().recalculateJitter();
 			redraw();
@@ -393,6 +397,10 @@ public class RoguelikeModule extends Module {
 							Game.getPlayerEntity().acquireWithStacking(itemEnt);
 						}
 					}
+					break;
+				case Keys.BACKSLASH:
+					Game.getPlayerEntity().experience = Game.getPlayerEntity().experienceToNext;
+					Game.getPlayer().levelUp();
 			}
 		}
 		if (!shift && !ctrl && alt) {
@@ -498,6 +506,7 @@ public class RoguelikeModule extends Module {
 		box.addItem("q            Quaff a potion", "q");
 		box.addItem("r            Read a scroll or book", "r");
 		box.addItem("t            Target ranged attack", "t");
+		box.addItem("T            Throw a non-ranged item", "T");
 		box.addItem("w            Wear or wield", "w");
 		box.addItem("z            Cast a magic spell", "z");
 		box.addItem("<            Go up stairs", "<");
@@ -550,6 +559,9 @@ public class RoguelikeModule extends Module {
 				break;
 			case "t":
 				Game.cmdTarget();
+				break;
+			case "T":
+				Game.cmdThrow();
 				break;
 			case "w":
 				Game.cmdWield();
