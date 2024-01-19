@@ -55,6 +55,7 @@ public class Game {
 
 	public static boolean interrupted;
 	public static boolean paused;
+	public static String pauseMessage;
 	public static int restTurns; // if > 0, we're waiting in place
 	public static Compass longWalkDir = null; // if non-null, we're long-walking
 
@@ -330,7 +331,10 @@ public class Game {
 				tryLongTaskAction();
 				if (paused) {
 					// This isn't in PauseModule, to make messages go in the right order
-					Game.announceLoud("-- ENTER to continue --");
+					if (pauseMessage != null) {
+						Game.announce(pauseMessage);
+					}
+					Game.announceLoud("-- Press ENTER to continue --");
 					paused = false;
 				}
 				break;
@@ -354,12 +358,19 @@ public class Game {
 		interrupted = true;
 	}
 
-	public static void interruptAndBreak() {
+	public static void interruptAndBreak(String pauseMessage) {
 		interrupt();
 		paused = true;
+		Game.pauseMessage = pauseMessage;
 		GameLoop.pauseModule.begin(null);
 	}
 
+	public static void interruptAndBreak(String pauseMessage, Runnable runnable) {
+		interrupt();
+		paused = true;
+		Game.pauseMessage = pauseMessage;
+		GameLoop.pauseModule.begin(runnable);
+	}
 	public static boolean hasLongTask() {
 		return restTurns > 0 || longWalkDir != null;
 	}
@@ -1014,7 +1025,14 @@ public class Game {
 
 			for (Entity item : items) {
 				for (Proc p : item.procs) {
-					p.postBeSteppedOn(item, player.getEntity());
+					p.postBeSteppedOn(item, getPlayerEntity());
+				}
+				Entity currentAmmo = getPlayerEntity().body.getEquipment(BodyPart.RANGED_AMMO);
+				if (currentAmmo != null) {
+					if (currentAmmo.canStackWith(item)) {
+						announce("You add " + item.getVisibleNameIndefiniteOrSpecific() + " to your ammunition.");
+						currentAmmo.beStackedWith(item);
+					}
 				}
 			}
 		}

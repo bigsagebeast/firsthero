@@ -714,7 +714,6 @@ public class Entity {
         }
         if (stackedInto != null) {
             stackedInto.beStackedWith(target);
-            target.destroy();
         } else {
             inventoryIds.add(target.entityId);
         }
@@ -737,7 +736,6 @@ public class Entity {
         }
         if (foundTarget != null) {
             foundTarget.beStackedWith(target);
-            target.destroy();
         }
     }
 
@@ -1169,6 +1167,7 @@ public class Entity {
     public void beStackedWith(Entity other) {
         // assume canStackWith has already been tested
         getItem().quantity += other.getItem().quantity;
+        other.destroy();
     }
 
 
@@ -1224,7 +1223,7 @@ public class Entity {
         hitPoints = Math.min(Math.max(hitPoints + deltaHitPoints, hitPoints), newMaxHitPoints);
         spellPoints = Math.min(Math.max(spellPoints + deltaSpellPoints, spellPoints), newMaxSpellPoints);
         divinePoints = Math.min(Math.max(divinePoints + deltaDivinePoints, divinePoints), newMaxDivinePoints);
-        healingDelay = 400 / maxHitPoints;
+        healingDelay = 300 / maxHitPoints;
         spRegenDelay = 300 / maxSpellPoints;
     }
 

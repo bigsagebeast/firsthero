@@ -118,11 +118,6 @@ public class ProcWeaponMelee extends Proc {
         for (Stat stat : scaling.keySet()) {
             accum += Stat.getScalingWithMinimum(wielder.statblock.get(stat), scaling.get(stat).damage);
         }
-        if (entity.getItem().identifiedBeatitude && entity.getBeatitude() == Beatitude.BLESSED) {
-            accum += 1;
-        } else if (entity.getBeatitude() == Beatitude.CURSED) {
-            accum -= 1;
-        }
         return accum;
     }
 
@@ -130,11 +125,6 @@ public class ProcWeaponMelee extends Proc {
         float accum = toHit;
         for (Stat stat : scaling.keySet()) {
             accum += Stat.getScalingWithMinimum(wielder.statblock.get(stat), scaling.get(stat).toHit);
-        }
-        if (entity.getItem().identifiedBeatitude && entity.getBeatitude() == Beatitude.BLESSED) {
-            accum += 1;
-        } else if (entity.getBeatitude() == Beatitude.CURSED) {
-            accum -= 1;
         }
         return accum;
     }

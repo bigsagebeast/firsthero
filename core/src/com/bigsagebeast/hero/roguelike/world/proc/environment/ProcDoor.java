@@ -39,6 +39,12 @@ public class ProcDoor extends ProcFeature {
     @Override
     public void postBeOpened(Entity entity, Entity actor) {
         if (isOpen) {
+            if (Game.getLevel().getEntitiesOnTile(entity.pos).stream().filter(e -> !e.hide).count() > 1) {
+                if (actor == Game.getPlayerEntity()) {
+                    Game.announce("There's something in the way.");
+                }
+                return;
+            }
             Game.announceVis(actor, null, "You close the door.", null, actor.getVisibleNameDefinite() + " closes the door.", "You hear a door being closed.");
             close(entity);
         } else {

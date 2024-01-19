@@ -220,7 +220,6 @@ public class Level {
 			if (entity.canStackWith(mergeTarget)) {
 				stackedInto = mergeTarget;
 				mergeTarget.beStackedWith(entity);
-				entity.destroy();
 			}
 		}
 
@@ -622,12 +621,10 @@ public class Level {
 		}
 		neverbeastCountdown--;
 		if (neverbeastCountdown == 200 && neverbeastSpawned == 0) {
-			Game.announce("Cracks start to form in the narrative. You feel like it's time to move on.");
-			Game.interruptAndBreak();
+			Game.interruptAndBreak("Cracks start to form in the narrative. You feel like it's time to move on.");
 		}
 		if (neverbeastCountdown == 50 && neverbeastSpawned == 0) {
-			Game.announce("The narrative is breaking down before your eyes. You feel like it's time to leave.");
-			Game.interruptAndBreak();
+			Game.interruptAndBreak("The narrative is breaking down before your eyes. You feel like it's time to leave.");
 		} else if (neverbeastCountdown <= 0) {
 
 			String monsterKey = "neverbeast.young";

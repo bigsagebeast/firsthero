@@ -17,6 +17,7 @@
       ],
       "experienceAwarded": 15,
       "threat": 2,
+      "maxOnLevel": 2,
       "naturalWeaponDamage": 0,
       "naturalWeaponToHit": -5,
       "naturalArmorClass": -5,

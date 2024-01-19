@@ -8,7 +8,6 @@ import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcEffectHunger;
-import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
 import com.bigsagebeast.hero.util.Util;
 
 import java.util.HashMap;
@@ -83,9 +82,10 @@ public class Player {
 				// TODO update a proc on the player
 			} else {
 				if (after == Satiation.STARVING || after == Satiation.HUNGRY) {
-					Game.interruptAndBreak();
+					Game.interruptAndBreak(after.messageDown);
+				} else {
+					Game.announce(after.messageDown);
 				}
-				Game.announce(after.messageDown);
 			}
 		}
 		((ProcEffectHunger)getEntity().getProcByType(ProcEffectHunger.class)).setSatiation(Satiation.getStatus(satiation));
@@ -158,19 +158,17 @@ public class Player {
 
 	public void levelUp() {
 		Entity entity = getEntity();
+		statPoints += 2;
 		entity.level++;
 		entity.experience -= entity.experienceToNext;
 		entity.experienceToNext *= 2;
 		entity.recalculateSecondaryStats();
 
-		Game.announceLoud("You have reached level " + entity.level + "!");
-
-		statPoints += 2;
-
-		levelUpDialogue(entity);
+		Game.interruptAndBreak("You have advanced to level " + entity.level + "!", this::levelUpDialogue);
 	}
 
-	public void levelUpDialogue(Entity entity) {
+
+	public void levelUpDialogue() {
 		DialogueBox box = new DialogueBox()
 				.withMargins(60, 60)
 				.withFooterClosableAndSelectable()
@@ -199,8 +197,11 @@ public class Player {
 				upgradedStats.change(stat, 1);
 				getEntity().statblock.change(stat, 1, true);
 				getEntity().recalculateSecondaryStats();
+				if (statPoints > 0) {
+					levelUpDialogue();
+				}
 			} else {
-				levelUpDialogue(getEntity());
+				levelUpDialogue();
 			}
 		}
 	}

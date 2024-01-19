@@ -251,6 +251,9 @@ public class Generator {
     public void addUpstairTo(String levelKey) {
         Room stairRoom;
         List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_ROOM).collect(Collectors.toList());
+        if (genericRooms.size() == 0) {
+            genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_CAVERN).collect(Collectors.toList());
+        }
         if (genericRooms.isEmpty()) {
             System.out.println("Not enough rooms to generate a stair cleanly!");
             stairRoom = level.rooms.get(Game.random.nextInt(level.rooms.size()));
@@ -273,6 +276,9 @@ public class Generator {
     public void addDownstairTo(String levelKey) {
         Room stairRoom;
         List<Room> genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_ROOM).collect(Collectors.toList());
+        if (genericRooms.size() == 0) {
+            genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_CAVERN).collect(Collectors.toList());
+        }
         if (genericRooms.isEmpty()) {
             System.out.println("Not enough rooms to generate a stair cleanly!");
             stairRoom = level.rooms.get(Game.random.nextInt(level.rooms.size()));
