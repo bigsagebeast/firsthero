@@ -85,6 +85,7 @@ public class Game {
 			Itempedia.map.clear();
 			Bestiary.map.clear();
 			Themepedia.map.clear();
+			LoadingTips.tips.clear();
 
 			FileHandle assetDefsHandle = Gdx.files.internal("assets-defs.txt");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(assetDefsHandle.read()));
@@ -162,7 +163,7 @@ public class Game {
 		ChatBox chatBox = new ChatBox()
 				.withMargins(60, 60)
 				.withTitle("Tutorial", null)
-				.withText("The First Hero is a turn-based game. To move or attack, use all eight directions of the numpad. If you don't have a full numpad, alt-left and right move in northern diagonals, and ctrl-left and right move in southern diagonals. Watch the 'Announcements' window for more information.");
+				.withText("The First Hero is a turn-based game. To move or attack, use all eight directions of the numpad. If you don't have a full numpad, alt-left and right move in the northern diagonals, and ctrl-left and right move in the southern diagonals. Watch the 'Announcements' window for more information.");
 
 		ArrayList<ChatLink> links = new ArrayList<>();
 		ChatLink linkOk = new ChatLink();
@@ -218,6 +219,9 @@ public class Game {
 		changeLevelGeneral();
 
 		level = nextLevel;
+		if (!level.tags.contains("tutorial")) {
+			LoadingTips.showNextTip();
+		}
 		level.addEntityWithStacking(player.getEntity(), playerPos, false);
 
 		GameLoop.glyphEngine.initializeLevel(level);
@@ -231,6 +235,9 @@ public class Game {
 
 		Level nextLevel = dungeon.getLevel(toKey);
 		level = nextLevel;
+		if (!level.tags.contains("tutorial")) {
+			LoadingTips.showNextTip();
+		}
 		Point playerPos = nextLevel.findTransitionTo(fromKey).pos;
 		level.addEntityWithStacking(player.getEntity(), playerPos, false);
 		level.prepare();
@@ -244,6 +251,9 @@ public class Game {
 		changeLevelGeneral();
 
 		level = nextLevel;
+		if (!level.tags.contains("tutorial")) {
+			LoadingTips.showNextTip();
+		}
 		GameLoop.glyphEngine.initializeLevel(level);
 		level.prepare();
 		interrupted = false;
@@ -1221,6 +1231,7 @@ public class Game {
 	public static void playerDeath() {
 		if (level.tags.contains("tutorial")) {
 			announceLoud("A glowing light revives you! You still have a purpose here!");
+			getPlayerEntity().dead = false;
 			getPlayerEntity().hitPoints = getPlayerEntity().maxHitPoints;
 			getPlayer().satiation = Satiation.FULL.topThreshold;
 			getPlayer().changeSatiation(Satiation.FULL.topThreshold - getPlayer().satiation);

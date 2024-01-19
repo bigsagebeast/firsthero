@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.roguelike.world;
 import com.badlogic.gdx.files.FileHandle;
 import com.bigsagebeast.hero.glyphtile.Palette;
 import com.bigsagebeast.hero.glyphtile.PaletteEntry;
+import com.bigsagebeast.hero.roguelike.game.LoadingTips;
 import com.bigsagebeast.hero.roguelike.world.dungeon.RoomType;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.SpecialSpawner;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.Theme;
@@ -44,6 +45,10 @@ public class DefinitionLoader {
             JsonNode themes = root.get("themes");
             if (themes != null) {
                 loadThemes(themes, handle.path());
+            }
+            JsonNode tips = root.get("tips");
+            if (tips != null) {
+                loadTips(tips, handle.path());
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -270,8 +275,6 @@ public class DefinitionLoader {
         }
     }
 
-
-
     public static void loadThemes(JsonNode themes, String path) throws NoSuchFieldException, IllegalAccessException, SetupException {
         for (Iterator<String> themeNames = themes.fieldNames(); themeNames.hasNext(); ) {
             String themeName = themeNames.next();
@@ -343,6 +346,23 @@ public class DefinitionLoader {
         }
 
         return spawner;
+    }
+
+    public static void loadTips(JsonNode tipsNode, String path) throws NoSuchFieldException, IllegalAccessException, SetupException {
+        if (tipsNode != null) {
+            if (!tipsNode.isArray()) {
+                throw new RuntimeException("Tip list was not an array");
+            }
+            for (JsonNode entry : tipsNode) {
+                LoadingTips.Tip tip = new LoadingTips.Tip();
+                tip.title = getAsString(entry, "title", "");
+                tip.message = getAsString(entry, "message", "");
+                if (tip.title.isEmpty() || tip.message.isEmpty()) {
+                    throw new SetupException("Malformed loading tip");
+                }
+                LoadingTips.tips.add(tip);
+            }
+        }
     }
 
     private static int getAsInt(JsonNode node, String key, int defaultValue) {

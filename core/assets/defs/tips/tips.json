@@ -1,0 +1,48 @@
+{
+  "tips": [
+    {
+      "title": "Aurex",
+      "message": "The realm of the New Gods, Aurex, is a safe haven between adventures. You can't engage in combat within Aurex."
+    },
+    {
+      "title": "Command list",
+      "message": "To view a list of commands and hotkeys, or to select from all commands, press 'Enter'."
+    },
+    {
+      "title": "Spells and techniques",
+      "message": "Press 'z' to open a list of spells, weapon techniques, and divine powers, cast them, or view their descriptions. Spells and weapon techniques are powered by SP, while divine powers are powered by DP. You must be wielding a weapon in your primary hand to use its weapon type's techniques."
+    },
+    {
+      "title": "Looking around",
+      "message": "Press 'l' to look around, and see the names and descriptions of monsters and items. To check the description of items in your inventory, press 'i' and select an item."
+    },
+    {
+      "title": "Elemental charges",
+      "message": "Most of your spells and techniques are powered by the elemental charges of Fire, Water, Lightning, and Naturae. The easiest way to recharge is to walk up to a source of the given element (for example, a river, forge, or tree)."
+    },
+    {
+      "title": "Attributes",
+      "message": "You have eight attributes.\n\nStrength is used for many melee and ranged weapons.\nToughness determines your hit points (HP).\nDexterity is used for many melee and ranged weapons, often in combination with strength.\nAgility adds to your defense against being hit.\nPerception is primarily used for ranged accuracy.\nWillpower contributes to your spell points (SP).\nArcanum controls spell power and contributes to your spell points (SP).\nAvatar determines your divine points (DP).\n\nMost attributes give a bonus above 10 and a penalty below 10. You can increase your attributes at level-up, but they will get more costly to raise the more times you've raised that attribute."
+    },
+    {
+      "title": "Dungeon meals",
+      "message": "Press 'e' to eat something from your inventory or the ground. It's a time-honored tradition to consume the bodies of your slain enemies. Some creatures may give you bonuses when consumed, but be careful what you eat! Try it on elementally-themed enemies."
+    },
+    {
+      "title": "The story must go on",
+      "message": "You have an important quest, so try not to tarry too long in one place. There are beasts lurking between universes who are eager to get in, and if you spend too long on one dungeon level, they'll find a way. You'll see a warning when it's time to go."
+    },
+    {
+      "title": "Using your off-hand",
+      "message": "Two-handed weapons are more powerful, but deny you the use of your offhand.\nUsing a shield will block a certain percentage of melee attacks, and a larger percentage of projectiles.\nUsing a second weapon gives you another chance to hit if your primary weapon misses.\nLeaving your off-hand open makes weapon techniques cheaper."
+    },
+    {
+      "title": "Equipment statistics",
+      "message": "Your equipment has five possible stats, which might scale by different attributes depending on the equipment. Inspect your equipment from the inventory screen to see its scaling.\n\nDamage shows the average raw damage your weapon will do.\nTo-hit increases your chance of hitting (added to a roll of 1 to 20).\nPenetration counters the effects of armor thickness.\nDefense reduces your chance of being hit (on a roll of 1 to 20).\nArmor thickness counters your enemy's penetration. Each point that it's higher gives a 10% chance for the attack to miss.\n\nFor ranged weapons, the stats of the weapon and ammunition are added together."
+    },
+    {
+      "title": "Targeting",
+      "message": "Spells can only be fired in the eight ordinal directions, but ranged weapons can target anything you can see.\n\nPress 't' to target a ranged enemy if you're wielding both a ranged weapon and ammunition for it, and then 't' again to fire. Some ammunition, like rocks, can be thrown without the need for a ranged weapon."
+    }
+  ]
+}

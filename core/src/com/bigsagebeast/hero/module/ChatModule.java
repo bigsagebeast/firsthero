@@ -174,9 +174,6 @@ public class ChatModule extends Module {
                     throw new RuntimeException(e);
                 }
             }
-            if (link.runnable != null) {
-                link.runnable.run();
-            }
 
             for (ChatSetter setter : link.setters) {
                 ChatState.execute(setter);
@@ -185,9 +182,16 @@ public class ChatModule extends Module {
             if (link.terminal) {
                 terminate();
                 chatBox = null;
+                if (link.runnable != null) {
+                    link.runnable.run();
+                }
             } else {
+                if (link.runnable != null) {
+                    link.runnable.run();
+                }
                 openPage(link.nextPage);
             }
+
         } else {
             chatBox.update(textEngine);
         }
