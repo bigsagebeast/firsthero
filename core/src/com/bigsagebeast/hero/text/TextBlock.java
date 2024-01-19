@@ -245,6 +245,10 @@ public class TextBlock implements GameLogic {
 		return closed;
 	}
 
+	public void quickFinish() {
+		secondStart = Float.NEGATIVE_INFINITY;
+	}
+
 	@Override
 	public void update(GameState state) {
 		if (closed) {

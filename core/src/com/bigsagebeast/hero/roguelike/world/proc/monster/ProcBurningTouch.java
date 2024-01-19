@@ -30,7 +30,7 @@ public class ProcBurningTouch extends Proc {
                 "They burn!",
                 actor.getVisibleNameWithQuantity() + " is burned!",
                 null);
-        actor.hurt(Dice.roll(dice, sides, modifier));
+        actor.hurt(Dice.roll(dice, sides, modifier), entity.getVisibleNameIndefiniteOrSpecific() + "'s burning touch");
     }
 
     @Override
@@ -40,6 +40,6 @@ public class ProcBurningTouch extends Proc {
                 "You burn!",
                 target.getVisibleNameWithQuantity() + " is burned!",
                 null);
-        target.hurt(Dice.roll(dice, sides, modifier));
+        target.hurt(Dice.roll(dice, sides, modifier), entity.getVisibleNameIndefiniteOrSpecific() + "'s burning touch");
     }
 }

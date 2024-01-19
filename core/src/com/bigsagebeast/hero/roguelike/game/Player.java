@@ -89,6 +89,9 @@ public class Player {
 			}
 		}
 		((ProcEffectHunger)getEntity().getProcByType(ProcEffectHunger.class)).setSatiation(Satiation.getStatus(satiation));
+		if (after == Satiation.DEAD) {
+			Game.die("starvation");
+		}
 	}
 
 	public void setEntityId(int entityId) {

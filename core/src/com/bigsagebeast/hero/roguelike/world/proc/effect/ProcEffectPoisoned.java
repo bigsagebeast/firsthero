@@ -26,7 +26,7 @@ public class ProcEffectPoisoned extends ProcTimedEffect {
                     null,
                     "The poison wracks " + entity.getVisibleNameDefinite() + "'s body!",
                     null);
-            entity.hurt(strength, DamageType.POISON, true);
+            entity.hurt(strength, DamageType.POISON, true, "poison");
             if (entity == Game.getPlayerEntity()) {
                 Game.interrupt();
             }

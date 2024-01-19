@@ -83,7 +83,7 @@ public class CombatLogic {
 		// TODO What does critting even do?
 
 		if (result.damage > 0) {
-			hurt(target, result.damage);
+			hurt(target, result.damage, actor.getVisibleNameIndefiniteOrSpecific());
 		}
 
 		if (result.damage == 0 && actor.naturalWeaponDamage == 0) {
@@ -223,7 +223,7 @@ public class CombatLogic {
 
 	public static void castDamage(Entity actor, Entity target, Spell spell, int rawDamage) {
 		// No pre/post for being cast on, that's handled in the spell
-		target.hurt(rawDamage, false);
+		target.hurt(rawDamage, false, actor.getVisibleNameIndefiniteOrSpecific());
 		if (target.hitPoints > 0) {
 			spell.announceHitWithoutKill(actor, target);
 		} else {
@@ -302,7 +302,7 @@ public class CombatLogic {
 				if (result.damage <= 0) {
 					result.damage = 0;
 				} else {
-					hurt(target, result.damage);
+					hurt(target, result.damage, actor.getVisibleNameIndefiniteOrSpecific() + "'s " + ammo.getVisibleName());
 				}
 
 				Game.announceVis(actor, target,
@@ -341,12 +341,12 @@ public class CombatLogic {
 		}
 	}
 
-	public static void hurt(Entity target, int damage) {
+	public static void hurt(Entity target, int damage, String deathMessage) {
 		if (damage < 1) {
 			// TODO should be a debug log
 			System.out.println("Less than 1 damage dealt");
 		}
-		target.hurt(damage, false);
+		target.hurt(damage, false, deathMessage);
 	}
 
 	public static boolean tryResist(Entity target, int difficulty, int statValue) {

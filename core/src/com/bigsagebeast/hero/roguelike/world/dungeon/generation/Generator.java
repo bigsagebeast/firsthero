@@ -1,5 +1,6 @@
 package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 
+import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
@@ -255,7 +256,7 @@ public class Generator {
             genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_CAVERN).collect(Collectors.toList());
         }
         if (genericRooms.isEmpty()) {
-            System.out.println("Not enough rooms to generate a stair cleanly!");
+            GameLoop.warn("Not enough rooms to generate a stair cleanly!");
             stairRoom = level.rooms.get(Game.random.nextInt(level.rooms.size()));
         } else {
             Collections.shuffle(genericRooms);
@@ -267,7 +268,7 @@ public class Generator {
         Entity stairsUp = Itempedia.create("feature.stairsUp");
         ProcStairs procStairs = (ProcStairs)stairsUp.getProcByType(ProcStairs.class);
         if (levelKey.equals("out")) {
-            procStairs.upSpecialMessage = "You can't leave the dungeon!";
+            procStairs.upSpecialMessage = "You can't leave the dungeon until your quest is complete!";
         }
         procStairs.upToMap = levelKey;
         level.addEntityWithStacking(stairsUp, stairPoint);
@@ -280,7 +281,7 @@ public class Generator {
             genericRooms = level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_CAVERN).collect(Collectors.toList());
         }
         if (genericRooms.isEmpty()) {
-            System.out.println("Not enough rooms to generate a stair cleanly!");
+            GameLoop.warn("Not enough rooms to generate a stair cleanly!");
             stairRoom = level.rooms.get(Game.random.nextInt(level.rooms.size()));
         } else {
             Collections.shuffle(genericRooms);

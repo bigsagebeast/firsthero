@@ -163,7 +163,14 @@
       "links": [
         {
           "text": "Goodbye.",
-          "terminal": true
+          "terminal": true,
+          "setters": [
+            {
+              "op": "SETINT",
+              "var": "aurex.serifex.intro.done",
+              "value": 1
+            }
+          ]
         }
       ]
     },

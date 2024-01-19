@@ -9,8 +9,6 @@ import com.bigsagebeast.hero.chat.ChatLink;
 import com.bigsagebeast.hero.dialogue.ChatBox;
 import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.enums.Stat;
-import com.bigsagebeast.hero.glyphtile.EntityGlyph;
-import com.bigsagebeast.hero.module.RoguelikeModule;
 import com.bigsagebeast.hero.module.TargetingModule;
 import com.bigsagebeast.hero.persistence.Persistence;
 import com.bigsagebeast.hero.persistence.PersistentProfile;
@@ -62,6 +60,7 @@ public class Game {
 	public static Spellbook spellbook = new Spellbook();
 
 	public static Entity lastSelectedInventory; // for use with throwing, maybe others, but not default
+	public static String deathMessage;
 
 	public static void initialize() {
 		time = 0;
@@ -1203,5 +1202,31 @@ public class Game {
 			}
 		}
 		return false;
+	}
+
+	public static void die(String deathMessage) {
+		Game.deathMessage = deathMessage;
+		Game.interruptAndBreak("You have died...", Game::playerDeath);
+	}
+
+	public static void playerDeath() {
+		ChatBox chatBox = new ChatBox()
+				.withMargins(60, 60)
+				.withTitle("You have died", null)
+				.withText("Goodbye, " + getPlayerEntity().name + ". You were killed by " + deathMessage + ". You achieved level " + getPlayerEntity().level + ".");
+
+		ArrayList<ChatLink> links = new ArrayList<>();
+		ChatLink linkOk = new ChatLink();
+		linkOk.text = "Return to Aurex";
+		linkOk.runnable = Game::handlePlayerDeath;
+		linkOk.terminal = true;
+
+		links.add(linkOk);
+
+		GameLoop.chatModule.openArbitrary(chatBox, links);
+	}
+
+	public static void handlePlayerDeath() {
+		startAurex();
 	}
 }

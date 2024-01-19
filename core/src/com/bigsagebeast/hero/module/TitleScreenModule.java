@@ -225,7 +225,9 @@ public class TitleScreenModule extends Module {
 	}
 
 	private void handleEnterName(String name) {
-
+		if (name.isEmpty()) {
+			name = "the God of Heroism";
+		}
 		Profile.setString("godName", name);
 		Profile.setString("mode", "newGameCutscene1");
 		GameLoop.flowModule.start();

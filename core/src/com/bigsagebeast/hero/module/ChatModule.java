@@ -78,7 +78,8 @@ public class ChatModule extends Module {
     }
 
     private void openPage(String key) {
-        if (key == null) {
+        if (key == null || key.isEmpty()) {
+            terminate();
             return;
         }
         ChatPage page = ChatBook.get(key);
@@ -114,7 +115,7 @@ public class ChatModule extends Module {
         }
 
         if (validLinks.isEmpty()) {
-            System.out.println("No valid links on page " + key);
+            //System.out.println("No valid links on page " + key);
             terminate();
             return;
         }
@@ -172,6 +173,9 @@ public class ChatModule extends Module {
                 } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
+            }
+            if (link.runnable != null) {
+                link.runnable.run();
             }
 
             for (ChatSetter setter : link.setters) {

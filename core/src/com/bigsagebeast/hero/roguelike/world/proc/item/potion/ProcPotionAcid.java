@@ -28,7 +28,7 @@ public class ProcPotionAcid extends ImmutableProc {
                 break;
         }
         burnMessage(actor);
-        actor.hurt(hurtAmount, DamageType.ACID);
+        actor.hurt(hurtAmount, DamageType.ACID, "an acid potion");
         entity.identifyItemType();
     }
 

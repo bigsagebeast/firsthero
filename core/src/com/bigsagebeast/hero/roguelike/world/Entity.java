@@ -281,13 +281,17 @@ public class Entity {
         hitPoints = Math.min(hitPoints + amount, maxHitPoints);
     }
 
-    public void hurt(int amount, boolean announceDeath) {
+    public void hurt(int amount, boolean announceDeath, String deathMessage) {
         hitPoints = Math.max(hitPoints - amount, 0);
         if (hitPoints <= 0) {
             dead = true;
+            if (this == Game.getPlayerEntity()) {
+                Game.die(deathMessage);
+                return;
+            }
             if (announceDeath) {
                 // TODO move player death elsewhere?
-                Game.announceVis(this, null, "You have died...",
+                Game.announceVis(this, null, null,
                         null,
                         getVisibleNameDefinite() + " dies.",
                         null);
@@ -297,9 +301,6 @@ public class Entity {
                 Game.getPlayer().registerExperienceForKill(this);
             }
         }
-        if (this == Game.getPlayerEntity()) {
-            return;
-        }
         if (dead && GameLoop.roguelikeModule.isRunning()) {
             // tests to make sure we're not in a test duel
             MoverLogic.createCorpse(Game.getLevel(), this);
@@ -307,18 +308,18 @@ public class Entity {
         }
     }
 
-    public void hurt(int amount, DamageType damageType, boolean announceDeath) {
+    public void hurt(int amount, DamageType damageType, boolean announceDeath, String deathMessage) {
         ResistanceLevel resistLevel = getDamageTypeResist(damageType);
         amount = (int)Math.ceil(resistLevel.multiplier * amount);
-        hurt(amount, announceDeath);
+        hurt(amount, announceDeath, deathMessage);
     }
 
-    public void hurt(int amount) {
-        hurt(amount, true);
+    public void hurt(int amount, String deathMessage) {
+        hurt(amount, true, deathMessage);
     }
 
-    public void hurt(int amount, DamageType damageType) {
-        hurt(amount, damageType, true);
+    public void hurt(int amount, DamageType damageType, String deathMessage) {
+        hurt(amount, damageType, true, deathMessage);
     }
 
     public boolean canSee(Entity target) {

@@ -28,6 +28,8 @@ public class CutsceneModule extends Module {
 	private final static int SMALL_FONT = 14;
 	private final static int LARGE_FONT = 20;
 
+	List<TextBlock> blocks = new ArrayList<>();
+
 	public Scene scene;
 
 	public CutsceneModule() {
@@ -44,6 +46,7 @@ public class CutsceneModule extends Module {
 		startSeconds = state.getSeconds() + 0.5f;
 		lastSeconds = startSeconds;
 		int fontSize = LARGE_FONT;
+		blocks.clear();
 
 		texture = new Texture(Gdx.files.internal(scene.artFile));
 
@@ -60,8 +63,10 @@ public class CutsceneModule extends Module {
 			int pixelWidth = paragraph.length() * fontSize;
 			int leftPixel = (Graphics.width/2) - (pixelWidth/2);
 
-			textEngine.addBlock(new TextBlock(line, null, (float)fontSize, 0f, (float)i, leftPixel, topPixel, Color.WHITE, startSeconds + scene.secondsBeforeFade + scene.fadeTime + (scene.letterTime * lettersSoFar), scene.letterTime,
-					null, null, TextEffectGranularity.BLOCK));
+			TextBlock tb = new TextBlock(line, null, (float)fontSize, 0f, (float)i, leftPixel, topPixel, Color.WHITE, startSeconds + scene.secondsBeforeFade + scene.fadeTime + (scene.letterTime * lettersSoFar), scene.letterTime,
+					null, null, TextEffectGranularity.BLOCK);
+			textEngine.addBlock(tb);
+			blocks.add(tb);
 
 			lettersSoFar += line.length();
 			lettersSoFar += 10 * pauses;
@@ -84,7 +89,7 @@ public class CutsceneModule extends Module {
 		scene.text.add("the Bodnam still told stories, back in the Old King's");
 		scene.text.add("era, before the worlds turned gray.@@");
 		scene.text.add("");
-		scene.text.add("I pray this mortal can revive your spark.@");
+		scene.text.add("I pray this mortal can revive your spark.");
 		scene.text.add("                                          [Enter]");
 	}
 
@@ -104,7 +109,7 @@ public class CutsceneModule extends Module {
 		scene.text.add("happened, you know. In a world not so far away.@");
 		scene.text.add("Your light is still here, isn't it?@@");
 		scene.text.add("");
-		scene.text.add("Please... Come back to us.@");
+		scene.text.add("Please... Come back to us.");
 		scene.text.add("                                          [Enter]");
 	}
 
@@ -125,6 +130,12 @@ public class CutsceneModule extends Module {
 		if (keycode == Keys.ENTER || keycode == Keys.NUMPAD_ENTER) {
 			if (lastSeconds > letterEndTime) {
 				end();
+			} else {
+				letterEndTime = 0;
+				startSeconds = 0;
+				for (TextBlock tb : blocks) {
+					tb.quickFinish();
+				}
 			}
 		}
 		return true;

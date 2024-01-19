@@ -12,7 +12,9 @@
       "gender": "MALE",
       "chatPage": "aurex.serifex.intro.landing",
       "procs": {
-        "ProcChatWhenAdjacent": {}
+        "ProcChatWhenAdjacent": {
+          "ignoreIfSet": "aurex.serifex.intro.done"
+        }
       }
     },
     "god.loruch": {

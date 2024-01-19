@@ -38,6 +38,10 @@ public class CharacterBuilder {
 
     private void handleSelectRace(Object val) {
         race = (String)val;
+        if (race == null) {
+            selectRace();
+            return;
+        }
         selectArchetype();
     }
 
@@ -55,6 +59,10 @@ public class CharacterBuilder {
     }
 
     private void handleSelectArchetype(Object val) {
+        if (val == null) {
+            selectArchetype();
+            return;
+        }
         archetype = (String)val;
         finish();
     }

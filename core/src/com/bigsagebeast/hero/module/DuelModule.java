@@ -93,7 +93,7 @@ public class DuelModule extends Module {
     }
 
     private void startDuel() {
-        System.out.println(Bestiary.get(duelistOne.phenotypeName).name + " vs " + Bestiary.get(duelistTwo.phenotypeName).name + ": Fight!");
+        //System.out.println(Bestiary.get(duelistOne.phenotypeName).name + " vs " + Bestiary.get(duelistTwo.phenotypeName).name + ": Fight!");
         int[] bucket = new int[12];
         for (int i=0; i<1000; i++) {
             int result = runOneDuel();

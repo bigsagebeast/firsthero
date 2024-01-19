@@ -13,6 +13,7 @@ public class ChatLink {
     public Object[] codeArgs;
     public String codeClass;
     public String codeMethod;
+    public Runnable runnable;
 
     @Override
     public String toString() {

@@ -1,5 +1,7 @@
 package com.bigsagebeast.hero.chat;
 
+import com.bigsagebeast.hero.roguelike.game.Profile;
+
 import java.util.HashMap;
 
 public class ChatState {
@@ -65,6 +67,7 @@ public class ChatState {
                     intMap.put(setter.var, 0);
                 }
                 intMap.put(setter.var, intMap.get(setter.var) + intVal);
+                Profile.setInt(setter.var, intMap.get(setter.var));
                 break;
             case SUBINT:
                 if (intVal == null) {
@@ -74,24 +77,29 @@ public class ChatState {
                     intMap.put(setter.var, 0);
                 }
                 intMap.put(setter.var, intMap.get(setter.var) - intVal);
+                Profile.setInt(setter.var, intMap.get(setter.var));
                 break;
             case SETINT:
                 if (intVal == null) {
                     throw new ChatException("Not an integer: " + setter.toString());
                 }
                 intMap.put(setter.var, intVal);
+                Profile.setInt(setter.var, intMap.get(setter.var));
                 break;
             case REMINT:
                 intMap.remove(setter.var);
+                // TODO
                 break;
             case SETSTR:
                 if (strVal == null) {
                     throw new ChatException("Not a string: " + setter.toString());
                 }
                 stringMap.put(setter.var, strVal);
+                Profile.setString(setter.var, stringMap.get(setter.var));
                 break;
             case REMSTR:
-                stringMap.remove(setter);
+                stringMap.remove(setter.var);
+                // TODO
                 break;
         }
     }
