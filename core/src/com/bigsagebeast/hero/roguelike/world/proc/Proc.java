@@ -188,6 +188,9 @@ public class Proc {
 
     public float getSpeedMultiplier(Entity entity, Entity actor) { return 1.0f; }
     public int getStatModifier(Entity entity, Entity actor, Stat stat) { return 0; }
+    public float getRegenHpMultiplier(Entity entity, Entity actor) { return 1.0f; }
+    public float getRegenSpMultiplier(Entity entity, Entity actor) { return 1.0f; }
+    public float getRegenDpMultiplier(Entity entity, Entity actor) { return 1.0f; }
 
     // Is this a valid target to draw an element from?  If null, ignore it.
     public Element providesElement(Entity entity) { return null; }

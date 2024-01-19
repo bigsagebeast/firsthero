@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bigsagebeast.hero.roguelike.game.Dice;
 import com.bigsagebeast.hero.roguelike.game.GameEntities;
+import com.bigsagebeast.hero.roguelike.world.dungeon.DungeonPlan;
+import com.bigsagebeast.hero.roguelike.world.dungeon.DungeonPlanFloor;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.dungeon.generation.Generator;
@@ -310,10 +312,13 @@ public class DungeonGenerator {
 		String dungeon = components[0];
 		int depth = Integer.parseInt(components[1]);
 
+		DungeonPlan plan = Game.dungeonPlans.get(dungeon);
+		DungeonPlanFloor planFloor = plan.floor(depth - 1);
+
 		Generator generator = new Generator();
 		Level level = null;
 		while (level == null) {
-			level = generator.generate(key, 60, 40, depth);
+			level = generator.generate(key, planFloor, 70, 50, depth);
 		}
 		level.neverbeastCountdown = 1500;
 

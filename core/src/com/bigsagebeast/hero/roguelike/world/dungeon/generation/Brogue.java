@@ -72,9 +72,9 @@ public class Brogue {
         }
 
         boolean firstRoom = !madeRiver;
-        for (int rooms=0; rooms<50; rooms++) {
+        for (int rooms=0; rooms<16; rooms++) {
             BrogueGrid room;
-            int type = random.nextInt(8);
+            int type = random.nextInt(6);
             if (type == 0) {
                 room = makeCircularRoom();
             } else if (type == 1) {
@@ -272,8 +272,8 @@ public class Brogue {
     }
 
     private BrogueGrid makeCavern() {
-        int width = randomIntRange(7, 25);
-        int height = randomIntRange(7, 25);
+        int width = randomIntRange(7, 20);
+        int height = randomIntRange(7, 20);
         AutomataStatus[][] gridBoolean = CellularAutomata.generateOutput(width, height, 0.45f, 4, 5, 4, 20);
 
         if (gridBoolean == null) {

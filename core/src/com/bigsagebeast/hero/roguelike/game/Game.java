@@ -13,6 +13,7 @@ import com.bigsagebeast.hero.module.TargetingModule;
 import com.bigsagebeast.hero.persistence.Persistence;
 import com.bigsagebeast.hero.persistence.PersistentProfile;
 import com.bigsagebeast.hero.roguelike.world.*;
+import com.bigsagebeast.hero.roguelike.world.dungeon.DungeonPlan;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
 import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.enums.Satiation;
@@ -35,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -42,6 +44,7 @@ import java.util.stream.Collectors;
 public class Game {
 	// current level
 	private static Level level;
+	public static HashMap<String, DungeonPlan> dungeonPlans = new HashMap<String, DungeonPlan>();
 	private static Player player = new Player();
 	public static final DungeonGenerator dungeon = new DungeonGenerator();
 	public static final UnidMapping unidMapping = new UnidMapping();
@@ -198,6 +201,10 @@ public class Game {
 		pc.name = Profile.getString("godName") + "'s avatar";
 		time = 0;
 		player.setEntityId(pc.entityId);
+
+		dungeonPlans.clear();
+		dungeonPlans.put("dungeon", new DungeonPlan(8));
+
 		dungeon.generateClassic("dungeon.1");
 		changeLevel("dungeon.1", "out");
 		level.prepare();

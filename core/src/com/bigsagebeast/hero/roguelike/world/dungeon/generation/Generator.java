@@ -3,15 +3,12 @@ package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
-import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
-import com.bigsagebeast.hero.roguelike.world.dungeon.RoomType;
+import com.bigsagebeast.hero.roguelike.world.dungeon.*;
 import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcStairs;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Terrain;
-import com.bigsagebeast.hero.roguelike.world.dungeon.Level;
-import com.bigsagebeast.hero.roguelike.world.dungeon.LevelCell;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,26 +23,18 @@ public class Generator {
     private Terrain floor;
     private Terrain doorway;
 
-    public Level generate(String name, int width, int height, int threat) {
+    public Level generate(String name, DungeonPlanFloor planFloor, int width, int height, int threat) {
         level = new Level(name, width, height);
         level.threat = threat;
-
-        // TODO: This is duplicate code
-        String[] components = name.split("\\.");
-        if (components.length != 2) {
-            throw new RuntimeException("Invalid level name: " + name);
-        }
-        String dungeon = components[0];
-        int depth = Integer.valueOf(components[1]);
 
         wall = Terrain.get("wall");
         uncarveable = Terrain.get("uncarveable");
         floor = Terrain.get("dot");
         doorway = Terrain.get("doorway");
 
-        for (int i=0; i<width; i++) {
-            for (int j=0; j<height; j++) {
-                if (i == 0 || j == 0 || i == width-1 || j == height-1) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (i == 0 || j == 0 || i == width - 1 || j == height - 1) {
                     level.cell(i, j).terrain = uncarveable;
                 } else {
                     level.cell(i, j).terrain = wall;
@@ -53,52 +42,66 @@ public class Generator {
             }
         }
 
-        RoomPacker roomPacker;
-        int coinflip = Game.random.nextInt(2);
-        switch (Game.random.nextInt(4)) {
-            case 0:
-                if (coinflip == 0)
-                    roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.SOUTH);
-                else
-                    roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.EAST);
-                break;
-            case 1:
-                if (coinflip == 0)
-                    roomPacker = new RoomPacker(level, 30, 1, 29, 19, 8, Compass.SOUTH);
-                else
-                    roomPacker = new RoomPacker(level, 30, 1, 29, 19, 8, Compass.WEST);
-                break;
-            case 2:
-                if (coinflip == 0)
-                    roomPacker = new RoomPacker(level, 1, 20, 29, 19, 8, Compass.NORTH);
-                else
-                    roomPacker = new RoomPacker(level, 1, 20, 29, 19, 8, Compass.EAST);
-                break;
-            default:
-                if (coinflip == 0)
-                    roomPacker = new RoomPacker(level, 30, 20, 29, 19, 8, Compass.NORTH);
-                else
-                    roomPacker = new RoomPacker(level, 30, 20, 29, 19, 8, Compass.WEST);
-                break;
+        RoomPacker roomPacker = null;
+        for (DungeonPlanFeature feature : planFloor.features) {
+            if (feature.name.equals("goblin outpost")) {
+                int coinflip = Game.random.nextInt(2);
+                switch (Game.random.nextInt(4)) {
+                    case 0:
+                        if (coinflip == 0)
+                            roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.SOUTH);
+                        else
+                            roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.EAST);
+                        break;
+                    case 1:
+                        if (coinflip == 0)
+                            roomPacker = new RoomPacker(level, width - 30, 1, 29, 19, 8, Compass.SOUTH);
+                        else
+                            roomPacker = new RoomPacker(level, width - 30, 1, 29, 19, 8, Compass.WEST);
+                        break;
+                    case 2:
+                        if (coinflip == 0)
+                            roomPacker = new RoomPacker(level, 1, height - 20, 29, 19, 8, Compass.NORTH);
+                        else
+                            roomPacker = new RoomPacker(level, 1, height - 20, 29, 19, 8, Compass.EAST);
+                        break;
+                    default:
+                        if (coinflip == 0)
+                            roomPacker = new RoomPacker(level, width - 30, height - 20, 29, 19, 8, Compass.NORTH);
+                        else
+                            roomPacker = new RoomPacker(level, width - 30, height - 20, 29, 19, 8, Compass.WEST);
+                        break;
+                }
+                roomPacker.generate();
+
+                SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Themepedia.get("goblin.stronghold"));
+                assigner.assign();
+            }
         }
-        roomPacker.generate();
 
-        SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Themepedia.get("goblin.stronghold"));
-        assigner.assign();
 
-        boolean makeRiver = Game.random.nextInt(2) == 0;
+        boolean makeRiver = false;
+        for (DungeonPlanFeature feature : planFloor.features) {
+            if (feature.name.equals("river")) {
+                makeRiver = true;
+                break;
+            }
+        }
         Brogue brogue = new Brogue(level);
         brogue.makeRiver = makeRiver;
         brogue.generate();
 
-        List<Point> astarPoints = AStarLevel.path(level, roomPacker.rooms.get(0).centerPoint, brogue.rooms.get(0).centerPoint, 1000.0f);
-        for (Point p : astarPoints) {
-            if (!level.cell(p).terrain.isPassable()) {
-                level.cell(p).terrain = floor;
+        if (roomPacker != null) {
+            List<Point> astarPoints = AStarLevel.path(level, roomPacker.rooms.get(0).centerPoint, brogue.rooms.get(0).centerPoint, 1000.0f);
+            for (Point p : astarPoints) {
+                if (!level.cell(p).terrain.isPassable()) {
+                    level.cell(p).terrain = floor;
+                }
             }
         }
-        for (int i=0; i<width; i++) {
-            for (int j=0; j<height; j++) {
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 Point p = new Point(i, j);
                 LevelCell cell = level.cell(p);
                 int roomId = cell.roomId;
@@ -133,22 +136,30 @@ public class Generator {
             }
         }
 
-        // put moss in caverns if it can, anywhere if it can't
-        retryAddSpecialFeature(RoomType.UNDERGROUND_GROVE, RoomType.GENERIC_CAVERN);
-        if (!retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_CAVERN)) {
-            retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_ANY);
-        }
-        retryAddSpecialFeature(RoomType.FORGE, RoomType.GENERIC_ROOM);
-        if (!brogue.madeRiver) {
-            retryAddSpecialFeature(RoomType.POOL, RoomType.GENERIC_ROOM);
-        }
-
-        if (depth >= 3 && Game.random.nextInt(2) == 0) {
-            retryAddSpecialFeature(RoomType.FRACTAL_COPPER, RoomType.GENERIC_ANY);
-        }
-
-        if (depth == 4) {
-            retryAddSpecialFeature(RoomType.ROT_SPAWNER, RoomType.GENERIC_ROOM);
+        for (DungeonPlanFeature feature : planFloor.features) {
+            switch (feature.name) {
+                case "grove":
+                    retryAddSpecialFeature(RoomType.UNDERGROUND_GROVE, RoomType.GENERIC_CAVERN);
+                    break;
+                case "mossy":
+                    // put moss in caverns if it can, anywhere if it can't
+                    if (!retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_CAVERN)) {
+                        retryAddSpecialFeature(RoomType.MOSSY, RoomType.GENERIC_ANY);
+                    }
+                    break;
+                case "forge":
+                    retryAddSpecialFeature(RoomType.FORGE, RoomType.GENERIC_ROOM);
+                    break;
+                case "pool":
+                    retryAddSpecialFeature(RoomType.POOL, RoomType.GENERIC_ROOM);
+                    break;
+                case "copper":
+                    retryAddSpecialFeature(RoomType.FRACTAL_COPPER, RoomType.GENERIC_ANY);
+                    break;
+                case "rot spawner":
+                    retryAddSpecialFeature(RoomType.ROT_SPAWNER, RoomType.GENERIC_ROOM);
+                    break;
+            }
         }
 
         return level;

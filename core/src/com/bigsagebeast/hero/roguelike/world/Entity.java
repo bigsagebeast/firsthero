@@ -80,9 +80,8 @@ public class Entity {
     public int naturalArmorThickness;
     public Statblock statblock = new Statblock(20);
 
-    public int healingDelay = 3;
+    // TODO remove
     public int healingRate = 1;
-    public int spRegenDelay = 0;
 
     public String phenotypeName;
     public String[] glyphNames;
@@ -599,7 +598,7 @@ public class Entity {
 
         if (bp != BodyPart.RANGED_AMMO && pi.beatitude == Beatitude.CURSED) {
             String weldpart;
-            if (bp == BodyPart.TWO_HAND) {
+            if (pe.equipmentFor == BodyPart.TWO_HAND) {
                 weldpart = "hands";
             } else if (bp == BodyPart.PRIMARY_HAND || bp == BodyPart.OFF_HAND) {
                 // include ranged?
@@ -1231,8 +1230,7 @@ public class Entity {
         hitPoints = Math.min(Math.max(hitPoints + deltaHitPoints, hitPoints), newMaxHitPoints);
         spellPoints = Math.min(Math.max(spellPoints + deltaSpellPoints, spellPoints), newMaxSpellPoints);
         divinePoints = Math.min(Math.max(divinePoints + deltaDivinePoints, divinePoints), newMaxDivinePoints);
-        healingDelay = 300 / maxHitPoints;
-        spRegenDelay = 300 / maxSpellPoints;
+
     }
 
     // status tests

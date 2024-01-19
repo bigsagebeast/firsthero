@@ -104,7 +104,7 @@ public class Spellbook {
         if (chosenSpell == null) {
             return;
         }
-        if (chosenSpell.getClass().isAssignableFrom(Spell.class)) {
+        if (Spell.class.isAssignableFrom(chosenSpell.getClass())) {
             Spell spell = (Spell) chosenSpell;
             spell.playerStartSpell();
         } else if (chosenSpell.getClass().isAssignableFrom(String.class)) {

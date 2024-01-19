@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.roguelike.world.proc.item.scroll;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.enums.Beatitude;
+import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.ItemCategory;
@@ -71,7 +72,7 @@ public class ProcScrollIdentify extends ImmutableProc {
             anyUnidentified = true;
             box.addHeader("*** Equipment ***");
             for (Entity ent : equipment) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
             }
         }
 
@@ -82,7 +83,7 @@ public class ProcScrollIdentify extends ImmutableProc {
                 anyUnidentified = true;
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
             }
         }
         if (!anyUnidentified) {
