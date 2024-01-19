@@ -150,6 +150,7 @@
       "peaceful": false,
       "hitPoints": 2,
       "isMonster": true,
+      "corpseSpawnPercent": 0,
       "bodyPlan": "humanoid",
       "glyphName": "spirit.wisp",
       "isManipulator": false,

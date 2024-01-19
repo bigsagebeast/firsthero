@@ -1052,17 +1052,24 @@ public class Entity {
     }
 
     public Stream<EntityProc> entityProcs() {
-        return procs.stream().map(p -> new EntityProc(this, p));
+        Stream<EntityProc> roomProcs;
+        if (roomId >= 0) {
+            Room room = Game.getLevel().rooms.get(roomId);
+            roomProcs = room.procs.stream().map(p -> new EntityProc(this, p));
+        } else {
+            roomProcs = Stream.empty();
+        }
+        return Stream.concat(procs.stream().map(p -> new EntityProc(this, p)), roomProcs);
     }
 
     public Stream<EntityProc> allEntityProcsIncludingEquipmentAndInventory() {
         return Stream.concat(entityProcs(),
-                recursiveInventoryAndEquipment().flatMap(entity -> entity.entityProcs()));
+                recursiveInventoryAndEquipment().flatMap(Entity::entityProcs));
     }
 
     public Stream<EntityProc> allEntityProcsIncludingEquipment() {
         return Stream.concat(entityProcs(),
-                recursiveEquipment().flatMap(entity -> entity.entityProcs()));
+                recursiveEquipment().flatMap(Entity::entityProcs));
     }
 
     public void forEachProc(BiConsumer<Entity, Proc> lambda) {

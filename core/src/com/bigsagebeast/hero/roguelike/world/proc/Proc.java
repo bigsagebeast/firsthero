@@ -7,6 +7,7 @@ import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.roguelike.game.CombatLogic;
 import com.bigsagebeast.hero.roguelike.game.SwingResult;
 import com.bigsagebeast.hero.roguelike.world.Element;
+import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.BodyPart;
@@ -26,6 +27,7 @@ public class Proc {
 
     public long nextAction = -1;
     public boolean active;
+    public int roomId = -1;
 
     // for deserialization
     protected Proc() {
@@ -55,6 +57,12 @@ public class Proc {
     public void initialize(Entity entity) {
         active = true;
     }
+
+    public void initialize(Room room) {
+        roomId = room.roomId;
+        active = true;
+    }
+
     // never called unless all entities have been initialized; must be harmless
     public void postLoad(Entity entity) {}
 

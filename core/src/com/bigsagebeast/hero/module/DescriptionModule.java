@@ -35,6 +35,21 @@ public class DescriptionModule extends Module {
         String text;
         if (entity.getMover() != null) {
             text = Bestiary.get(entity.phenotypeName).description;
+
+            boolean isConstruct = entity.getPhenotype().tags.contains("construct") ||
+                    entity.getPhenotype().tags.contains("undead");
+            float hitPointProportion = (float)entity.hitPoints / entity.maxHitPoints;
+            if (hitPointProportion == 1.0f) {
+                text += "\n\nIt is in perfect condition.";
+            } else if (hitPointProportion >= 0.75) {
+                text += "\n\nIt is lightly " + (isConstruct ? "damaged" : "wounded") + ".";
+            } else if (hitPointProportion >= 0.5) {
+                text += "\n\nIt is moderately " + (isConstruct ? "damaged" : "wounded") + ".";
+            } else if (hitPointProportion >= 0.25) {
+                text += "\n\nIt is heavily " + (isConstruct ? "damaged" : "wounded") + ".";
+            } else {
+                text += "\n\nIt is critically " + (isConstruct ? "damaged" : "wounded") + ".";
+            }
         } else {
             text = GameEntities.describeItem(entity);
         }

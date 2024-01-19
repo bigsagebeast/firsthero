@@ -141,6 +141,15 @@ public class ProcCorpse extends Proc {
         }
     }
 
+    public void poisonHeavy(Entity entity, Entity actor) {
+        if (actor == Game.getPlayerEntity()) {
+            ProcEffectPoisoned procPoisoned = new ProcEffectPoisoned();
+            procPoisoned.strength = 6;
+            procPoisoned.turnsRemaining = 25;
+            actor.addProc(procPoisoned);
+        }
+    }
+
     public void gainFireSmall(Entity entity, Entity actor) {
         if (actor == Game.getPlayerEntity()) {
             Game.getPlayer().gainStatElement(Element.FIRE, 1, 6);

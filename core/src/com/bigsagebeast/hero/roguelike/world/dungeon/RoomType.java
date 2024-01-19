@@ -25,11 +25,13 @@ public class RoomType {
     public static RoomType UNDERGROUND_GROVE = new RoomType("Grove", "You approach an underground grove.");
 
     public static RoomType FRACTAL_COPPER = new RoomType("Fractal Copper", "The ceiling is made of a fractal copper pattern that bubbles as you watch it.");
+    public static RoomType ROT_SPAWNER = new RoomType("Rotting Chamber", "Rot and filth cover all corners of this room, past your ankles. It roils and shifts threateningly as you watch.");
 
     public String roomName;
     public String entranceMessage;
     public boolean specialCorridors;
     public List<SpecialSpawner> spawners = new ArrayList<>();
+    public List<LoadProc> procLoaders = new ArrayList<>();
 
     static {
         SpecialSpawner fireSpawner = SpecialSpawner.newRegen();
@@ -64,6 +66,13 @@ public class RoomType {
         LoadProc paradoxWispLoadProc = new LoadProc("ProcSummonMinions", paradoxWispLoadProcMap);
         copperSpawner.loadProcs.add(paradoxWispLoadProc);
         FRACTAL_COPPER.spawners.add(copperSpawner);
+
+        HashMap<String, String> rotStalkerLoadProcMap = new HashMap<>();
+        rotStalkerLoadProcMap.put("moverKey", "construct.rotstalker");
+        rotStalkerLoadProcMap.put("maxSpawnTimer", "20");
+        rotStalkerLoadProcMap.put("spawnMessage", "The rot forms itself into an upright shape!");
+        LoadProc rotSpawnerLoadProc = new LoadProc("room.ProcRoomSpawnWhenPlayerPresent", rotStalkerLoadProcMap);
+        ROT_SPAWNER.procLoaders.add(rotSpawnerLoadProc);
     }
 
     public RoomType() {

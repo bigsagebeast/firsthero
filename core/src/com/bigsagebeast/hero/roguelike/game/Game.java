@@ -1175,11 +1175,18 @@ public class Game {
 		}
 	}
 
+	public static void announceSeen(Entity entity, String message) {
+		announceVis(entity, null, null, null, message, null);
+	}
+
 	public static void announceVis(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			// hack to avoid messages during test duel
 			return;
 		}
+		// TODO: Move vision range somewhere else
+		Fov.calculateFOV(level, level.ambientLight, getPlayerEntity());
+
 		if (actorEntity != null && actorEntity.containingEntity < 0) {
 			actorEntity = actorEntity.getTopLevelContainer();
 		}

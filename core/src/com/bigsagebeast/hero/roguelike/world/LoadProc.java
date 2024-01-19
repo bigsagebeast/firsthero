@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.roguelike.world;
 
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
+import com.bigsagebeast.hero.roguelike.world.dungeon.Room;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -24,6 +25,15 @@ public class LoadProc {
     }
 
     public void apply(Entity entity) {
+        entity.addProc(apply());
+        // Is it dangerous to call initialize here, when some procs could refer to another entity that isn't loaded yet?
+    }
+
+    public void apply(Room room) {
+        room.addProc(apply());
+    }
+
+    public Proc apply() {
         Class<?> clazz;
         Proc proc;
         try {
@@ -73,8 +83,7 @@ public class LoadProc {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        entity.addProc(proc);
-        // Is it dangerous to call initialize here, when some procs could refer to another entity that isn't loaded yet?
+        return proc;
     }
 
 

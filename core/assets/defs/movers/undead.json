@@ -16,7 +16,8 @@
       "threat": 1,
       "naturalWeaponDamage": 6,
       "naturalWeaponToHit": 0,
-      "naturalArmorClass": 4,
+      "naturalArmorClass": 2,
+      "naturalArmorThickness": 4,
       "tags": [
         "generic-fantasy",
         "undead"

@@ -40,6 +40,7 @@ public class UnidMapping {
     }
 
     public void randomize() throws SetupException {
+        mappings.clear();
         for (String group : groupIden.keySet()) {
             if (groupIden.get(group).size() > groupUnid.get(group).size()) {
                 throw new SetupException("More identified than unidentified types in iden group " + group + "!");

@@ -34,34 +34,70 @@
         "plant",
         "fungus"
       ]
+    },
+    "plant.fungus.green.funglet": {
+      "name": "green funglet",
+      "description": "A small overgrowth of green globules, the fruiting bodies of this slow-moving fungal creature have not yet emerged.",
+      "corpseMessage": "Tastes like a gooey salad.",
+      "peaceful": false,
+      "hitPoints": 10,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "plant.fungus",
+      "moveCost": 20000,
+      "palette": [
+        "darkgreen",
+        "lightgreen",
+        "brown"
+      ],
+      "experienceAwarded": 5,
+      "threat": 0,
+      "packSize": 2,
+      "packSpawnArea": 5,
+      "naturalWeaponDamage": 0,
+      "naturalWeaponToHit": -5,
+      "naturalArmorClass": -10,
+      "tags": [
+        "generic-fantasy",
+        "plant",
+        "fungus"
+      ]
+    },
+    "construct.rotstalker": {
+      "name": "rot stalker",
+      "description": "Filth and rot has risen up from the dungeon floor into a vaguely humanoid form. It stalks through the halls, roiling and dripping as it goes.",
+      "corpseMessage": "You can barely stomach it.  That was a terrible idea.",
+      "peaceful": false,
+      "hitPoints": 30,
+      "isMonster": true,
+      "corpseSpawnPercent": 0,
+      "bodyPlan": "humanoid",
+      "glyphName": "construct.rotstalker",
+      "isManipulator": false,
+      "wandering": false,
+      "moveCost": 1250,
+      "palette": [
+        "darkgreen",
+        "teal",
+        "lightgreen"
+      ],
+      "experienceAwarded": 15,
+      "threat": 6,
+      "naturalWeaponDamage": 4,
+      "naturalWeaponToHit": 2,
+      "naturalArmorClass": 0,
+      "corpseMethod": "poisonHeavy",
+      "procs": {
+        "monster.ProcPoisonAttack": {
+          "strength": 2,
+          "duration": 15
+        }
+      },
+      "tags": [
+        "generic-fantasy",
+        "plant",
+        "construct"
+      ]
     }
-  },
-  "plant.fungus.green.funglet": {
-    "name": "green funglet",
-    "description": "A small overgrowth of green globules, the fruiting bodies of this slow-moving fungal creature have not yet emerged.",
-    "corpseMessage": "Tastes like a gooey salad.",
-    "peaceful": false,
-    "hitPoints": 10,
-    "isMonster": true,
-    "bodyPlan": "humanoid",
-    "glyphName": "plant.fungus",
-    "moveCost": 20000,
-    "palette": [
-      "darkgreen",
-      "lightgreen",
-      "brown"
-    ],
-    "experienceAwarded": 5,
-    "threat": 0,
-    "packSize": 2,
-    "packSpawnArea": 7,
-    "naturalWeaponDamage": 0,
-    "naturalWeaponToHit": -5,
-    "naturalArmorClass": -10,
-    "tags": [
-      "generic-fantasy",
-      "plant",
-      "fungus"
-    ]
   }
 }

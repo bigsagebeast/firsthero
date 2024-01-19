@@ -147,6 +147,10 @@ public class Generator {
             retryAddSpecialFeature(RoomType.FRACTAL_COPPER, RoomType.GENERIC_ANY);
         }
 
+        if (depth == 4) {
+            retryAddSpecialFeature(RoomType.ROT_SPAWNER, RoomType.GENERIC_ROOM);
+        }
+
         return level;
     }
 
@@ -242,7 +246,7 @@ public class Generator {
         } else if (roomType == RoomType.FRACTAL_COPPER) {
 
         } else {
-            throw new RuntimeException("No handling rules for roomtype " + (roomType.roomName == null ? "unnamed" : roomType.roomName));
+            //throw new RuntimeException("No handling rules for roomtype " + (roomType.roomName == null ? "unnamed" : roomType.roomName));
         }
         // set room type by default (unless we returned true early)
         level.rooms.get(roomId).setRoomType(roomType);
