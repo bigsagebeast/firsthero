@@ -134,6 +134,7 @@ public class Game {
 
 	public static void startIntro() {
 		loadFiles();
+		resetPlayer();
 		time = 0;
 		Entity pc = Bestiary.create("pc.farmboy");
 		pc.statblock.set(Stat.ARCANUM, 5);
@@ -144,11 +145,14 @@ public class Game {
 		dungeon.generateFromFile("start", "start.fhm");
 		dungeon.getLevel("start").setFriendlyName("Besieged Farm");
 		dungeon.getLevel("start").ambientLight = 15;
+		dungeon.getLevel("start").tags.add("tutorial");
 		dungeon.generateFromFile("cave-entry", "cave-entry.fhm");
 		dungeon.getLevel("cave-entry").setFriendlyName("Goblin cave entrance");
 		dungeon.getLevel("cave-entry").ambientLight = 15;
+		dungeon.getLevel("cave-entry").tags.add("tutorial");
 		dungeon.generateFromFile("cave", "cave.fhm");
 		dungeon.getLevel("cave").setFriendlyName("Goblin caves");
+		dungeon.getLevel("cave").tags.add("tutorial");
 		changeLevel(dungeon.getLevel("start"), new Point(26, 27));
 		level.addEntityWithStacking(pitchfork, new Point(29, 24));
 		level = dungeon.getLevel("start");
@@ -170,6 +174,7 @@ public class Game {
 
 	public static void startAurex() {
 		loadFiles();
+		resetPlayer();
 		time = 0;
 		Entity pc = Bestiary.create("pc.deity");
 		pc.name = Profile.getString("godName");
@@ -181,9 +186,10 @@ public class Game {
 		changeLevel(dungeon.getLevel("aurex"), new Point(106, 30));
 		level.addEntityWithStacking(Itempedia.create("feature.worldportal"), new Point(88, 25));
 		level.prepare();
-		if (!GameLoop.roguelikeModule.isRunning()) {
-			GameLoop.roguelikeModule.start();
+		if (GameLoop.roguelikeModule.isRunning()) {
+			GameLoop.roguelikeModule.end();
 		}
+		GameLoop.roguelikeModule.start();
 	}
 
 
@@ -194,14 +200,16 @@ public class Game {
 		dungeon.generateClassic("dungeon.1");
 		changeLevel("dungeon.1", "out");
 		level.prepare();
-		if (!GameLoop.roguelikeModule.isRunning()) {
-			GameLoop.roguelikeModule.start();
+		if (GameLoop.roguelikeModule.isRunning()) {
+			GameLoop.roguelikeModule.end();
 		}
+		GameLoop.roguelikeModule.start();
 	}
 
 	public static void startCaves() {
 		loadFiles();
 		time = 0;
+		resetPlayer(); // redundant with cb
 		CharacterBuilder cb = new CharacterBuilder(Game::handleStartCaves);
 		cb.begin();
 	}
@@ -1206,10 +1214,20 @@ public class Game {
 
 	public static void die(String deathMessage) {
 		Game.deathMessage = deathMessage;
-		Game.interruptAndBreak("You have died...", Game::playerDeath);
+		interruptAndBreak("You have died...", Game::playerDeath);
+		turn();
 	}
 
 	public static void playerDeath() {
+		if (level.tags.contains("tutorial")) {
+			announceLoud("A glowing light revives you! You still have a purpose here!");
+			getPlayerEntity().hitPoints = getPlayerEntity().maxHitPoints;
+			getPlayer().satiation = Satiation.FULL.topThreshold;
+			getPlayer().changeSatiation(Satiation.FULL.topThreshold - getPlayer().satiation);
+			turn();
+			return;
+		}
+
 		ChatBox chatBox = new ChatBox()
 				.withMargins(60, 60)
 				.withTitle("You have died", null)

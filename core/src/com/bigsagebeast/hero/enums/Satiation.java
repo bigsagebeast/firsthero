@@ -3,7 +3,7 @@ package com.bigsagebeast.hero.enums;
 import com.badlogic.gdx.graphics.Color;
 
 public enum Satiation {
-    DEAD("Starved", Color.FIREBRICK, 0, null, "You have died of hunger..."),
+    DEAD("Starved", Color.FIREBRICK, 0, null, "You have died of hunger."),
     STARVING("Starving", Color.RED, 500, null, "You are starving!"),
     HUNGRY("Hungry", Color.YELLOW, 1000, "You are no longer starving, but you're still weak with hunger.", "You are weak with hunger."),
     PECKISH("Peckish", Color.WHITE, 2000, "You are only a little peckish now.", "You feel a little hungry."),

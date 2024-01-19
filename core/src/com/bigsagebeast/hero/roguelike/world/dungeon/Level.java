@@ -35,6 +35,7 @@ public class Level {
 	public Map<Point, Float> jitters = new HashMap<>();
 	private int lastTurnUpdate = 0;
 	public int ambientLight = 7; // TODO: Find a better way of handling this
+	public List<String> tags = new ArrayList<>();
 
 	public int neverbeastCountdown = -1;
 	public int neverbeastSpawned = 0;
