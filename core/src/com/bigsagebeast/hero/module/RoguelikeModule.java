@@ -55,8 +55,6 @@ public class RoguelikeModule extends Module {
 	public void start() {
 		super.start();
 
-		MusicPlayer.playLoop();
-
 		mainWindow = new MainWindow();
 		announceWindow = new AnnounceWindow();
 		equipWindow = new EquipmentWindow();
@@ -69,7 +67,6 @@ public class RoguelikeModule extends Module {
 		announceWindow.addLine("Announcements:");
 
 		uiEngine.addBlock(announceWindow.getTextBlockParent());
-//		uiEngine.addBlock(statsWindow.getTextBlockParent());
 		uiEngine.addBlock(equipWindow.getTextBlockParent());
 		uiEngine.addBlock(hitPointWindow.getTextBlockParent());
 		uiEngine.addBlock(spellPointWindow.getTextBlockParent());

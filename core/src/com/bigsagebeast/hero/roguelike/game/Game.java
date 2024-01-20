@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.HeroGame;
+import com.bigsagebeast.hero.MusicPlayer;
 import com.bigsagebeast.hero.SetupException;
 import com.bigsagebeast.hero.chat.ChatLink;
 import com.bigsagebeast.hero.dialogue.ChatBox;
@@ -137,6 +138,7 @@ public class Game {
 	}
 
 	public static void startIntro() {
+		MusicPlayer.playLoop();
 		dungeon.levels.clear();
 		loadFiles();
 		resetPlayer();
@@ -178,6 +180,7 @@ public class Game {
 	}
 
 	public static void startAurex() {
+		MusicPlayer.playAurex();
 		dungeon.levels.clear();
 		loadFiles();
 		resetPlayer();
@@ -200,6 +203,7 @@ public class Game {
 
 
 	public static void handleStartCaves(Entity pc) {
+		MusicPlayer.playLoop();
 		dungeon.levels.clear();
 		pc.name = Profile.getString("godName") + "'s avatar";
 		time = 0;

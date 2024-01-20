@@ -9,7 +9,7 @@
       "palette": [
         "white"
       ],
-      "gender": "MALE",
+      "gender": "AGENDER",
       "chatPage": "aurex.serifex.intro.landing",
       "procs": {
         "ProcChatWhenAdjacent": {
@@ -28,6 +28,42 @@
       ],
       "gender": "MALE",
       "chatPage": "aurex.loruch.intro.landing"
+    },
+    "god.fulminar": {
+      "name": "Fulminar, God of Storms",
+      "description": "With a thin, angular face and silver-blue hair, this god wears an eclectic set of robes and sashes in bright and clashing color. He sits on the edge of the floating island, watching debris gently float by.",
+      "peaceful": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.atsign",
+      "palette": [
+        "purple"
+      ],
+      "gender": "MALE",
+      "chatPage": "aurex.fulminar.intro.landing"
+    },
+    "god.bezfultam": {
+      "name": "Bez-Fultam, Twin God of the Forge",
+      "description": "Stocky, muscular, and clean-shaven, this god bears a strong resemblance to his sister. He sweats at a smelter, burning the impurities out of divine ore, and then helping his sister pound the ingots into shape.",
+      "peaceful": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.atsign",
+      "palette": [
+        "red"
+      ],
+      "gender": "MALE",
+      "chatPage": "aurex.fultam.intro.landing"
+    },
+    "god.yabfultam": {
+      "name": "Yab-Fultam, Twin Goddess of the Forge",
+      "description": "Stocky and muscular, this goddess bears a strong resemblance to her brother. She pounds divine metal into shape on an anvil as her brother holds it in place, and then quenches it with a hiss.",
+      "peaceful": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.atsign",
+      "palette": [
+        "brown"
+      ],
+      "gender": "FEMALE",
+      "chatPage": "aurex.fultam.intro.landing"
     }
   }
 }

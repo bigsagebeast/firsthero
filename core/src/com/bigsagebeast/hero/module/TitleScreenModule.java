@@ -218,7 +218,7 @@ public class TitleScreenModule extends Module {
 
 	private void handleEnterName(String name) {
 		if (name.isEmpty()) {
-			name = "the God of Heroism";
+			name = "the God of Heroes";
 		}
 		Profile.setString("godName", name);
 		Profile.setString("mode", "newGameCutscene1");

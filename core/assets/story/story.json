@@ -143,20 +143,20 @@
       "inheritLinks": "aurex.serifex.intro.landing"
     },
     "aurex.serifex.intro.thewar": {
-      "text": "We craved existence, and sources of power, so we came into your realm out of nothingness to take it. Many of us were killed, but you were overrun. Unfortunately, there were consequences. Without the Old King to keep the universe together, it shattered into countless fragments. Now, we have taken up portfolios of natural power, and rule over multiverse and all the the Bodnam which inhabit it... most of us with kindness.",
+      "text": "We craved existence, and sources of power, so we came into your realm out of nothingness to take it. Many of us were killed, but you were overrun. Unfortunately, there were consequences. Without the Old King to keep the universe together, it shattered into countless fragments. Now, we have taken up dominion over natural power, and rule over multiverse and all the the Bodnam which inhabit it... most of us with kindness.",
       "inheritLinks": "aurex.serifex.intro.landing"
     },
     "aurex.serifex.intro.serifex": {
-      "text": "I am the Lord of fresh water. Rains, rivers and irrigation are my portfolio. But more importantly, I represent a way of good and proper life for all mortals. So long as they obey the rules of a just society, they are protected. Those who choose the path of chaos suffer floods and hurricanes. Such is my philosophy. Loruch and the Stoneheart stand beside me in this.",
+      "text": "I am the Lord of fresh water. Rains, rivers and irrigation are my domain. But more importantly, I represent a way of good and proper life for all mortals. So long as they obey the rules of a just society, they are protected. Those who choose the path of chaos suffer floods and hurricanes. Such is my philosophy. Loruch and the Stoneheart stand beside me in this.",
       "inheritLinks": "aurex.serifex.intro.landing"
     },
     "aurex.serifex.intro.bodnam": {
-      "text": "The Bodnam are all the people of mortalkind. Those who speak and live in cities, those who can worship and love. They are who the gods are meant to protect, and I take my duties seriously. I suggest you do as well.",
+      "text": "The Bodnam are all the people of mortalkind. Those who speak and live in cities, those who can worship and love. They are who the gods are meant to protect, and I take my duties seriously. Perhaps you will take up that mantle again as well.",
       "inheritLinks": "aurex.serifex.intro.landing"
     },
     "aurex.serifex.intro.neworder": {
       "inheritLinks": "aurex.serifex.intro.landing",
-      "text": "All in all, there are nine New Gods. Unlike your domains of emotion and concepts, we rule over natural forces. We have no king or queen, but there are three of us who lead the rest. I am one of them; my philosophy is that our duty is to protect and guide the Bodnam. Astrifera and Fulminar are the others, and they have their own philosophies; you will meet them in time. It is through all nine of our powers that the multiverse still cleaves together, now. It's a new multiverse, and Aurex is a new home of the gods. We have no need of your aid."
+      "text": "All in all, there are nine New Gods. Unlike your domains of emotion and concepts, we rule over natural forces. We have no king or queen, but there are three of us who lead the rest. I am one of them; my philosophy is that our duty is to protect and guide the Bodnam and give them needed Control. Astrifera and Fulminar are the others, and they have their own philosophies; you will meet them in time. It is through all nine of our powers that the multiverse still cleaves together, now. It's a new multiverse, and Aurex is the new home of the gods."
     },
     "aurex.serifex.intro.heardenough": {
       "text": "You are free to go, we will not challenge you. Just don't go starting any fights. You're but one god, after all, and weak. Go, meet your new family.",
@@ -174,8 +174,10 @@
         }
       ]
     },
+
+
     "aurex.loruch.intro.landing": {
-      "text": "My name is Loruch, God of the trees. We never fought, but I know who you are. No matter, the world is different now. We Gods live in peace with the natural forces of the multiverse, guiding the Bodnam from afar. [UNFINISHED]",
+      "text": "My name is Loruch, God of the trees. We never fought, but I know who you are. No matter, the world is different now. We gods live in peace with the natural forces of the multiverse, guiding the Bodnam from afar.",
       "links": [
         {
           "text": "God of the trees?",
@@ -186,14 +188,130 @@
           "nextPage": "aurex.loruch.intro.bodnam"
         },
         {
-          "text": "Who I am",
-          "nextPage": "aurex.loruch.intro.whoiam"
+          "text": "My old life.",
+          "nextPage": "aurex.loruch.intro.oldlife"
         },
         {
           "text": "What is your philosophy?",
           "nextPage": "aurex.loruch.intro.philosophy"
+        },
+        {
+          "text": "Goodbye.",
+          "terminal": true
         }
       ]
+    },
+    "aurex.loruch.intro.trees": {
+      "text": "The wheat, the apple, and the forest are my gifts. The hearty lumberjack, the wise druid, and the girl with flowers in her hair are all my children. My powers reach out through the plants that envelop all the quiet corners of the world. Even underground, there is flora that thrives.",
+      "inheritLinks": "aurex.loruch.intro.landing"
+    },
+    "aurex.loruch.intro.bodnam": {
+      "text": "There is a virtue in living at peace with nature, and I guide the races of the Bodnam in their own unique paths to clarity. Through virtue, they reap the rewards the divine can give them. The race of elves claim oneness with nature, but even dwarves harvest lumber for their forges, and so all races can claim a better life through the natural bond I grant to them.",
+      "inheritLinks": "aurex.loruch.intro.landing"
+    },
+    "aurex.loruch.intro.oldlife": {
+      "text": "Yes, you were the God of Heroes. You kept the stories in motion. Soldiers and protectors looked to you for inspiration, and wayward questors prayed to you for success. When the world was threatened, you descended from the heavens to lead armies under your own banner. But the worlds are smaller now, and there is no need of such tales. I'm afraid you are a warrior without a cause in this new multiverse. At last, you can retire to a life of peace.",
+      "inheritLinks": "aurex.loruch.intro.landing"
+    },
+    "aurex.loruch.intro.philosophy": {
+      "text": "It is the purpose of the gods to guide and nurture the Bodnam. When we claimed victory and established Aurex as our new kingdom, we were lacking in ideals and purpose, but this is our true calling. We can draw purpose through watching mortals grow and thrive along a good and just path. In this, I follow the leadership of Serifex under the auspice of Control.",
+      "inheritLinks": "aurex.loruch.intro.landing"
+    },
+
+
+    "aurex.fulminar.intro.landing": {
+      "text": "My name is Fulminar. Storms bow to my power, and dance to my beat. You've revived after the terrible blow I dealt you; does that mean you're here to join the fun? Even though the war is over, there's no need to hang up your sword-arm. These new worlds make excellent toys throughout all of time and space, and mortals are at their most fun when creating new toys of their own.",
+      "links": [
+        {
+          "text": "Fulminar and storms.",
+          "nextPage": "aurex.fulminar.intro.fulminar"
+        },
+        {
+          "text": "The war is over.",
+          "nextPage": "aurex.fulminar.intro.warisover"
+        },
+        {
+          "text": "These new worlds?",
+          "nextPage": "aurex.fulminar.intro.newworlds"
+        },
+        {
+          "text": "Mortals' new toys?",
+          "nextPage": "aurex.fulminar.intro.newtoys"
+        },
+        {
+          "text": "What is your philosophy?",
+          "nextPage": "aurex.fulminar.intro.philosophy"
+        },
+        {
+          "text": "Goodbye.",
+          "terminal": true
+        }
+      ]
+    },
+    "aurex.fulminar.intro.fulminar": {
+      "text": "All of the New Gods have claimed dominion over natural forces. So why not claim raw power itself? I take my rest in thunderclouds across the many worlds, going wherever the storms roar. I toy with lightning, feeling it crackle from my fingertips to the ground below. Sometimes the mortals run screaming, or die. But sometimes they play along.",
+      "inheritLinks": "aurex.fulminar.intro.landing"
+    },
+    "aurex.fulminar.intro.warisover": {
+      "text": "Yes! I slew you; spilled your holy guts onto the ground. You were quite surprised. I don't think you ever expected you could fall in battle. The other Old Gods fell in turn, but none of them were half the challenge. We took over the heavens, and even though the universe tore apart, we're the new masters of what remains. Water under the bridge, eh? Why don't you enjoy the fruits of our labors?",
+      "inheritLinks": "aurex.fulminar.intro.landing"
+    },
+    "aurex.fulminar.intro.newworlds": {
+      "text": "Every shattered fragment of the old universe is its own world, its own small microcosm of the Bodnam existence. Some are large, and span kingdoms, while some are as small as a cottage in the woods. I can only graze them with the powers of my domain, battering them with winds or inspiring the curious. But you're an Old God - you can visit all these worlds in person. I envy you.",
+      "inheritLinks": "aurex.fulminar.intro.landing"
+    },
+    "aurex.fulminar.intro.newtoys": {
+      "text": "The Old King had no appetite for change, and left the worlds to be ruled by iron. Now that I'm in charge of my own little corners of reality, technology has grown. Some worlds have come to know horrors and wonders beyond what those from your age could possibly have imagined. The rifle, the homiform, the starship - all little projects that I've kept my eye on, with not a lick of magic in them!",
+      "inheritLinks": "aurex.fulminar.intro.landing"
+    },
+    "aurex.fulminar.intro.philosophy": {
+      "text": "We are beings of Power, and we can do what we will. What is reality, if not a thing to be enjoyed? And what are mortals but a source of entertainment? If you speak to Fang and Hathos, you'll find that they agree.",
+      "inheritLinks": "aurex.fulminar.intro.landing"
+    },
+
+
+
+
+    "aurex.fultam.intro.landing": {
+      "text": "We are Bez-Fultam and Yab-Fultam, twin gods of the forge. We sculpt destinies as easily as metals. We have not seen you before, but we know your tale.",
+      "links": [
+        {
+          "text": "Tell me about Bez-Fultam.",
+          "nextPage": "aurex.fultam.intro.bez"
+        },
+        {
+          "text": "Tell me about Yab-Fultam.",
+          "nextPage": "aurex.fultam.intro.yab"
+        },
+        {
+          "text": "My tale.",
+          "nextPage": "aurex.fultam.intro.tale"
+        },
+        {
+          "text": "What is your philosophy?",
+          "nextPage": "aurex.fultam.intro.philosophy"
+        },
+        {
+          "text": "Goodbye.",
+          "terminal": true
+        }
+      ]
+    },
+    "aurex.fultam.intro.bez": {
+      "text": "I am Bez-Fultam, the god of ore and metal. By my command the hills are full of coal and iron. Foundry workers give me praise and worship as they smelt the impurities out of my gifts. My twin sister takes what I produce and forms it into tools.",
+      "inheritLinks": "aurex.fultam.intro.landing"
+    },
+    "aurex.fultam.intro.yab": {
+      "text": "I am Yab-Fultam, the goddess of toolcrafting. Picks and nails, swords and armor all fall under my domain. The blacksmith and the silversmith give me praise and worship in hopes that their crafts will turn out strong. My twin brother gives me the material of my craft, and in turn I give him what he needs to dig it up and smelt it.",
+      "inheritLinks": "aurex.fultam.intro.landing"
+    },
+    "aurex.fultam.intro.tale": {
+      "text": "You are a warrior, and so we call you friend. As gods of the forge, we wish to see respect for our craft and for our tools to be put to good use, and who better to use a tool of war? We will never quarrel with you.",
+      "inheritLinks": "aurex.fultam.intro.landing"
+    },
+    "aurex.fultam.intro.philosophy": {
+      "text": "We acknowledge that there is a Hierarchy of all things. Mortal smiths follow our example and give us worship, which is as it should be. We seek respect, not control. If you speak to Astrifera, she can tell you more of our beliefs.",
+      "inheritLinks": "aurex.fultam.intro.landing"
     }
   }
 }

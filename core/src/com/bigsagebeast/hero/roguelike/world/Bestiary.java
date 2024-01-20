@@ -27,6 +27,10 @@ public class Bestiary {
 	public static Entity create(String key, String name) {
 		Entity e = EntityTracker.create();
 
+		if (!map.containsKey(key)) {
+			throw new RuntimeException("No bestiary entry for " + key);
+		}
+
 		Phenotype p = map.get(key);
 
 		e.phenotypeName = key;

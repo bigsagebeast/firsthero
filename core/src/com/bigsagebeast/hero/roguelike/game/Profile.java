@@ -12,7 +12,7 @@ public class Profile {
 
     static {
         // defaults
-        setString("godName", "the God of Heroism");
+        setString("godName", "the God of Heroes");
     }
 
     public static boolean save() {
