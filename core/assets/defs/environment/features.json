@@ -142,7 +142,13 @@
         "white",
         "gray",
         "gray"
-      ]
+      ],
+      "procs": {
+        "environment.ProcObstructiveFeature": {
+          "obstructMovement": true,
+          "obstructVision": false
+        }
+      }
     },
     "feature.worldportal": {
       "name": "world portal",

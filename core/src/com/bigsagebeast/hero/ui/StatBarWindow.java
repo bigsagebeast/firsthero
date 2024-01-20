@@ -6,8 +6,6 @@ import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.module.RoguelikeModule;
 import com.bigsagebeast.hero.roguelike.game.*;
 import com.bigsagebeast.hero.roguelike.world.Element;
-import com.bigsagebeast.hero.enums.Satiation;
-import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 
@@ -31,8 +29,8 @@ public class StatBarWindow extends UIWindow {
 	TextBlock tbStatWi;
 	TextBlock tbStatAr;
 	TextBlock tbStatAv;
-	TextBlock tbStatDr;
-	TextBlock tbStatDt;
+	TextBlock tbStatDe;
+	TextBlock tbStatAt;
 	TextBlock tbStatSpeed;
 	TextBlock tbStatLevel;
 
@@ -67,8 +65,8 @@ public class StatBarWindow extends UIWindow {
 		tbStatWi = new TextBlock("20", 13, 0, Color.WHITE);
 		tbStatAr = new TextBlock("20", 21, 0, Color.WHITE);
 		tbStatAv = new TextBlock("20", 29, 0, Color.WHITE);
-		tbStatDr = new TextBlock("20", 5, 0, Color.WHITE);
-		tbStatDt = new TextBlock("20", 13, 0, Color.WHITE);
+		tbStatDe = new TextBlock("20", 5, 0, Color.WHITE);
+		tbStatAt = new TextBlock("20", 13, 0, Color.WHITE);
 		tbStatSpeed = new TextBlock("100", 23, 0, Color.WHITE);
 		tbStatLevel = new TextBlock("1", 35, 0, Color.WHITE);
 		tbElementWater = new TextBlock("W 8/8", 0, 0, Color.CYAN);
@@ -91,9 +89,9 @@ public class StatBarWindow extends UIWindow {
 		statRows.get(4).addChild(tbStatWi);
 		statRows.get(4).addChild(tbStatAr);
 		statRows.get(4).addChild(tbStatAv);
-		statRows.add(new TextBlock("DR:     DT:     Speed:      Level:     ", 0, 5, Color.WHITE));
-		statRows.get(5).addChild(tbStatDr);
-		statRows.get(5).addChild(tbStatDt);
+		statRows.add(new TextBlock("Def:    AT:     Speed:      Level:     ", 0, 5, Color.WHITE));
+		statRows.get(5).addChild(tbStatDe);
+		statRows.get(5).addChild(tbStatAt);
 		statRows.get(5).addChild(tbStatSpeed);
 		statRows.get(5).addChild(tbStatLevel);
 
@@ -169,8 +167,8 @@ public class StatBarWindow extends UIWindow {
 		tbStatAr.color = colorForStat(Stat.ARCANUM);
 		tbStatAv.color = colorForStat(Stat.AVATAR);
 
-		tbStatDr.text = "" + entity.getArmorClass();
-		tbStatDt.text = "" + entity.getArmorThickness();
+		tbStatDe.text = "" + entity.getArmorClass();
+		tbStatAt.text = "" + entity.getArmorThickness();
 		tbStatSpeed.text = "" + (int)entity.getSpeed();
 		tbStatSpeed.color = colorForSpeed();
 		tbStatLevel.text = "" + entity.level;

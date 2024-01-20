@@ -311,6 +311,9 @@ public class Entity {
             }
         }
         if (dead && GameLoop.roguelikeModule.isRunning()) {
+            // TODO: Right now, this is getting called multiple times, and this is the first.
+            this.forEachProcIncludingEquipment((e, p) -> p.postBeKilled(e, null, null));
+
             // tests to make sure we're not in a test duel
             MoverLogic.createCorpse(Game.getLevel(), this);
             destroy();

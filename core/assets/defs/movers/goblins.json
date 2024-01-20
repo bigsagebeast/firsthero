@@ -61,7 +61,7 @@
       },
       "tactic": {
         "name": "TacticRangedAmmoThenMelee",
-        "ammo": 4
+        "ammo": 8
       },
       "tags": [
         "goblin",
@@ -270,6 +270,7 @@
         "purple"
       ],
       "gender": "MALE",
+      "proper": true,
       "experienceAwarded": 200,
       "threat": 2,
       "naturalWeaponDamage": 10,
@@ -278,9 +279,14 @@
       "naturalArmorClass": 7,
       "naturalArmorThickness": 4,
       "wandering": false,
+      "procs": {
+        "unique.ProcFirstQuestFinalBoss": { }
+      },
       "tags": [
         "goblin",
-        "generic-fantasy"
+        "generic-fantasy",
+        "boss",
+        "plot"
       ]
     }
   }

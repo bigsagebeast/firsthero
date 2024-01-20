@@ -38,8 +38,12 @@ public class SpellDivineBanish extends Spell {
 
     @Override
     public void affectTarget(Entity caster, Entity target, Compass dir) {
-        target.destroy();
-        // TODO: This had better never happen to the player...
-        Game.announce("You focus your divine energy. " + Util.capitalize(target.getVisibleNameDefinite() + " is banished from this universe."));
+        if (target.getPhenotype().tags.contains("plot")) {
+            Game.announce("Nothing happens. This being is tethered to the narrative.");
+        } else {
+            target.destroy();
+            // TODO: This had better never happen to the player...
+            Game.announce("You focus your divine energy. " + Util.capitalize(target.getVisibleNameDefinite() + " is banished from this universe."));
+        }
     }
 }

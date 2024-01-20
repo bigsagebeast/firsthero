@@ -271,6 +271,9 @@ public class RoguelikeModule extends Module {
 				case Keys.L:
 					Game.cmdLook();
 					break;
+				case Keys.M:
+					toggleMusic();
+					break;
 				case Keys.Z:
 					Game.cmdMagic();
 					break;
@@ -510,6 +513,14 @@ public class RoguelikeModule extends Module {
 		return true;
 	}
 
+	public void toggleMusic() {
+		if (MusicPlayer.enabled()) {
+			MusicPlayer.disable();
+		} else {
+			MusicPlayer.enable();
+		}
+	}
+
 	public void popupEscapeMenu() {
 		DialogueBox box = new DialogueBox()
 				.withMargins(60, 60)
@@ -544,12 +555,13 @@ public class RoguelikeModule extends Module {
 		box.addItem("g            Pick up an item", "g");
 		box.addItem("i            Check inventory", "i");
 		box.addItem("l            Look around", "l");
+		box.addItem("m            Toggle music", "m");
 		box.addItem("o            Open or close a door", "o");
 		box.addItem("p            Pray", "p");
 		box.addItem("q            Quaff a potion", "q");
 		box.addItem("r            Read a scroll or book", "r");
 		box.addItem("t            Target ranged attack", "t");
-		box.addItem("T            Throw a non-ranged item", "T");
+		box.addItem("T            Throw a potion or non-ranged item", "T");
 		box.addItem("w            Wear or wield", "w");
 		box.addItem("z            Cast a magic spell", "z");
 		box.addItem("<            Go up stairs", "<");
@@ -587,6 +599,9 @@ public class RoguelikeModule extends Module {
 				break;
 			case "l":
 				Game.cmdLook();
+				break;
+			case "m":
+				toggleMusic();
 				break;
 			case "o":
 				Game.cmdOpen();

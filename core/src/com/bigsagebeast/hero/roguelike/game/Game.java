@@ -27,6 +27,7 @@ import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 import com.bigsagebeast.hero.roguelike.world.proc.monster.ProcShooter;
+import com.bigsagebeast.hero.roguelike.world.proc.unique.ProcFirstQuestFinalBoss;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Fov;
 import com.bigsagebeast.hero.util.Point;
@@ -248,7 +249,7 @@ public class Game {
 		changeLevelGeneral();
 
 		// TODO hack
-		if (toKey.equals("dungeon.8")) {
+		if (toKey.equals("dungeon.8") && !ProcFirstQuestFinalBoss.dead) {
 			MusicPlayer.playBoss();
 		} else if (toKey.startsWith("dungeon")) {
 			MusicPlayer.playLoop();

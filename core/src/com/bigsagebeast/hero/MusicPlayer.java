@@ -50,10 +50,13 @@ public class MusicPlayer {
         }
         enabled = true;
         if (boss) {
+            boss = false;
             playBoss();
         } else if (aurex) {
+            aurex = false;
             playAurex();
         } else if (looping) {
+            looping = false;
             playLoop();
         }
     }
