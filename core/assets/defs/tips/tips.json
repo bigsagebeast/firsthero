@@ -38,7 +38,7 @@
     },
     {
       "title": "Equipment statistics",
-      "message": "Your equipment has five possible stats, which might scale by different attributes depending on the equipment. Inspect your equipment from the inventory screen to see its scaling.\n\nDamage shows the average raw damage your weapon will do.\nTo-hit increases your chance of hitting (added to a roll of 1 to 20).\nPenetration counters the effects of armor thickness.\nDefense reduces your chance of being hit (on a roll of 1 to 20).\nArmor thickness counters your enemy's penetration. Each point that it's higher gives a 10% chance for the attack to miss.\n\nFor ranged weapons, the stats of the weapon and ammunition are added together."
+      "message": "Your equipment has five possible stats, which might scale by different attributes depending on the equipment. Inspect your equipment from the inventory screen to see its scaling. Use the weapon that's right for your build and playstyle!\n\nDamage shows the average raw damage your weapon will do.\nTo-hit increases your chance of hitting (added to a roll of 1 to 20).\nPenetration counters the effects of armor thickness.\nDefense reduces your chance of being hit (on a roll of 1 to 20).\nArmor thickness counters your enemy's penetration. Each point that it's higher gives a 10% chance for the attack to miss.\n\nFor ranged weapons, the stats of the weapon and ammunition are added together."
     },
     {
       "title": "Targeting",

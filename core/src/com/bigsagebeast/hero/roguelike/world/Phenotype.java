@@ -33,9 +33,11 @@ public class Phenotype {
 	public int moveCost = 1000;
 	public int naturalWeaponToHit = 0;
 	public int naturalWeaponDamage = 5;
+	public int naturalWeaponPenetration = 0;
 	public int naturalRangedWeaponToHit = 0;
 	public int naturalRangedWeaponDamage = 0;
 	public int naturalRangedWeaponRange = 0;
+	public int naturalRangedWeaponPenetration = 0;
 	public int naturalArmorClass = 5;
 	public int naturalArmorThickness = 0;
 	public String naturalWeaponText;

@@ -20,6 +20,7 @@
       "experienceAwarded": 10,
       "threat": 1,
       "naturalWeaponDamage": 3,
+      "naturalWeaponPenetration": 1,
       "naturalWeaponToHit": -2,
       "naturalArmorClass": 7,
       "tags": [
@@ -51,6 +52,7 @@
       "naturalRangedWeaponDamage": 0,
       "naturalRangedWeaponToHit": -1,
       "naturalRangedWeaponRange": 6,
+      "naturalRangedWeaponPenetration": 2,
       "naturalArmorClass": 0,
       "procs": {
         "monster.ProcShooter": {
@@ -126,7 +128,9 @@
       "threat": 2,
       "naturalWeaponDamage": 5,
       "naturalWeaponToHit": 2,
+      "naturalWeaponPenetration": 2,
       "naturalArmorClass": 5,
+      "naturalArmorThickness": 4,
       "tags": [
         "goblin",
         "generic-fantasy"
@@ -153,6 +157,7 @@
       "threat": 4,
       "naturalWeaponDamage": 8,
       "naturalWeaponToHit": -2,
+      "naturalWeaponPenetration": 5,
       "naturalArmorClass": 2,
       "wandering": false,
       "tags": [

@@ -20,6 +20,7 @@
       "threat": 3,
       "naturalWeaponDamage": 8,
       "naturalWeaponToHit": 1,
+      "naturalWeaponPenetration": 3,
       "naturalArmorClass": 5,
       "tags": [
         "generic-fantasy",
@@ -47,8 +48,8 @@
       "threat": 1,
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": -4,
-      "naturalArmorClass": 4,
-      "naturalArmorThickness": 4,
+      "naturalArmorClass": 2,
+      "naturalArmorThickness": 5,
       "packSize": 1,
       "packSpawnArea": 3,
       "size": "SMALL",
@@ -77,6 +78,7 @@
       "threat": 1,
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": -4,
+      "naturalWeaponPenetration": 0,
       "naturalArmorClass": 4,
       "packSize": 1,
       "size": "SMALL",
@@ -106,7 +108,9 @@
       "threat": 2,
       "naturalWeaponDamage": 5,
       "naturalWeaponToHit": 1,
+      "naturalWeaponPenetration": 2,
       "naturalArmorClass": -2,
+      "naturalArmorThickness": 2,
       "packSize": 1,
       "size": "MEDIUM",
       "tags": [
@@ -134,7 +138,9 @@
       "threat": 6,
       "naturalWeaponDamage": 7,
       "naturalWeaponToHit": 2,
+      "naturalWeaponPenetration": 4,
       "naturalArmorClass": 2,
+      "naturalArmorThickness": 3,
       "packSize": 1,
       "packSpawnArea": 3,
       "size": "LARGE",
@@ -193,8 +199,9 @@
       "threat": 1,
       "naturalWeaponDamage": 2,
       "naturalWeaponToHit": -4,
+      "naturalWeaponPenetration": 1,
       "naturalArmorClass": 4,
-      "naturalArmorThickness": 3,
+      "naturalArmorThickness": 4,
       "size": "TINY",
       "corpseMethod": "poisonAndGainResistance",
       "procs": {
@@ -270,6 +277,101 @@
       "tags": [
         "generic-fantasy",
         "jelly"
+      ]
+    },
+    "animal.leechlizard": {
+      "name": "leech lizard",
+      "description": "A large lizard with thick hide and the mouth of a hagfish, leech lizards stalk larger prey, latching on so they can't be escaped.",
+      "corpseMessage": "Beneath the hide, it was succulent.",
+      "peaceful": false,
+      "hitPoints": 20,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.lizard",
+      "palette": [
+        "lightgreen",
+        "darkgreen",
+        "red"
+      ],
+      "experienceAwarded": 30,
+      "threat": 6,
+      "naturalWeaponDamage": 6,
+      "naturalWeaponToHit": 8,
+      "naturalWeaponPenetration": 1,
+      "naturalArmorClass": 5,
+      "naturalArmorThickness": 5,
+      "size": "SMALL",
+      "tags": [
+        "generic-fantasy",
+        "animal"
+      ]
+    },
+    "animal.serpentine.fairy": {
+      "name": "fairy serpentine",
+      "description": "This flying snake is the least form of the draconic life cycle. It wends through the air, seeking out fresh meat to fuel its ravenous growth. The fairy breed has no breath weapons.",
+      "corpseMessage": "It tasted a little sweet.",
+      "peaceful": false,
+      "hitPoints": 20,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.serpentine",
+      "isManipulator": false,
+      "ambulation": "FLYING",
+      "palette": [
+        "pink",
+        "purple"
+      ],
+      "experienceAwarded": 25,
+      "threat": 5,
+      "naturalWeaponDamage": 5,
+      "naturalWeaponToHit": 4,
+      "naturalWeaponPenetration": 2,
+      "naturalArmorClass": 5,
+      "naturalArmorThickness": 5,
+      "size": "SMALL",
+      "tags": [
+        "generic-fantasy",
+        "animal",
+        "serpentine"
+      ]
+    },
+    "animal.serpentine.black": {
+      "name": "black serpentine",
+      "description": "This flying snake is the least form of the draconic life cycle. It wends through the air, seeking out fresh meat to fuel its ravenous growth. This breed has a vicious acid spit to melt its prey.",
+      "corpseMessage": "It tasted acrid.",
+      "peaceful": false,
+      "hitPoints": 25,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "animal.serpentine",
+      "isManipulator": false,
+      "ambulation": "FLYING",
+      "palette": [
+        "cyan",
+        "forestgreen"
+      ],
+      "experienceAwarded": 50,
+      "threat": 7,
+      "naturalWeaponDamage": 6,
+      "naturalWeaponToHit": 5,
+      "naturalWeaponPenetration": 2,
+      "naturalArmorClass": 5,
+      "naturalArmorThickness": 65,
+      "size": "SMALL",
+      "procs": {
+        "monster.ProcCaster": {
+          "spellNames": "monster acid medium"
+        }
+      },
+      "tactic": {
+        "name": "TacticBeamAndCharge",
+        "castPercent": 50
+      },
+      "tags": [
+        "generic-fantasy",
+        "serpentine",
+        "animal",
+        "acid"
       ]
     }
   }

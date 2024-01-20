@@ -1,4 +1,4 @@
-1 8
+1 10
 0 0 armor.head.bowler
 0 1 armor.head.leatherhat
 0 2 armor.head.helm
@@ -7,3 +7,5 @@
 0 5 armor.body.robe
 0 6 armor.body.leather
 0 7 armor.body.chain
+0 8 armor.body.breastplate # white, gray, brown
+0 9 shield.tower # white, gray, orange

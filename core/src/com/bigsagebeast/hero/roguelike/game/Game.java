@@ -268,6 +268,7 @@ public class Game {
 	}
 
 	private static void changeLevelGeneral() {
+		player.getEntity().roomId = -1;
 		if (level != null) {
 			for (EntityProc tuple : level.getEntityProcs()) {
 				if (tuple.proc.hasAction()) {

@@ -61,11 +61,13 @@ public class Bestiary {
 		e.experienceAwarded = p.experienceAwarded;
 		e.naturalWeaponDamage = p.naturalWeaponDamage;
 		e.naturalWeaponToHit = p.naturalWeaponToHit;
+		e.naturalWeaponPenetration = p.naturalWeaponPenetration;
 		e.naturalArmorClass = p.naturalArmorClass;
 		e.naturalArmorThickness = p.naturalArmorThickness;
 		e.naturalRangedWeaponDamage = p.naturalRangedWeaponDamage;
 		e.naturalRangedWeaponToHit = p.naturalRangedWeaponToHit;
 		e.naturalRangedWeaponRange = p.naturalRangedWeaponRange;
+		e.naturalRangedWeaponPenetration = p.naturalRangedWeaponPenetration;
 
 		if (e.incorporeal) {
 			// TODO: Should have its own flag for omniscient?

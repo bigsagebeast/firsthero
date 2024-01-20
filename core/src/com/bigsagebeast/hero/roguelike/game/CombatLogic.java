@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
+import com.bigsagebeast.hero.enums.DamageType;
 import com.bigsagebeast.hero.roguelike.spells.Spell;
 import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
@@ -222,8 +223,12 @@ public class CombatLogic {
 	}
 
 	public static void castDamage(Entity actor, Entity target, Spell spell, float rawDamage) {
+		castDamage(actor, target, spell, rawDamage, DamageType.MAGIC);
+	}
+
+	public static void castDamage(Entity actor, Entity target, Spell spell, float rawDamage, DamageType damageType) {
 		// No pre/post for being cast on, that's handled in the spell
-		target.hurt((int)rawDamage, false, actor.getVisibleNameIndefiniteOrSpecific());
+		target.hurt((int)rawDamage, damageType, false, actor.getVisibleNameIndefiniteOrSpecific());
 		if (target.hitPoints > 0) {
 			spell.announceHitWithoutKill(actor, target);
 		} else {

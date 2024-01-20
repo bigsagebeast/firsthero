@@ -16,6 +16,7 @@
       "threat": 1,
       "naturalWeaponDamage": 6,
       "naturalWeaponToHit": 0,
+      "naturalWeaponPenetration": 3,
       "naturalArmorClass": 2,
       "naturalArmorThickness": 4,
       "tags": [

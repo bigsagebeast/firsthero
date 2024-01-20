@@ -19,7 +19,9 @@
       "wandering": false,
       "naturalWeaponDamage": 5,
       "naturalWeaponToHit": -1,
+      "naturalWeaponPenetration": 3,
       "naturalArmorClass": 0,
+      "naturalArmorThickness": 5,
       "tags": [
         "tech",
         "generic-tech",

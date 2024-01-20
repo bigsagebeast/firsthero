@@ -24,6 +24,7 @@ public class Spellpedia {
         map.put("monster water weak", new SpellMonsterWaterWeak());
         map.put("monster plant weak", new SpellMonsterPlantWeak());
         map.put("monster summon rats", new SpellMonsterSummonRats());
+        map.put("monster acid medium", new SpellMonsterAcidMedium());
 
         map.put("divine banish", new SpellDivineBanish());
         map.put("divine healing", new SpellDivineHealing());

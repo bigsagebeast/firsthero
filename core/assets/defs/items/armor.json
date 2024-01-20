@@ -58,8 +58,8 @@
       "level": 1,
       "procs": {
         "item.ProcArmor": {
-          "armorClass": 2,
-          "armorThickness": 0
+          "armorClass": 1,
+          "armorThickness": 1
         }
       },
       "tags": [
@@ -106,7 +106,7 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,
-          "armorThickness": 0
+          "armorThickness": 1
         }
       },
       "tags": [
@@ -151,8 +151,8 @@
       "level": 1,
       "procs": {
         "item.ProcArmor": {
-          "armorClass": 1,
-          "armorThickness": 0
+          "armorClass": 2,
+          "armorThickness": 1
         }
       },
       "tags": [
@@ -176,7 +176,79 @@
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
-          "armorThickness": 1
+          "armorThickness": 2
+        }
+      },
+      "tags": [
+        "armor",
+        "torso",
+        "generic-fantasy"
+      ]
+    },
+    "armor.body.breastplate": {
+      "name": "breastplate armor",
+      "description": "Thick breastplate armor is harder to move in, but thick enough to keep you well-protected.",
+      "glyphName": "armor.body.breastplate",
+      "palette": [
+        "white",
+        "gray",
+        "brown"
+      ],
+      "equipmentFor": "torso",
+      "category": "body",
+      "level": 3,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 0,
+          "armorThickness": 3
+        }
+      },
+      "tags": [
+        "armor",
+        "torso",
+        "generic-fantasy"
+      ]
+    },
+    "armor.body.chain.mithril": {
+      "name": "mithril chain armor",
+      "description": "Chain mail can soften many dangerous incoming blows. This suit is made from a lighter material that's easier to move in.",
+      "glyphName": "armor.body.chain",
+      "palette": [
+        "skyblue",
+        "gray",
+        "teal"
+      ],
+      "equipmentFor": "torso",
+      "category": "body",
+      "level": 4,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 2,
+          "armorThickness": 2
+        }
+      },
+      "tags": [
+        "armor",
+        "torso",
+        "generic-fantasy"
+      ]
+    },
+    "armor.body.breastplate.mithril": {
+      "name": "mithril breastplate",
+      "description": "Thick breastplate armor is harder to move in, but thick enough to keep you well-protected. This plate is made from a lighter material that's easier to move in.",
+      "glyphName": "armor.body.breastplate",
+      "palette": [
+        "skyblue",
+        "gray",
+        "brown"
+      ],
+      "equipmentFor": "torso",
+      "category": "body",
+      "level": 5,
+      "procs": {
+        "item.ProcArmor": {
+          "armorClass": 1,
+          "armorThickness": 3
         }
       },
       "tags": [
@@ -229,6 +301,110 @@
           "deflectionRanged": 40,
           "armorClass": 2,
           "armorThickness": 1
+        }
+      },
+      "tags": [
+        "armor",
+        "shield",
+        "generic-fantasy"
+      ]
+    },
+    "armor.shield.tower": {
+      "name": "tower shield",
+      "description": "This shield serves as a thick wall against oncoming attacks. Compared to other shields, it doesn't do much for your agility, but it blocks a higher percentage of blows.",
+      "glyphName": "shield.tower",
+      "palette": [
+        "white",
+        "gray",
+        "orange"
+      ],
+      "equipmentFor": "any hand",
+      "category": "shields",
+      "level": 3,
+      "procs": {
+        "item.ProcShield": {
+          "deflectionMelee": 30,
+          "deflectionRanged": 50,
+          "armorClass": 0,
+          "armorThickness": 2
+        }
+      },
+      "tags": [
+        "armor",
+        "shield",
+        "generic-fantasy"
+      ]
+    },
+    "armor.shield.buckler.mithril": {
+      "name": "mithril buckler",
+      "description": "A small shield to deflect arrows and melee strikes. This one is made of mithril, and can withstand heavier blows.",
+      "glyphName": "shield.buckler",
+      "palette": [
+        "skyblue",
+        "gray",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "shields",
+      "level": 4,
+      "procs": {
+        "item.ProcShield": {
+          "deflectionMelee": 20,
+          "deflectionRanged": 40,
+          "armorClass": 2,
+          "armorThickness": 1
+        }
+      },
+      "tags": [
+        "armor",
+        "shield",
+        "generic-fantasy"
+      ]
+    },
+    "armor.shield.metal.mithril": {
+      "name": "mithril shield",
+      "description": "A heavy shield to serve as a bulwark against heavy attacks. This one is made of mithril, and can withstand heavier blows.",
+      "glyphName": "shield.metal",
+      "palette": [
+        "skyblue",
+        "gray",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "shields",
+      "level": 5,
+      "procs": {
+        "item.ProcShield": {
+          "deflectionMelee": 20,
+          "deflectionRanged": 40,
+          "armorClass": 2,
+          "armorThickness": 2
+        }
+      },
+      "tags": [
+        "armor",
+        "shield",
+        "generic-fantasy"
+      ]
+    },
+    "armor.shield.tower.mithril": {
+      "name": "mithril tower shield",
+      "description": "This shield serves as a thick wall against oncoming attacks. Compared to other shields, it doesn't do much for your agility, but it blocks a higher percentage of blows. This one is made of mithril, and can withstand heavier blows.",
+      "glyphName": "shield.tower",
+      "palette": [
+        "skyblue",
+        "gray",
+        "orange"
+      ],
+      "equipmentFor": "any hand",
+      "category": "shields",
+      "level": 6,
+      "procs": {
+        "item.ProcShield": {
+          "deflectionMelee": 30,
+          "deflectionRanged": 50,
+          "armorClass": 0,
+          "armorThickness": 3
         }
       },
       "tags": [

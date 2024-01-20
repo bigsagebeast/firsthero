@@ -12,6 +12,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "THIN_BLADE",
@@ -40,6 +41,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "THIN_BLADE",
@@ -74,7 +76,8 @@
       ],
       "equipmentFor": "any hand",
       "category": "onehanded",
-      "level": 1,
+      "level": 2,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "THIN_BLADE",
@@ -109,7 +112,8 @@
       ],
       "equipmentFor": "any hand",
       "category": "onehanded",
-      "level": 1,
+      "level": 2,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "THIN_BLADE",
@@ -132,7 +136,7 @@
     },
     "weapon.melee.saber": {
       "name": "saber",
-      "description": "A curved blade for long slashes, often used by cavalry.",
+      "description": "A curved blade for long slashes, often used by cavalry. Poor at penetrating armor.",
       "glyphName": "weapon.saber",
       "palette": [
         "white",
@@ -142,6 +146,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BROAD_BLADE",
@@ -177,6 +182,7 @@
       "equipmentFor": "two hand",
       "category": "twohanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BROAD_BLADE",
@@ -212,6 +218,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BROAD_BLADE",
@@ -246,7 +253,8 @@
       ],
       "equipmentFor": "any hand",
       "category": "onehanded",
-      "level": 1,
+      "level": 2,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BROAD_BLADE",
@@ -283,6 +291,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BROAD_BLADE",
@@ -318,6 +327,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BLUDGEON",
@@ -352,7 +362,8 @@
       ],
       "equipmentFor": "any hand",
       "category": "onehanded",
-      "level": 1,
+      "level": 2,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BLUDGEON",
@@ -385,6 +396,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BLUDGEON",
@@ -417,6 +429,7 @@
       "equipmentFor": "two hand",
       "category": "twohanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BLUDGEON",
@@ -431,7 +444,11 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
     },
     "weapon.melee.spikedflail": {
       "name": "spiked flail",
@@ -445,13 +462,14 @@
       "equipmentFor": "two hand",
       "category": "twohanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "BLUDGEON",
           "damage": 7,
           "toHit": 1,
           "defense": 1,
-          "penetration": 0.5,
+          "penetration": 2.5,
           "scaling": {
             "STRENGTH": {
               "damage": 0.5,
@@ -463,7 +481,11 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
     },
 
     "weapon.melee.hatchet": {
@@ -478,6 +500,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "AXE",
@@ -513,6 +536,7 @@
       "equipmentFor": "any hand",
       "category": "onehanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "AXE",
@@ -548,6 +572,7 @@
       "equipmentFor": "two hand",
       "category": "twohanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "AXE",
@@ -565,7 +590,11 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
     },
 
     "weapon.melee.trident": {
@@ -580,6 +609,7 @@
       "equipmentFor": "two hand",
       "category": "twohanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "POLEARM",
@@ -597,7 +627,11 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
     },
     "weapon.melee.glaive": {
       "name": "glaive",
@@ -611,6 +645,7 @@
       "equipmentFor": "two hand",
       "category": "twohanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "POLEARM",
@@ -628,7 +663,11 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
     },
     "weapon.melee.lucernehammer": {
       "name": "lucerne hammer",
@@ -642,6 +681,7 @@
       "equipmentFor": "two hand",
       "category": "twohanded",
       "level": 1,
+      "frequency": 50, /* base melee */
       "procs": {
         "item.ProcWeaponMelee": {
           "weaponType": "POLEARM",
@@ -659,8 +699,588 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy"
+      ]
     },
+
+
+    "weapon.melee.dagger.mithril": {
+      "name": "mithril dagger",
+      "description": "A short, close-range weapon that relies on dexterity.",
+      "glyphName": "weapon.dagger",
+      "palette": [
+        "skyblue",
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "THIN_BLADE",
+          "damage": 4,
+          "toHit": 1,
+          "defense": 0,
+          "penetration": 2.5,
+          "scaling": {
+            "DEXTERITY": {
+              "damage": 0.75,
+              "penetration": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy",
+        "mithril"
+      ]
+    },
+    "weapon.melee.shortsword.mithril": {
+      "name": "mithril short sword",
+      "description": "An accurate, light weapon for stabbing through defenses.",
+      "glyphName": "weapon.shortsword",
+      "palette": [
+        "skyblue",
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "THIN_BLADE",
+          "damage": 5,
+          "toHit": 2,
+          "defense": 0,
+          "penetration": 3.5,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.25,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.5
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.armingsword.mithril": {
+      "name": "mithril arming sword",
+      "description": "A slashing weapon good against lightly armored targets.",
+      "glyphName": "weapon.longsword",
+      "palette": [
+        "skyblue",
+        "brown",
+        "white"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 5,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "THIN_BLADE",
+          "damage": 6,
+          "toHit": 3,
+          "defense": 1,
+          "penetration": 3,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.rapier.mithril": {
+      "name": "mithril rapier",
+      "description": "A one-handed dueling weapon for quick thrusts and parries.",
+      "glyphName": "weapon.rapier",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 5,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "THIN_BLADE",
+          "damage": 5,
+          "toHit": 2,
+          "defense": 2,
+          "penetration": 3,
+          "scaling": {
+            "DEXTERITY": {
+              "damage": 1.0,
+              "penetration": 0.34
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.saber.mithril": {
+      "name": "mithril saber",
+      "description": "A curved blade for long slashes, often used by cavalry.",
+      "glyphName": "weapon.saber",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 6,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 2,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.4,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.greatsword.mithril": {
+      "name": "mithril greatsword",
+      "description": "A heavy, two-handed weapon that crushes as easily as it slashes.",
+      "glyphName": "weapon.greatsword",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 8,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 3,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 1,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.falchion.mithril": {
+      "name": "mithril falchion",
+      "description": "A sword with a forward-swept blade, designed for powerful slashing attacks.",
+      "glyphName": "weapon.falchion",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 5,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 6,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 3.0,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.khopesh.mithril": {
+      "name": "mithril khopesh",
+      "pluralName": "mithril khopeshes",
+      "description": "A curved, sickle-shaped sword with a sharpened outer edge, designed both for slashing and for hooking maneuvers that make it useful in defense.",
+      "glyphName": "weapon.khopesh",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BROAD_BLADE",
+          "damage": 5,
+          "toHit": 1,
+          "defense": 2,
+          "penetration": 2.5,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.4,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.warhammer.mithril": {
+      "name": "mithril war hammer",
+      "description": "A blunt weapon with a flat head designed to penetrate armor with its narrow surface area.",
+      "glyphName": "weapon.warhammer",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BLUDGEON",
+          "damage": 6,
+          "toHit": 1,
+          "defense": 1,
+          "penetration": 5,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.mace.mithril": {
+      "name": "mithril mace",
+      "description": "A flanged mace penetrates armor with narrow ridges, but is primarily a blunt instrument that's easy to hit with.",
+      "glyphName": "weapon.mace",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 5,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BLUDGEON",
+          "damage": 5,
+          "toHit": 2,
+          "defense": 1,
+          "penetration": 4,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.8,
+              "penetration": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.spikedflail.mithril": {
+      "name": "mithril spiked flail",
+      "description": "A chain attaches a long handle to a heavy bar of spiked metal. This unusual design is slightly more defensive than a simple bludgeon, but harder to hit with.",
+      "glyphName": "weapon.spikedflail",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "BLUDGEON",
+          "damage": 8,
+          "toHit": 1,
+          "defense": 1,
+          "penetration": 3.5,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.5,
+              "penetration": 0.17
+            },
+            "DEXTERITY": {
+              "damage": 0.5,
+              "penetration": 0.17
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    
+    "weapon.melee.battleaxe.mithril": {
+      "name": "mithril battle axe",
+      "description": "A large-bladed two-headed axe for hacking through crowds of foes.",
+      "glyphName": "weapon.battleaxe",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "any hand",
+      "category": "onehanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "AXE",
+          "damage": 7,
+          "toHit": 1,
+          "defense": 0,
+          "penetration": 3.0,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.75,
+              "penetration": 0.25
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.greataxe.mithril": {
+      "name": "mithril greataxe",
+      "description": "This massive two-headed axe on a long shaft carries a great deal of weight behind its swings.",
+      "glyphName": "weapon.greataxe",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "AXE",
+          "damage": 9,
+          "toHit": 1,
+          "defense": 0,
+          "penetration": 4,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 1,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.25
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+
+    "weapon.melee.trident.mithril": {
+      "name": "mithril trident",
+      "description": "This long-handled stabbing weapon gives reach and maintains defense.",
+      "glyphName": "weapon.trident",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "POLEARM",
+          "damage": 8,
+          "toHit": 1,
+          "defense": 2,
+          "penetration": 4,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.8,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.glaive.mithril": {
+      "name": "mithril glaive",
+      "description": "The glaive is a long blade on a long pole, allowing slashing attacks with range and defense.",
+      "glyphName": "weapon.glaive",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "POLEARM",
+          "damage": 8,
+          "toHit": 2,
+          "defense": 2,
+          "penetration": 3,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.6,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.6
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+    "weapon.melee.lucernehammer.mithril": {
+      "name": "mithril lucerne hammer",
+      "description": "This narrow-headed bludgeon gives penetration at long range and with good defense.",
+      "glyphName": "weapon.lucernehammer",
+      "palette": [
+        "skyblue",
+        "brown",
+        "gray"
+      ],
+      "equipmentFor": "two hand",
+      "category": "twohanded",
+      "level": 4,
+      "frequency": 25, /* base melee */
+      "procs": {
+        "item.ProcWeaponMelee": {
+          "weaponType": "POLEARM",
+          "damage": 8,
+          "toHit": 1,
+          "defense": 2,
+          "penetration": 4,
+          "scaling": {
+            "STRENGTH": {
+              "damage": 0.8,
+              "penetration": 0.34
+            },
+            "DEXTERITY": {
+              "damage": 0.4
+            }
+          }
+        }
+      },
+      "tags": [
+        "weapon",
+        "generic-fantasy", "mithril"
+      ]
+    },
+
+
 
     "weapon.ranged.shortbow": {
       "name": "shortbow",
@@ -753,6 +1373,7 @@
       "minCount": 5,
       "maxCount": 10,
       "level": 1,
+      "frequency": 300,
       "hasBeatitude": false,
       "procs": {
         "item.ProcWeaponAmmo": {
@@ -770,7 +1391,7 @@
     "weapon.ammo.rock": {
       "name": "rock",
       "description": "Half the size of a fist, this is ammunition for a sling, or to be thrown by hand.",
-      "frequency": 100,
+      "frequency": 300,
       "glyphName": "weapon.stone",
       "palette": [
         "gray"

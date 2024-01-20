@@ -14,6 +14,7 @@
       "threat": 6,
       "naturalWeaponDamage": 6,
       "naturalWeaponToHit": 0,
+      "naturalWeaponPenetration": 3,
       "naturalArmorClass": 4,
       "tags": [
         "generic-fantasy"
