@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.bigsagebeast.hero.GameLoop;
-import com.bigsagebeast.hero.GameState;
-import com.bigsagebeast.hero.Graphics;
-import com.bigsagebeast.hero.GraphicsState;
+import com.bigsagebeast.hero.*;
 import com.bigsagebeast.hero.dialogue.TextEntryBox;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.Profile;
@@ -24,6 +21,7 @@ public class TitleScreenModule extends Module {
 	@Override
 	public void start() {
 		super.start();
+		MusicPlayer.playIntro();
 
 		TextEffectJitter jitter = new TextEffectJitter(0.0125f, 4f);
 		/*
@@ -80,27 +78,26 @@ public class TitleScreenModule extends Module {
 
 		textEngine.addBlock(new TextBlock("@", null, 332f, 2.5f, 0.4f, Color.DARK_GRAY, 0f, 0f, null, null));
 
-		textEngine.addBlock(new TextBlock("Music credit: Archons of Light - Nils Ingvarsson", null, 14, 0, 52, Color.GRAY, -1f, -1f));
+		textEngine.addBlock(new TextBlock("Music credit: WolfMeryX", null, 14, 0, 52, Color.GRAY, -1f, -1f));
 		
 		options[0] = new TextBlock("  Continue", null, 14, 18, 29, Color.WHITE, 0f, 0f);
 		options[1] = new TextBlock("> New Game", null, 14, 18, 30, Color.YELLOW, 0f, 0f);
 		options[2] = new TextBlock("  Skip to Dungeon", null, 14, 18, 31, Color.WHITE, 0f, 0f);
 		options[3] = new TextBlock("  Skip to Aurex", null, 14, 18, 32, Color.WHITE, 0f, 0f);
 		options[4] = new TextBlock("  Skip to Farm", null, 14, 18, 33, Color.WHITE, 0f, 0f);
-		options[5] = new TextBlock("  Watch Intro", null, 14, 18, 34, Color.WHITE, 0f, 0f);
-		options[6] = new TextBlock("  Test duel", null, 14, 18, 35, Color.WHITE, 0f, 0f);
-		options[7] = new TextBlock("  Quit", null, 14, 18, 36, Color.WHITE, 0f, 0f);
+		options[5] = new TextBlock("  Test duel", null, 14, 18, 34, Color.WHITE, 0f, 0f);
+		options[6] = new TextBlock("  Quit", null, 14, 18, 35, Color.WHITE, 0f, 0f);
 		updateOptions();
 		for (TextBlock tb : options) {
 			textEngine.addBlock(tb);
 		}
 	}
 	
-	public TextBlock[] options = new TextBlock[8];
+	public TextBlock[] options = new TextBlock[7];
 	int selectedOption = 1;
 	
 	private void updateOptions() {
-		for (int i=0; i<8; i++) {
+		for (int i=0; i<7; i++) {
 			if (selectedOption == i) {
 				options[i].text = "> " + options[i].text.substring(2);
 				if (i == 0) {
@@ -128,12 +125,12 @@ public class TitleScreenModule extends Module {
 
 			case Keys.UP:
 			case Keys.NUMPAD_8:
-				selectedOption = (selectedOption + 7) % 8;
+				selectedOption = (selectedOption + 6) % 7;
 				updateOptions();
 				break;
 			case Keys.DOWN:
 				case Keys.NUMPAD_2:
-				selectedOption = (selectedOption + 1) % 8;
+				selectedOption = (selectedOption + 1) % 7;
 				updateOptions();
 				break;
 			case Keys.ENTER:
@@ -158,34 +155,29 @@ public class TitleScreenModule extends Module {
 						 */
 						break;
 					case 2:
-						IntroModule.musicResource.stop();
+						MusicPlayer.stop();
 						end();
 						GameLoop.roguelikeModule.initialize();
 						Game.startCaves();
 						break;
 					case 3:
-						IntroModule.musicResource.stop();
+						MusicPlayer.stop();
 						end();
 						GameLoop.roguelikeModule.initialize();
 						Game.startAurex();
 						break;
 					case 4:
-						IntroModule.musicResource.stop();
+						MusicPlayer.stop();
 						end();
 						Profile.setString("mode", "newGameIntroQuest");
 						GameLoop.flowModule.start();
 						break;
 					case 5:
-						IntroModule.musicResource.stop();
-						end();
-						GameLoop.introModule.start();
-						break;
-					case 6:
-						IntroModule.musicResource.stop();
+						MusicPlayer.stop();
 						end();
 						GameLoop.duelModule.start();
 						break;
-					case 7:
+					case 6:
 						Gdx.app.exit();
 				}
 				break;
@@ -212,7 +204,7 @@ public class TitleScreenModule extends Module {
 	}
 
 	private void requestName() {
-		IntroModule.musicResource.stop();
+		MusicPlayer.stop();
 		end();
 
 		TextEntryBox box = new TextEntryBox()

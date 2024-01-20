@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.module;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.bigsagebeast.hero.*;
 import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.roguelike.game.EntityProc;
 import com.bigsagebeast.hero.roguelike.game.GameSpecials;
@@ -10,10 +11,6 @@ import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.Spellpedia;
 import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcStairs;
 import com.bigsagebeast.hero.ui.*;
-import com.bigsagebeast.hero.GameLoop;
-import com.bigsagebeast.hero.GameState;
-import com.bigsagebeast.hero.Graphics;
-import com.bigsagebeast.hero.GraphicsState;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.game.MainWindow;
@@ -57,6 +54,8 @@ public class RoguelikeModule extends Module {
 	@Override
 	public void start() {
 		super.start();
+
+		MusicPlayer.playLoop();
 
 		mainWindow = new MainWindow();
 		announceWindow = new AnnounceWindow();

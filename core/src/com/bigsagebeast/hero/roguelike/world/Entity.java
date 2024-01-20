@@ -1051,12 +1051,14 @@ public class Entity {
     }
 
     public Stream<EntityProc> entityProcs() {
-        Stream<EntityProc> roomProcs;
+        Stream<EntityProc> roomProcs = Stream.empty();
         if (roomId >= 0) {
-            Room room = Game.getLevel().rooms.get(roomId);
-            roomProcs = room.procs.stream().map(p -> new EntityProc(this, p));
-        } else {
-            roomProcs = Stream.empty();
+            if (roomId < Game.getLevel().rooms.size()) {
+                Room room = Game.getLevel().rooms.get(roomId);
+                roomProcs = room.procs.stream().map(p -> new EntityProc(this, p));
+            } else {
+                GameLoop.error("Tried to get entityProc from bad room");
+            }
         }
         return Stream.concat(procs.stream().map(p -> new EntityProc(this, p)), roomProcs);
     }

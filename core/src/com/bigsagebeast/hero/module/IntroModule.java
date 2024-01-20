@@ -8,25 +8,17 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.Align;
-import com.bigsagebeast.hero.GameLoop;
-import com.bigsagebeast.hero.GameState;
-import com.bigsagebeast.hero.Graphics;
-import com.bigsagebeast.hero.GraphicsState;
+import com.bigsagebeast.hero.*;
 import com.bigsagebeast.hero.text.TextBlock;
 
 public class IntroModule extends Module {
 
-	final FileHandle musicFile;
-	public static Music musicResource;
 	boolean needInit;
 	float startSeconds;
 	
 	private final static int SMALL_FONT = 14;
 
 	public IntroModule() {
-		String musicFilename = "aa_arofl.mp3";
-		musicFile = Gdx.files.internal(musicFilename);
-        musicResource = Gdx.audio.newMusic(musicFile);		
 	}
 	
 	@Override
@@ -36,7 +28,7 @@ public class IntroModule extends Module {
 	}
 	
 	private void init(GameState state) {
-		musicResource.play();
+		MusicPlayer.playIntro();
 		startSeconds = state.getSeconds() + 0.5f;
 		
 		// 110 x 62
@@ -153,7 +145,7 @@ public class IntroModule extends Module {
 
 	public boolean keyDown(int keycode, boolean shift, boolean ctrl, boolean alt) {
 		if (keycode == Keys.ENTER || keycode == Input.Keys.NUMPAD_ENTER) {
-			musicResource.setPosition(45.95f);
+			MusicPlayer.skipTo(45.95f);
 			end();
 			GameLoop.titleModule.start();
 		}

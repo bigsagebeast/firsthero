@@ -12,9 +12,6 @@ public class EntityTracker {
     public static void cleanUp() {
         List<Integer> keys = new ArrayList<>(entities.keySet());
         for (int key : keys) {
-            if (entities.get(key).destroyed) {
-                entities.get(key).destroy();
-            }
             entities.remove(key);
         }
     }

@@ -29,7 +29,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public static final GlyphEngine glyphEngine = new GlyphEngine();
 	public static final ChatBook CHAT_BOOK = new ChatBook();
 
-	public static final IntroModule introModule = new IntroModule();
+	//public static final IntroModule introModule = new IntroModule();
 	public static final TitleScreenModule titleModule = new TitleScreenModule();
 	public static final RoguelikeModule roguelikeModule = new RoguelikeModule();
 	public static final DuelModule duelModule = new DuelModule();
@@ -51,9 +51,7 @@ public class GameLoop implements GameLogic, InputProcessor {
 	public GameLoop() {
 		try {
 			glyphEngine.initialize();
-
-
-
+			MusicPlayer.initialize();
 			Game.initialize();
 		} catch (SetupException e) {
 			throw new RuntimeException(e);
@@ -74,14 +72,14 @@ public class GameLoop implements GameLogic, InputProcessor {
 		allModules.add(chatModule);
 		allModules.add(directionModule);
 		allModules.add(targetingModule);
-		allModules.add(introModule);
+		//allModules.add(introModule);
 		allModules.add(titleModule);
 		allModules.add(pauseModule);
 		allModules.add(roguelikeModule);
 		allModules.add(duelModule);
 		allModules.add(flowModule);
 
-		introModule.start();
+		titleModule.start();
 	}
 
 	public void update(GameState state) {

@@ -111,7 +111,7 @@
       ],
       "procs": {
         "environment.ProcElementalSource": {
-          "elementSymbol": "P"
+          "elementSymbol": "N"
         },
         "environment.ProcObstructiveFeature": {
           "obstructMovement": true,
