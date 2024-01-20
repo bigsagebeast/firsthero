@@ -1,9 +1,5 @@
-package com.bigsagebeast.hero.roguelike.world.proc.unique;
+package com.bigsagebeast.hero.roguelike.world.proc.monster;
 
-import com.bigsagebeast.hero.GameLoop;
-import com.bigsagebeast.hero.MusicPlayer;
-import com.bigsagebeast.hero.chat.ChatLink;
-import com.bigsagebeast.hero.dialogue.ChatBox;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
@@ -14,10 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ProcFirstQuestFinalBoss extends Proc {
-    public static boolean dead = false;
-
-    // TODO: This should go in a ProcSummonAtHealth, but proc defs need to be refactored as arrays first.
+// For passively spawned minions
+public class ProcSummonAtHealth extends Proc {
     public String message;
     public String messageFailed;
     public String listen;
@@ -27,55 +21,6 @@ public class ProcFirstQuestFinalBoss extends Proc {
     public float threshold = 0.5f;
     public int quantity = 1;
     public String minionKey;
-
-    public boolean chatTriggered;
-
-    @Override
-    public void actPlayerLos(Entity entity) {
-        if (!chatTriggered) {
-            chatTriggered = true;
-
-            ChatBox chatBox = new ChatBox()
-                    .withMargins(60, 60)
-                    .withTitle("The voice of Nemesis", null)
-                    .withText("The goblin leader speaks with a voice that is not its own.\n\n\"Ah, sibling, you've made it to me! Wherever you go and whatever you do, it is my sacred duty to oppose you. You will not draw essence from this world without a fight. Now, strike me down, if you can!\"");
-
-            ArrayList<ChatLink> links = new ArrayList<>();
-            ChatLink linkOk = new ChatLink();
-            linkOk.text = "OK";
-            linkOk.terminal = true;
-            links.add(linkOk);
-
-            GameLoop.chatModule.openArbitrary(chatBox, links);
-        }
-    }
-
-    @Override
-    public void postBeKilled(Entity entity, Entity actor, Entity tool) {
-        if (dead) {
-            // protect against this being called more than once
-            return;
-        }
-        dead = true;
-        MusicPlayer.playLoop();
-
-        ChatBox chatBox = new ChatBox()
-                .withMargins(60, 60)
-                .withTitle("An Enemy Falls", null)
-                .withText("As G'Chakk hits the ground, you feel a sense of divine empowerment fill your body and soul. Your mission is accomplished, and you have regained some of your lost essence.");
-
-        ArrayList<ChatLink> links = new ArrayList<>();
-        ChatLink linkOk = new ChatLink();
-        linkOk.text = "OK";
-        linkOk.runnable = this::handleVictory;
-        links.add(linkOk);
-
-        GameLoop.chatModule.openArbitrary(chatBox, links);
-    }
-
-    public void handleVictory() {
-        Game.startAurex();
-    }
 
     @Override
     public void turnPassed(Entity entity) {

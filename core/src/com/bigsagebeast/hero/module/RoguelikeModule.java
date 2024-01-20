@@ -47,7 +47,7 @@ public class RoguelikeModule extends Module {
 	
 	public static TextBlock topBorder = null;
 
-	public boolean cheats = true;
+	public boolean cheats = false;
 
 	public void initialize() {
 	}
@@ -387,6 +387,9 @@ public class RoguelikeModule extends Module {
 					if (cheats) {
 						GameSpecials.wish();
 					}
+					break;
+				case Keys.F12:
+					cheats = !cheats;
 					break;
 			}
 		}

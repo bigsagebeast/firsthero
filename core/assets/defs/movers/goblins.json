@@ -161,6 +161,18 @@
       "naturalArmorClass": 5,
       "naturalArmorThickness": 4,
       "wandering": false,
+      "procs": {
+        "monster.ProcSummonAtHealth": {
+          "message": "The goblin commander whistles! Reinforcements rush in to flank you.",
+          "messageFailed": "The goblin commander whistles! Nothing happens.",
+          "listen": "You hear a whistle.",
+          "listenFailed": "You hear a whistle.",
+          "aroundPlayer": true,
+          "threshold": 0.5,
+          "quantity": 2,
+          "minionKey": "goblin.lackey"
+        }
+      },
       "tags": [
         "goblin",
         "generic-fantasy"
@@ -191,6 +203,18 @@
       "naturalArmorClass": 6,
       "naturalArmorThickness": 5,
       "wandering": false,
+      "procs": {
+        "monster.ProcSummonAtHealth": {
+          "message": "The goblin general whistles! Reinforcements rush in to flank you.",
+          "messageFailed": "The goblin general whistles! Nothing happens.",
+          "listen": "You hear a whistle.",
+          "listenFailed": "You hear a whistle.",
+          "aroundPlayer": true,
+          "threshold": 0.5,
+          "quantity": 2,
+          "minionKey": "goblin.warrior"
+        }
+      },
       "tags": [
         "goblin",
         "generic-fantasy"
@@ -280,7 +304,26 @@
       "naturalArmorThickness": 4,
       "wandering": false,
       "procs": {
-        "unique.ProcFirstQuestFinalBoss": { }
+        "unique.ProcFirstQuestFinalBoss": {
+          "message": "The goblin leader whistles! A creature appears who looks just like you.",
+          "messageFailed": "The goblin leader whistles! Nothing happens.",
+          "listen": "You hear a whistle.",
+          "listenFailed": "You hear a whistle.",
+          "aroundPlayer": true,
+          "threshold": 0.34,
+          "quantity": 1,
+          "minionKey": "doppelganger.normal"
+        },
+        "monster.ProcSummonAtHealth": {
+          "message": "The goblin leader whistles! A commander rushes in to flank you.",
+          "messageFailed": "The goblin leader whistles! Nothing happens.",
+          "listen": "You hear a whistle.",
+          "listenFailed": "You hear a whistle.",
+          "aroundPlayer": true,
+          "threshold": 0.66,
+          "quantity": 1,
+          "minionKey": "goblin.commander"
+        }
       },
       "tags": [
         "goblin",

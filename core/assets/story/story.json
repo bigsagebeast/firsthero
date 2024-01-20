@@ -1,11 +1,15 @@
 {
   "pages": {
-    "intro.farmer.landing": {
-      "text": "Ye have to fight off the goblins before they kill us all.",
+    "intro.father.landing": {
+      "text": "The goblins are coming, and we're too old to flee. We're going to die with this farm unless someone stops them.",
       "links": [
         {
-          "nextPage": "intro.farmer.page2",
-          "text": "What can I do?"
+          "nextPage": "intro.father.page1",
+          "text": "Where did they come from?"
+        },
+        {
+          "nextPage": "intro.father.page2",
+          "text": "I'll stop them."
         },
         {
           "text": "Goodbye.",
@@ -13,15 +17,43 @@
         }
       ]
     },
-    "intro.farmer.page2": {
-      "text": "They took up residence in the caves to the north. Ye must fight with anything you can.",
+    "intro.father.page1": {
+      "text": "They must have sailed here from across the acid sea. That's why they're so twisted and desperate.",
       "links": [
+        {
+          "nextPage": "intro.father.page2",
+          "text": "I'll stop them."
+        },
         {
           "text": "Goodbye.",
           "terminal": true
         }
       ]
     },
+    "intro.father.page2": {
+      "text": "Your father's eyes well up with tears. \"You're a brave boy, but I can't let you go off to fight for us empty-handed. Yet if you're truly set on it, at least take the pitchfork. It's better than nothing.\"",
+      "links": [
+        {
+          "nextPage": "intro.father.page1",
+          "text": "Where did they come from?"
+        },
+        {
+          "text": "Goodbye.",
+          "terminal": true
+        }
+      ]
+    },
+    "intro.mother.landing": {
+      "text": "Your mother shakes with fear. \"You can't go out there! The goblins are killing all who resist!\"",
+      "links": [
+        {
+          "text": "I do what must be done.",
+          "terminal": true
+        }
+      ]
+    },
+
+
     "aurex.serifex.intro.landing": {
       "text": "You're alive? And after all this time. We haven't seen another Old God here since your brother. No matter - the war is over, and we haven't been properly introduced. My name is Serifex, and I bring fresh water to the Bodnam. Your kind have been gone for a long time, after all, and there's a new order to things.",
       "links": [
@@ -288,6 +320,10 @@
           "nextPage": "aurex.fultam.intro.tale"
         },
         {
+          "text": "What can you do for me?",
+          "nextPage": "aurex.fultam.intro.doforme"
+        },
+        {
           "text": "What is your philosophy?",
           "nextPage": "aurex.fultam.intro.philosophy"
         },
@@ -309,8 +345,12 @@
       "text": "You are a warrior, and so we call you friend. As gods of the forge, we wish to see respect for our craft and for our tools to be put to good use, and who better to use a tool of war? We will never quarrel with you.",
       "inheritLinks": "aurex.fultam.intro.landing"
     },
+    "aurex.fultam.intro.doforme": {
+      "text": "You wield more than divine weapons. When you enter a mortal realm, you carry their blades. We will keep track of the mortal arsenal you collect, so that you can take your choice of weapon on your next adventure... if you apply the essence to bring it, that is.",
+      "inheritLinks": "aurex.fultam.intro.landing"
+    },
     "aurex.fultam.intro.philosophy": {
-      "text": "We acknowledge that there is a Hierarchy of all things. Mortal smiths follow our example and give us worship, which is as it should be. We seek respect, not control. If you speak to Astrifera, she can tell you more of our beliefs.",
+      "text": "We acknowledge that there is a Hierarchy of all things. Mortal smiths follow our example and give us worship, which is as it should be. We seek respect, not control. If you speak to Astrifera, she can tell you more of our reasoning.",
       "inheritLinks": "aurex.fultam.intro.landing"
     }
   }

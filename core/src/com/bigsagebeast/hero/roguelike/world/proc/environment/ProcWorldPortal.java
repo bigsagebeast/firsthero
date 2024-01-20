@@ -16,6 +16,27 @@ import java.util.List;
 public class ProcWorldPortal extends Proc {
 
     StoryManager storyManager;
+    static boolean triggered;
+
+    @Override
+    public void onPlayerMovesAdjacentTo(Entity entity) {
+        if (!triggered) {
+            triggered = true;
+// TODO change triggered to a profile thing
+            ChatBox chatBox = new ChatBox()
+                    .withMargins(60, 60)
+                    .withTitle("The voice of Nemesis", null)
+                    .withText("Carried by the wind, you can hear the voice of your brother.\n\n\"My enemy, my sibling, at last you have returned. The battle starts anew. But I couldn't possibly fight an unarmed opponent, could I? You must grow stronger. Through these portals, you can enter the mortal worlds, and find fragments of the stories we used to tell. As you reclaim your heritage, your strength will grow. Someday we will fight again in earnest, for the fate of all these worlds and Aurex itself!\"");
+
+            ArrayList<ChatLink> links = new ArrayList<>();
+            ChatLink linkOk = new ChatLink();
+            linkOk.text = "OK";
+            linkOk.terminal = true;
+            links.add(linkOk);
+
+            GameLoop.chatModule.openArbitrary(chatBox, links);
+        }
+    }
 
     @Override
     public void postBeSteppedOn(Entity entity, Entity actor) {

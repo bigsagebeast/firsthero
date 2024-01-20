@@ -34,7 +34,7 @@ public class StoryManager {
             Collections.shuffle(gaps);
             Collections.sort(gaps, Comparator.comparing(g -> -g.getLongestHardLink()));
             for (StoryGap gap : gaps) {
-                System.out.println("  " + gap.toString());
+                //System.out.println("  " + gap.toString());
             }
             StoryGap gap = gaps.get(0);
             //System.out.println("Fill first");
@@ -43,9 +43,9 @@ public class StoryManager {
         }
         for (Integer key : cards.keySet()) {
             cards.get(key).definition.giveName(cards.get(key));
-            System.out.println("Card: " + cards.get(key).toString());
+            //System.out.println("Card: " + cards.get(key).toString());
         }
-        System.out.println();
+        //System.out.println();
 
         StoryDescriber describer = new StoryDescriber(cards.values());
     }

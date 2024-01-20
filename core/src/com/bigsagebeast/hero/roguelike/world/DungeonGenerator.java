@@ -295,7 +295,7 @@ public class DungeonGenerator {
 	public static Entity spawnLoot(Level level) {
 		String itemKey = getAllowedItem(level);
 		if (itemKey == null) {
-			System.out.println("No allowed items");
+			//System.out.println("No allowed items");
 			return null;
 		}
 		ItemType itemType = Itempedia.get(itemKey);

@@ -70,7 +70,7 @@ public class Spellbook {
 
         WeaponType weaponType;
         Entity primaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
-        if (primaryWeapon.getProcByType(ProcWeaponMelee.class) != null) {
+        if (primaryWeapon != null && primaryWeapon.getProcByType(ProcWeaponMelee.class) != null) {
             weaponType = ((ProcWeaponMelee)primaryWeapon.getProcByType(ProcWeaponMelee.class)).weaponType;
         } else {
             weaponType = null;

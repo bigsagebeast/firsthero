@@ -17,7 +17,7 @@ public class GameSpecials {
         Point destination = null;
         for (int i=0; i<5; i++) {
             destination = Game.getLevel().findOpenTile();
-            if (destination != entity.pos) break;
+            if (destination != null && destination.distance(entity.pos) > 10) break;
         }
         if (destination == null || destination.equals(entity.pos)) {
             GameLoop.warn("Couldn't find a teleport destination!");

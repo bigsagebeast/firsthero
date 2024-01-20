@@ -81,7 +81,7 @@ public class StoryDescriber {
                     sb.append(linkPart);
                 }
                 sb.append(".");
-                System.out.println(sb.toString());
+                //System.out.println(sb.toString());
                 storyLines.add(sb.toString());
             }
         }

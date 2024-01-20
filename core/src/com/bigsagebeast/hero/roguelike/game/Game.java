@@ -194,7 +194,6 @@ public class Game {
 		dungeon.getLevel("aurex").setFriendlyName("Aurex, Realm of the Gods");
 		dungeon.getLevel("aurex").ambientLight = 15;
 		changeLevel(dungeon.getLevel("aurex"), new Point(106, 30));
-		level.addEntityWithStacking(Itempedia.create("feature.worldportal"), new Point(88, 25));
 		level.prepare();
 		if (GameLoop.roguelikeModule.isRunning()) {
 			GameLoop.roguelikeModule.end();

@@ -124,7 +124,7 @@ public class Generator {
         if (genericRooms.size() < 2) {
             genericRooms.addAll(level.rooms.stream().filter(r -> r.roomType == RoomType.GENERIC_CAVERN).collect(Collectors.toList()));
             if (genericRooms.size() < 2) {
-                System.out.println("Not enough rooms, retrying");
+                GameLoop.warn("Not enough rooms, retrying");
                 return null;
             }
         }
