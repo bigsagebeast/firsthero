@@ -57,6 +57,10 @@ public class DungeonPlan {
             }
         }
 
+        floors.get(Util.randomBetween(0, 7)).addFeature(new DungeonPlanFeature("hp regen up"));
+        floors.get(Util.randomBetween(0, 7)).addFeature(new DungeonPlanFeature("sp regen up"));
+        floors.get(Util.randomBetween(0, 7)).addFeature(new DungeonPlanFeature("dp regen up"));
+
         floors.get(1).addFeature(new DungeonPlanFeature("goblin outpost"));
         floors.get(Util.randomBetween(2, 3)).addFeature(new DungeonPlanFeature("copper"));
         floors.get(Util.randomBetween(2, 3)).addFeature(new DungeonPlanFeature("goblin stronghold"));

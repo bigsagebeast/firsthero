@@ -27,6 +27,10 @@ public class RoomType {
     public static RoomType FRACTAL_COPPER = new RoomType("Fractal Copper", "The ceiling is made of a fractal copper pattern that bubbles as you watch it.");
     public static RoomType ROT_SPAWNER = new RoomType("Rotting Chamber", "Rot and filth cover all corners of this room, past your ankles. It roils and shifts threateningly as you watch.");
 
+    public static RoomType HP_REGEN_UP = new RoomType("Healing aura", "This room makes you feel revitalized, as though all magic is directed to that purpose.");
+    public static RoomType SP_REGEN_UP = new RoomType("Powerful aura", "This room crackles with dry energy. Vital forces seem weak compared to raw power.");
+    public static RoomType DP_REGEN_UP = new RoomType("Holy aura", "In this room, you feel a powerful connection to your divine self!");
+
     public String roomName;
     public String entranceMessage;
     public boolean specialCorridors;
@@ -73,6 +77,23 @@ public class RoomType {
         rotStalkerLoadProcMap.put("spawnMessage", "The rot forms itself into an upright shape!");
         LoadProc rotSpawnerLoadProc = new LoadProc("room.ProcRoomSpawnWhenPlayerPresent", rotStalkerLoadProcMap);
         ROT_SPAWNER.procLoaders.add(rotSpawnerLoadProc);
+
+        HashMap<String, String> hpRegenUpLoadProcMap = new HashMap<>();
+        hpRegenUpLoadProcMap.put("hpMultiplier", "2.0");
+        hpRegenUpLoadProcMap.put("spMultiplier", "0");
+        LoadProc hpRegenUpLoadProc = new LoadProc("room.ProcRoomRegenMultipliers", hpRegenUpLoadProcMap);
+        HP_REGEN_UP.procLoaders.add(hpRegenUpLoadProc);
+
+        HashMap<String, String> spRegenUpLoadProcMap = new HashMap<>();
+        spRegenUpLoadProcMap.put("hpMultiplier", "0");
+        spRegenUpLoadProcMap.put("spMultiplier", "2.0");
+        LoadProc spRegenUpLoadProc = new LoadProc("room.ProcRoomRegenMultipliers", spRegenUpLoadProcMap);
+        SP_REGEN_UP.procLoaders.add(spRegenUpLoadProc);
+
+        HashMap<String, String> dpRegenUpLoadProcMap = new HashMap<>();
+        dpRegenUpLoadProcMap.put("dpMultiplier", "2.0");
+        LoadProc dpRegenUpLoadProc = new LoadProc("room.ProcRoomRegenMultipliers", dpRegenUpLoadProcMap);
+        DP_REGEN_UP.procLoaders.add(dpRegenUpLoadProc);
     }
 
     public RoomType() {

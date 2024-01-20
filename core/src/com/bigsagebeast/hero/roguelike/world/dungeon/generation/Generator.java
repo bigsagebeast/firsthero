@@ -159,6 +159,15 @@ public class Generator {
                 case "rot spawner":
                     retryAddSpecialFeature(RoomType.ROT_SPAWNER, RoomType.GENERIC_ROOM);
                     break;
+                case "hp regen up":
+                    retryAddSpecialFeature(RoomType.HP_REGEN_UP, RoomType.GENERIC_ANY);
+                    break;
+                case "sp regen up":
+                    retryAddSpecialFeature(RoomType.SP_REGEN_UP, RoomType.GENERIC_ANY);
+                    break;
+                case "dp regen up":
+                    retryAddSpecialFeature(RoomType.DP_REGEN_UP, RoomType.GENERIC_ANY);
+                    break;
             }
         }
 
