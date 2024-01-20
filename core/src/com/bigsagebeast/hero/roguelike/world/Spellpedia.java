@@ -29,6 +29,11 @@ public class Spellpedia {
         map.put("divine banish", new SpellDivineBanish());
         map.put("divine healing", new SpellDivineHealing());
         map.put("divine time stop", new SpellDivineTimeStop());
+
+        map.put("dash through", new WeaponSkillDashThrough());
+        map.put("recoil", new WeaponSkillRecoil());
+        map.put("deflection", new WeaponSkillDeflection());
+        map.put("swordplay", new WeaponSkillSwordplay());
     }
 
     public static Spell get(String key) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.enums.Stat;
+import com.bigsagebeast.hero.enums.WeaponType;
 import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Point;
@@ -51,6 +52,8 @@ public abstract class Spell {
     public abstract TargetType getTargetType();
 
     public abstract SpellType getSpellType();
+
+    public WeaponType getWeaponType() { return null; }
 
     public abstract String getName();
 
@@ -109,7 +112,12 @@ public abstract class Spell {
 
 
     public void playerStartSpell() {
-        if (getSpellType() == SpellType.WEAPON_SKILL || getSpellType() == SpellType.ARCANUM) {
+        if (getSpellType() == SpellType.WEAPON_SKILL) {
+            if (Game.getPlayerEntity().spellPoints < getCost(Game.getPlayerEntity())) {
+                Game.announce("You don't have enough SP for that skill.");
+                return;
+            }
+        } else if (getSpellType() == SpellType.ARCANUM) {
             if (Game.getPlayerEntity().spellPoints < getCost(Game.getPlayerEntity())) {
                 Game.announce("You don't have enough SP for that spell.");
                 return;
@@ -149,9 +157,13 @@ public abstract class Spell {
             announce("Cancelled.");
             return;
         }
-        if (dir != null && Game.getPlayerEntity().isConfused()) {
+        if (dir != null && Game.getPlayerEntity().isConfused() && getSpellType() != SpellType.DIVINE) {
             dir = Compass.randomDirection();
-            Game.announce("You fire the spell in a random direction!");
+            if (getSpellType() == SpellType.WEAPON_SKILL) {
+                Game.announce("You apply the skill in a random direction!");
+            } else {
+                Game.announce("You fire the spell in a random direction!");
+            }
         }
         if (getSpellType() == SpellType.WEAPON_SKILL || getSpellType() == SpellType.ARCANUM) {
             Game.getPlayerEntity().spellPoints -= getCost(Game.getPlayerEntity());
@@ -220,7 +232,7 @@ public abstract class Spell {
         }
     }
 
-    public abstract void affectTarget(Entity caster, Entity target, Compass dir);
+    public void affectTarget(Entity caster, Entity target, Compass dir) { }
 
     public Color getAnimationColor() {
         return Color.WHITE;
@@ -231,9 +243,15 @@ public abstract class Spell {
     }
 
     public void announceCast(Entity caster, Entity target) {
-        Game.announceVis(caster, null, "You cast " + getName() + ".",
-                null,
-                caster.getVisibleNameDefinite() + " casts " + getName() + ".", "You hear someone muttering.");
+        if (getSpellType() == SpellType.WEAPON_SKILL) {
+            Game.announceVis(caster, null, "You use " + getName() + ".",
+                    null,
+                    caster.getVisibleNameDefinite() + " uses " + getName() + ".", null);
+        } else {
+            Game.announceVis(caster, null, "You cast " + getName() + ".",
+                    null,
+                    caster.getVisibleNameDefinite() + " casts " + getName() + ".", "You hear someone muttering.");
+        }
     }
 
     public void announceDodged(Entity caster, Entity target) {

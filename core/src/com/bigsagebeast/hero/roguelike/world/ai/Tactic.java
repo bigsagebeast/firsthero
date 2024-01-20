@@ -32,6 +32,22 @@ public abstract class Tactic {
 		}
 		Point first = path.get(0);
 		Compass dir = Compass.to(e.pos, first);
+
+		if (e.isConfused()) {
+			dir = Compass.randomDirection();
+			first = dir.from(e.pos);
+		}
+
+		// break up straight lines, open up choke points
+		if (Game.random.nextInt(8) == 0) {
+			// TODO: maneuver while not next to the target, OR when next to target AND next to an ally who is not next to the target
+			Compass newDir = Compass.neighbors(dir).get(Game.random.nextInt(2));
+			if (!Game.isBlockedByAnything(e, newDir.from(e.pos))) {
+				dir = newDir;
+				first = dir.from(e.pos);
+			}
+		}
+
 		if (target.pos.equals(first)) {
 			Game.npcAttack(e, pm, dir.getX(), dir.getY());
 		} else {

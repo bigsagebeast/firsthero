@@ -25,7 +25,7 @@ public class ProcEffectOakStrength extends ProcTimedEffect {
         Game.announceVis(entity, null,
                 "Your Strength of Oak fades away.",
                 null,
-                entity.getVisibleNameDefinite() + "'s Strength of Oak fades away'.",
+                entity.getVisibleNameDefinite() + "'s Strength of Oak fades away.",
                 null);
         entity.getTopLevelContainer().recalculateSecondaryStats();
     }

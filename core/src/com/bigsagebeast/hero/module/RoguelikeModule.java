@@ -367,6 +367,7 @@ public class RoguelikeModule extends Module {
 						Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.magic.map", 100));
 						Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.identify", 100));
 						Game.getPlayerEntity().statblock.change(Stat.TOUGHNESS, 99);
+						Game.getPlayerEntity().statblock.change(Stat.WILLPOWER, 99);
 						Game.getPlayer().gainStatElement(Element.FIRE, 99, 99);
 						Game.getPlayer().gainStatElement(Element.WATER, 99, 99);
 						Game.getPlayer().gainStatElement(Element.LIGHTNING, 99, 99);

@@ -953,6 +953,8 @@ public class Game {
 	}
 
 	public static void npcMoveBy(Entity actor, ProcMover pm, int dx, int dy) {
+		// TODO deprecate in favor of Compass based
+
 		int tx = actor.pos.x + dx;
 		int ty = actor.pos.y + dy;
 		
@@ -1110,8 +1112,13 @@ public class Game {
 	}
 
 	public static boolean canMoveBy(Entity actor, Compass dir) {
+		// TODO refactor to use isBlockedByAnything
 		return !level.isBlockedByTerrain(actor, new Point(actor.pos.x + dir.getX(), actor.pos.y + dir.getY())) &&
 				!isBlockedByEntity(actor, actor.pos.x + dir.getX(), actor.pos.y + dir.getY());
+	}
+
+	public static boolean isBlockedByAnything(Entity actor, Point t) {
+		return level.isBlockedByTerrain(actor, t) || isBlockedByEntity(actor, t.x, t.y);
 	}
 
 	public static boolean isBlockedByNonManipulable(Entity actor, int tx, int ty) {

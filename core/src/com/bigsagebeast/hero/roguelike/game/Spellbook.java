@@ -4,10 +4,12 @@ import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.chat.ChatLink;
 import com.bigsagebeast.hero.dialogue.ChatBox;
 import com.bigsagebeast.hero.enums.Stat;
+import com.bigsagebeast.hero.enums.WeaponType;
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.roguelike.spells.Spell;
 import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
 import com.bigsagebeast.hero.util.Util;
 
 import java.util.ArrayList;
@@ -56,13 +58,31 @@ public class Spellbook {
                 .withTitle("Select spell to cast")
                 .withAllowLetters(true)
                 .withMargins(60, 60);
-        String format = "%-15s %-8s %-5s %-3s %-5s";
-        box.addHeader(String.format("  " + format, "Name", "Type", "Range", "Dur", "Cost"));
+        addLines(box);
+        box.addHeader("");
+        box.addItem("Spell descriptions", "descriptions");
+        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleSpellbookToCastResponse);
+    }
+
+    void addLines(DialogueBox box) {
+        String format = "%-15s %-8s %-5s %-3s %-6s %-5s";
+        box.addHeader(String.format("    " + format, "Name", "Type", "Range", "Dur", "Damage", "Cost"));
+
+        WeaponType weaponType;
+        Entity primaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
+        if (primaryWeapon.getProcByType(ProcWeaponMelee.class) != null) {
+            weaponType = ((ProcWeaponMelee)primaryWeapon.getProcByType(ProcWeaponMelee.class)).weaponType;
+        } else {
+            weaponType = null;
+        }
+
         for (Spell.SpellType type : Spell.SpellType.values()) {
             List<Spell> spellsOfType = getSpells().stream().filter(s -> s.getSpellType() == type).collect(Collectors.toList());
+            spellsOfType.removeIf(spell -> type == Spell.SpellType.WEAPON_SKILL && spell.getWeaponType() != weaponType);
             if (!spellsOfType.isEmpty()) {
-                box.addHeader(type.name());
+                box.addHeader(type.name);
                 for (Spell spell : spellsOfType) {
+                    String costString = spell.getCost(Game.getPlayerEntity()) + ((spell.getCost(Game.getPlayerEntity()) < 10) ? "  " : " ");
                     Map<Element, Integer> elementCost = spell.getElementCost(Game.getPlayerEntity());
                     StringBuilder elementString = new StringBuilder();
                     for (Element element : elementCost.keySet()) {
@@ -70,6 +90,7 @@ public class Spellbook {
                             elementString.append(element.symbol);
                         }
                     }
+                    costString += elementString.toString();
                     String rangeString;
                     Float actualRange = spell.getRange(Game.getPlayerEntity());
                     if (actualRange == null) {
@@ -88,16 +109,24 @@ public class Spellbook {
                     } else {
                         durationString = "" + actualDuration;
                     }
+                    String damageString;
+                    Float actualDamage = spell.getDamage(Game.getPlayerEntity());
+                    if (actualDamage == null) {
+                        damageString = "-";
+                    } else {
+                        if (actualDamage == actualDamage.intValue()) {
+                            damageString = "" + actualDamage.intValue();
+                        } else {
+                            damageString = "" + actualDamage;
+                        }
+                    }
                     box.addItem(String.format(format,
                                     spell.getName(), spell.getTypeDescription(),
-                                    rangeString, durationString, spell.getCost(Game.getPlayerEntity()) + " " + elementString)
+                                    rangeString, durationString, damageString, costString)
                             , spell);
                 }
             }
         }
-        box.addHeader("");
-        box.addItem("Spell descriptions", "descriptions");
-        GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleSpellbookToCastResponse);
     }
 
     public void handleSpellbookToCastResponse(Object chosenSpell) {
@@ -122,50 +151,18 @@ public class Spellbook {
                 .withTitle("Select spell to describe")
                 .withAllowLetters(true)
                 .withMargins(60, 60);
-        String format = "%-15s %-8s %-5s %-3s %-5s";
-        box.addHeader(String.format("  " + format, "Name", "Type", "Range", "Dur", "Cost"));
-        for (Spell.SpellType type : Spell.SpellType.values()) {
-            List<Spell> spellsOfType = getSpells().stream().filter(s -> s.getSpellType() == type).collect(Collectors.toList());
-            if (!spellsOfType.isEmpty()) {
-                box.addHeader(type.name());
-                for (Spell spell : spellsOfType) {
-                    Map<Element, Integer> elementCost = spell.getElementCost(Game.getPlayerEntity());
-                    StringBuilder elementString = new StringBuilder();
-                    for (Element element : elementCost.keySet()) {
-                        for (int i = 0; i < elementCost.get(element); i++) {
-                            elementString.append(element.symbol);
-                        }
-                    }
-                    String rangeString;
-                    Float actualRange = spell.getRange(Game.getPlayerEntity());
-                    if (actualRange == null) {
-                        rangeString = "-";
-                    } else {
-                        if (actualRange == actualRange.intValue()) {
-                            rangeString = "" + actualRange.intValue();
-                        } else {
-                            rangeString = "" + actualRange;
-                        }
-                    }
-                    String durationString;
-                    Integer actualDuration = spell.getDuration(Game.getPlayerEntity());
-                    if (actualDuration == null) {
-                        durationString = "-";
-                    } else {
-                        durationString = "" + actualDuration;
-                    }
-                    box.addItem(String.format(format,
-                                    spell.getName(), spell.getTypeDescription(),
-                                    rangeString, durationString, spell.getCost(Game.getPlayerEntity()) + " " + elementString)
-                            , spell);
-                }
-            }
-        }
+        addLines(box);
+        box.addHeader("");
+        box.addItem("Cast spell", "cast");
         GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleSpellbookToDescribeResponse);
     }
 
     public void handleSpellbookToDescribeResponse(Object chosenObject) {
         if (chosenObject == null) {
+            return;
+        }
+        if (chosenObject.getClass().isAssignableFrom(String.class)) {
+            openSpellbookToCast();
             return;
         }
         Spell spell = (Spell)chosenObject;
@@ -241,7 +238,7 @@ public class Spellbook {
             }
 
             if (spell.getBaseDuration() != null) {
-                sb.append("Your duration: ").append(Util.formatFloat(spell.getRange(caster))).append(". ");
+                sb.append("Your duration: ").append(Util.formatFloat(spell.getDuration(caster))).append(". ");
             }
         }
 

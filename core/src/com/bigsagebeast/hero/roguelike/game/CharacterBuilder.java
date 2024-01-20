@@ -163,6 +163,11 @@ public class CharacterBuilder {
         Game.spellbook.addSpell("divine banish");
         Game.spellbook.addSpell("divine healing");
         Game.spellbook.addSpell("divine time stop");
+
+        Game.spellbook.addSpell("dash through");
+        Game.spellbook.addSpell("recoil");
+        Game.spellbook.addSpell("deflection");
+        Game.spellbook.addSpell("swordplay");
     }
 
     private static void equip(Entity entity, String key, BodyPart bodyPart) {

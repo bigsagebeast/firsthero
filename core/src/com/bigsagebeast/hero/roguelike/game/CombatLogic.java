@@ -6,10 +6,13 @@ import com.bigsagebeast.hero.roguelike.spells.Spell;
 import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Phenotype;
+import com.bigsagebeast.hero.roguelike.world.proc.ProcEffectGuaranteedHit;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectTimedMissileDeflection;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CombatLogic {
@@ -36,6 +39,8 @@ public class CombatLogic {
 			penetration = actor.getNaturalWeaponPenetration();
 		}
 
+		boolean guaranteedHit = actor.getProcByType(ProcEffectGuaranteedHit.class) != null;
+
 		accuracy += actor.getToHitBonus();
 		damage += actor.getDamageBonus();
 		result.damage = (int)Math.floor(damage);
@@ -46,7 +51,7 @@ public class CombatLogic {
 		int dodge = target.getArmorClass();
 		result.critical = Game.random.nextInt(20) == 0;
 
-		if (accuracy >= dodge) {
+		if (accuracy >= dodge || guaranteedHit) {
 			// Rely on these to generate their own messages
 			// Is something preventing the attacker from hitting?
 			boolean canHit = actor.forEachProcIncludingEquipmentFailOnFalse((e, p) -> p.preDoHit(e, target, tool, result));
@@ -68,7 +73,7 @@ public class CombatLogic {
 						canHit = false;
 					}
 				}
-				result.penetrationFailed = !canHit;
+				result.penetrationFailed = !canHit && !guaranteedHit;
 			}
 		} else {
 			result.hit = false;
@@ -274,7 +279,16 @@ public class CombatLogic {
 
 		int dodge = target.getArmorClass();
 
-		if (accuracy >= dodge) {
+		boolean isDeflected = !target.getProcsByType(Collections.singletonList(ProcEffectTimedMissileDeflection.class)).isEmpty();
+		if (isDeflected) {
+			Game.announceVis(actor, target,
+					"Your shot is deflected by " + target.getVisibleNameDefinite() + "'s spinning blade!",
+					"Your spinning blade deflects the shot!",
+					target.getVisibleNameDefinite() + " deflects " + actor.getVisibleNameDefinite() + "'s shot!",
+					null);
+		}
+
+		if (accuracy >= dodge && !isDeflected) {
 			// Rely on these to generate their own messages
 			result.hit = true;
 			boolean canHit = actor.forEachProcIncludingEquipmentFailOnFalse((e, p) -> p.preDoShoot(e, target, null));
