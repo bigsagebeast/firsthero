@@ -16,6 +16,7 @@ public class Phenotype {
 	public String key;
 	public String name;
 	public String description;
+	public boolean proper;
 	public int hitPoints;
 	public int spellPoints;
 	public int divinePoints;

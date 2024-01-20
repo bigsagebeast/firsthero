@@ -39,6 +39,7 @@ public class Bestiary {
 		} else {
 			e.name = p.name;
 		}
+		e.proper = p.proper;
 		e.hitPoints = p.hitPoints;
 		e.maxHitPoints = p.hitPoints;
 		e.spellPoints = p.spellPoints;

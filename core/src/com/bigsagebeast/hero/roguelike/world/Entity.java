@@ -40,6 +40,7 @@ public class Entity {
 
     public String name;
     public String pluralName;
+    public boolean proper = false;
 
     public Point pos;
     public int roomId = -1;
@@ -251,12 +252,18 @@ public class Entity {
         if (item != null && item.quantity > 1) {
             return getVisibleNameWithQuantity();
         }
+        if (proper) {
+            return getVisibleNameWithQuantity();
+        }
         return "the " + getVisibleNameWithQuantity();
     }
 
     public String getVisibleNameIndefiniteOrSpecific() {
         ProcItem item = getItem();
         if (item != null && item.quantity > 1) {
+            return getVisibleNameWithQuantity();
+        }
+        if (proper) {
             return getVisibleNameWithQuantity();
         }
         String visibleName = getVisibleName();
@@ -267,6 +274,9 @@ public class Entity {
         ProcItem item = getItem();
         if (item != null && item.quantity > 1) {
             return "some " + getVisiblePluralName();
+        }
+        if (proper) {
+            return getVisibleName();
         }
         String visibleName = getVisibleName();
         return Util.indefinite(visibleName) + " " + visibleName;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.*;
 import com.bigsagebeast.hero.enums.Beatitude;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.game.EntityProc;
 import com.bigsagebeast.hero.roguelike.game.GameSpecials;
 import com.bigsagebeast.hero.roguelike.world.Element;
@@ -362,10 +363,12 @@ public class RoguelikeModule extends Module {
 					if (cheats) {
 						Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.magic.map", 100));
 						Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.identify", 100));
+						Game.getPlayerEntity().statblock.change(Stat.TOUGHNESS, 99);
 						Game.getPlayer().gainStatElement(Element.FIRE, 99, 99);
 						Game.getPlayer().gainStatElement(Element.WATER, 99, 99);
 						Game.getPlayer().gainStatElement(Element.LIGHTNING, 99, 99);
 						Game.getPlayer().gainStatElement(Element.NATURAE, 99, 99);
+						Game.getPlayerEntity().recalculateSecondaryStats();
 						for (String key : Spellpedia.keys()) {
 							Game.spellbook.addSpell(key);
 						}
@@ -417,6 +420,19 @@ public class RoguelikeModule extends Module {
 							if (ep.proc.getClass().isAssignableFrom(ProcStairs.class)) {
 								ProcStairs stairs = (ProcStairs) ep.proc;
 								if (stairs.downToMap != null) {
+									Game.getPlayerEntity().pos = ep.entity.pos;
+									Game.turn();
+								}
+							}
+						}
+					}
+					break;
+				case Keys.COMMA:
+					if (cheats) {
+						for (EntityProc ep : Game.getLevel().getEntityProcs()) {
+							if (ep.proc.getClass().isAssignableFrom(ProcStairs.class)) {
+								ProcStairs stairs = (ProcStairs) ep.proc;
+								if (stairs.upToMap != null) {
 									Game.getPlayerEntity().pos = ep.entity.pos;
 									Game.turn();
 								}

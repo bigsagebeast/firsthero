@@ -81,6 +81,10 @@ public class SpecialSpawner {
                     key = DungeonGenerator.getAllowedItem(tags, level.threat + threatModifier,
                             level.threat + threatModifier, level);
                     if (key == null) {
+                        key = DungeonGenerator.getAllowedItem(tags, 1,
+                                level.threat + threatModifier, level);
+                    }
+                    if (key == null) {
                         return;
                     }
                 }

@@ -136,6 +136,66 @@
         "generic-fantasy"
       ]
     },
+    "goblin.commander": {
+      "name": "goblin commander",
+      "description": "A leader of goblins, but still answering to a general, this cruel humanoid is still wicked with a blade.",
+      "corpseMessage": "Ulch - That was beyond foul.",
+      "corpseMethod": "procVomit",
+      "peaceful": false,
+      "hitPoints": 30,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.warrior",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "red",
+        "purple"
+      ],
+      "gender": "RANDOM",
+      "experienceAwarded": 40,
+      "threat": 2,
+      "naturalWeaponDamage": 6,
+      "naturalWeaponToHit": 3,
+      "naturalWeaponPenetration": 3,
+      "naturalArmorClass": 5,
+      "naturalArmorThickness": 4,
+      "wandering": false,
+      "tags": [
+        "goblin",
+        "generic-fantasy"
+      ]
+    },
+    "goblin.general": {
+      "name": "goblin general",
+      "description": "The head goblin in this dungeon, this foul monster sports a mangled blade of enchanted metal.",
+      "corpseMessage": "Ulch - That was beyond foul.",
+      "corpseMethod": "procVomit",
+      "peaceful": false,
+      "hitPoints": 40,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.warrior",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "skyblue",
+        "purple"
+      ],
+      "gender": "RANDOM",
+      "experienceAwarded": 60,
+      "threat": 2,
+      "naturalWeaponDamage": 8,
+      "naturalWeaponToHit": 4,
+      "naturalWeaponPenetration": 3,
+      "naturalArmorClass": 6,
+      "naturalArmorThickness": 5,
+      "wandering": false,
+      "tags": [
+        "goblin",
+        "generic-fantasy"
+      ]
+    },
     "goblin.butcher": {
       "name": "goblin butcher",
       "description": "Wielding a jagged and rusting cleaver, this goblin is strong from good eating.",
@@ -189,6 +249,37 @@
       "packSpawnArea": 3,
       "size": "SMALL",
       "tags": [
+        "generic-fantasy"
+      ]
+    },
+
+    "goblin.endboss": {
+      "name": "G'Chakk",
+      "description": "Wielding the dread blade Nightbringer, this oversized goblin has jagged, crooked teeth jutting out of his mouth. He wears an eyepatch and is hunched over. Mithril mail only partially covers his many scars.",
+      "corpseMessage": "Ulch - That was beyond foul.",
+      "corpseMethod": "procVomit",
+      "peaceful": false,
+      "hitPoints": 80,
+      "isMonster": true,
+      "bodyPlan": "humanoid",
+      "glyphName": "humanoid.goblin.warrior",
+      "isManipulator": true,
+      "palette": [
+        "darkgreen",
+        "skyblue",
+        "purple"
+      ],
+      "gender": "MALE",
+      "experienceAwarded": 200,
+      "threat": 2,
+      "naturalWeaponDamage": 10,
+      "naturalWeaponToHit": 5,
+      "naturalWeaponPenetration": 3,
+      "naturalArmorClass": 7,
+      "naturalArmorThickness": 4,
+      "wandering": false,
+      "tags": [
+        "goblin",
         "generic-fantasy"
       ]
     }

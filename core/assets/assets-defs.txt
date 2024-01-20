@@ -19,6 +19,7 @@ defs/movers/plants.json
 defs/movers/sprites.json
 defs/movers/tech.json
 defs/movers/undead.json
+defs/themes/goblin-outpost.json
 defs/themes/goblin-stronghold.json
 defs/tips/tips.json
 defs/unique/unique.json

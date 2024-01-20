@@ -44,37 +44,38 @@ public class Generator {
 
         RoomPacker roomPacker = null;
         for (DungeonPlanFeature feature : planFloor.features) {
-            if (feature.name.equals("goblin outpost")) {
+            if (feature.name.equals("goblin.outpost") || feature.name.equals("goblin.stronghold") || feature.name.equals("goblin.endboss")) {
+                Theme theme = Themepedia.get(feature.name);
                 int coinflip = Game.random.nextInt(2);
                 switch (Game.random.nextInt(4)) {
                     case 0:
                         if (coinflip == 0)
-                            roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.SOUTH);
+                            roomPacker = new RoomPacker(level, 1, 1, 29, 19, theme.totalRooms, Compass.SOUTH);
                         else
-                            roomPacker = new RoomPacker(level, 1, 1, 29, 19, 8, Compass.EAST);
+                            roomPacker = new RoomPacker(level, 1, 1, 29, 19, theme.totalRooms, Compass.EAST);
                         break;
                     case 1:
                         if (coinflip == 0)
-                            roomPacker = new RoomPacker(level, width - 30, 1, 29, 19, 8, Compass.SOUTH);
+                            roomPacker = new RoomPacker(level, width - 30, 1, 29, 19, theme.totalRooms, Compass.SOUTH);
                         else
-                            roomPacker = new RoomPacker(level, width - 30, 1, 29, 19, 8, Compass.WEST);
+                            roomPacker = new RoomPacker(level, width - 30, 1, 29, 19, theme.totalRooms, Compass.WEST);
                         break;
                     case 2:
                         if (coinflip == 0)
-                            roomPacker = new RoomPacker(level, 1, height - 20, 29, 19, 8, Compass.NORTH);
+                            roomPacker = new RoomPacker(level, 1, height - 20, 29, 19, theme.totalRooms, Compass.NORTH);
                         else
-                            roomPacker = new RoomPacker(level, 1, height - 20, 29, 19, 8, Compass.EAST);
+                            roomPacker = new RoomPacker(level, 1, height - 20, 29, 19, theme.totalRooms, Compass.EAST);
                         break;
                     default:
                         if (coinflip == 0)
-                            roomPacker = new RoomPacker(level, width - 30, height - 20, 29, 19, 8, Compass.NORTH);
+                            roomPacker = new RoomPacker(level, width - 30, height - 20, 29, 19, theme.totalRooms, Compass.NORTH);
                         else
-                            roomPacker = new RoomPacker(level, width - 30, height - 20, 29, 19, 8, Compass.WEST);
+                            roomPacker = new RoomPacker(level, width - 30, height - 20, 29, 19, theme.totalRooms, Compass.WEST);
                         break;
                 }
                 roomPacker.generate();
 
-                SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, Themepedia.get("goblin.stronghold"));
+                SubDungeonAssigner assigner = new SubDungeonAssigner(roomPacker.firstNode, theme);
                 assigner.assign();
             }
         }

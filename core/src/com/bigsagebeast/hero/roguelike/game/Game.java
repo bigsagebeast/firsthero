@@ -247,6 +247,13 @@ public class Game {
 	public static void changeLevel(String toKey, String fromKey) {
 		changeLevelGeneral();
 
+		// TODO hack
+		if (toKey.equals("dungeon.8")) {
+			MusicPlayer.playBoss();
+		} else if (toKey.startsWith("dungeon")) {
+			MusicPlayer.playLoop();
+		}
+
 		Level nextLevel = dungeon.getLevel(toKey);
 		level = nextLevel;
 		if (!level.tags.contains("tutorial")) {

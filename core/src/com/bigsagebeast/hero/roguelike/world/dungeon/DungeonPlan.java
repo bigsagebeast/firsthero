@@ -61,11 +61,12 @@ public class DungeonPlan {
         floors.get(Util.randomBetween(0, 7)).addFeature(new DungeonPlanFeature("sp regen up"));
         floors.get(Util.randomBetween(0, 7)).addFeature(new DungeonPlanFeature("dp regen up"));
 
-        floors.get(1).addFeature(new DungeonPlanFeature("goblin outpost"));
+        floors.get(1).addFeature(new DungeonPlanFeature("goblin.outpost"));
         floors.get(Util.randomBetween(2, 3)).addFeature(new DungeonPlanFeature("copper"));
-        floors.get(Util.randomBetween(2, 3)).addFeature(new DungeonPlanFeature("goblin stronghold"));
+        floors.get(3).addFeature(new DungeonPlanFeature("goblin.stronghold"));
         floors.get(Util.randomBetween(3, 4)).addFeature(new DungeonPlanFeature("rot spawner"));
         floors.get(Util.randomBetween(4, 5)).addFeature(new DungeonPlanFeature("tech corridor"));
+        floors.get(7).addFeature(new DungeonPlanFeature("goblin.endboss"));
     }
 
     public DungeonPlanFloor floor(int floorNum) {

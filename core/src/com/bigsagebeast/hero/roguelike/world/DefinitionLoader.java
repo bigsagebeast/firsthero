@@ -283,6 +283,7 @@ public class DefinitionLoader {
             Theme theme = new Theme();
             Themepedia.put(themeName, theme);
             theme.key = themeName;
+            theme.totalRooms = getAsInt(themeNode, "totalRooms", 8);
             JsonNode themeRoomsNode = themeNode.get("rooms");
             if (themeRoomsNode != null) {
                 for (Iterator<String> defFieldName = themeRoomsNode.fieldNames(); defFieldName.hasNext(); ) {

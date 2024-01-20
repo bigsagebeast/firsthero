@@ -156,7 +156,7 @@ public class DungeonGenerator {
 			return Collections.EMPTY_LIST;
 		}
 		int minLevelAllowed = 0;
-		int maxLevelAllowed = level.threat + 1;
+		int maxLevelAllowed = level.threat;
 		ArrayList<String> allowedEntities = new ArrayList<>();
 		for (String key : Itempedia.map.keySet()) {
 			ItemType p = Itempedia.map.get(key);

@@ -1,6 +1,6 @@
 {
   "themes": {
-    "goblin.stronghold": {
+    "goblin.outpost": {
       "totalRooms": 8,
       "rooms": {
         "goblin.treasureroom": {
@@ -20,28 +20,19 @@
               "type": "item",
               "tags": [
                 "potion"
-              ],
-              "quantity": 2
-            },
-            {
-              "type": "item",
-              "tags": [
-                "potion"
-              ],
-              "quantity": 2
+              ]
             },
             {
               "type": "item",
               "tags": [
                 "scroll"
-              ],
-              "quantity": 2
+              ]
             }
           ]
         },
-        "goblin.throneroom": {
-          "roomName": "Throne Room",
-          "roomDesc": "You enter a dirty goblin throne room.",
+        "goblin.commandersoffice": {
+          "roomName": "Commander's Office",
+          "roomDesc": "This room isn't as dirty as the others.",
           "hardCap": 1,
           "depth": 4,
           "priority": 4,
@@ -49,19 +40,19 @@
           "spawn": [
             {
               "type": "mover",
-              "key": "goblin.general"
+              "key": "goblin.commander"
             }
           ]
         },
         "goblin.entrance": {
-          "roomName": "Goblin Stronghold Entrance",
-          "roomDesc": "You step into a goblin stronghold.",
+          "roomName": "Goblin Outpost Entrance",
+          "roomDesc": "You step into a goblin outpost.",
           "depth": 0,
           "loops": "OKAY",
           "spawn": [
             {
               "type": "mover",
-              "key": "goblin.warrior",
+              "key": "goblin.lackey",
               "quantity": 2
             }
           ]
@@ -79,7 +70,7 @@
             },
             {
               "type": "mover",
-              "key": "goblin.archer",
+              "key": "goblin.slinger",
               "quantity": 2
             }
           ]
@@ -93,12 +84,7 @@
             {
               "type": "mover",
               "key": "goblin.lackey",
-              "quantity": 4
-            },
-            {
-              "type": "mover",
-              "key": "goblin.warrior",
-              "quantity": 4
+              "quantity": 8
             }
           ]
         },
@@ -110,7 +96,7 @@
           "spawn": [
             {
               "type": "mover",
-              "key": "goblin.warrior",
+              "key": "goblin.lackey",
               "quantity": 2
             },
             {
@@ -123,7 +109,7 @@
             {
               "type": "item",
               "tags": [
-                "weapon"
+                "armor"
               ],
               "chance": 75
             }
@@ -169,65 +155,6 @@
           "loops": "OKAY"
         }
       }
-    },
-
-
-    "goblin.endboss": {
-      "totalRooms": 3,
-      "rooms": {
-        "goblin.throneroom": {
-          "roomName": "Throne Room",
-          "roomDesc": "This throne room is genuinely impressive.",
-          "hardCap": 1,
-          "depth": 4,
-          "priority": 4,
-          "loops": "NEVER",
-          "spawn": [
-            {
-              "type": "mover",
-              "key": "goblin.endboss"
-            }
-          ]
-        },
-        "goblin.entrance": {
-          "roomName": "Antechamber",
-          "roomDesc": "You step into an ornate antechamber.",
-          "depth": 0,
-          "loops": "NEVER",
-          "spawn": [
-            {
-              "type": "mover",
-              "key": "goblin.warrior",
-              "quantity": 2
-            },
-            {
-              "type": "item",
-              "rule": "floor",
-              "key": "feature.statue",
-              "quantity": 2
-            }
-          ]
-        },
-        "goblin.guardpost": {
-          "roomName": "Goblin Guard Post",
-          "roomDesc": "This room is barricaded against intrusion.",
-          "depth": 2,
-          "loops": "NEVER",
-          "spawn": [
-            {
-              "type": "mover",
-              "key": "goblin.archer",
-              "quantity": 4
-            },
-            {
-              "type": "mover",
-              "key": "goblin.warrior",
-              "quantity": 4
-            }
-          ]
-        }
-      }
     }
-
   }
 }

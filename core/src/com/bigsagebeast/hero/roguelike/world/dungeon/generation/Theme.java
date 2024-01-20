@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.roguelike.world.dungeon.generation;
 import java.util.ArrayList;
 
 public class Theme {
+    public int totalRooms;
     public ArrayList<ThemeRoom> rooms = new ArrayList<>();
     public String key;
 

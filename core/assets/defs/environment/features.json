@@ -133,6 +133,17 @@
         "environment.ProcAltar": { }
       }
     },
+    "feature.statue": {
+      "name": "statue",
+      "description": "This is a carved stone statue.",
+      "glyphName": "humanoid.goblin.warrior",
+      "isFeature": true,
+      "palette": [
+        "white",
+        "gray",
+        "gray"
+      ]
+    },
     "feature.worldportal": {
       "name": "world portal",
       "description": "Through here, you can enter the narrative of a mortal realm somewhere in the multiverse.",

@@ -6,7 +6,7 @@
       "pluralName": "potions of healing",
       "description": "This potion will immediately recover some hit points.",
       "category": "potion",
-      "frequency": 300,
+      "frequency": 500,
       "identityHidden": true,
       "level": 1,
       "procs": {
@@ -25,7 +25,7 @@
       "pluralName": "potions of extra healing",
       "description": "This potion will immediately recover a large number of hit points.",
       "category": "potion",
-      "frequency": 100,
+      "frequency": 300,
       "identityHidden": true,
       "level": 1,
       "procs": {
@@ -63,7 +63,7 @@
       "pluralName": "potions of regeneration",
       "description": "This potion aids the gradual recovery of wounds.",
       "category": "potion",
-      "frequency": 300,
+      "frequency": 400,
       "identityHidden": true,
       "level": 1,
       "procs": {
