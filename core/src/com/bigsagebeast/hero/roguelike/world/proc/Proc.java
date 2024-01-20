@@ -154,6 +154,7 @@ public class Proc {
     public int provideArmorThickness(Entity entity) { return 0; }
     public int provideToHitBonus(Entity entity) { return 0; }
     public int provideDamageBonus(Entity entity) { return 0; }
+    public int providePenetrationBonus(Entity entity) { return 0; }
     public float provideDamageReceivedMultiplier(Entity entity) { return 1.0f; }
 
     public List<StatusType> provideStatusResist(Entity entity) { return null; }

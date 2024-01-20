@@ -940,6 +940,14 @@ public class Entity {
         return bonus;
     }
 
+    public int getPenetrationBonus() {
+        int bonus = 0;
+        for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {
+            bonus += ep.proc.providePenetrationBonus(ep.entity);
+        }
+        return bonus;
+    }
+
     public List<StatusType> getStatusResists() {
         ArrayList<StatusType> resists = new ArrayList<>();
         for (EntityProc ep : allEntityProcsIncludingEquipment().collect(Collectors.toList())) {

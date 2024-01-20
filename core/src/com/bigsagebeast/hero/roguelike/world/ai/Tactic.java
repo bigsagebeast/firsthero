@@ -38,9 +38,17 @@ public abstract class Tactic {
 			first = dir.from(e.pos);
 		}
 
+		boolean neighboringPlayer = target.pos.equals(first);
+		boolean neighboringFriendly = false;
+		for (Point p : Game.getLevel().surroundingTiles(e.pos)) {
+			if (Game.getLevel().moverAt(p) != null && Game.getLevel().moverAt(p) != target) {
+				// TODO: Only if that friendly is not neighboring the player?
+				neighboringFriendly = true;
+			}
+		}
+
 		// break up straight lines, open up choke points
-		if (Game.random.nextInt(8) == 0) {
-			// TODO: maneuver while not next to the target, OR when next to target AND next to an ally who is not next to the target
+		if ((neighboringFriendly || !neighboringPlayer) && Game.random.nextInt(8) == 0) {
 			Compass newDir = Compass.neighbors(dir).get(Game.random.nextInt(2));
 			if (!Game.isBlockedByAnything(e, newDir.from(e.pos))) {
 				dir = newDir;

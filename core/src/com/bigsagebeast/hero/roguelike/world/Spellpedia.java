@@ -34,6 +34,10 @@ public class Spellpedia {
         map.put("recoil", new WeaponSkillRecoil());
         map.put("deflection", new WeaponSkillDeflection());
         map.put("swordplay", new WeaponSkillSwordplay());
+        map.put("berserk", new WeaponSkillBerserk());
+        map.put("cleave", new WeaponSkillCleave());
+        map.put("knock back", new WeaponSkillKnockBack());
+        map.put("launch over", new WeaponSkillLaunchOver());
     }
 
     public static Spell get(String key) {

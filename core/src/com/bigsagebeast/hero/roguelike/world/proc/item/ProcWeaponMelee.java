@@ -197,6 +197,7 @@ public class ProcWeaponMelee extends Proc {
     @Override
     public Proc clone(Entity entity) {
         ProcWeaponMelee pw = new ProcWeaponMelee();
+        pw.weaponType = weaponType;
         pw.damage = damage;
         pw.toHit = toHit;
         pw.penetration = penetration;

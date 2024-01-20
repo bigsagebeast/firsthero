@@ -43,6 +43,7 @@ public class CombatLogic {
 
 		accuracy += actor.getToHitBonus();
 		damage += actor.getDamageBonus();
+		penetration += actor.getPenetrationBonus();
 		result.damage = (int)Math.floor(damage);
 		if (damage < 0) {
 			damage = 0;

@@ -168,6 +168,10 @@ public class CharacterBuilder {
         Game.spellbook.addSpell("recoil");
         Game.spellbook.addSpell("deflection");
         Game.spellbook.addSpell("swordplay");
+        Game.spellbook.addSpell("berserk");
+        Game.spellbook.addSpell("cleave");
+        Game.spellbook.addSpell("knock back");
+        Game.spellbook.addSpell("launch over");
     }
 
     private static void equip(Entity entity, String key, BodyPart bodyPart) {

@@ -62,9 +62,11 @@ public class WeaponSkillSwordplay extends Spell {
 
         Entity target = Game.getLevel().moverAt(targetPoint);
         if (target != null) {
-            ProcEffectConfusion confusionProc = new ProcEffectConfusion();
-            confusionProc.turnsRemaining = getDuration(caster);
-            target.addProc(confusionProc);
+            if (target.getProcByType(ProcEffectConfusion.class) != null) {
+                ProcEffectConfusion confusionProc = new ProcEffectConfusion();
+                confusionProc.turnsRemaining = getDuration(caster);
+                target.addProc(confusionProc);
+            }
         } else {
             Game.announceVis(caster, null, "There's nothing there to target.", null, null, null);
         }
