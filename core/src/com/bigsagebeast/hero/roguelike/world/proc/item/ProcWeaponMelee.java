@@ -184,7 +184,7 @@ public class ProcWeaponMelee extends Proc {
         TextBlock tbMain = new TextBlock(entity.getVisibleNameWithQuantity(), beatitudeColor);
         tbMain.text = tbMain.text.substring(0, Math.min(width, tbMain.text.length()));
         tbMain.append(new TextBlock(" (", Color.WHITE))
-                .append(new TextBlock("`" + ad, adColor, IconGlyph.DAMAGE.icon()))
+                .append(new TextBlock("`" + ad + (ad < 10 ? " " : ""), adColor, IconGlyph.DAMAGE.icon()))
                 .append(new TextBlock("`" + th, thColor, IconGlyph.TOHIT.icon()))
                 .append(new TextBlock("`" + pn, pnColor, IconGlyph.PENETRATION.icon()))
                 .append(new TextBlock("`" + de, deColor, IconGlyph.DEFENSE.icon()))

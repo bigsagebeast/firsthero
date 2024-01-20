@@ -3,11 +3,12 @@ package com.bigsagebeast.hero.module;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Beatitude;
+import com.bigsagebeast.hero.roguelike.game.EntityProc;
 import com.bigsagebeast.hero.roguelike.game.GameSpecials;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Itempedia;
 import com.bigsagebeast.hero.roguelike.world.Spellpedia;
-import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
+import com.bigsagebeast.hero.roguelike.world.proc.environment.ProcStairs;
 import com.bigsagebeast.hero.ui.*;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.GameState;
@@ -47,6 +48,8 @@ public class RoguelikeModule extends Module {
 	private boolean dirty = true;
 	
 	public static TextBlock topBorder = null;
+
+	public boolean cheats = true;
 
 	public void initialize() {
 	}
@@ -360,21 +363,27 @@ public class RoguelikeModule extends Module {
 					Game.cmdStairsUp();
 					break;
 				case Keys.BACKSLASH:
-					Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.magic.map", 100));
-					Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.identify", 100));
-					Game.getPlayer().gainStatElement(Element.FIRE, 99, 99);
-					Game.getPlayer().gainStatElement(Element.WATER, 99, 99);
-					Game.getPlayer().gainStatElement(Element.LIGHTNING, 99, 99);
-					Game.getPlayer().gainStatElement(Element.NATURAE, 99, 99);
-					for (String key : Spellpedia.keys()) {
-						Game.spellbook.addSpell(key);
+					if (cheats) {
+						Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.magic.map", 100));
+						Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.identify", 100));
+						Game.getPlayer().gainStatElement(Element.FIRE, 99, 99);
+						Game.getPlayer().gainStatElement(Element.WATER, 99, 99);
+						Game.getPlayer().gainStatElement(Element.LIGHTNING, 99, 99);
+						Game.getPlayer().gainStatElement(Element.NATURAE, 99, 99);
+						for (String key : Spellpedia.keys()) {
+							Game.spellbook.addSpell(key);
+						}
 					}
 					break;
 				case Keys.LEFT_BRACKET:
-					GameSpecials.wishSummon();
+					if (cheats) {
+						GameSpecials.wishSummon();
+					}
 					break;
 				case Keys.RIGHT_BRACKET:
-					GameSpecials.wish();
+					if (cheats) {
+						GameSpecials.wish();
+					}
 					break;
 			}
 		}
@@ -389,18 +398,36 @@ public class RoguelikeModule extends Module {
 					Game.cmdMoveDownRight();
 					break;
 				case Keys.RIGHT_BRACKET:
-					for (String key : Itempedia.map.keySet()) {
-						if (!Itempedia.map.get(key).isFeature) {
-							int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
-							Entity itemEnt = Itempedia.create(key, quantity);
-							itemEnt.identifyItemFully();
-							Game.getPlayerEntity().acquireWithStacking(itemEnt);
+					if (cheats) {
+						for (String key : Itempedia.map.keySet()) {
+							if (!Itempedia.map.get(key).isFeature) {
+								int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
+								Entity itemEnt = Itempedia.create(key, quantity);
+								itemEnt.identifyItemFully();
+								Game.getPlayerEntity().acquireWithStacking(itemEnt);
+							}
 						}
 					}
 					break;
 				case Keys.BACKSLASH:
-					Game.getPlayerEntity().experience = Game.getPlayerEntity().experienceToNext;
-					Game.getPlayer().levelUp();
+					if (cheats) {
+						Game.getPlayerEntity().experience = Game.getPlayerEntity().experienceToNext;
+						Game.getPlayer().levelUp();
+					}
+					break;
+				case Keys.PERIOD:
+					if (cheats) {
+						for (EntityProc ep : Game.getLevel().getEntityProcs()) {
+							if (ep.proc.getClass().isAssignableFrom(ProcStairs.class)) {
+								ProcStairs stairs = (ProcStairs) ep.proc;
+								if (stairs.downToMap != null) {
+									Game.getPlayerEntity().pos = ep.entity.pos;
+									Game.turn();
+								}
+							}
+						}
+					}
+					break;
 			}
 		}
 		if (!shift && !ctrl && alt) {
@@ -426,13 +453,15 @@ public class RoguelikeModule extends Module {
 					Game.cmdLongWalk(Compass.SOUTH_EAST);
 					break;
 				case Keys.RIGHT_BRACKET:
-					for (String key : Itempedia.map.keySet()) {
-						if (!Itempedia.map.get(key).isFeature) {
-							int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
-							Entity itemEnt = Itempedia.create(key, quantity);
-							itemEnt.getItem().beatitude = Beatitude.CURSED;
-							itemEnt.identifyItemFully();
-							Game.getPlayerEntity().acquireWithStacking(itemEnt);
+					if (cheats) {
+						for (String key : Itempedia.map.keySet()) {
+							if (!Itempedia.map.get(key).isFeature) {
+								int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
+								Entity itemEnt = Itempedia.create(key, quantity);
+								itemEnt.getItem().beatitude = Beatitude.CURSED;
+								itemEnt.identifyItemFully();
+								Game.getPlayerEntity().acquireWithStacking(itemEnt);
+							}
 						}
 					}
 			}
@@ -452,13 +481,15 @@ public class RoguelikeModule extends Module {
 		if (!shift && ctrl && alt) {
 			switch (keycode) {
 				case Keys.RIGHT_BRACKET:
-					for (String key : Itempedia.map.keySet()) {
-						if (!Itempedia.map.get(key).isFeature) {
-							int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
-							Entity itemEnt = Itempedia.create(key, quantity);
-							itemEnt.getItem().beatitude = Beatitude.BLESSED;
-							itemEnt.identifyItemFully();
-							Game.getPlayerEntity().acquireWithStacking(itemEnt);
+					if (cheats) {
+						for (String key : Itempedia.map.keySet()) {
+							if (!Itempedia.map.get(key).isFeature) {
+								int quantity = Itempedia.map.get(key).stackable ? 10 : 1;
+								Entity itemEnt = Itempedia.create(key, quantity);
+								itemEnt.getItem().beatitude = Beatitude.BLESSED;
+								itemEnt.identifyItemFully();
+								Game.getPlayerEntity().acquireWithStacking(itemEnt);
+							}
 						}
 					}
 			}

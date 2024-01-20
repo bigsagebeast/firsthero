@@ -955,7 +955,7 @@ public class Entity {
     }
 
     public TextBlock getNameBlock() {
-        return getNameBlock(30);
+        return getNameBlock(35);
     }
 
     public TextBlock getNameBlock(int width) {

@@ -14,7 +14,7 @@
       "isManipulator": true,
       "experienceAwarded": 15,
       "threat": 1,
-      "naturalWeaponDamage": 6,
+      "naturalWeaponDamage": 5,
       "naturalWeaponToHit": 0,
       "naturalWeaponPenetration": 3,
       "naturalArmorClass": 2,

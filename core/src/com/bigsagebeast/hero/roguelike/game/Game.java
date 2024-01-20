@@ -137,6 +137,7 @@ public class Game {
 	}
 
 	public static void startIntro() {
+		dungeon.levels.clear();
 		loadFiles();
 		resetPlayer();
 		time = 0;
@@ -177,6 +178,7 @@ public class Game {
 	}
 
 	public static void startAurex() {
+		dungeon.levels.clear();
 		loadFiles();
 		resetPlayer();
 		time = 0;
@@ -198,6 +200,7 @@ public class Game {
 
 
 	public static void handleStartCaves(Entity pc) {
+		dungeon.levels.clear();
 		pc.name = Profile.getString("godName") + "'s avatar";
 		time = 0;
 		player.setEntityId(pc.entityId);
@@ -251,6 +254,14 @@ public class Game {
 		interrupted = false;
 
 		GameLoop.glyphEngine.initializeLevel(level);
+		/*
+		for (Entity e : level.getEntities()) {
+			System.out.println(e + " " + e.roomId);
+		}
+		for (Room r : level.rooms) {
+			System.out.println(r.roomId + " " + r);
+		}
+		 */
 		passTime(0);
 	}
 

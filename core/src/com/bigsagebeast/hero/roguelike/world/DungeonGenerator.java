@@ -330,7 +330,9 @@ public class DungeonGenerator {
 		} else {
 			generator.addUpstairTo(dungeon + "." + (depth-1));
 		}
-		generator.addDownstairTo(dungeon + "." + (depth+1));
+		if (depth < plan.floors.size()) {
+			generator.addDownstairTo(dungeon + "." + (depth+1));
+		}
 	}
 	
 	public void generateFromFile(String key, String filename) {

@@ -57,13 +57,17 @@ public class Inventory {
             if (equipmentName != null) {
                 equipmentNameBlock = new TextBlock(equipmentName);
             } else if (playerEntity.body.getEquipment(bp) != null) {
-                equipmentNameBlock = playerEntity.body.getEquipment(bp).getNameBlock(23);
+                equipmentNameBlock = playerEntity.body.getEquipment(bp).getNameBlock(28);
             }
-            TextBlock lineBlock = new TextBlock(String.format("%-13s: ", bp.getName()));
+            TextBlock lineBlock = new TextBlock(String.format("%-7s: ", bp.getAbbrev()));
             if (equipmentNameBlock != null) {
                 lineBlock.append(equipmentNameBlock);
             }
-            box.addItem(lineBlock, bp);
+            if (playerEntity.body.getEquipment(bp) != null) {
+                box.addItem(lineBlock, EntityGlyph.getGlyph(playerEntity.body.getEquipment(bp)), bp);
+            } else {
+                box.addItem(lineBlock, bp);
+            }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleWieldResponse);
     }
