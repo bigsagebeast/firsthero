@@ -174,7 +174,8 @@ public class Player {
 	public void levelUpDialogue() {
 		DialogueBox box = new DialogueBox()
 				.withMargins(60, 60)
-				.withFooterClosableAndSelectable()
+				.withFooterSelectable()
+				.withCancelable(false)
 				.withTitle("Select stat to level up");
 		if (statPoints == 1) {
 			box.addHeader("You have " + statPoints + " stat point to spend.");

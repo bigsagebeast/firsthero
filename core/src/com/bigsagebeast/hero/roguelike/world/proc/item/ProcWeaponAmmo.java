@@ -36,7 +36,7 @@ public class ProcWeaponAmmo extends Proc {
     @Override
     public String getUnidDescription(Entity entity) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Ammo type: " + ammoType.name());
+        sb.append("Ammo type: " + ammoType.description);
         sb.append(". Base stats: Damage ").append(Util.formatFloat(damage));
         sb.append(" To-Hit ").append(Util.formatFloat(toHit));
         sb.append(" Penetration ").append(Util.formatFloat(penetration));

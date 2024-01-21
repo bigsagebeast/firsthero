@@ -21,6 +21,7 @@ public class ProcScrollTeleportation extends ImmutableProc {
 
     @Override
     public void postBeRead(Entity entity, Entity actor) {
+        entity.identifyItemType();
         Point before = actor.pos;
         GameSpecials.teleportRandomly(actor);
         Point after = actor.pos;

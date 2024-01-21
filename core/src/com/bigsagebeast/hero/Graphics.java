@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bigsagebeast.hero.roguelike.game.Game;
 
 public class Graphics {
 	OrthographicCamera cam;
@@ -78,11 +79,14 @@ public class Graphics {
 	public void startBatch() {
 		// TODO necessary?  seems not
 		if (batchInProgress) {
-			throw new RuntimeException("Tried to create a SpriteBatch within a batch");
+			//throw new RuntimeException("Tried to create a SpriteBatch within a batch");
+			GameLoop.error("Tried to create a SpriteBatch within a batch");
+			Game.announceLoud("ERR: Tried to create a SpriteBatch within a batch");
+		} else {
+			spriteBatch.setProjectionMatrix(cam.combined);
+			spriteBatch.begin();
+			spriteBatch.setColor(1, 1, 1, 1);
 		}
-		spriteBatch.setProjectionMatrix(cam.combined);
-		spriteBatch.begin();
-		spriteBatch.setColor(1, 1, 1, 1);
 		batchInProgress = true;
 	}
 
@@ -108,10 +112,13 @@ public class Graphics {
 	
 	public void endBatch() {
 		if (!batchInProgress) {
-			throw new RuntimeException("Can't end an unstarted SpriteBatch");
+			//throw new RuntimeException("Can't end an unstarted SpriteBatch");
+			GameLoop.error("Ended an unstarted SpriteBatch");
+			Game.announceLoud("Ended an unstarted SpriteBatch");
+		} else {
+			spriteBatch.end();
 		}
 		//currentSpriteBatch.setShader(null);
-		spriteBatch.end();
 		batchInProgress = false;
 	}
 

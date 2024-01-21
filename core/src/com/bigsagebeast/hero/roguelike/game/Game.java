@@ -830,7 +830,7 @@ public class Game {
 		}
 
 		//TODO break chance per ammo
-		if (Game.random.nextInt(100) < 75) {
+		if (Game.random.nextInt(100) < 50) {
 			level.addEntityWithStacking(shotEntity, targetPoint);
 		}
 		GameLoop.targetingModule.animate(getPlayerEntity().pos, targetPoint);

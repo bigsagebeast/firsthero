@@ -286,11 +286,13 @@ public class Entity {
         return moveCost;
     }
 
-    public void heal(int amount) {
+    public void heal(float floatAmount) {
+        int amount = Util.randomRound(floatAmount);
         hitPoints = Math.min(hitPoints + amount, maxHitPoints);
     }
 
-    public void hurt(int amount, boolean announceDeath, String deathMessage) {
+    public void hurt(float floatAmount, boolean announceDeath, String deathMessage) {
+        int amount = Util.randomRound(floatAmount);
         hitPoints = Math.max(hitPoints - amount, 0);
         if (hitPoints <= 0) {
             dead = true;
@@ -320,17 +322,17 @@ public class Entity {
         }
     }
 
-    public void hurt(int amount, DamageType damageType, boolean announceDeath, String deathMessage) {
+    public void hurt(float amount, DamageType damageType, boolean announceDeath, String deathMessage) {
         ResistanceLevel resistLevel = getDamageTypeResist(damageType);
         amount = (int)Math.ceil(resistLevel.multiplier * amount);
         hurt(amount, announceDeath, deathMessage);
     }
 
-    public void hurt(int amount, String deathMessage) {
+    public void hurt(float amount, String deathMessage) {
         hurt(amount, true, deathMessage);
     }
 
-    public void hurt(int amount, DamageType damageType, String deathMessage) {
+    public void hurt(float amount, DamageType damageType, String deathMessage) {
         hurt(amount, damageType, true, deathMessage);
     }
 
@@ -712,7 +714,7 @@ public class Entity {
         Entity stackedInto = null;
         for (int mergeTargetId : inventoryIds) {
             Entity mergeTarget = EntityTracker.get(mergeTargetId);
-            if (mergeTarget.canStackWith(target)) {
+            if (mergeTarget != null && mergeTarget.canStackWith(target)) {
                 stackedInto = mergeTarget;
             }
         }

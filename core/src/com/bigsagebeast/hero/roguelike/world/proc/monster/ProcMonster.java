@@ -42,7 +42,7 @@ public class ProcMonster extends ProcMover {
     public void postBeKilled(Entity entity, Entity actor, Entity tool) {
         if (!entity.summoned) {
             // Chance to drop an item
-            if (Game.random.nextInt(5) == 0) {
+            if (Game.random.nextInt(15) == 0) {
                 Entity loot = DungeonGenerator.spawnLoot(Game.getLevel());
                 if (loot != null) {
                     Game.getLevel().addEntityWithStacking(loot, entity.pos);

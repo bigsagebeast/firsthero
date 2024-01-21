@@ -40,7 +40,7 @@ public class ProcWeaponRanged extends Proc {
     @Override
     public String getUnidDescription(Entity entity) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Fires " + ammoType.name() + "s");
+        sb.append("Fires " + ammoType.description + "s");
         sb.append(". Base stats: Damage ").append(Util.formatFloat(damage));
         sb.append(" To-Hit ").append(Util.formatFloat(toHit));
         sb.append(" Penetration ").append(Util.formatFloat(penetration));
@@ -60,7 +60,7 @@ public class ProcWeaponRanged extends Proc {
             sb.append(". ");
         }
 
-        sb.append(String.format("\n\nFor you: Damage %s To-Hit %s Penetration %s Defense %s",
+        sb.append(String.format("\n\nFor you: Damage %s To-Hit %s Penetration %s",
                 Util.formatFloat(getVisibleDamage(entity, Game.getPlayerEntity())),
                 Util.formatFloat(getVisibleToHit(entity, Game.getPlayerEntity())),
                 Util.formatFloat(getVisiblePenetration(entity, Game.getPlayerEntity()))));

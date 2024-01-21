@@ -21,10 +21,10 @@ public class ProcPotionAcid extends ImmutableProc {
         int hurtAmount = 10 + Game.random.nextInt(10);
         switch (entity.getItem().beatitude) {
             case BLESSED:
-                hurtAmount *= 2/3;
+                hurtAmount *= 0.67f;
                 break;
             case CURSED:
-                hurtAmount *= 3/2;
+                hurtAmount *= 1.5f;
                 break;
         }
         burnMessage(actor);

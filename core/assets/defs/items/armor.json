@@ -10,6 +10,7 @@
       "equipmentFor": "head",
       "category": "head",
       "level": 1,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 0,
@@ -32,6 +33,7 @@
       ],
       "equipmentFor": "head",
       "category": "head",
+      "frequency": 75,
       "level": 1,
       "procs": {
         "item.ProcArmor": {
@@ -56,6 +58,7 @@
       "equipmentFor": "head",
       "category": "head",
       "level": 1,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
@@ -79,6 +82,7 @@
       "equipmentFor": "head",
       "category": "head",
       "level": 1,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,
@@ -103,6 +107,7 @@
       "equipmentFor": "head",
       "category": "head",
       "level": 2,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,
@@ -126,6 +131,7 @@
       "equipmentFor": "torso",
       "category": "body",
       "level": 1,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
@@ -149,6 +155,7 @@
       "equipmentFor": "torso",
       "category": "body",
       "level": 1,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,
@@ -173,6 +180,7 @@
       "equipmentFor": "torso",
       "category": "body",
       "level": 2,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
@@ -197,6 +205,7 @@
       "equipmentFor": "torso",
       "category": "body",
       "level": 3,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 0,
@@ -221,6 +230,7 @@
       "equipmentFor": "torso",
       "category": "body",
       "level": 4,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 2,
@@ -245,6 +255,7 @@
       "equipmentFor": "torso",
       "category": "body",
       "level": 5,
+      "frequency": 75,
       "procs": {
         "item.ProcArmor": {
           "armorClass": 1,
@@ -269,6 +280,7 @@
       "equipmentFor": "any hand",
       "category": "shields",
       "level": 1,
+      "frequency": 75,
       "procs": {
         "item.ProcShield": {
           "deflectionMelee": 20,
@@ -295,6 +307,7 @@
       "equipmentFor": "any hand",
       "category": "shields",
       "level": 2,
+      "frequency": 75,
       "procs": {
         "item.ProcShield": {
           "deflectionMelee": 20,
@@ -321,6 +334,7 @@
       "equipmentFor": "any hand",
       "category": "shields",
       "level": 3,
+      "frequency": 75,
       "procs": {
         "item.ProcShield": {
           "deflectionMelee": 30,
@@ -347,6 +361,7 @@
       "equipmentFor": "any hand",
       "category": "shields",
       "level": 4,
+      "frequency": 75,
       "procs": {
         "item.ProcShield": {
           "deflectionMelee": 20,
@@ -373,6 +388,7 @@
       "equipmentFor": "any hand",
       "category": "shields",
       "level": 5,
+      "frequency": 75,
       "procs": {
         "item.ProcShield": {
           "deflectionMelee": 20,
@@ -399,6 +415,7 @@
       "equipmentFor": "any hand",
       "category": "shields",
       "level": 6,
+      "frequency": 75,
       "procs": {
         "item.ProcShield": {
           "deflectionMelee": 30,

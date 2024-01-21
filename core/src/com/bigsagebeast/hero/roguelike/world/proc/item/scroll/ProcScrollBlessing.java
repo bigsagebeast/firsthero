@@ -31,6 +31,7 @@ public class ProcScrollBlessing extends ImmutableProc {
 
     @Override
     public void postBeRead(Entity entity, Entity actor) {
+        entity.identifyItemType();
         ignore = entity;
         count = 1;
         if (entity.getItem().beatitude == Beatitude.BLESSED) {

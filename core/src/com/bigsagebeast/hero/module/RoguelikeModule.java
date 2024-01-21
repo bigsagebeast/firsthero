@@ -345,13 +345,15 @@ public class RoguelikeModule extends Module {
 				case Keys.BACKSPACE:
 					Game.cmdRest();
 				case Keys.L:
-					Game.cmdLoad();
+					//Game.cmdLoad();
 					break;
 				case Keys.R:
-					Game.cmdRegenerate();
+					if (cheats) {
+						Game.cmdRegenerate();
+					}
 					break;
 				case Keys.S:
-					Game.cmdSave();
+					//Game.cmdSave();
 					break;
 				case Keys.T:
 					Game.cmdThrow();

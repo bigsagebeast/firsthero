@@ -25,7 +25,7 @@
       "pluralName": "potions of extra healing",
       "description": "This potion will immediately recover a large number of hit points.",
       "category": "potion",
-      "frequency": 300,
+      "frequency": 200,
       "identityHidden": true,
       "level": 1,
       "procs": {

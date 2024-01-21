@@ -74,4 +74,12 @@ public class Util {
         }
         return min + Game.random.nextInt(max - min + 1);
     }
+
+    public static int randomRound(float input) {
+        int amount = (int)input;
+        if (Game.random.nextFloat() > (input - amount)) {
+            amount++;
+        }
+        return amount;
+    }
 }
