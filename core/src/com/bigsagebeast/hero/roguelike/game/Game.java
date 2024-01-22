@@ -887,7 +887,16 @@ public class Game {
 		if (targetCreature != null) {
 			ProcMover targetMover = targetCreature.getMover();
 			if (targetMover.isPeacefulToPlayer(targetCreature)) {
-				announce("You bump into " + targetCreature.getVisibleNameWithQuantity() + ". (Press 'c' to chat.)");
+				// talk to someone?
+				String chatPage = targetCreature.getPhenotype().chatPage;
+				if (chatPage != null) {
+					GameLoop.chatModule.openStory(targetCreature);
+					passTime(player.getEntity().moveCost);
+					return;
+				} else {
+					// rare for something to be peaceful and not talkable
+					announce("You bump into " + targetCreature.getVisibleNameWithQuantity() + ".");
+				}
 			} else {
 				attack(player.getEntity(), targetCreature);
 				player.getEntity().getMover().setDelay(getPlayerEntity(), player.getEntity().moveCost);

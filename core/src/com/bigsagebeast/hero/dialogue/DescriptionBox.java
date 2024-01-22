@@ -74,6 +74,11 @@ public class DescriptionBox {
     }
 
     public void compile(TextEngine textEngine) {
+        int nameWidth = (titleText.length() * FONT_SIZE);
+        if (width < nameWidth) {
+            width = nameWidth;
+        }
+
         textParent = new TextBlock("", null, FONT_SIZE, 0, 0,
                 x + ITEM_OFFSET_FROM_LEFT, y + TEXT_OFFSET_FROM_TOP,
                 Color.WHITE);

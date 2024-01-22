@@ -131,7 +131,7 @@
       "wandering": false
     },
     "unique.intro.farmerhusband": {
-      "name": "Your father",
+      "name": "your father",
       "description": "Your parents are hard-working farmers who keep to themselves. When the goblins landed from the acid sea, their farm was in the way, and now they are in danger of losing their land and their lives.",
       "gender": "MALE",
       "peaceful": true,
@@ -146,7 +146,7 @@
       "chatPage": "intro.father.landing"
     },
     "unique.intro.farmerwife": {
-      "name": "Your mother",
+      "name": "your mother",
       "description": "Your parents are hard-working farmers who keep to themselves. When the goblins landed from the acid sea, their farm was in the way, and now they are in danger of losing their land and their lives.",
       "gender": "FEMALE",
       "peaceful": true,

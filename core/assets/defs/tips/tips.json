@@ -43,6 +43,10 @@
     {
       "title": "Targeting",
       "message": "Spells can only be fired in the eight ordinal directions, but ranged weapons can target anything you can see.\n\nPress 't' to target a ranged enemy if you're wielding both a ranged weapon and ammunition for it, and then 't' again to fire. Some ammunition, like rocks, can be thrown without the need for a ranged weapon."
+    },
+    {
+      "title": "Throwing potions",
+      "message": "Press capital 'T' to throw a non-ranged-weapon object. Throwing a sword won't do any damage, but a thrown potion will have the same effect as drinking it!"
     }
   ]
 }

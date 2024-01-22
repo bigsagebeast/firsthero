@@ -9,7 +9,8 @@
       "palette": [
         "white"
       ],
-      "gender": "AGENDER",
+      "gender": "PLURAL",
+      "proper": true,
       "chatPage": "aurex.serifex.intro.landing",
       "procs": {
         "ProcChatWhenAdjacent": {
@@ -27,6 +28,7 @@
         "lightgreen"
       ],
       "gender": "MALE",
+      "proper": true,
       "chatPage": "aurex.loruch.intro.landing"
     },
     "god.fulminar": {
@@ -39,6 +41,7 @@
         "purple"
       ],
       "gender": "MALE",
+      "proper": true,
       "chatPage": "aurex.fulminar.intro.landing"
     },
     "god.bezfultam": {
@@ -51,6 +54,7 @@
         "red"
       ],
       "gender": "MALE",
+      "proper": true,
       "chatPage": "aurex.fultam.intro.landing"
     },
     "god.yabfultam": {
@@ -63,6 +67,7 @@
         "brown"
       ],
       "gender": "FEMALE",
+      "proper": true,
       "chatPage": "aurex.fultam.intro.landing"
     }
   }

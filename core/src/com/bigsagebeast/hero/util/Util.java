@@ -25,6 +25,28 @@ public class Util {
         return String.format("%s",val);
     }
 
+    public static String substitute(String string, Gender gender) {
+        if (string == null) {
+            return null;
+        }
+        if (gender == null) {
+            gender = Gender.AGENDER;
+        }
+        string = string.replace("%a", gender.a());
+        string = string.replace("%s", gender.s());
+        string = string.replace("%o", gender.o());
+        string = string.replace("%p", gender.p());
+        string = string.replace("%r", gender.r());
+        string = string.replace("%l", gender.l());
+        string = string.replace("%A", capitalize(gender.a()));
+        string = string.replace("%S", capitalize(gender.s()));
+        string = string.replace("%O", capitalize(gender.o()));
+        string = string.replace("%P", capitalize(gender.p()));
+        string = string.replace("%R", capitalize(gender.r()));
+        string = string.replace("%L", capitalize(gender.l()));
+        return string;
+    }
+
     public static String substitute(String string, Gender gender1, Gender gender2) {
         if (string == null) {
             return null;
@@ -40,21 +62,25 @@ public class Util {
         string = string.replace("%1o", gender1.o());
         string = string.replace("%1p", gender1.p());
         string = string.replace("%1r", gender1.r());
+        string = string.replace("%1l", gender1.l());
         string = string.replace("%1A", capitalize(gender1.a()));
         string = string.replace("%1S", capitalize(gender1.s()));
         string = string.replace("%1O", capitalize(gender1.o()));
         string = string.replace("%1P", capitalize(gender1.p()));
         string = string.replace("%1R", capitalize(gender1.r()));
+        string = string.replace("%1L", capitalize(gender1.l()));
         string = string.replace("%2a", gender2.a());
         string = string.replace("%2s", gender2.s());
         string = string.replace("%2o", gender2.o());
         string = string.replace("%2p", gender2.p());
         string = string.replace("%2r", gender2.r());
+        string = string.replace("%2l", gender2.l());
         string = string.replace("%2A", capitalize(gender2.a()));
         string = string.replace("%2S", capitalize(gender2.s()));
         string = string.replace("%2O", capitalize(gender2.o()));
         string = string.replace("%2P", capitalize(gender2.p()));
         string = string.replace("%2R", capitalize(gender2.r()));
+        string = string.replace("%2L", capitalize(gender2.l()));
         return string;
     }
 

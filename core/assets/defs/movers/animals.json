@@ -356,7 +356,7 @@
       "naturalWeaponToHit": 5,
       "naturalWeaponPenetration": 2,
       "naturalArmorClass": 5,
-      "naturalArmorThickness": 65,
+      "naturalArmorThickness": 5,
       "size": "SMALL",
       "procs": {
         "monster.ProcCaster": {

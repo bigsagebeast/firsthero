@@ -21,7 +21,7 @@ public class LoadingTips {
 
         ChatBox chatBox = new ChatBox()
                 .withMargins(60, 60)
-                .withTitle("Loading Tips - " + tip.title, null)
+                .withTitle("Tips - " + tip.title, null)
                 .withText(tip.message);
 
         ArrayList<ChatLink> links = new ArrayList<>();
@@ -38,7 +38,7 @@ public class LoadingTips {
         links.add(linkNext);
 
         ChatLink linkNoMore = new ChatLink();
-        linkNoMore.text = "No more tips";
+        linkNoMore.text = "Don't show any more tips";
         linkNoMore.runnable = LoadingTips::noMore;
         linkNoMore.terminal = true;
         links.add(linkNoMore);

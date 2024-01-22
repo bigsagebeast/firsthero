@@ -40,15 +40,15 @@ public class DescriptionModule extends Module {
                     entity.getPhenotype().tags.contains("undead");
             float hitPointProportion = (float)entity.hitPoints / entity.maxHitPoints;
             if (hitPointProportion == 1.0f) {
-                text += "\n\nIt is in perfect condition.";
+                text += Util.substitute("\n\n%S %l in perfect condition.", entity.gender);
             } else if (hitPointProportion >= 0.75) {
-                text += "\n\nIt is lightly " + (isConstruct ? "damaged" : "wounded") + ".";
+                text += Util.substitute("\n\n%S %l lightly " + (isConstruct ? "damaged" : "wounded") + ".", entity.gender);
             } else if (hitPointProportion >= 0.5) {
-                text += "\n\nIt is moderately " + (isConstruct ? "damaged" : "wounded") + ".";
+                text += Util.substitute("\n\n%S %l moderately " + (isConstruct ? "damaged" : "wounded") + ".", entity.gender);
             } else if (hitPointProportion >= 0.25) {
-                text += "\n\nIt is heavily " + (isConstruct ? "damaged" : "wounded") + ".";
+                text += Util.substitute("\n\n%S %l heavily " + (isConstruct ? "damaged" : "wounded") + ".", entity.gender);
             } else {
-                text += "\n\nIt is critically " + (isConstruct ? "damaged" : "wounded") + ".";
+                text += Util.substitute("\n\n%S %l critically " + (isConstruct ? "damaged" : "wounded") + ".", entity.gender);
             }
         } else {
             text = GameEntities.describeItem(entity);
