@@ -293,6 +293,7 @@ public class Entity {
 
     public void hurt(float floatAmount, boolean announceDeath, String deathMessage) {
         int amount = Util.randomRound(floatAmount);
+        int preHitPoints = hitPoints;
         hitPoints = Math.max(hitPoints - amount, 0);
         if (hitPoints <= 0) {
             dead = true;
@@ -319,6 +320,15 @@ public class Entity {
             // tests to make sure we're not in a test duel
             MoverLogic.createCorpse(Game.getLevel(), this);
             destroy();
+        }
+        if (this == Game.getPlayerEntity()) {
+            int threshold = Game.hpWarningThreshold * maxHitPoints / 100;
+            if (hitPoints <= threshold && preHitPoints > threshold) {
+                if (Game.lastHpWarning + 10000 < Game.time) {
+                    Game.interruptAndBreak("HP warning!  HP under " + Game.hpWarningThreshold + "%.");
+                    Game.lastHpWarning = Game.lastHpWarning;
+                }
+            }
         }
     }
 

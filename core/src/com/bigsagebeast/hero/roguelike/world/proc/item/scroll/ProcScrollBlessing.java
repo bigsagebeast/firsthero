@@ -51,12 +51,14 @@ public class ProcScrollBlessing extends ImmutableProc {
                 .withAllowLetters(true)
                 .withMargins(60, 60);
         boolean anyUnsafeTarget = false;
+        /*
         equipment = equipment.stream().filter(ent ->
                         (!ent.getItem().identifiedBeatitude && ent.getItemType().hasBeatitude) || ent.getItem().beatitude != Beatitude.BLESSED)
                 .collect(Collectors.toList());
         inventory = inventory.stream().filter(ent ->
                         (!ent.getItem().identifiedBeatitude && ent.getItemType().hasBeatitude) || ent.getItem().beatitude != Beatitude.BLESSED)
                 .collect(Collectors.toList());
+         */
         inventory.remove(ignore);
         if (!equipment.isEmpty()) {
             anyUnsafeTarget = true;

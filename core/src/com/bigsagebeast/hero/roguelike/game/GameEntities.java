@@ -17,7 +17,7 @@ import static com.bigsagebeast.hero.roguelike.game.Game.announce;
 public class GameEntities {
     public static boolean isTelepathicallyVisible(Entity entity) {
         Phenotype phenotype = Bestiary.get(entity.phenotypeName);
-        return !phenotype.tags.contains("undead") && !phenotype.tags.contains("construct");
+        return !phenotype.tags.contains("undead") && !phenotype.tags.contains("construct") && !phenotype.tags.contains("plant") && !phenotype.tags.contains("mindless");
     }
 
     public static void changeItemBeatitude(Entity entity, Beatitude targetBeatitude) {

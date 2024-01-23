@@ -53,6 +53,9 @@ public class Game {
 	public static final UnidMapping unidMapping = new UnidMapping();
 	public static long time = 0;
 	public static long lastTurnProc = 0;
+	public static long lastHpWarning = Long.MIN_VALUE;
+	public static final int hpWarningThreshold = 34;
+
 	public static Random random = new Random();
 	public static final int ONE_TURN = 1000;
 	public static boolean initialized = false;
