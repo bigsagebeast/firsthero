@@ -37,6 +37,7 @@
       "hitPoints": 10,
       "isMonster": true,
       "bodyPlan": "humanoid",
+      "ambulation": "AMPHIBIOUS",
       "glyphName": "animal.horseshoe",
       "isManipulator": false,
       "palette": [

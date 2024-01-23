@@ -28,7 +28,7 @@ public class ProcScrollIdentify extends ImmutableProc {
 
     @Override
     public void postBeRead(Entity entity, Entity actor) {
-        entity.identifyItemType();
+        entity.identifyItemFully();
         if (entity.getBeatitude() == Beatitude.BLESSED) {
             identifyAll();
         } else {

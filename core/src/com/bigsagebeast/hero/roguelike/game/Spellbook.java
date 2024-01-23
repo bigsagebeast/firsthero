@@ -150,12 +150,12 @@ public class Spellbook {
 
     public void openSpellbookToDescribe() {
         if (spells.isEmpty()) {
-            Game.announce("You don't know any spells.");
+            Game.announce("You don't know any spells or skills.");
             return;
         }
         DialogueBox box = new DialogueBox()
                 .withFooterClosable()
-                .withTitle("Select spell to describe")
+                .withTitle("Select spell or skill to describe")
                 .withAllowLetters(true)
                 .withMargins(60, 60);
         addLines(box);

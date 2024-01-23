@@ -1284,14 +1284,16 @@ public class Game {
 		Gender actorGender = actorEntity == null ? null : actorEntity.gender;
 		Gender targetGender = targetEntity == null ? null : targetEntity.gender;
 		Entity playerEntity = player.getEntity();
-		if (actorEntity != null && actorEntity.containingLevel == null) {
+		/*
+		if (actorEntity != null && actorEntity.containingLevel == null && targetEntity.containingEntity != playerEntity.entityId) {
 			GameLoop.error("Invalid vis for actor");
 			return;
 		}
-		if (targetEntity != null && targetEntity.containingLevel == null) {
+		if (targetEntity != null && targetEntity.containingLevel == null && targetEntity.containingEntity != playerEntity.entityId) {
 			GameLoop.error("Invalid vis for target");
 			return;
 		}
+		 */
 		if (playerEntity == actorEntity) {
 			announce(Util.substitute(actor, actorGender, targetGender), color);
 		} else if (playerEntity == targetEntity) {

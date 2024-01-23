@@ -22,7 +22,7 @@ public class TacticRangedAmmoThenMelee extends Tactic {
 		if (target != null) {
 			distance = e.pos.distance(target.pos);
 		}
-		if (target != null && e.canSee(target) && distance < e.naturalRangedWeaponRange) {
+		if (target != null && e.canSee(target) && target.canSee(e) && distance < e.naturalRangedWeaponRange) {
 			// maybe stand there instead of shooting
 			if (Math.random() < 0.25) {
 				pm.setDelay(e, e.getMoveCost());

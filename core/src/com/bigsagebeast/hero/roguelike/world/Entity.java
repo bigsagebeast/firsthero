@@ -347,6 +347,9 @@ public class Entity {
     }
 
     public boolean canSee(Entity target) {
+        if (recursiveInventoryAndEquipment().collect(Collectors.toList()).contains(target)) {
+            return true;
+        }
         // TODO: Omniscient flag, instead of implying that incorporeal can see everything?
         if (incorporeal) {
             return true;
@@ -869,10 +872,12 @@ public class Entity {
         for (Proc p : this.procs) {
             p.postDoRead(this, readScroll);
         }
+        readScroll.destroy();
+        // can still reference readScroll in the method because the object still exists,
+        // but don't do anything to keep it
         for (Proc p : target.procs) {
             p.postBeRead(readScroll, this);
         }
-        readScroll.destroy();
         getMover().setDelay(this, Game.ONE_TURN);
     }
 
