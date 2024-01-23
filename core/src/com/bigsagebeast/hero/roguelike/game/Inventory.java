@@ -31,11 +31,23 @@ public class Inventory {
     private static BiConsumer<Entity, Integer> promptQuantityHandler;
 
     public static void doWield() {
+        DialogueBox box = doWieldGeneral()
+                .withTitle("Select slot to wear or wield an item");
+        box.addItem("Inspect equipment", "inspect");
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleWieldResponse);
+    }
 
+    public static void doWieldForDescriptions() {
+        DialogueBox box = doWieldGeneral()
+                .withTitle("Select slot to inspect its contents");
+        box.addItem("Wear/wield equipment", "wield");
+        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleWieldForInspectResponse);
+    }
+
+    public static DialogueBox doWieldGeneral() {
         Entity playerEntity = Game.getPlayerEntity();
         DialogueBox box = new DialogueBox()
                 .withFooterClosableAndSelectable()
-                .withTitle("Select slot to wear or wield an item")
                 .withAllowLetters(true)
                 .withMargins(60, 60);
 
@@ -69,12 +81,17 @@ public class Inventory {
                 box.addItem(lineBlock, bp);
             }
         }
-        GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleWieldResponse);
+        return box;
     }
 
     public static void handleWieldResponse(Object response) {
         if (response == null)
         {
+            return;
+        }
+        if (response.getClass().isAssignableFrom(String.class)) {
+            // descriptions
+            doWieldForDescriptions();
             return;
         }
         BodyPart bp = (BodyPart)response;
@@ -89,6 +106,21 @@ public class Inventory {
             equippable.add(bp);
         }
         openInventoryToEquip(equippable);
+    }
+
+    public static void handleWieldForInspectResponse(Object response) {
+        if (response == null)
+        {
+            return;
+        }
+        if (response.getClass().isAssignableFrom(String.class)) {
+            // descriptions
+            doWield();
+            return;
+        }
+        BodyPart bp = (BodyPart)response;
+        Entity equipped = Game.getPlayerEntity().body.getEquipment(bp);
+        handleInventoryInspectResponse(equipped);
     }
 
     public static void openInventoryToEquip(List<BodyPart> bodyParts) {

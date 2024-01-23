@@ -175,6 +175,7 @@ public class ChatModule extends Module {
                 }
             }
 
+            // do this last, in case it opens another chatbox
             for (ChatSetter setter : link.setters) {
                 ChatState.execute(setter);
             }
@@ -186,12 +187,11 @@ public class ChatModule extends Module {
                     link.runnable.run();
                 }
             } else {
+                openPage(link.nextPage);
                 if (link.runnable != null) {
                     link.runnable.run();
                 }
-                openPage(link.nextPage);
             }
-
         } else {
             chatBox.update(textEngine);
         }

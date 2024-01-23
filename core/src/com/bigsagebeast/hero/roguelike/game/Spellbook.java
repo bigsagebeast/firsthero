@@ -5,7 +5,6 @@ import com.bigsagebeast.hero.chat.ChatLink;
 import com.bigsagebeast.hero.dialogue.ChatBox;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.enums.WeaponType;
-import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.roguelike.spells.Spell;
 import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
@@ -82,8 +81,16 @@ public class Spellbook {
             if (!spellsOfType.isEmpty()) {
                 box.addHeader(type.name);
                 for (Spell spell : spellsOfType) {
-                    String costString = spell.getCost(Game.getPlayerEntity()) + ((spell.getCost(Game.getPlayerEntity()) < 10) ? "  " : " ");
+                    String costString = spell.getCost(Game.getPlayerEntity()) + ((spell.getCost(Game.getPlayerEntity()) < 10) ? " " : "");
+                    if (spell.getSpellType() == Spell.SpellType.DIVINE) {
+                        costString += "DP";
+                    } else {
+                        costString += "SP";
+                    }
                     Map<Element, Integer> elementCost = spell.getElementCost(Game.getPlayerEntity());
+                    if (!elementCost.isEmpty()) {
+                        costString += "+";
+                    }
                     StringBuilder elementString = new StringBuilder();
                     for (Element element : elementCost.keySet()) {
                         for (int i = 0; i < elementCost.get(element); i++) {

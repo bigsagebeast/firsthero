@@ -57,6 +57,7 @@ public class ProcFirstQuestFinalBoss extends Proc {
             return;
         }
         dead = true;
+        Game.halted = true;
         MusicPlayer.playLoop();
 
         ChatBox chatBox = new ChatBox()

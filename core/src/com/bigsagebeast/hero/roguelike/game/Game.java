@@ -56,8 +56,9 @@ public class Game {
 	public static final int ONE_TURN = 1000;
 	public static boolean initialized = false;
 
-	public static boolean interrupted;
-	public static boolean paused;
+	public static boolean interrupted; // something interrupted a long action
+	public static boolean paused; // waiting on "press enter to continue"
+	public static boolean halted; // the world is over, don't process any more turns
 	public static String pauseMessage;
 	public static int restTurns; // if > 0, we're waiting in place
 	public static Compass longWalkDir = null; // if non-null, we're long-walking
@@ -66,6 +67,7 @@ public class Game {
 
 	public static Entity lastSelectedInventory; // for use with throwing, maybe others, but not default
 	public static String deathMessage;
+
 
 	public static void initialize() {
 		time = 0;
@@ -347,6 +349,9 @@ public class Game {
 		GameLoop.roguelikeModule.redraw();
 
 		// TODO maybe check state here? like death etc
+		if (halted) {
+			return;
+		}
 
 		while (true) {
 			GameLoop.roguelikeModule.setDirty();
@@ -384,6 +389,9 @@ public class Game {
 					Game.announceLoud("-- Press ENTER to continue --");
 					paused = false;
 				}
+
+				beforeNextPlayerTurn();
+
 				break;
 			}
 			//lowestProc.entity.visionRange
@@ -393,6 +401,12 @@ public class Game {
 			for (Proc onActProc : lowestProc.entity.procs) {
 				onActProc.onAction(lowestProc.entity);
 			}
+		}
+	}
+
+	public static void beforeNextPlayerTurn() {
+		if (getPlayerEntity().experience >= getPlayerEntity().experienceToNext) {
+			Game.getPlayer().levelUp();
 		}
 	}
 
@@ -1276,6 +1290,7 @@ public class Game {
 	}
 
 	public static void die(String deathMessage) {
+		halted = true;
 		Game.deathMessage = deathMessage;
 		interruptAndBreak("You have died...", Game::playerDeath);
 		turn();

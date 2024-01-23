@@ -37,7 +37,7 @@ public class WeaponSkillKnockBack extends Spell {
     public String getDescription() { return "Attack an adjacent enemy for a guaranteed hit and to knock them back up to three squares."; };
 
     @Override
-    public int getCost(Entity caster) { return 15; }
+    public int getBaseCost(Entity caster) { return 15; }
 
     @Override
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.singletonMap(Element.NATURAE, 2); }

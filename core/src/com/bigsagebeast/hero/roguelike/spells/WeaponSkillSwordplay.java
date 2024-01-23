@@ -44,7 +44,7 @@ public class WeaponSkillSwordplay extends Spell {
     public String getDescription() { return "Confuse an enemy with deft footwork and maneuvering. Deals no damage. Does not stack."; };
 
     @Override
-    public int getCost(Entity caster) { return 10; }
+    public int getBaseCost(Entity caster) { return 10; }
 
     @Override
     public Float getBaseDuration() {

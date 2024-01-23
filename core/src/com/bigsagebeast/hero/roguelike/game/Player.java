@@ -154,9 +154,6 @@ public class Player {
 	public void registerExperienceForKill(Entity target) {
 		Entity pc = getEntity();
 		pc.experience += target.experienceAwarded;
-		if (pc.experience >= pc.experienceToNext) {
-			Game.getPlayer().levelUp();
-		}
 	}
 
 	public void levelUp() {

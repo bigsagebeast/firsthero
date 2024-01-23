@@ -32,7 +32,7 @@ public class SpellMonsterPlantWeak extends Spell {
     }
 
     @Override
-    public int getCost(Entity caster) {
+    public int getBaseCost(Entity caster) {
         return 5;
     }
 

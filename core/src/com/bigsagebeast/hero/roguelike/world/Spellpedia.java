@@ -9,6 +9,8 @@ public class Spellpedia {
     private static HashMap<String, Spell> map = new HashMap<>();
 
     static {
+        map.put("debug death", new SpellDebugDeath());
+
         map.put("firebeam", new SpellFirebeam());
         map.put("flicker", new SpellFlicker());
         map.put("icebeam", new SpellIceBeam());

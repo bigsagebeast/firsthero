@@ -36,7 +36,7 @@ public class WeaponSkillDashThrough extends Spell {
     public String getDescription() { return "Slide past an adjacent opponent, and strike them on the way through. Your blow is guaranteed to land. You will land in the space behind your target."; };
 
     @Override
-    public int getCost(Entity caster) { return 10; }
+    public int getBaseCost(Entity caster) { return 10; }
 
     @Override
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.singletonMap(Element.FIRE, 2); }

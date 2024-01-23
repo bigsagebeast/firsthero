@@ -12,10 +12,8 @@ import com.bigsagebeast.hero.util.Compass;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SpellShockingGrasp extends Spell {
-    public SpellShockingGrasp() {
-        scaling.put(Stat.ARCANUM, new EquipmentScaling());
-        scaling.get(Stat.ARCANUM).damage = 1f;
+public class SpellDebugDeath extends Spell {
+    public SpellDebugDeath() {
     }
 
     @Override
@@ -30,16 +28,16 @@ public class SpellShockingGrasp extends Spell {
 
     @Override
     public String getName() {
-        return "Shocking Grasp";
+        return "Debug Death";
     }
 
     @Override
     public String getDescription() {
-        return "Electrifies one adjacent opponent for high damage that cannot be dodged.";
+        return "Deal massive damage to an adjacent opponent.";
     }
 
     @Override
-    public Float getBaseDamage() { return 12f; }
+    public Float getBaseDamage() { return 9999f; }
 
     @Override
     public Float getBaseRange() {
@@ -48,7 +46,7 @@ public class SpellShockingGrasp extends Spell {
 
     @Override
     public int getBaseCost(Entity caster) {
-        return 7;
+        return 0;
     }
 
     @Override
@@ -64,7 +62,6 @@ public class SpellShockingGrasp extends Spell {
     @Override
     public Map<Element, Integer> getElementCost(Entity caster) {
         HashMap<Element, Integer> cost = new HashMap<>();
-        cost.put(Element.LIGHTNING, 1);
         return cost;
     }
 
@@ -86,15 +83,15 @@ public class SpellShockingGrasp extends Spell {
     }
 
     public void announceHitWithoutKill(Entity caster, Entity target) {
-        Game.announceVis(target, caster, "You are shocked.",
-                target.getVisibleNameDefinite() + " is shocked.",
-                target.getVisibleNameDefinite() + " is shocked.", null);
+        Game.announceVis(target, caster, "You are not quite murdered.",
+                target.getVisibleNameDefinite() + " is not quite murdered.",
+                target.getVisibleNameDefinite() + " is not quite murdered.", null);
     }
 
     public void announceHitWithKill(Entity caster, Entity target) {
-        Game.announceVis(target, caster, "You are shocked to death!",
-                target.getVisibleNameDefinite() + " is shocked to death!",
-                target.getVisibleNameDefinite() + " is shocked to death!", null);
+        Game.announceVis(target, caster, "You are murdered!",
+                target.getVisibleNameDefinite() + " is murdered!",
+                target.getVisibleNameDefinite() + " is murdered!", null);
     }
 
 

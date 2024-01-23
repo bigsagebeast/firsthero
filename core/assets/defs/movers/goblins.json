@@ -295,7 +295,7 @@
       ],
       "gender": "MALE",
       "proper": true,
-      "experienceAwarded": 200,
+      "experienceAwarded": 20000,
       "threat": 2,
       "naturalWeaponDamage": 10,
       "naturalWeaponToHit": 5,

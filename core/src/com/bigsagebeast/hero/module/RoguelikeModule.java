@@ -64,7 +64,6 @@ public class RoguelikeModule extends Module {
 		experienceWindow = new ExperienceWindow();
 		statBarWindow = new StatBarWindow();
 
-
 		announceWindow.addLine("Announcements:");
 
 		uiEngine.addBlock(announceWindow.getTextBlockParent());
@@ -73,6 +72,8 @@ public class RoguelikeModule extends Module {
 		uiEngine.addBlock(spellPointWindow.getTextBlockParent());
 		uiEngine.addBlock(experienceWindow.getTextBlockParent());
 		uiEngine.addBlock(statBarWindow.getTextBlockParent());
+
+		Game.halted = false;
 	}
 
 	@Override

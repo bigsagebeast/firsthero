@@ -43,7 +43,7 @@ public class WeaponSkillBerserk extends Spell {
     public String getDescription() { return "Boost your agility by +8 and your weapon penetration by +4 for a time. Repeated usages stack."; };
 
     @Override
-    public int getCost(Entity caster) { return 15; }
+    public int getBaseCost(Entity caster) { return 15; }
 
     @Override
     public Float getBaseDuration() {

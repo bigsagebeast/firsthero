@@ -2,10 +2,11 @@ package com.bigsagebeast.hero.roguelike.spells;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.GameLoop;
-import com.bigsagebeast.hero.enums.Beatitude;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.enums.WeaponType;
 import com.bigsagebeast.hero.roguelike.game.EquipmentScaling;
+import com.bigsagebeast.hero.roguelike.world.BodyPart;
+import com.bigsagebeast.hero.roguelike.world.proc.item.ProcEquippable;
 import com.bigsagebeast.hero.util.Compass;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.util.Raycasting;
@@ -63,7 +64,23 @@ public abstract class Spell {
         return getTargetType().name;
     }
 
-    public int getCost(Entity caster) { return 0; };
+    public int getBaseCost(Entity caster) { return 0; };
+
+    public int getCost(Entity caster) {
+        if (getSpellType() == SpellType.WEAPON_SKILL) {
+            // TODO need an entity method for "is two-handing"
+            if (caster.body.getEquipment(BodyPart.OFF_HAND) != null) {
+                return getBaseCost(caster);
+            }
+            if (caster.body.getEquipment(BodyPart.PRIMARY_HAND) == null) {
+                return getBaseCost(caster);
+            }
+            if (((ProcEquippable)(caster.body.getEquipment(BodyPart.PRIMARY_HAND).getProcByType(ProcEquippable.class))).equipmentFor != BodyPart.TWO_HAND) {
+                return (int)(getBaseCost(caster) * 0.5f);
+            }
+        }
+        return getBaseCost(caster);
+    }
 
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.emptyMap(); }
 

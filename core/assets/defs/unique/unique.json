@@ -32,7 +32,7 @@
       "hide": true,
       "procs": {
         "ProcMessageOnStepOn": {
-          "text": "To rest, press 5 on the keypad or backspace to wait one turn, or shift-5 or shift- backspace to wait 50 turns."
+          "text": "To wait one turn, press 5 on the keypad or backspace. To rest and recover hit points, press shift-5 or shift-backspace to wait 50 turns."
         }
       }
     },
@@ -88,6 +88,7 @@
         "brown",
         "yellow"
       ],
+      "hitPoints": 0,
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": 0,
       "naturalArmorClass": 7,
@@ -124,6 +125,7 @@
         "brown",
         "yellow"
       ],
+      "hitPoints": 0,
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": 0,
       "naturalArmorClass": 7,

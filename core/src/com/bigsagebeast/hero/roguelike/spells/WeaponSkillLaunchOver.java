@@ -38,7 +38,7 @@ public class WeaponSkillLaunchOver extends Spell {
     public String getDescription() { return "Flip an enemy over your head, positioning it in the space behind you. Doesn't work on enemies that are larger than you."; };
 
     @Override
-    public int getCost(Entity caster) { return 15; }
+    public int getBaseCost(Entity caster) { return 15; }
 
     @Override
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.singletonMap(Element.LIGHTNING, 2); }

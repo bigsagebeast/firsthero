@@ -46,7 +46,7 @@ public class SpellFirebeam extends Spell {
     public Float getBaseDamage() { return 8.0f; }
 
     @Override
-    public int getCost(Entity caster) {
+    public int getBaseCost(Entity caster) {
         return 5;
     }
 

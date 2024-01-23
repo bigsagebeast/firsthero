@@ -36,7 +36,7 @@ public class WeaponSkillRecoil extends Spell {
     public String getDescription() { return "Strike an adjacent opponent, then duck backward before they can retaliate. Your blow is guaranteed to land."; };
 
     @Override
-    public int getCost(Entity caster) { return 10; }
+    public int getBaseCost(Entity caster) { return 10; }
 
     @Override
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.singletonMap(Element.WATER, 2); }

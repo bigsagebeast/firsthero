@@ -37,7 +37,7 @@ public class WeaponSkillCleave extends Spell {
     public String getDescription() { return "Make a normal melee attack against each adjacent opponent."; }
 
     @Override
-    public int getCost(Entity caster) { return 10; }
+    public int getBaseCost(Entity caster) { return 10; }
 
     @Override
     public Map<Element, Integer> getElementCost(Entity caster) { return Collections.singletonMap(Element.NATURAE, 2); }
