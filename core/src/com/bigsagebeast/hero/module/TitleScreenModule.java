@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.bigsagebeast.hero.*;
 import com.bigsagebeast.hero.dialogue.TextEntryBox;
 import com.bigsagebeast.hero.roguelike.game.Game;
@@ -15,7 +16,10 @@ import com.bigsagebeast.hero.text.effect.TextEffectJitter;
 
 public class TitleScreenModule extends Module {
 
+	Texture texture;
+
 	public TitleScreenModule() {
+		texture = new Texture(Gdx.files.internal("art/hero on cliff.png"));
 	}
 	
 	@Override
@@ -24,51 +28,7 @@ public class TitleScreenModule extends Module {
 		MusicPlayer.playIntro();
 
 		TextEffectJitter jitter = new TextEffectJitter(0.0125f, 4f);
-		/*
-		TextBlock block = new TextBlock("Block jitter", 16f, 0f, 0f, Color.WHITE, 0f, 0.1f,
-				jitter, null);
-		activeBlocks.add(block);
 
-		TextEffectJitter jitter2 = new TextEffectJitter(0.05f, 4f);
-		TextBlock block2 = new TextBlock("Word jitter", 16f, 0f, 1f, Color.YELLOW, 0.5f, 0.1f,
-				jitter2, null, TextEffectGranularity.WORD);
-		activeBlocks.add(block2);
-
-		TextEffectJitter jitter3 = new TextEffectJitter(0.1f, 2f);
-		TextBlock block3 = new TextBlock("Heavy jitter", 16f, 0f, 2f, Color.RED, 1f, 0.1f,
-				jitter3, null, TextEffectGranularity.LETTER);
-		activeBlocks.add(block3);
-
-		TextEffectJitter jitter4 = new TextEffectJitter(0.2f, 2f);
-		TextBlock block4 = new TextBlock("Chaos jitter", 16f, 0f, 3f, Color.MAGENTA, 1.5f, 0.1f,
-				jitter4, null, TextEffectGranularity.LETTER);
-		activeBlocks.add(block4);
-
-		TextEffectSwap swap1 = new TextEffectSwap(0.1f, 0.8f, 0.05f, 0.2f, true);
-		TextEffectJitter jitter5 = new TextEffectJitter(0.2f, 4f);
-		TextBlock block5 = new TextBlock(null, 16f, 0f, 6f, Color.ORANGE, 2f, 0.1f,
-				null, null, TextEffectGranularity.BLOCK);
-		TextBlock block5_1 = new TextBlock("Glitch", 16f, 0f, 0f, Color.ORANGE, 2f, 0.1f,
-				null, null, TextEffectGranularity.BLOCK);
-		TextBlock block5_2 = new TextBlock("text ", 16f, 7f, 0f, Color.ORANGE, 2.7f, 0.3f,
-				null, swap1, TextEffectGranularity.BLOCK);
-		TextBlock block5_2a = new TextBlock("kill", 16f, 0.3f, -0.2f, Color.SCARLET, 0f, 0f,
-				jitter5, null, TextEffectGranularity.BLOCK);
-		TextBlock block5_2b = new TextBlock("destroy", 16f, 0.5f, 0.5f, Color.SALMON, 0f, 0f,
-				jitter5, null, TextEffectGranularity.BLOCK);
-		TextBlock block5_2c = new TextBlock("no mercy", 16f, -2f, -0.8f, Color.TAN, 0f, 0f,
-				jitter5, null, TextEffectGranularity.BLOCK);
-		TextBlock block5_2d = new TextBlock("power", 16f, -0.5f, 0.3f, Color.ROYAL, 0f, 0f,
-				jitter5, null, TextEffectGranularity.BLOCK);
-		block5.addChild(block5_1);
-		block5.addChild(block5_2);
-		swap1.addAlternate(block5_2a);
-		swap1.addAlternate(block5_2b);
-		swap1.addAlternate(block5_2c);
-		swap1.addAlternate(block5_2d);
-		activeBlocks.add(block5);
-		*/
-		
 		textEngine.addBlock(new TextBlock("THE", null,
 				48f, 5f, 2f, 0f, 0f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
 		textEngine.addBlock(new TextBlock("FIRST", null,
@@ -76,9 +36,9 @@ public class TitleScreenModule extends Module {
 		textEngine.addBlock(new TextBlock("HERO", null,
 				48f, 9f, 5f, 0f, 0f, Color.CYAN, 0f, 0f, jitter, null, TextEffectGranularity.LETTER));
 
-		textEngine.addBlock(new TextBlock("@", null, 332f, 2.5f, 0.4f, Color.DARK_GRAY, 0f, 0f, null, null));
+		//textEngine.addBlock(new TextBlock("@", null, 332f, 2.5f, 0.4f, Color.DARK_GRAY, 0f, 0f, null, null));
 
-		textEngine.addBlock(new TextBlock("Music credit: WolfMeryX", null, 14, 0, 52, Color.GRAY, -1f, -1f));
+		textEngine.addBlock(new TextBlock("Music credit: WolfMeryX", null, 14, 2, 52, Color.WHITE, -1f, -1f));
 		
 		options[0] = new TextBlock("  Continue", null, 14, 18, 29, Color.WHITE, 0f, 0f);
 		options[1] = new TextBlock("> New Game", null, 14, 18, 30, Color.YELLOW, 0f, 0f);
@@ -101,14 +61,14 @@ public class TitleScreenModule extends Module {
 			if (selectedOption == i) {
 				options[i].text = "> " + options[i].text.substring(2);
 				if (i == 0) {
-					options[i].color = Color.GRAY;
+					options[i].color = Color.FIREBRICK;
 				} else {
 					options[i].color = Color.YELLOW;
 				}
 			} else {
 				options[i].text = "  " + options[i].text.substring(2);
 				if (i == 0) {
-					options[i].color = Color.GRAY;
+					options[i].color = Color.FIREBRICK;
 				} else {
 					options[i].color = Color.WHITE;
 				}
@@ -126,11 +86,17 @@ public class TitleScreenModule extends Module {
 			case Keys.UP:
 			case Keys.NUMPAD_8:
 				selectedOption = (selectedOption + 6) % 7;
+				if (selectedOption == 0) {
+					selectedOption = 6;
+				}
 				updateOptions();
 				break;
 			case Keys.DOWN:
 				case Keys.NUMPAD_2:
 				selectedOption = (selectedOption + 1) % 7;
+				if (selectedOption == 0) {
+					selectedOption++;
+				}
 				updateOptions();
 				break;
 			case Keys.ENTER:
@@ -199,8 +165,11 @@ public class TitleScreenModule extends Module {
 
 	@Override
 	public void render(Graphics g, GraphicsState gState) {
-		// TODO Auto-generated method stub
-
+		float height = Graphics.height;
+		float width = (texture.getWidth()) * (height / texture.getHeight());
+		float centerX = (Graphics.width/2) - (width/2);
+		g.startBatch();
+		g.batch().draw(texture, centerX, 0, width, height);
 	}
 
 	private void requestName() {

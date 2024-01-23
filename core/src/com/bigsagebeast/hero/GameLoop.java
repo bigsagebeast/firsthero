@@ -137,6 +137,9 @@ public class GameLoop implements GameLogic, InputProcessor {
 
 			long startAll = System.currentTimeMillis();
 			long start = System.currentTimeMillis();
+			if (titleModule.isRunning()) {
+				titleModule.render(g, gState);
+			}
 			if (cutsceneModule.isRunning()) {
 				cutsceneModule.render(g, gState);
 			}
