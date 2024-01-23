@@ -143,6 +143,56 @@
           ]
         },
         {
+          "text": "My brother? What has happened to Nemesis?",
+          "nextPage": "aurex.serifex.intro.nemesis",
+          "tests": [
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.done"
+            }
+          ]
+        },
+        {
+          "text": "The war is over?",
+          "nextPage": "aurex.serifex.intro.thewar",
+          "tests": [
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.done"
+            }
+          ]
+        },
+        {
+          "text": "Serifex? Fresh water?",
+          "nextPage": "aurex.serifex.intro.serifex",
+          "tests": [
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.done"
+            }
+          ]
+        },
+        {
+          "text": "The Bodnam?",
+          "nextPage": "aurex.serifex.intro.bodnam",
+          "tests": [
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.done"
+            }
+          ]
+        },
+        {
+          "text": "New order?",
+          "nextPage": "aurex.serifex.intro.neworder",
+          "tests": [
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.done"
+            }
+          ]
+        },
+        {
           "text": "I've heard enough.",
           "nextPage": "aurex.serifex.intro.heardenough",
           "tests": [
@@ -165,6 +215,20 @@
             {
               "op": "EX",
               "variableA": "aurex.serifex.intro.neworder.seen"
+            },
+            {
+              "op": "NEX",
+              "variableA": "aurex.serifex.intro.done"
+            }
+          ]
+        },
+        {
+          "text": "Goodbye.",
+          "terminal": true,
+          "tests": [
+            {
+              "op": "EX",
+              "variableA": "aurex.serifex.intro.done"
             }
           ]
         }
@@ -188,7 +252,7 @@
     },
     "aurex.serifex.intro.neworder": {
       "inheritLinks": "aurex.serifex.intro.landing",
-      "text": "All in all, there are nine New Gods. Unlike your domains of emotion and concepts, we rule over natural forces. We have no king or queen, but there are three of us who lead the rest. I am one of them; my philosophy is that our duty is to protect and guide the Bodnam and give them needed Control. Astrifera and Fulminar are the others, and they have their own philosophies; you will meet them in time. It is through all nine of our powers that the multiverse still cleaves together, now. It's a new multiverse, and Aurex is the new home of the gods."
+      "text": "All in all, there are nine New Gods - ten if you count the Twins. Unlike your domains of emotion and concepts, we rule over natural forces. We have no king or queen, but there are three of us who lead the rest. I am one of them; my philosophy is that our duty is to protect and guide the Bodnam and give them needed Control. Astrifera and Fulminar are the others, and they have their own philosophies; you will meet them in time. It is through all nine of our powers that the multiverse still cleaves together, now. It's a new multiverse, and Aurex is the new home of the gods."
     },
     "aurex.serifex.intro.heardenough": {
       "text": "You are free to go, we will not challenge you. Just don't go starting any fights. You're but one god, after all, and weak. Go, meet your new family.",

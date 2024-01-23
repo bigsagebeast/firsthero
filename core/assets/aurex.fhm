@@ -68,7 +68,7 @@ CREATURES
 END
 ITEMS
 ~ feature.worldportal
-+ feature.forge
++ unique.feature.aurex.forge
 END
 ENTITYMAP
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

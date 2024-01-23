@@ -73,6 +73,17 @@
       "procs": {
         "unique.ProcIntroAltar": {}
       }
+    },
+    "unique.feature.aurex.forge": {
+      "name": "forge",
+      "description": "A divine forge, on which the Fultams forge the tools of the divine.",
+      "glyphName": "feature.forge",
+      "isFeature": true,
+      "palette": [
+        "tan",
+        "red",
+        "orange"
+      ]
     }
   },
   "movers": {

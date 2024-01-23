@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 public class Phenotype {
 	public String key;
 	public String name;
+	public String chatName;
 	public String description;
 	public boolean proper;
 	public int hitPoints = 100;

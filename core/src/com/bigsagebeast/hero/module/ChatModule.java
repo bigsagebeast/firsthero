@@ -36,7 +36,13 @@ public class ChatModule extends Module {
 
     public void openStory(Entity entity) {
         String page = Bestiary.get(entity.phenotypeName).chatPage;
-        openStory(page, "` " + entity.getVisibleName(), EntityGlyph.getGlyph(entity));
+        String name;
+        if (entity.getPhenotype().chatName != null) {
+            name = entity.getPhenotype().chatName;
+        } else {
+            name = entity.getVisibleName();
+        }
+        openStory(page, "` " + name, EntityGlyph.getGlyph(entity));
     }
 
     public void openStory(String key, String titleText, GlyphTile titleGlyph) {

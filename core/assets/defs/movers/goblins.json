@@ -70,7 +70,7 @@
     },
     "goblin.slinger": {
       "name": "sea-withered goblin slinger",
-      "description": "Even half-blinded by the acid sea, these goblins with their leather straps can hurl projectiles with forcefully enough to break bones.",
+      "description": "Even half-blinded by the acid sea, these goblins with their leather straps can hurl projectiles forcefully enough to break bones.",
       "corpseMessage": "Ulch - That was beyond foul.",
       "corpseMethod": "procVomit",
       "peaceful": false,

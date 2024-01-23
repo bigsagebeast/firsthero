@@ -32,7 +32,7 @@
       }
     },
     "food.meat": {
-      "name": "cooked meat",
+      "name": "piece of cooked meat",
       "description": "Delicious and, more importantly, safe to eat.",
       "glyphName": "food.meat",
       "palette": [
