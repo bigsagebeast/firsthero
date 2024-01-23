@@ -36,7 +36,7 @@ public class ProcScrollRemoveCurse extends ImmutableProc {
                 if (targets.isEmpty()) {
                     Game.announce("Nothing happens.");
                 } else {
-                    Game.announce("Something was wrong with that scroll!");
+                    Game.announceBad("Something was wrong with that scroll!");
                     for (Entity e : targets) {
                         GameEntities.changeItemBeatitude(e, Beatitude.CURSED);
                     }

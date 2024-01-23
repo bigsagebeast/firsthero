@@ -12,7 +12,7 @@ public class ProcEffectOakStrength extends ProcTimedEffect {
 
     @Override
     public void initialize(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisGood(entity, null,
                 "Your muscles bulge, and bark grows on your skin.",
                 null,
                 entity.getVisibleNameDefinite() + "'s muscles bulge, and bark grows on their skin.",
@@ -22,7 +22,7 @@ public class ProcEffectOakStrength extends ProcTimedEffect {
 
     @Override
     public void expire(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "Your Strength of Oak fades away.",
                 null,
                 entity.getVisibleNameDefinite() + "'s Strength of Oak fades away.",

@@ -190,7 +190,7 @@ public class SpecialSpawner {
             lp.apply(entity);
         }
         if (level.cell(p).visible()) {
-            Game.announce(entity.getVisibleNameIndefiniteOrSpecific() + " pops into existence!");
+            Game.announceLoud(entity.getVisibleNameIndefiniteOrSpecific() + " pops into existence!");
         }
         ownedEntities.add(entity.entityId);
     }

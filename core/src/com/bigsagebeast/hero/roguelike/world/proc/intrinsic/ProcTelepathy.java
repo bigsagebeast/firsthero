@@ -17,7 +17,7 @@ public class ProcTelepathy extends Proc {
         );
         telepathyProcs.remove(this);
         if (telepathyProcs.isEmpty()) {
-            Game.announceVis(actor, null, "Your mind expands.", null, null, null);
+            Game.announceVisGood(actor, null, "Your mind expands.", null, null, null);
             entity.identifyItemType();
         }
     }
@@ -29,7 +29,7 @@ public class ProcTelepathy extends Proc {
         );
         telepathyProcs.remove(this);
         if (telepathyProcs.isEmpty()) {
-            Game.announceVis(actor, null, "Your mind no longer feels so expanded.", null, null, null);
+            Game.announceVisLoud(actor, null, "Your mind no longer feels so expanded.", null, null, null);
             entity.identifyItemType();
         }
     }

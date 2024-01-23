@@ -29,7 +29,7 @@ public class ProcDoppelganger extends Proc {
         if (chance < Game.random.nextInt(100)) {
             return;
         }
-        Game.announceVis(entity, target,
+        Game.announceVisLoud(entity, target,
                 "You mimick " + target.getVisibleNameDefinite() + "'s movements!",
                 entity.getVisibleNameDefinite() + " mimicks your movements!",
                 entity.getVisibleNameDefinite() + " mimicks " + target.getVisibleNameDefinite() + "'s movements!",

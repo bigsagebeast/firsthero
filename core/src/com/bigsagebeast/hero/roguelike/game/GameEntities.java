@@ -28,13 +28,13 @@ public class GameEntities {
         boolean plural = item.quantity > 1;
         switch (targetBeatitude) {
             case CURSED:
-                announce(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " in a harsh black light.");
+                Game.announceBad(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " in a harsh black light.");
                 break;
             case UNCURSED:
-                announce(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " white.");
+                Game.announce(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " white.");
                 break;
             case BLESSED:
-                announce(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " in a smooth blue light.");
+                Game.announceGood(entity.getVisibleNameDefinite() + " " + (plural ? "glow" : "glows") + " in a smooth blue light.");
                 break;
         }
         item.beatitude = targetBeatitude;

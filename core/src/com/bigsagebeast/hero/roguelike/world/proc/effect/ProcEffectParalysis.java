@@ -11,7 +11,7 @@ public class ProcEffectParalysis extends ProcTimedEffect {
 
     @Override
     public void initialize(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "You are paralyzed!",
                 null,
                 entity.getVisibleNameDefinite() + " is paralyzed!",
@@ -20,7 +20,7 @@ public class ProcEffectParalysis extends ProcTimedEffect {
 
     @Override
     public void expire(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "You are no longer paralyzed.",
                 null,
                 entity.getVisibleNameDefinite() + " is no longer paralyzed.",

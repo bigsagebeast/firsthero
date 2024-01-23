@@ -88,18 +88,11 @@ public class RoguelikeModule extends Module {
 		statBarWindow.close();
 	}
 
-	public void announce(String s) {
+	public void announce(String s, Color color) {
 		// TODO this should already be initialized!
 		// Failed when announcing an element being drawn on the first turn
 		if (announceWindow != null) {
-			announceWindow.addLine(Util.capitalize(s));
-		}
-	}
-
-	public void announceLoud(String s) {
-		// TODO this should already be initialized!
-		if (announceWindow != null) {
-			announceWindow.addLine(Util.capitalize(s), Color.YELLOW);
+			announceWindow.addLine(Util.capitalize(s), color);
 		}
 	}
 

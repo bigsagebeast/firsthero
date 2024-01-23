@@ -35,7 +35,7 @@ public class ProcChargeRegen extends Proc {
             chargeAccumulator = 0;
             if (Game.getPlayer().elementMissing(element) > 0) {
                 Game.getPlayer().changeCharges(element, 1);
-                Game.announce("Your " + entity.getVisibleName() + " pulses with power.");
+                Game.announceGood("Your " + entity.getVisibleName() + " pulses with power.");
                 entity.identifyItemType();
             }
         }

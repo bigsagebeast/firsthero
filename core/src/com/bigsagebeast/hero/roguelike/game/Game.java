@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.roguelike.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.HeroGame;
 import com.bigsagebeast.hero.MusicPlayer;
@@ -380,6 +381,7 @@ public class Game {
 			}
 			time = lowestTurn;
 			if (lowestProc.proc == player.getEntity().getMover()) {
+				beforeNextPlayerTurn();
 				tryLongTaskAction();
 				if (paused) {
 					// This isn't in PauseModule, to make messages go in the right order
@@ -390,7 +392,6 @@ public class Game {
 					paused = false;
 				}
 
-				beforeNextPlayerTurn();
 
 				break;
 			}
@@ -721,7 +722,7 @@ public class Game {
 			announce("You need a ranged weapon and ammo equipped, or throwable ammo!");
 			return;
 		} else if (pwa == null) {
-			announce("Out of ammo.");
+			announceLoud("Out of ammo.");
 			return;
 		} else if (pwr == null && !pwa.canThrow) {
 			announce("You need a ranged weapon to use that ammo.");
@@ -892,7 +893,7 @@ public class Game {
 			Compass dir = Compass.randomDirection();
 			dx = dir.getX();
 			dy = dir.getY();
-			Game.announce("You are confused!");
+			Game.announceBad("You are confused!");
 		}
 		int tx = getPlayerEntity().pos.x + dx;
 		int ty = getPlayerEntity().pos.y + dy;
@@ -1202,14 +1203,30 @@ public class Game {
 		if (s == null || !GameLoop.roguelikeModule.isRunning()) {
 			return;
 		}
-		GameLoop.roguelikeModule.announce(Util.capitalize(s));
+		GameLoop.roguelikeModule.announce(Util.capitalize(s), Color.WHITE);
 	}
 
-	public static void announceLoud(String s) {
+	public static void announce(String s, Color color) {
 		if (s == null || !GameLoop.roguelikeModule.isRunning()) {
 			return;
 		}
-		GameLoop.roguelikeModule.announceLoud(Util.capitalize(s));
+		GameLoop.roguelikeModule.announce(Util.capitalize(s), color);
+	}
+
+	public static void announceLoud(String s) {
+		announce(Util.capitalize(s), Color.YELLOW);
+	}
+
+	public static void announceDescriptive(String s) {
+		announce(Util.capitalize(s), Color.CYAN);
+	}
+
+	public static void announceGood(String s) {
+		announce(Util.capitalize(s), Color.GREEN);
+	}
+
+	public static void announceBad(String s) {
+		announce(Util.capitalize(s), Color.RED);
 	}
 
 	public static void unannounce() {
@@ -1236,10 +1253,18 @@ public class Game {
 	}
 
 	public static void announceSeen(Entity entity, String message) {
-		announceVis(entity, null, null, null, message, null);
+		announceSeenColor(entity, message, Color.WHITE);
 	}
 
-	public static void announceVis(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+	public static void announceSeenColor(Entity entity, String message) {
+		announceSeenColor(entity, message, Color.YELLOW);
+	}
+
+	public static void announceSeenColor(Entity entity, String message, Color color) {
+		announceVisColor(entity, null, null, null, message, null, color);
+	}
+
+	public static void announceVisColor(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible, Color color) {
 		if (!GameLoop.roguelikeModule.isRunning()) {
 			// hack to avoid messages during test duel
 			return;
@@ -1265,15 +1290,35 @@ public class Game {
 			return;
 		}
 		if (playerEntity == actorEntity) {
-			announce(Util.substitute(actor, actorGender, targetGender));
+			announce(Util.substitute(actor, actorGender, targetGender), color);
 		} else if (playerEntity == targetEntity) {
-			announce(Util.substitute(target, actorGender, targetGender));
+			announce(Util.substitute(target, actorGender, targetGender), color);
 		} else if ((actorEntity != null && playerEntity.canSee(actorEntity)) || (targetEntity != null && playerEntity.canSee(targetEntity))) {
 			// TODO this might be a problem if you can't see the other actor or target?
-			announce(Util.substitute(visible, actorGender, targetGender));
+			announce(Util.substitute(visible, actorGender, targetGender), color);
 		} else if (actorEntity != null && playerEntity.canHear(actorEntity)){
-			announce(Util.substitute(audible, actorGender, targetGender));
+			announce(Util.substitute(audible, actorGender, targetGender), color);
 		}
+	}
+
+	public static void announceVisGood(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+		announceVisColor(actorEntity, targetEntity, actor, target, visible, audible, Color.GREEN);
+	}
+
+	public static void announceVisBad(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+		announceVisColor(actorEntity, targetEntity, actor, target, visible, audible, Color.RED);
+	}
+
+	public static void announceVisDescriptive(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+		announceVisColor(actorEntity, targetEntity, actor, target, visible, audible, Color.CYAN);
+	}
+
+	public static void announceVisLoud(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+		announceVisColor(actorEntity, targetEntity, actor, target, visible, audible, Color.YELLOW);
+	}
+
+	public static void announceVis(Entity actorEntity, Entity targetEntity, String actor, String target, String visible, String audible) {
+		announceVisColor(actorEntity, targetEntity, actor, target, visible, audible, Color.WHITE);
 	}
 
 	public static boolean hasInterruption() {

@@ -36,20 +36,20 @@ public class ProcPotionAcid extends ImmutableProc {
         ResistanceLevel acidResistance = actor.getDamageTypeResist(DamageType.ACID);
         switch (acidResistance) {
             case WEAK:
-                Game.announceVis(actor, null, "It burns excruciatingly!",
+                Game.announceVisLoud(actor, null, "It burns excruciatingly!",
                         null,
                         actor.getVisibleNameDefinite() + " is badly burned!",
                         null);
                 break;
             case NORMAL:
-                Game.announceVis(actor, null, "It burns!",
+                Game.announceVisLoud(actor, null, "It burns!",
                         null,
                         actor.getVisibleNameDefinite() + " is burned!",
                         null);
                 break;
             case RESISTANT:
             case VERY_RESISTANT:
-                Game.announceVis(actor, null, "It burns a little.",
+                Game.announceVisLoud(actor, null, "It burns a little.",
                         null,
                         actor.getVisibleNameDefinite() + " is burned a little.",
                         null);

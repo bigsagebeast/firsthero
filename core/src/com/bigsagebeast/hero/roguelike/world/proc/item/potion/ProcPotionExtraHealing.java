@@ -29,7 +29,7 @@ public class ProcPotionExtraHealing extends ImmutableProc {
                 break;
         }
         actor.heal(healAmount);
-        Game.announceVis(actor, null, "You feel much better!",
+        Game.announceVisLoud(actor, null, "You feel much better!",
                 null,
                 actor.getVisibleNameDefinite() + " looks much better!",
                 null);

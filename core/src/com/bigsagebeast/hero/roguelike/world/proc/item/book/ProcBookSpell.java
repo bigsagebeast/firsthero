@@ -25,7 +25,7 @@ public class ProcBookSpell extends Proc {
             Game.announce("You already know that spell.");
         } else {
             Game.spellbook.addSpell(spell);
-            Game.announce("You learn how to cast " + Spellpedia.get(spell).getName() + "!");
+            Game.announceGood("You learn how to cast " + Spellpedia.get(spell).getName() + "!");
         }
     }
 

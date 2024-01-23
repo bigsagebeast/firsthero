@@ -651,7 +651,7 @@ public class Level {
 
 			int countOnLevel = (int) Game.getLevel().getEntities().stream().filter(c -> c.phenotypeName != null && c.phenotypeName.equals("neverbeast")).count();
 			if (countOnLevel < 6) {
-				Game.announce("You get a really bad feeling...");
+				Game.announceBad("You get a really bad feeling...");
 				Game.interrupt();
 				Entity e = Bestiary.create(monsterKey);
 				e.summoned = true;

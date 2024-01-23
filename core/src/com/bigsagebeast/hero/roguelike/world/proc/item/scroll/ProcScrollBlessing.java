@@ -92,7 +92,7 @@ public class ProcScrollBlessing extends ImmutableProc {
             }
         } else {
             if (e != null && e.getItem().beatitude != Beatitude.CURSED) {
-                Game.announce("Something was wrong with that scroll!");
+                Game.announceBad("Something was wrong with that scroll!");
                 GameEntities.changeItemBeatitude(e, Beatitude.CURSED);
             } else {
                 Game.announce("Nothing happens.");

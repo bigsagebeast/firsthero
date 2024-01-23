@@ -40,7 +40,7 @@ public class ProcPlayer extends ProcMover {
                             if (missing > 0) {
                                 int retrieved = proc.drawElement(e, playerEntity, missing);
                                 if (retrieved > 0) {
-                                    Game.announce("You draw " + retrieved + " " + element.name + " charge" + (retrieved == 1 ? "" : "s") + " from " + e.getVisibleNameDefinite() + ".");
+                                    Game.announceGood("You draw " + retrieved + " " + element.name + " charge" + (retrieved == 1 ? "" : "s") + " from " + e.getVisibleNameDefinite() + ".");
                                     Game.getPlayer().changeCharges(element, retrieved);
                                 }
                             }
@@ -52,7 +52,7 @@ public class ProcPlayer extends ProcMover {
                 if (Game.getLevel().cell(p).terrain == water) {
                     int missing = Game.getPlayer().elementMissing(Element.WATER);
                     if (missing > 0) {
-                        Game.announce("You draw " + missing + " water charge" + (missing == 1 ? "" : "s") + " from the water.");
+                        Game.announceGood("You draw " + missing + " water charge" + (missing == 1 ? "" : "s") + " from the water.");
                         Game.getPlayer().changeCharges(Element.WATER, missing);
                     }
                 }

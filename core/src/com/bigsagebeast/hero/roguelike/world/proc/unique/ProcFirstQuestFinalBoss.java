@@ -114,10 +114,10 @@ public class ProcFirstQuestFinalBoss extends Proc {
             }
         }
         if (summonedAny && message != null) {
-            Game.announceVis(entity, null, null, null, message, listen);
+            Game.announceVisLoud(entity, null, null, null, message, listen);
         }
         if (!summonedAny && messageFailed != null) {
-            Game.announceVis(entity, null, null, null, messageFailed, listenFailed);
+            Game.announceVisLoud(entity, null, null, null, messageFailed, listenFailed);
         }
         Game.turn();
     }

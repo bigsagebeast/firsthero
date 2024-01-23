@@ -11,7 +11,7 @@ public class ProcEffectTimedMissileDeflection extends ProcTimedEffect {
 
     @Override
     public void initialize(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisGood(entity, null,
                 "You spin your blade in the air, conjuring forth a whirlwind to deflect projectiles.",
                 null,
                 entity.getVisibleNameDefinite() + " spins their blade in the air, conjuring forth a whirlwind to deflect projectiles.",
@@ -21,7 +21,7 @@ public class ProcEffectTimedMissileDeflection extends ProcTimedEffect {
 
     @Override
     public void expire(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "Your deflection fades away.",
                 null,
                 entity.getVisibleNameDefinite() + "'s deflection fades away.",

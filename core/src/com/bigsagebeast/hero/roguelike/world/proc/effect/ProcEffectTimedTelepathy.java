@@ -22,7 +22,7 @@ public class ProcEffectTimedTelepathy extends ProcTimedEffect {
         );
         telepathyProcs.remove(this);
         if (telepathyProcs.isEmpty()) {
-            Game.announceVis(user, null, "Your mind expands.", null, null, null);
+            Game.announceVisGood(user, null, "Your mind expands.", null, null, null);
         }
     }
 
@@ -37,7 +37,7 @@ public class ProcEffectTimedTelepathy extends ProcTimedEffect {
         );
         telepathyProcs.remove(this);
         if (telepathyProcs.isEmpty()) {
-            Game.announceVis(user, null, "Your mind no longer feels so expanded.", null, null, null);
+            Game.announceVisLoud(user, null, "Your mind no longer feels so expanded.", null, null, null);
         }
     }
 

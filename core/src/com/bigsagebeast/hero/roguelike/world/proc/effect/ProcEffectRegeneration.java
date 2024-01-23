@@ -12,7 +12,7 @@ public class ProcEffectRegeneration extends ProcTimedEffect {
         super.turnPassed(entity);
         entity.heal(entity.healingRate * 2);
         if (turnsRemaining <= 0) {
-            Game.announceVis(entity, null, "You feel the effects of regeneration wane.", null, null, null);
+            Game.announceVisLoud(entity, null, "You feel the effects of regeneration wane.", null, null, null);
         }
     }
 

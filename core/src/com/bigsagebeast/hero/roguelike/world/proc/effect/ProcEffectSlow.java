@@ -11,7 +11,7 @@ public class ProcEffectSlow extends ProcTimedEffect {
 
     @Override
     public void initialize(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "You are slowed!",
                 null,
                 entity.getVisibleNameDefinite() + " is slowed.",
@@ -20,7 +20,7 @@ public class ProcEffectSlow extends ProcTimedEffect {
 
     @Override
     public void expire(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "You are no longer slowed.",
                 null,
                 entity.getVisibleNameDefinite() + " is no longer slowed.",

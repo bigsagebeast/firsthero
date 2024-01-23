@@ -77,14 +77,14 @@ public class Player {
 		Satiation after = getSatiationStatus();
 		if (before != after) {
 			if (delta > 0) {
-				Game.announce(after.messageUp);
+				Game.announceLoud(after.messageUp);
 				// TODO update stat window
 				// TODO update a proc on the player
 			} else {
 				if (after == Satiation.STARVING || after == Satiation.HUNGRY) {
 					Game.interruptAndBreak(after.messageDown);
 				} else {
-					Game.announce(after.messageDown);
+					Game.announceLoud(after.messageDown);
 				}
 			}
 		}
@@ -119,31 +119,31 @@ public class Player {
 			maxElementCharges.put(element, newMax);
 			switch (element) {
 				case FIRE:
-					Game.announce("You feel hot! Your fire charges increase.");
+					Game.announceGood("You feel hot! Your fire charges increase.");
 					break;
 				case WATER:
-					Game.announce("Your mind flows! Your water charges increase.");
+					Game.announceGood("Your mind flows! Your water charges increase.");
 					break;
 				case LIGHTNING:
-					Game.announce("You feel tingly! Your lightning charges increase.");
+					Game.announceGood("You feel tingly! Your lightning charges increase.");
 					break;
 				case NATURAE:
-					Game.announce("You feel rooted! Your naturae charges increase.");
+					Game.announceGood("You feel rooted! Your naturae charges increase.");
 					break;
 			}
 		} else {
 			switch (element) {
 				case FIRE:
-					Game.announce("You feel warm.");
+					Game.announceGood("You feel warm.");
 					break;
 				case WATER:
-					Game.announce("You feel a gentle flow.");
+					Game.announceGood("You feel a gentle flow.");
 					break;
 				case LIGHTNING:
-					Game.announce("You feel a mild tingle.");
+					Game.announceGood("You feel a mild tingle.");
 					break;
 				case NATURAE:
-					Game.announce("Your feet feel steady.");
+					Game.announceGood("Your feet feel steady.");
 					break;
 			}
 		}

@@ -14,7 +14,7 @@ public class ProcEffectVomit extends ProcTimedEffect {
         if (entity != Game.getPlayerEntity()) {
             return;
         }
-        Game.announce("A wave of nausea washes over you.");
+        Game.announceBad("A wave of nausea washes over you.");
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ProcEffectVomit extends ProcTimedEffect {
             return;
         }
         // TODO: Paralysis
-        Game.announce("You throw up.");
+        Game.announceBad("You throw up.");
 
         // lower satiation by 1000, but not below 500
         float satiationChange = -1000;

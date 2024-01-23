@@ -621,7 +621,7 @@ public class Entity {
             } else {
                 weldpart = "body";
             }
-            Game.announce(actualTarget.getVisibleNameDefinite() + " welds itself to your " + weldpart + "!");
+            Game.announceBad(actualTarget.getVisibleNameDefinite() + " welds itself to your " + weldpart + "!");
             actualTarget.identifyItemBeatitude();
         }
 

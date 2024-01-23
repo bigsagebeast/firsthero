@@ -11,7 +11,7 @@ public class ProcEffectConfusion extends ProcTimedEffect {
 
     @Override
     public void initialize(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "You are confused!",
                 null,
                 entity.getVisibleNameDefinite() + " is confused!",
@@ -20,7 +20,7 @@ public class ProcEffectConfusion extends ProcTimedEffect {
 
     @Override
     public void expire(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "You are no longer confused.",
                 null,
                 entity.getVisibleNameDefinite() + " is no longer confused.",

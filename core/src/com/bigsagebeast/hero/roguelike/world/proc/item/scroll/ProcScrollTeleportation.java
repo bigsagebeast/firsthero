@@ -32,7 +32,7 @@ public class ProcScrollTeleportation extends ImmutableProc {
         }
         entity.identifyItemType();
         if (entity.getBeatitude() == Beatitude.CURSED) {
-            Game.announce("Something was wrong with that scroll!");
+            Game.announceBad("Something was wrong with that scroll!");
             ProcEffectConfusion proc = new ProcEffectConfusion();
             proc.turnsRemaining = 5;
             actor.addProc(proc);

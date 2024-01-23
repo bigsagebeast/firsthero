@@ -131,7 +131,7 @@ public class ProcCorpse extends Proc {
                 ProcResistDamageType procResistant = new ProcResistDamageType();
                 procResistant.damageType = DamageType.POISON;
                 actor.addProc(procResistant);
-                Game.announce("You build up a tolerance to the poison, and feel resistant.");
+                Game.announceGood("You build up a tolerance to the poison, and feel resistant.");
             }
 
             ProcEffectPoisoned procPoisoned = new ProcEffectPoisoned();

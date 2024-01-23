@@ -16,7 +16,7 @@ public class ProcGelatinousCube extends Proc {
     public void turnPassed(Entity entity) {
         for (Entity target : Game.getLevel().getEntitiesOnTile(entity.pos)) {
             if (target.containsProc(ProcCorpse.class) || target.containsProc(ProcFood.class)) {
-                Game.announceVis(entity, null, null, null,
+                Game.announceVisLoud(entity, null, null, null,
                         entity.getVisibleNameDefinite() + " consumes " + target.getVisibleNameDefinite() + " with a slurp.",
                         "You hear a slurping sound.");
                 target.destroy();

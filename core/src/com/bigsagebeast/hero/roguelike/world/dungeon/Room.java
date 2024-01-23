@@ -26,7 +26,7 @@ public class Room {
         if (actor == Game.getPlayerEntity()) {
             //if (!visited) {
                 if (roomType.entranceMessage != null) {
-                    Game.announce(roomType.entranceMessage);
+                    Game.announceDescriptive(roomType.entranceMessage);
                 }
             //}
             visited = true;

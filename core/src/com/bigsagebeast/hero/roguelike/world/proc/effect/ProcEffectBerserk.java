@@ -12,7 +12,7 @@ public class ProcEffectBerserk extends ProcTimedEffect {
 
     @Override
     public void initialize(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisGood(entity, null,
                 "You rage with berserk fury.",
                 null,
                 entity.getVisibleNameDefinite() + " rages with berserk fury.",
@@ -22,7 +22,7 @@ public class ProcEffectBerserk extends ProcTimedEffect {
 
     @Override
     public void expire(Entity entity) {
-        Game.announceVis(entity, null,
+        Game.announceVisLoud(entity, null,
                 "You are no longer raging.",
                 null,
                 entity.getVisibleNameDefinite() + "is no longer raging.",

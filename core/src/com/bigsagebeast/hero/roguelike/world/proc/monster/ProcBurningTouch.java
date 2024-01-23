@@ -25,9 +25,9 @@ public class ProcBurningTouch extends Proc {
         if (tool != null && tool.getEquippable().equipmentFor == BodyPart.RANGED_AMMO) {
             return;
         }
-        Game.announceVis(actor, entity,
-                "It burns!",
-                "They burn!",
+        Game.announceVisLoud(actor, entity,
+                "You are burned!",
+                "%S %l burned!",
                 actor.getVisibleNameWithQuantity() + " is burned!",
                 null);
         actor.hurt(Dice.roll(dice, sides, modifier), entity.getVisibleNameIndefiniteOrSpecific() + "'s burning touch");
@@ -35,9 +35,9 @@ public class ProcBurningTouch extends Proc {
 
     @Override
     public void postDoHit(Entity entity, Entity target, Entity tool, SwingResult result) {
-        Game.announceVis(entity, target,
-                "They burn!",
-                "You burn!",
+        Game.announceVisLoud(entity, target,
+                "%S %l burned!",
+                "You are burned!",
                 target.getVisibleNameWithQuantity() + " is burned!",
                 null);
         target.hurt(Dice.roll(dice, sides, modifier), entity.getVisibleNameIndefiniteOrSpecific() + "'s burning touch");
