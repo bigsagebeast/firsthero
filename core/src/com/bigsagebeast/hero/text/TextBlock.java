@@ -486,9 +486,20 @@ public class TextBlock implements GameLogic {
 	// specific to appended strings
 	public int findAppendedWidth() {
 		if (children.isEmpty()) {
+			if (text == null) {
+				// glyph
+				return (int)x + 1;
+			}
 			return (int)x + text.length();
 		}
-		return (int)x + children.stream().findFirst().get().findAppendedWidth();
+		float maxChildWidth = 0;
+		for (TextBlock tb : children) {
+			float childWidth = tb.findAppendedWidth();
+			if (childWidth > maxChildWidth) {
+				maxChildWidth = childWidth;
+			}
+		}
+		return (int)x + (int)maxChildWidth;
 	}
 
 	public TextBlock append(TextBlock tb) {

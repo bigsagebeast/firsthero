@@ -8,11 +8,8 @@ import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.glyphtile.EntityGlyph;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
-import com.bigsagebeast.hero.roguelike.world.proc.item.ProcArmor;
-import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
-import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
-import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
 import com.bigsagebeast.hero.text.TextBlock;
+import com.bigsagebeast.hero.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,9 +66,10 @@ public class Inventory {
             if (equipmentName != null) {
                 equipmentNameBlock = new TextBlock(equipmentName);
             } else if (playerEntity.body.getEquipment(bp) != null) {
-                equipmentNameBlock = playerEntity.body.getEquipment(bp).getNameBlock(28);
+                equipmentNameBlock = playerEntity.body.getEquipment(bp).getNameBlock(34);
+                addWeight(playerEntity.body.getEquipment(bp), equipmentNameBlock, 34+1);
             }
-            TextBlock lineBlock = new TextBlock(String.format("%-7s: ", bp.getAbbrev()));
+            TextBlock lineBlock = new TextBlock(String.format("%-7s:", bp.getAbbrev()));
             if (equipmentNameBlock != null) {
                 lineBlock.append(equipmentNameBlock);
             }
@@ -148,7 +146,7 @@ public class Inventory {
                 box.addHeader(cat.getName());
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                addEntityWithWidth(box, ent, 42);
                 addedAnything = true;
             }
         }
@@ -182,7 +180,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                addEntityWithWidth(box, ent, 42);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryToDropResponse);
@@ -221,7 +219,7 @@ public class Inventory {
             box.addHeader("*** " + ItemCategory.CATEGORY_POTION.getName() + " ***");
         }
         for (Entity ent : potionEnts) {
-            box.addItem(ent.getVisibleNameIndefiniteOrSpecific(), ent);
+            addEntityWithWidth(box, ent, 42);
         }
 
         // TODO: Special handling for rocks as ammo?
@@ -232,7 +230,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                addEntityWithWidth(box, ent, 42);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Game::handleThrowInventory);
@@ -252,7 +250,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                addEntityWithWidth(box, ent, 42);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleFloorToGetResponse);
@@ -315,7 +313,7 @@ public class Inventory {
                     box.addHeader("*** " + cat.getName() + " (on floor) ***");
                 }
                 for (Entity ent : ents) {
-                    box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                    addEntityWithWidth(box, ent, 42);
                 }
             }
         }
@@ -326,7 +324,7 @@ public class Inventory {
                     box.addHeader("*** " + cat.getName() + " ***");
                 }
                 for (Entity ent : ents) {
-                    box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                    addEntityWithWidth(box, ent, 42);
                 }
             }
         }
@@ -370,7 +368,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : quaffableEnts) {
-                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                addEntityWithWidth(box, ent, 42);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleQuaff);
@@ -413,7 +411,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : readableEnts) {
-                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                addEntityWithWidth(box, ent, 42);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleRead);
@@ -442,7 +440,7 @@ public class Inventory {
                 box.addHeader("*** " + cat.getName() + " ***");
             }
             for (Entity ent : ents) {
-                box.addItem(ent.getNameBlock(), EntityGlyph.getGlyph(ent), ent);
+                addEntityWithWidth(box, ent, 42);
             }
         }
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryInspectResponse);
@@ -495,4 +493,15 @@ public class Inventory {
         promptQuantityHandler.accept(promptQuantityEntity, Math.max(Math.min(intResponse, promptQuantityMax), promptQuantityMin));
     }
 
+    private static void addEntityWithWidth(DialogueBox box, Entity entity, int width) {
+        TextBlock nameBlock = entity.getNameBlock(width);
+        addWeight(entity, nameBlock, width + 1);
+        box.addItem(nameBlock, EntityGlyph.getGlyph(entity), entity);
+    }
+
+    private static void addWeight(Entity entity, TextBlock tb, int width) {
+        TextBlock weight = new TextBlock(Util.weightString(entity.getWeight()));
+        weight.x = width;
+        tb.addChild(weight);
+    }
 }

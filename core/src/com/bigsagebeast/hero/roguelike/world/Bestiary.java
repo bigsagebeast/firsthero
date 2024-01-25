@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.roguelike.world.ai.TacticChaseAndMelee;
-import com.bigsagebeast.hero.roguelike.world.proc.ProcEffectHunger;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectHunger;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcMover;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcPlayer;
 import com.bigsagebeast.hero.roguelike.world.proc.ProcEveryTurn;

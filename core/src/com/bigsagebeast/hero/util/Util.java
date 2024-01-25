@@ -3,6 +3,7 @@ package com.bigsagebeast.hero.util;
 import com.bigsagebeast.hero.enums.Gender;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.story.StoryCard;
+import com.bigsagebeast.hero.text.TextBlock;
 
 import java.util.Locale;
 
@@ -107,5 +108,13 @@ public class Util {
             amount++;
         }
         return amount;
+    }
+
+    public static float roundPrecision(float input, int precision) {
+        return ((int)(input * precision)) / (float)precision;
+    }
+
+    public static String weightString(float input) {
+        return String.format("%5.1fkg", input);
     }
 }

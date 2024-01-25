@@ -9,7 +9,6 @@ public class BodyPart {
 
     public static BodyPart HEAD = new BodyPart("head", "Head", 2);
     public static BodyPart TORSO = new BodyPart("torso", "Torso", 3);
-    public static BodyPart LEGS = new BodyPart("legs", "Legs", 4);
     public static BodyPart HANDS = new BodyPart("hands", "Hands", 5);
     public static BodyPart FEET = new BodyPart("feet", "Feet", 6);
 

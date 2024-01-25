@@ -54,7 +54,7 @@ public class EquipmentWindow extends UIWindow {
 				glyphs[row].glyph = EntityGlyph.getGlyph(equipped);
 				equipmentString = equipped.getVisibleName();
 				//equipmentName[row] = new TextBlock(equipmentString, null, RoguelikeModule.FONT_SIZE, 9, 0, Color.WHITE);
-				equipmentName[row] = equipped.getNameBlock(25);
+				equipmentName[row] = equipped.getNameBlock(31);
 				equipmentName[row].x = 9;
 			}
 			else if (bp == BodyPart.OFF_HAND && c.body.getEquipment(BodyPart.PRIMARY_HAND) != null &&

@@ -10,6 +10,7 @@
       ],
       "equipmentFor": "two hand",
       "category": "twohanded",
+      "weight": 2.0,
       "level": -1,
       "procs": {
         "ProcPopupOnSeen": {

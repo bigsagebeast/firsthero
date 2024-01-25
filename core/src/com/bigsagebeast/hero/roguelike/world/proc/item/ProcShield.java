@@ -72,6 +72,7 @@ public class ProcShield extends Proc {
 
     @Override
     public TextBlock getNameBlock(Entity entity, int width) {
+        int nameWidth = width - 6;
         int de = (int) provideDefense(entity);
         int at = (int) provideArmorThickness(entity);
         int deComparator = 0;
@@ -89,12 +90,12 @@ public class ProcShield extends Proc {
 
         Color beatitudeColor = entity.getItem().identifiedBeatitude ? entity.getBeatitude().color : Color.WHITE;
         TextBlock tbMain = new TextBlock(entity.getVisibleNameWithQuantity(), beatitudeColor);
-        tbMain.text = tbMain.text.substring(0, Math.min(width, tbMain.text.length()));
+        tbMain.text = tbMain.text.substring(0, Math.min(nameWidth, tbMain.text.length()));
         tbMain.append(new TextBlock(" (", Color.WHITE))
                 .append(new TextBlock("`" + de, deColor, IconGlyph.DEFENSE.icon()))
                 .append(new TextBlock("`" + at, atColor, IconGlyph.THICKNESS.icon()))
                 .append(new TextBlock(")", Color.WHITE));
-        tbMain.children.stream().findFirst().get().x = width;
+        tbMain.children.stream().findFirst().get().x = nameWidth;
 
         return tbMain;
     }

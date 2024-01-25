@@ -7,6 +7,7 @@ import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectTimedTelepathy;
 import com.bigsagebeast.hero.roguelike.world.proc.intrinsic.ProcTelepathy;
 import com.bigsagebeast.hero.roguelike.world.proc.item.*;
+import com.bigsagebeast.hero.util.Util;
 
 import java.util.Comparator;
 import java.util.List;
@@ -79,6 +80,9 @@ public class GameEntities {
             String unid = p.getUnidDescription(ent);
             if (unid != null) {
                 sb.append("\n").append(unid);
+            }
+            if (ent.getWeight() > 0) {
+                sb.append("\nIt weighs " + Util.weightString(ent.getWeight()) + ".");
             }
         }
         // delete the first \n

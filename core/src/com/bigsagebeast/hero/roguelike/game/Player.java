@@ -2,15 +2,18 @@ package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
+import com.bigsagebeast.hero.enums.Burden;
 import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.EntityTracker;
 import com.bigsagebeast.hero.enums.Satiation;
-import com.bigsagebeast.hero.roguelike.world.proc.ProcEffectHunger;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectBurden;
+import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectHunger;
 import com.bigsagebeast.hero.util.Util;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Player {
 	public int entityId = -1;
@@ -209,6 +212,40 @@ public class Player {
 
 	private int getCostForStat(Stat stat) {
 		return 1 + (upgradedStats.get(stat) / 2);
+	}
+
+	public void recalculateWeight() {
+		float unburdenedCap = 20 + (2.5f * getEntity().statblock.get(Stat.STRENGTH));
+		float burdenedCap = unburdenedCap + 20f;
+		float strainedCap = burdenedCap + 20f;
+		unburdenedCap = Util.roundPrecision(unburdenedCap, 10);
+		burdenedCap = Util.roundPrecision(burdenedCap, 10);
+		strainedCap = Util.roundPrecision(strainedCap, 10);
+		AtomicReference<Float> atomicWeightCarried = new AtomicReference<>(0f);
+		getEntity().recursiveInventoryAndEquipment().forEach(e -> atomicWeightCarried.updateAndGet(v -> (float) (v + e.getWeight())));
+		float weightCarried = atomicWeightCarried.get();
+		weightCarried = Util.roundPrecision(weightCarried, 10);
+		Burden nextBurden;
+		if (weightCarried <= unburdenedCap) {
+			nextBurden = Burden.UNBURDENED;
+		} else if (weightCarried <= burdenedCap) {
+			nextBurden = Burden.BURDENED;
+		} else if (weightCarried <= strainedCap) {
+			nextBurden = Burden.STRAINED;
+		} else {
+			nextBurden = Burden.OVERLOADED;
+		}
+
+		ProcEffectBurden procEffectBurden = (ProcEffectBurden)(getEntity().getProcByType(ProcEffectBurden.class));
+		if (procEffectBurden == null) {
+			procEffectBurden = new ProcEffectBurden();
+			getEntity().addProc(procEffectBurden);
+		}
+
+		if (procEffectBurden.burden != nextBurden) {
+			Game.announce(nextBurden.message, nextBurden.color);
+		}
+		procEffectBurden.burden = nextBurden;
 	}
 
 }

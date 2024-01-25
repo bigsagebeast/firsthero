@@ -8,6 +8,7 @@
         "orange", "yellow", "white"
       ],
       "category": "gold",
+      "weight": 0.01,
       "level":-1,
       "frequency": 0,
       "hasBeatitude": false
@@ -20,6 +21,7 @@
         "white"
       ],
       "category": "food",
+      "weight": 1.0,
       "level": 1,
       "minCount": 4,
       "maxCount": 8,
@@ -39,6 +41,7 @@
         "white", "red", "brown"
       ],
       "category": "food",
+      "weight": 2.0,
       "level": 1,
       "procs": {
         "item.ProcFood": {

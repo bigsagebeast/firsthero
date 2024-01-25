@@ -1,4 +1,4 @@
-package com.bigsagebeast.hero.roguelike.world.proc;
+package com.bigsagebeast.hero.roguelike.world.proc.effect;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bigsagebeast.hero.enums.Satiation;
@@ -8,6 +8,7 @@ import com.bigsagebeast.hero.roguelike.game.Player;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
 import com.bigsagebeast.hero.roguelike.world.Terrain;
+import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.text.TextBlock;
 import com.bigsagebeast.hero.util.Point;
 

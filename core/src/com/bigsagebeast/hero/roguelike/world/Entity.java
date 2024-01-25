@@ -1270,7 +1270,23 @@ public class Entity {
         hitPoints = Math.min(Math.max(hitPoints + deltaHitPoints, hitPoints), newMaxHitPoints);
         spellPoints = Math.min(Math.max(spellPoints + deltaSpellPoints, spellPoints), newMaxSpellPoints);
         divinePoints = Math.min(Math.max(divinePoints + deltaDivinePoints, divinePoints), newMaxDivinePoints);
+    }
 
+    public float getWeight() {
+        // don't get procs from inventory etc.
+        // this is a very rudimentary test
+        for (Proc p : procs) {
+            if (p.getWeight(this) > 0.0f) {
+                return p.getWeight(this);
+            }
+        }
+
+        ItemType itemType = getItemType();
+        if (itemType == null) {
+            return 0f;
+        }
+        ProcItem item = getItem();
+        return Util.roundPrecision(getItemType().weight * item.quantity, 100);
     }
 
     // status tests

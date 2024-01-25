@@ -409,6 +409,7 @@ public class Game {
 	}
 
 	public static void beforeNextPlayerTurn() {
+		player.recalculateWeight();
 		if (getPlayerEntity().experience >= getPlayerEntity().experienceToNext) {
 			Game.getPlayer().levelUp();
 		}
@@ -892,6 +893,12 @@ public class Game {
 	}
 
 	public static void playerCmdMoveBy(int dx, int dy) {
+		boolean canMove = getPlayerEntity().forEachProcIncludingEquipmentFailOnFalse((e, p) -> p.preCmdMove(e, getPlayerEntity()));
+		if (!canMove) {
+			// message already generated in the proc
+			return;
+		}
+
 		if (getPlayerEntity().isConfused()) {
 			Compass dir = Compass.randomDirection();
 			dx = dir.getX();

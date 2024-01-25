@@ -26,7 +26,6 @@ public class BodyPlanpedia {
         humanoid.addPart(BodyPart.OFF_HAND);
         humanoid.addPart(BodyPart.HEAD);
         humanoid.addPart(BodyPart.TORSO);
-        humanoid.addPart(BodyPart.LEGS);
         humanoid.addPart(BodyPart.HANDS);
         humanoid.addPart(BodyPart.FEET);
         humanoid.addPart(BodyPart.LEFT_RING);

@@ -44,6 +44,7 @@ public class ItemType {
     public int frequency = 100;
     public int sortOrder = 1;
     public boolean hideWalkOver = false;
+    public float weight = 0.0f;
     Set<Consumer<Entity>> setup = new HashSet<>();
     public List<LoadProc> procLoaders = new ArrayList<>();
     public List<String> tags = new ArrayList<>();

@@ -80,8 +80,8 @@ public class Graphics {
 		// TODO necessary?  seems not
 		if (batchInProgress) {
 			//throw new RuntimeException("Tried to create a SpriteBatch within a batch");
-			GameLoop.error("Tried to create a SpriteBatch within a batch");
-			Game.announceLoud("ERR: Tried to create a SpriteBatch within a batch");
+			//GameLoop.error("Tried to create a SpriteBatch within a batch");
+			//Game.announceLoud("ERR: Tried to create a SpriteBatch within a batch");
 		} else {
 			spriteBatch.setProjectionMatrix(cam.combined);
 			spriteBatch.begin();

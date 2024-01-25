@@ -7,6 +7,7 @@
       "description": "This ring will prevent the 'Confusion' status effect.",
       "category": "ring",
       "equipmentFor": "ring",
+      "weight": 0.01,
       "identityHidden": true,
       "level": 1,
       "procs": {
@@ -28,6 +29,7 @@
       "description": "This ring provides partial resistance to acid damage.",
       "category": "ring",
       "equipmentFor": "ring",
+      "weight": 0.01,
       "identityHidden": true,
       "level": 1,
       "procs": {
@@ -49,6 +51,7 @@
       "description": "This ring slowly regenerates the wearer's lightning charges.",
       "category": "ring",
       "equipmentFor": "ring",
+      "weight": 0.01,
       "identityHidden": true,
       "level": 1,
       "procs": {
@@ -71,6 +74,7 @@
       "description": "This ring allows the wearer to sense the minds of living beings.",
       "category": "ring",
       "equipmentFor": "ring",
+      "weight": 0.01,
       "identityHidden": true,
       "level": 1,
       "procs": {

@@ -82,9 +82,15 @@ public class Proc {
 
     public TextBlock getNameBlock(Entity entity, int width) { return null; }
 
+    // override ItemType's weight
+    public float getWeight(Entity entity) { return 0.0f; }
+
     public int getDescriptionPriority(Entity entity) { return 0; }
     public String getIdenDescription(Entity entity) { return null; }
     public String getUnidDescription(Entity entity) { return null; }
+
+    // Player actively attempts to move. False if it's aborted.
+    public Boolean preCmdMove(Entity entity, Entity actor) { return null; }
 
     // return true if pickup is allowed, false if it's aborted, null if no opinion
     public Boolean preBePickedUp(Entity entity, Entity actor) { return null; }

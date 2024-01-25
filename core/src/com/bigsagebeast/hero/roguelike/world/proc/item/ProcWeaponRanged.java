@@ -139,6 +139,7 @@ public class ProcWeaponRanged extends Proc {
 
     @Override
     public TextBlock getNameBlock(Entity entity, int width) {
+        int nameWidth = width - 8;
         Entity pcPrimaryWeapon = Game.getPlayerEntity().body.getEquipment(BodyPart.PRIMARY_HAND);
         ProcWeaponRanged p = null;
         if (pcPrimaryWeapon != null) {
@@ -163,13 +164,13 @@ public class ProcWeaponRanged extends Proc {
 
         Color beatitudeColor = entity.getItem().identifiedBeatitude ? entity.getBeatitude().color : Color.WHITE;
         TextBlock tbMain = new TextBlock(entity.getVisibleNameWithQuantity(), beatitudeColor);
-        tbMain.text = tbMain.text.substring(0, Math.min(width, tbMain.text.length()));
+        tbMain.text = tbMain.text.substring(0, Math.min(nameWidth, tbMain.text.length()));
         tbMain.append(new TextBlock(" (", Color.WHITE))
                 .append(new TextBlock("`" + ad, adColor, IconGlyph.DAMAGE.icon()))
                 .append(new TextBlock("`" + th, thColor, IconGlyph.TOHIT.icon()))
                 .append(new TextBlock("`" + pn, pnColor, IconGlyph.PENETRATION.icon()))
                 .append(new TextBlock(")", Color.WHITE));
-        tbMain.children.stream().findFirst().get().x = width;
+        tbMain.children.stream().findFirst().get().x = nameWidth;
 
         return tbMain;
     }

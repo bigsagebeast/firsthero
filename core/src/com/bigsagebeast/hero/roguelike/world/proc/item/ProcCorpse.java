@@ -3,8 +3,10 @@ package com.bigsagebeast.hero.roguelike.world.proc.item;
 import com.bigsagebeast.hero.enums.DamageType;
 import com.bigsagebeast.hero.enums.StatusType;
 import com.bigsagebeast.hero.roguelike.game.EntityProc;
+import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.roguelike.world.Phenotype;
 import com.bigsagebeast.hero.roguelike.world.proc.Proc;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectConfusion;
@@ -27,12 +29,14 @@ public class ProcCorpse extends Proc {
     public String corpseMessage;
     public String corpseMethod;
     public String corpseMethodPre;
+    public String phenotypeKey;
 
     public ProcCorpse() { super(); }
-    public ProcCorpse(String corpseMessage, String corpseMethod, String corpseMethodPre) {
+    public ProcCorpse(String corpseMessage, String corpseMethod, String corpseMethodPre, String phenotypeKey) {
         this.corpseMessage = corpseMessage;
         this.corpseMethod = corpseMethod;
         this.corpseMethodPre = corpseMethodPre;
+        this.phenotypeKey = phenotypeKey;
     }
 
     public void turnPassed(Entity entity) {
@@ -45,6 +49,26 @@ public class ProcCorpse extends Proc {
                 Game.announceVis(entity, entity, null, null,
                         "You see " + entity.getVisibleNameIndefiniteOrVague() + " rot away.", null);
             }
+        }
+    }
+
+    @Override
+    public float getWeight(Entity entity) {
+        if (phenotypeKey == null || phenotypeKey.isEmpty()) {
+            return 20.0f;
+        }
+        Phenotype phenotype = Bestiary.get(phenotypeKey);
+        switch (phenotype.size) {
+            case XL:
+                return 240.0f;
+            case LARGE:
+                return 120.0f;
+            case MEDIUM:
+                return 60.0f;
+            case SMALL:
+                return 20.0f;
+            default: /* case TINY: */
+                return 5.0f;
         }
     }
 

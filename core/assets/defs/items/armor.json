@@ -9,6 +9,7 @@
       ],
       "equipmentFor": "head",
       "category": "head",
+      "weight": 0.2,
       "level": 1,
       "frequency": 75,
       "procs": {
@@ -33,6 +34,7 @@
       ],
       "equipmentFor": "head",
       "category": "head",
+      "weight": 0.60,
       "frequency": 75,
       "level": 1,
       "procs": {
@@ -57,6 +59,7 @@
       ],
       "equipmentFor": "head",
       "category": "head",
+      "weight": 1.00,
       "level": 1,
       "frequency": 75,
       "procs": {
@@ -81,6 +84,7 @@
       ],
       "equipmentFor": "head",
       "category": "head",
+      "weight": 1.20,
       "level": 1,
       "frequency": 75,
       "procs": {
@@ -106,6 +110,7 @@
       ],
       "equipmentFor": "head",
       "category": "head",
+      "weight": 1.40,
       "level": 2,
       "frequency": 75,
       "procs": {
@@ -130,6 +135,7 @@
       ],
       "equipmentFor": "torso",
       "category": "body",
+      "weight": 2.50,
       "level": 1,
       "frequency": 75,
       "procs": {
@@ -154,6 +160,7 @@
       ],
       "equipmentFor": "torso",
       "category": "body",
+      "weight": 5.00,
       "level": 1,
       "frequency": 75,
       "procs": {
@@ -179,6 +186,7 @@
       ],
       "equipmentFor": "torso",
       "category": "body",
+      "weight": 10.00,
       "level": 2,
       "frequency": 75,
       "procs": {
@@ -204,6 +212,7 @@
       ],
       "equipmentFor": "torso",
       "category": "body",
+      "weight": 6.00,
       "level": 3,
       "frequency": 75,
       "procs": {
@@ -229,6 +238,7 @@
       ],
       "equipmentFor": "torso",
       "category": "body",
+      "weight": 5.00,
       "level": 4,
       "frequency": 75,
       "procs": {
@@ -254,6 +264,7 @@
       ],
       "equipmentFor": "torso",
       "category": "body",
+      "weight": 2.50,
       "level": 5,
       "frequency": 75,
       "procs": {
@@ -279,6 +290,7 @@
       ],
       "equipmentFor": "any hand",
       "category": "shields",
+      "weight": 1.20,
       "level": 1,
       "frequency": 75,
       "procs": {
@@ -306,6 +318,7 @@
       ],
       "equipmentFor": "any hand",
       "category": "shields",
+      "weight": 4.00,
       "level": 2,
       "frequency": 75,
       "procs": {
@@ -333,6 +346,7 @@
       ],
       "equipmentFor": "any hand",
       "category": "shields",
+      "weight": 10.00,
       "level": 3,
       "frequency": 75,
       "procs": {
@@ -362,6 +376,7 @@
       "category": "shields",
       "level": 4,
       "frequency": 75,
+      "weight": 0.60,
       "procs": {
         "item.ProcShield": {
           "deflectionMelee": 20,
@@ -387,6 +402,7 @@
       ],
       "equipmentFor": "any hand",
       "category": "shields",
+      "weight": 2.00,
       "level": 5,
       "frequency": 75,
       "procs": {
@@ -414,6 +430,7 @@
       ],
       "equipmentFor": "any hand",
       "category": "shields",
+      "weight": 5.00,
       "level": 6,
       "frequency": 75,
       "procs": {

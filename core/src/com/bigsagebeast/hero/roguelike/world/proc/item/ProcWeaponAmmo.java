@@ -63,19 +63,20 @@ public class ProcWeaponAmmo extends Proc {
     public void postBePickedUp(Entity entity, Entity actor) {}
     @Override
     public TextBlock getNameBlock(Entity entity, int width) {
+        int nameWidth = width - 8;
         int ad = (int) averageDamage(entity, Game.getPlayerEntity());
         int th = (int) toHitBonus(entity, Game.getPlayerEntity());
         int pn = (int) penetration(entity, Game.getPlayerEntity());
 
         Color beatitudeColor = entity.getItem().identifiedBeatitude ? entity.getBeatitude().color : Color.WHITE;
         TextBlock tbMain = new TextBlock(entity.getVisibleNameWithQuantity(), beatitudeColor);
-        tbMain.text = tbMain.text.substring(0, Math.min(width, tbMain.text.length()));
+        tbMain.text = tbMain.text.substring(0, Math.min(nameWidth, tbMain.text.length()));
         tbMain.append(new TextBlock(" (", Color.WHITE))
                 .append(new TextBlock("`" + ad, Color.WHITE, IconGlyph.DAMAGE.icon()))
                 .append(new TextBlock("`" + th, Color.WHITE, IconGlyph.TOHIT.icon()))
                 .append(new TextBlock("`" + pn, Color.WHITE, IconGlyph.PENETRATION.icon()))
                 .append(new TextBlock(")", Color.WHITE));
-        tbMain.children.stream().findFirst().get().x = width;
+        tbMain.children.stream().findFirst().get().x = nameWidth;
 
         return tbMain;
     }
