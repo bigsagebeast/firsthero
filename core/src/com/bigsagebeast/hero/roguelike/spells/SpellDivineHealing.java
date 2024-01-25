@@ -27,7 +27,7 @@ public class SpellDivineHealing extends Spell {
 
     @Override
     public int getBaseCost(Entity caster) {
-        return 300;
+        return 500;
     }
 
     @Override

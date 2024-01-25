@@ -32,7 +32,7 @@ public class SpellDivineTimeStop extends Spell {
 
     @Override
     public int getBaseCost(Entity caster) {
-        return 500;
+        return 400;
     }
 
     @Override

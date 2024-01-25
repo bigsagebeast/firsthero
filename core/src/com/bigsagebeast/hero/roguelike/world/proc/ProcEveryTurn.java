@@ -16,7 +16,7 @@ public class ProcEveryTurn extends Proc {
         if (entity.getMover() != null) {
             AtomicReference<Float> hpMultiplierAccumulator = new AtomicReference<>(1.0f);
             entity.forEachProcIncludingEquipment((e, p) -> hpMultiplierAccumulator.updateAndGet(val -> val *= p.getRegenHpMultiplier(e, entity)));
-            hpAccumulator += entity.maxHitPoints * hpMultiplierAccumulator.get() / 300.0f;
+            hpAccumulator += entity.maxHitPoints * hpMultiplierAccumulator.get() / 400.0f;
             while (hpAccumulator >= 1.0f) {
                 hpAccumulator--;
                 entity.hitPoints = Math.min(entity.hitPoints + 1, entity.maxHitPoints);
@@ -24,7 +24,7 @@ public class ProcEveryTurn extends Proc {
 
             AtomicReference<Float> spMultiplierAccumulator = new AtomicReference<>(1.0f);
             entity.forEachProcIncludingEquipment((e, p) -> spMultiplierAccumulator.updateAndGet(val -> val *= p.getRegenSpMultiplier(e, entity)));
-            spAccumulator += entity.maxSpellPoints * spMultiplierAccumulator.get() / 300.0f;
+            spAccumulator += entity.maxSpellPoints * spMultiplierAccumulator.get() / 400.0f;
             while (spAccumulator >= 1.0f) {
                 spAccumulator--;
                 entity.spellPoints = Math.min(entity.spellPoints + 1, entity.maxSpellPoints);

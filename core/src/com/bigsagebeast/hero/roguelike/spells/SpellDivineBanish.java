@@ -33,7 +33,7 @@ public class SpellDivineBanish extends Spell {
 
     @Override
     public int getBaseCost(Entity caster) {
-        return 500;
+        return 300;
     }
 
     @Override
