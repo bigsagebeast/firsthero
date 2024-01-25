@@ -111,13 +111,13 @@
       "name": "yourself",
       "description": "You are the revived God of Heroes, a stranger in this place. What will you make of this shattered multiverse?",
       "bodyPlan": "humanoid",
-      "glyphName": "player.farmer",
+      "glyphName": "player.warrior",
       "isManipulator": true,
       "ambulation": "WALKING_SWIMMING",
       "palette": [
         "white",
-        "brown",
-        "yellow"
+        "pink",
+        "blue"
       ],
       "naturalWeaponDamage": 3,
       "naturalWeaponToHit": 0,
@@ -150,11 +150,11 @@
       "gender": "MALE",
       "peaceful": true,
       "bodyPlan": "humanoid",
-      "glyphName": "creature.humanoid",
+      "glyphName": "humanoid.farmer",
       "palette": [
-        "yellow",
-        "tan",
-        "brown"
+        "white",
+        "brown",
+        "yellow"
       ],
       "threat": -1,
       "chatPage": "intro.father.landing"
@@ -165,11 +165,11 @@
       "gender": "FEMALE",
       "peaceful": true,
       "bodyPlan": "humanoid",
-      "glyphName": "creature.humanoid",
+      "glyphName": "humanoid.farmer",
       "palette": [
-        "yellow",
-        "tan",
-        "brown"
+        "white",
+        "brown",
+        "yellow"
       ],
       "threat": -1,
       "chatPage": "intro.mother.landing"

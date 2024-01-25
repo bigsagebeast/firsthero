@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public enum Burden {
     UNBURDENED("", "You are no longer burdened.", Color.WHITE),
-    BURDENED("Burdened", "You are now burdened by weight.", Color.WHITE),
+    BURDENED("Burdened", "You are now burdened by weight.", Color.YELLOW),
     STRAINED("Strained", "You are now strained by weight.", Color.YELLOW),
     OVERLOADED("Overloaded!", "You are now overloaded by weight!", Color.RED);
 

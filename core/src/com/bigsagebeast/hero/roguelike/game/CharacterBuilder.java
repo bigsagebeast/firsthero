@@ -3,8 +3,13 @@ package com.bigsagebeast.hero.roguelike.game;
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.DialogueBox;
 import com.bigsagebeast.hero.enums.Stat;
+import com.bigsagebeast.hero.glyphtile.EntityGlyph;
+import com.bigsagebeast.hero.glyphtile.Palette;
+import com.bigsagebeast.hero.glyphtile.PaletteEntry;
 import com.bigsagebeast.hero.roguelike.world.*;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.Consumer;
 
 public class CharacterBuilder {
@@ -114,10 +119,10 @@ public class CharacterBuilder {
             case "warrior":
                 entity.statblock.change(Stat.STRENGTH, 4, true);
                 entity.statblock.change(Stat.TOUGHNESS, 6, true);
-                //entity.statblock.change(Stat.DEXTERITY, 2);
-                //entity.statblock.change(Stat.AGILITY, 4);
-                //entity.statblock.change(Stat.WILLPOWER, 4);
                 entity.statblock.change(Stat.ARCANUM, -2, true);
+                entity.glyphNames = Collections.singletonList("player.warrior").toArray(new String[0]);
+                entity.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_PINK, Palette.COLOR_BLUE);
+                EntityGlyph.updateEntity(entity);
                 break;
             case "archer":
                 entity.statblock.change(Stat.TOUGHNESS, 2, true);
@@ -126,12 +131,19 @@ public class CharacterBuilder {
                 entity.statblock.change(Stat.WILLPOWER, -2, true);
                 entity.statblock.change(Stat.ARCANUM, -2, true);
                 entity.statblock.change(Stat.PERCEPTION, 4, true);
+                entity.glyphNames = Collections.singletonList("player.archer").toArray(new String[0]);
+                entity.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_DARKGREEN, Palette.COLOR_YELLOW);
+                EntityGlyph.updateEntity(entity);
                 break;
             case "wizard":
                 entity.statblock.change(Stat.STRENGTH, -2, true);
                 entity.statblock.change(Stat.AGILITY, -2, true);
                 entity.statblock.change(Stat.WILLPOWER, 6, true);
                 entity.statblock.change(Stat.ARCANUM, 6, true);
+                entity.glyphNames = Collections.singletonList("player.wizard").toArray(new String[0]);
+                entity.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_RED, Palette.COLOR_YELLOW);
+                EntityGlyph.updateEntity(entity);
+                break;
         }
         entity.recalculateSecondaryStats();
     }

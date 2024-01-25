@@ -176,7 +176,7 @@ public class Game {
 		ChatBox chatBox = new ChatBox()
 				.withMargins(60, 60)
 				.withTitle("Tutorial", null)
-				.withText("The First Hero is a turn-based game. To move or attack, use all eight directions of the numpad. If you don't have a full numpad, alt-left and right move in the northern diagonals, and ctrl-left and right move in the southern diagonals. Watch the 'Announcements' window for more information.");
+				.withText("The First Hero is a turn-based game. To move or attack, use all eight directions of the numpad. If you don't have a full numpad, alt-left and right move in the northern diagonals, and ctrl-left and right move in the southern diagonals. Watch the 'Announcements' window for more information.\n\nConsider talking to your parents before you go (walk into them).");
 
 		ArrayList<ChatLink> links = new ArrayList<>();
 		ChatLink linkOk = new ChatLink();

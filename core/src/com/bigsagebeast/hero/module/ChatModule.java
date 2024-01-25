@@ -14,6 +14,7 @@ import com.bigsagebeast.hero.glyphtile.GlyphTile;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Bestiary;
 import com.bigsagebeast.hero.roguelike.world.Entity;
+import com.bigsagebeast.hero.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,7 +41,7 @@ public class ChatModule extends Module {
         if (entity.getPhenotype().chatName != null) {
             name = entity.getPhenotype().chatName;
         } else {
-            name = entity.getVisibleName();
+            name = Util.capitalize(entity.getVisibleName());
         }
         openStory(page, "` " + name, EntityGlyph.getGlyph(entity));
     }

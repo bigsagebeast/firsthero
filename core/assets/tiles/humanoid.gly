@@ -1,4 +1,4 @@
-1 11
+1 15
 0 0 player.farmer
 0 1 humanoid.goblin.grunt
 0 2 humanoid.goblin.warrior
@@ -10,3 +10,7 @@
 0 8 humanoid.atsign
 0 9 humanoid.sprite # orange, purple, chartreuse/other
 0 10 humanoid.kobold.shaman # brown, chartreuse, green
+0 11 player.warrior # white, purple, blue
+0 12 player.archer # white, darkgreen, yellow
+0 13 player.wizard # white, red, yellow
+0 14 humanoid.farmer # white, yellow, tan

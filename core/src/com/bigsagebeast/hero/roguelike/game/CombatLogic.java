@@ -11,6 +11,7 @@ import com.bigsagebeast.hero.roguelike.world.proc.effect.ProcEffectTimedMissileD
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponAmmo;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponMelee;
 import com.bigsagebeast.hero.roguelike.world.proc.item.ProcWeaponRanged;
+import com.bigsagebeast.hero.util.Point;
 
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
@@ -267,6 +268,22 @@ public class CombatLogic {
 			accuracyBonus = actor.getNaturalRangedWeaponToHit() + pwa.toHitBonus(ammo, actor);
 			penetration = 0; // TODO
 		}
+
+		if (actor == Game.getPlayerEntity()) {
+			boolean hasNeighboringHostile = false;
+			for (Point p : Game.getLevel().surroundingTiles(actor.pos)) {
+				for (Entity entity : Game.getLevel().getEntitiesOnTile(p)) {
+					// kinda weird hack to determine if we're in melee
+					if (entity.getMover() != null && entity.getMover().targetEntityId == actor.entityId) {
+						hasNeighboringHostile = true;
+					}
+				}
+			}
+			if (hasNeighboringHostile) {
+				accuracyBonus -= 3;
+			}
+		}
+
 		Float floatDamage = averageDamage * randomFactor * getDamageReceivedMultiplier(target);
 		result.damage = Math.round(floatDamage);
 		accuracy = Math.round(accuracyBonus + Game.random.nextInt(20));
