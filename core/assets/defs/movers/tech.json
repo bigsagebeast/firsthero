@@ -3,6 +3,7 @@
     "homiform.mirror": {
       "name": "mirror homiform",
       "description": "A thousand glittering facets in humanoid shape, this homiform was crafted by Bodnam hands to serve its masters in their great spired cities - or perhaps it's the result of their tools gone mad.",
+      "corpseMethodPre": "doppelganger",
       "peaceful": false,
       "hitPoints": 16,
       "isMonster": true,

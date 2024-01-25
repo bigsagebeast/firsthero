@@ -147,6 +147,11 @@ public class ProcCorpse extends Proc {
         return Boolean.FALSE;
     }
 
+    public Boolean homiform(Entity entity, Entity actor) {
+        Game.announce("This is just rubber, plastic and metal. It's not edible.");
+        return Boolean.FALSE;
+    }
+
     public void poisonAndGainResistance(Entity entity, Entity actor) {
         if (actor == Game.getPlayerEntity()) {
             boolean alreadyResists = actor.getProcsByTypeIncludingEquipment(Collections.singletonList(ProcResistDamageType.class)).stream()

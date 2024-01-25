@@ -12,6 +12,14 @@ public class LoadingTips {
     public static boolean noMoreTips = false;
 
     public static void showNextTip() {
+        showNextTip(false);
+    }
+
+    public static void showNextTipWithPreselect() {
+        showNextTip(true);
+    }
+
+    public static void showNextTip(boolean preselect) {
         if (noMoreTips) {
             return;
         }
@@ -24,18 +32,22 @@ public class LoadingTips {
                 .withTitle("Tips - " + tip.title, null)
                 .withText(tip.message);
 
-        ArrayList<ChatLink> links = new ArrayList<>();
+        if (preselect) {
+            chatBox.withSelection(0);
+        }
 
-        ChatLink linkNext = new ChatLink();
-        linkNext.text = "Next tip";
-        linkNext.runnable = LoadingTips::showNextTip;
-        linkNext.terminal = true;
-        links.add(linkNext);
+        ArrayList<ChatLink> links = new ArrayList<>();
 
         ChatLink linkClose = new ChatLink();
         linkClose.text = "Close";
         linkClose.terminal = true;
         links.add(linkClose);
+
+        ChatLink linkNext = new ChatLink();
+        linkNext.text = "Next tip";
+        linkNext.runnable = LoadingTips::showNextTipWithPreselect;
+        linkNext.terminal = true;
+        links.add(linkNext);
 
         ChatLink linkNoMore = new ChatLink();
         linkNoMore.text = "Don't show any more tips";

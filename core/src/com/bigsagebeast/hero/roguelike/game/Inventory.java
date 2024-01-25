@@ -27,6 +27,9 @@ public class Inventory {
     private static int promptQuantityDefault;
     private static BiConsumer<Entity, Integer> promptQuantityHandler;
 
+    private static Runnable runAfter = null;
+    private static Object lastSelected;
+
     public static void doWield() {
         DialogueBox box = doWieldGeneral()
                 .withTitle("Select slot to wear or wield an item");
@@ -36,7 +39,9 @@ public class Inventory {
 
     public static void doWieldForDescriptions() {
         DialogueBox box = doWieldGeneral()
-                .withTitle("Select slot to inspect its contents");
+                .withTitle("Select slot to inspect its contents")
+                .withSelection(lastSelected);
+        lastSelected = null;
         box.addItem("Wear/wield equipment", "wield");
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleWieldForInspectResponse);
     }
@@ -117,7 +122,9 @@ public class Inventory {
             return;
         }
         BodyPart bp = (BodyPart)response;
+        lastSelected = response;
         Entity equipped = Game.getPlayerEntity().body.getEquipment(bp);
+        runAfter = Inventory::doWieldForDescriptions;
         handleInventoryInspectResponse(equipped);
     }
 
@@ -443,6 +450,10 @@ public class Inventory {
                 addEntityWithWidth(box, ent, 42);
             }
         }
+        box.withSelection(lastSelected);
+        lastSelected = null;
+
+        runAfter = Inventory::openInventoryToInspect;
         GameLoop.dialogueBoxModule.openDialogueBox(box, Inventory::handleInventoryInspectResponse);
     }
 
@@ -452,7 +463,9 @@ public class Inventory {
         }
         Entity ent = (Entity)chosenEntity;
         String description = GameEntities.describeItem(ent);
-
+        if (lastSelected == null) {
+            lastSelected = chosenEntity;
+        }
         ChatBox chatBox = new ChatBox()
                 .withMargins(60, 60)
                 .withTitle("` " + ent.getVisibleNameIndefiniteOrSpecific(), EntityGlyph.getGlyph(ent))
@@ -461,6 +474,7 @@ public class Inventory {
         ArrayList<ChatLink> links = new ArrayList<>();
         ChatLink linkOk = new ChatLink();
         linkOk.text = "OK";
+        linkOk.runnable = runAfter;
         links.add(linkOk);
 
         GameLoop.chatModule.openArbitrary(chatBox, links);

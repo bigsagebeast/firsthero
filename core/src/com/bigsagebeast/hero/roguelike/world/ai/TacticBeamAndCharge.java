@@ -28,6 +28,9 @@ public class TacticBeamAndCharge extends Tactic {
         if (pm.targetEntityId == EntityTracker.NONE || Game.random.nextInt(100) > castPercent) {
             return executeChaseAndMelee(e, pm);
         }
+        if (!e.canSee(EntityTracker.get(pm.targetEntityId))) {
+            return executeChaseAndMelee(e, pm);
+        }
         Entity target = EntityTracker.get(pm.targetEntityId);
         Compass aimDir = Compass.findDir(e.pos, target.pos);
         if (aimDir == null) {

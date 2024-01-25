@@ -110,6 +110,24 @@ public class DialogueBox {
         return this;
     }
 
+    public DialogueBox withSelection(Object key) {
+        if (key == null) {
+            return this;
+        }
+        int selectionIndex = -1;
+        for (int i=0; i<mapping.size(); i++) {
+            if (mapping.get(i).equals(key)) {
+                selectionIndex = i;
+            }
+        }
+        for (int i=0; i<lines.size(); i++) {
+            if (lines.get(i).value == selectionIndex) {
+                selection = i;
+            }
+        }
+        return this;
+    }
+
     public void addHeader(String text) {
         if (lines.size() > 0) {
             DialogueLine spacer = new DialogueLine();
@@ -243,9 +261,24 @@ public class DialogueBox {
             linesFit -= 2;
         }
 
-        selectNext();
+        selectFirst();
 
         compiled = true;
+    }
+
+    private void selectFirst() {
+        if (selection < 0) {
+            for (int i = 0; i < lines.size(); i++) {
+                if (lines.get(i).value > -1) {
+                    selection = i;
+                    break;
+                }
+            }
+        }
+        if (selection > -1) {
+            lines.get(selection).textBlock.text = ">" + lines.get(selection).textBlock.text.substring(1);
+        }
+        shiftLines();
     }
 
     private void selectNext() {

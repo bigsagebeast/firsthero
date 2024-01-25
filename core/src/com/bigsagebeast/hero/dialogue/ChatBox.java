@@ -83,6 +83,11 @@ public class ChatBox {
         return this;
     }
 
+    public ChatBox withSelection(int line) {
+        selection = line;
+        return this;
+    }
+
     public void addLink(String text) {
         StoryBoxLink link = new StoryBoxLink();
         link.text = text;

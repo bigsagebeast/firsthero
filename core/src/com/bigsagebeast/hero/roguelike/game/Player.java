@@ -24,6 +24,8 @@ public class Player {
 	public HashMap<Element, Integer> maxElementCharges = new HashMap<>();
 	public float satiation = Satiation.startingSatiation;
 
+	public Object lastUpgradedStat = null;
+
 	public Player() {
 		maxElementCharges.put(Element.WATER, 4);
 		maxElementCharges.put(Element.LIGHTNING, 4);
@@ -189,12 +191,15 @@ public class Player {
 		}
 		box.addItem("Save points for next level", "SAVE");
 		box.autoHeight();
+		box.withSelection(lastUpgradedStat);
+
 		GameLoop.dialogueBoxModule.openDialogueBox(box, this::handleLevelUp);
 	}
 
 	private void handleLevelUp(Object result) {
 		String resultString = (String)result;
 		if (!result.equals("SAVE")) {
+			lastUpgradedStat = result;
 			Stat stat = Stat.valueOf(resultString);
 			if (statPoints >= getCostForStat(stat)) {
 				statPoints -= getCostForStat(stat);
@@ -203,10 +208,14 @@ public class Player {
 				getEntity().recalculateSecondaryStats();
 				if (statPoints > 0) {
 					levelUpDialogue();
+				} else {
+					lastUpgradedStat = null;
 				}
 			} else {
 				levelUpDialogue();
 			}
+		} else {
+			lastUpgradedStat = null;
 		}
 	}
 

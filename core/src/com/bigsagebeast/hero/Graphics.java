@@ -52,6 +52,8 @@ public class Graphics {
 	}
 
 	public static void swapFullscreen() {
+		// TODO:  Disabled until I can fix alt-tab when fullscreen
+		/*
 		if (fullscreen) {
 			fullscreen = false;
 			Gdx.graphics.setWindowedMode(lastWindowedWidth, lastWindowedHeight);
@@ -59,6 +61,7 @@ public class Graphics {
 			fullscreen = true;
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		}
+		 */
 	}
 
 	public void resize(int x, int y) {

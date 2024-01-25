@@ -552,6 +552,7 @@ public class RoguelikeModule extends Module {
 				.withTitle("Commands");
 		box.addItem("Keypad       Move or attack", null);
 		box.addItem("Shift Keypad Move long distances", null);
+		box.addItem("Mousewheel   Zoom main window", null);
 		box.addItem("Keypad 5     Wait (also backspace)", "5");
 		box.addItem("Shift KP 5   Rest (also shift backspace)", "~");
 		box.addItem("c            Chat to an NPC", "c");
