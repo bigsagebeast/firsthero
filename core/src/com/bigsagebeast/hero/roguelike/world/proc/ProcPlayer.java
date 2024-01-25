@@ -1,7 +1,5 @@
 package com.bigsagebeast.hero.roguelike.world.proc;
 
-import com.bigsagebeast.hero.dialogue.DialogueBox;
-import com.bigsagebeast.hero.enums.Satiation;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.roguelike.game.Game;
@@ -40,7 +38,7 @@ public class ProcPlayer extends ProcMover {
                             if (missing > 0) {
                                 int retrieved = proc.drawElement(e, playerEntity, missing);
                                 if (retrieved > 0) {
-                                    Game.announceGood("You draw " + retrieved + " " + element.name + " charge" + (retrieved == 1 ? "" : "s") + " from " + e.getVisibleNameDefinite() + ".");
+                                    Game.announceGood("You draw " + retrieved + " " + element.description + " charge" + (retrieved == 1 ? "" : "s") + " from " + e.getVisibleNameDefinite() + ".");
                                     Game.getPlayer().changeCharges(element, retrieved);
                                 }
                             }

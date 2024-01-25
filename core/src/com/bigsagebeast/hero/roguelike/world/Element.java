@@ -8,7 +8,7 @@ public enum Element {
     LIGHTNING("lightning", "L"),
     NATURAE("naturae", "N");
 
-    public String name;
+    public String description;
     public String symbol;
 
     private static HashMap<String, Element> symbols = new HashMap<>();
@@ -23,8 +23,8 @@ public enum Element {
         return symbols.get(symbol);
     }
 
-    Element(String name, String symbol) {
-        this.name = name;
+    Element(String description, String symbol) {
+        this.description = description;
         this.symbol = symbol;
     }
 }

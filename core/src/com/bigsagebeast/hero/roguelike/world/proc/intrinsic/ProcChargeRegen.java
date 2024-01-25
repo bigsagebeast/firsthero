@@ -1,6 +1,7 @@
 package com.bigsagebeast.hero.roguelike.world.proc.intrinsic;
 
 import com.bigsagebeast.hero.enums.Beatitude;
+import com.bigsagebeast.hero.enums.DamageType;
 import com.bigsagebeast.hero.roguelike.game.Game;
 import com.bigsagebeast.hero.roguelike.world.Element;
 import com.bigsagebeast.hero.roguelike.world.Entity;
@@ -13,6 +14,13 @@ public class ProcChargeRegen extends Proc {
     private Element element;
 
     public ProcChargeRegen() { super(); }
+
+    public ProcChargeRegen(int rate, Element element) {
+        this.chargeAccumulator = 0;
+        this.rate = rate;
+        this.element = element;
+    }
+
     @Override
     public void turnPassed(Entity entity) {
         // TODO isEquipped
@@ -41,4 +49,19 @@ public class ProcChargeRegen extends Proc {
         }
     }
 
+    @Override
+    public int getDescriptionPriority(Entity entity) {
+        return 1;
+    }
+
+    @Override
+    public String getIdenDescription(Entity entity) {
+        // TODO pluralize
+        return "It recharges your " + element.description + " element every " + rate + " turns.";
+    }
+
+    @Override
+    public Proc clone(Entity entity) {
+        return new ProcChargeRegen(rate, element);
+    }
 }

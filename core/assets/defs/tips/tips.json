@@ -10,7 +10,7 @@
     },
     {
       "title": "Spells and techniques",
-      "message": "Press 'z' to open a list of spells, weapon techniques, and divine powers, cast them, or view their descriptions. Spells and weapon techniques are powered by SP, while divine powers are powered by DP. You must be wielding a weapon in your primary hand to see its weapon type's techniques."
+      "message": "Press 'z' to open a list of spells, weapon techniques, and divine powers, cast them, or view their descriptions. Spells and weapon techniques are powered by SP, while divine powers are powered by DP. You must be wielding a weapon in your primary hand to see its weapon type's techniques. (nb: polearm techniques are not implemented.)"
     },
     {
       "title": "Looking around",

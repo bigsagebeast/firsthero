@@ -1,0 +1,177 @@
+{
+  "items": {
+    "gloves.riding": {
+      "unidGroup": "gloves1",
+      "unidentifiedName": "riding gloves",
+      "unidentifiedPluralName": "riding gloves",
+      "unidDescription": "Supple riding gloves crafted from fine leather, designed for comfort and control during long journeys on horseback.",
+      "glyphName": "gloves.basic",
+      "palette": [
+        "yellow",
+        "red"
+      ]
+    },
+    "gloves.gardening": {
+      "unidGroup": "gloves1",
+      "unidentifiedName": "gardening gloves",
+      "unidentifiedPluralName": "gardening gloves",
+      "unidDescription": "Gloves that are thick leather on the palm side, and looser cloth on the back.",
+      "glyphName": "gloves.basic",
+      "palette": [
+        "tan",
+        "red"
+      ]
+    },
+    "gloves.fencing": {
+      "unidGroup": "gloves1",
+      "unidentifiedName": "fencing gloves",
+      "unidentifiedPluralName": "fencing gloves",
+      "unidDescription": "Durable reinforced gloves designed with precision and flexibility in mind.",
+      "glyphName": "gloves.basic",
+      "palette": [
+        "darkgreen",
+        "red"
+      ]
+    },
+    "gloves.silk": {
+      "unidGroup": "gloves1",
+      "unidentifiedName": "silk gloves",
+      "unidentifiedPluralName": "silk gloves",
+      "unidDescription": "Fine silk gloves designed to showcase the bearer's noble station.",
+      "glyphName": "gloves.basic",
+      "palette": [
+        "white",
+        "red"
+      ]
+    },
+    "gloves.minstrels": {
+      "unidGroup": "gloves1",
+      "unidentifiedName": "minstrel's gloves",
+      "unidentifiedPluralName": "minstrel's gloves",
+      "unidDescription": "Fancy embroidered gloves designed to maintain dextrous movements.",
+      "glyphName": "gloves.basic",
+      "palette": [
+        "skyblue",
+        "red"
+      ]
+    },
+    "gloves.power": {
+      "idenGroup": "gloves1",
+      "name": "gloves of power",
+      "pluralName": "gloves of power",
+      "description": "This pair of gloves boosts the wearer's strength.",
+      "category": "gloves",
+      "equipmentFor": "hands",
+      "weight": 0.5,
+      "identityHidden": true,
+      "level": 3,
+      "frequency": 50,
+      "procs": {
+        "intrinsic.ProcStatModifier": {
+          "stat": "STRENGTH",
+          "value": 2
+        }
+      },
+      "tags": [
+        "gloves",
+        "helpful",
+        "generic-fantasy"
+      ]
+    },
+    "gloves.weakness": {
+      "idenGroup": "gloves1",
+      "name": "gloves of weakness",
+      "pluralName": "gloves of weakness",
+      "description": "This pair of gloves saps the wearer's strength.",
+      "category": "gloves",
+      "equipmentFor": "hands",
+      "weight": 0.5,
+      "identityHidden": true,
+      "level": 3,
+      "frequency": 25,
+      "curseChance": 100,
+      "blessChance": 0,
+      "procs": {
+        "intrinsic.ProcStatModifier": {
+          "stat": "STRENGTH",
+          "value": -2
+        }
+      },
+      "tags": [
+        "gloves",
+        "harmful",
+        "generic-fantasy"
+      ]
+    },
+    "gloves.accuracy": {
+      "idenGroup": "gloves1",
+      "name": "gloves of accuracy",
+      "pluralName": "gloves of accuracy",
+      "description": "This pair of gloves helps guide the wearer's hands.",
+      "category": "gloves",
+      "equipmentFor": "hands",
+      "weight": 0.5,
+      "identityHidden": true,
+      "level": 3,
+      "frequency": 50,
+      "procs": {
+        "intrinsic.ProcStatModifier": {
+          "stat": "DEXTERITY",
+          "value": 2
+        }
+      },
+      "tags": [
+        "gloves",
+        "helpful",
+        "generic-fantasy"
+      ]
+    },
+    "gloves.clumsiness": {
+      "idenGroup": "gloves1",
+      "name": "gloves of clumsiness",
+      "pluralName": "gloves of clumsiness",
+      "description": "This pair of gloves makes it magically more difficult to hold onto things.",
+      "category": "gloves",
+      "equipmentFor": "hands",
+      "weight": 0.5,
+      "identityHidden": true,
+      "level": 3,
+      "frequency": 25,
+      "curseChance": 100,
+      "blessChance": 0,
+      "procs": {
+        "intrinsic.ProcStatModifier": {
+          "stat": "DEXTERITY",
+          "value": -2
+        }
+      },
+      "tags": [
+        "gloves",
+        "harmful",
+        "generic-fantasy"
+      ]
+    },
+    "gloves.resistance.fire": {
+      "idenGroup": "gloves1",
+      "name": "gloves of fire resistance",
+      "pluralName": "gloves of fire resistance",
+      "description": "This pair of gloves conveys magical resistance to fire.",
+      "category": "gloves",
+      "equipmentFor": "hands",
+      "weight": 0.5,
+      "identityHidden": true,
+      "level": 3,
+      "frequency": 50,
+      "procs": {
+        "intrinsic.ProcResistDamageType": {
+          "damageType": "FIRE"
+        }
+      },
+      "tags": [
+        "gloves",
+        "helpful",
+        "generic-fantasy"
+      ]
+    }
+  }
+}

@@ -500,7 +500,7 @@ public class Inventory {
     }
 
     private static void addWeight(Entity entity, TextBlock tb, int width) {
-        TextBlock weight = new TextBlock(Util.weightString(entity.getWeight()));
+        TextBlock weight = new TextBlock(Util.weightStringSpaced(entity.getWeight()));
         weight.x = width;
         tb.addChild(weight);
     }

@@ -81,7 +81,11 @@ public class GameEntities {
             if (unid != null) {
                 sb.append("\n").append(unid);
             }
-            if (ent.getWeight() > 0) {
+        }
+        if (ent.getWeight() > 0) {
+            if (pi.quantity > 1) {
+                sb.append("\nTogether, " + pi.quantity + " of them weigh " + Util.weightString(ent.getWeight()) + ".");
+            } else {
                 sb.append("\nIt weighs " + Util.weightString(ent.getWeight()) + ".");
             }
         }

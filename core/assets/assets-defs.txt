@@ -1,10 +1,11 @@
 defs/environment/features.json
 defs/items/armor.json
 defs/items/books.json
-defs/items/potions-identified.json
-defs/items/potions-unidentified.json
+defs/items/gloves.json
 defs/items/jewelry-identified.json
 defs/items/jewelry-unidentified.json
+defs/items/potions-identified.json
+defs/items/potions-unidentified.json
 defs/items/scrolls-identified.json
 defs/items/scrolls-unidentified.json
 defs/items/misc.json

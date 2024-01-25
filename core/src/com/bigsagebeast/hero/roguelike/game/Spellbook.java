@@ -182,7 +182,7 @@ public class Spellbook {
 
         for (Element element : spell.getElementCost(caster).keySet()) {
             int charges = spell.getElementCost(caster).get(element);
-            sb.append(", " + charges + " " + element.name);
+            sb.append(", " + charges + " " + element.description);
             sb.append(charges == 1 ? " charge" : " charges");
         }
 

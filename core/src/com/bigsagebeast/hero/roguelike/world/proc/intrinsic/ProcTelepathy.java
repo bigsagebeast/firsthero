@@ -34,4 +34,15 @@ public class ProcTelepathy extends Proc {
         }
     }
 
+    @Override
+    public int getDescriptionPriority(Entity entity) {
+        return 1;
+    }
+
+    @Override
+    public String getIdenDescription(Entity entity) {
+        // TODO pluralize
+        return "It grants telepathy, which allows you to see monsters that are not mindless from a distance.";
+    }
+
 }

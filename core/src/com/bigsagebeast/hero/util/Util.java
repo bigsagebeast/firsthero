@@ -114,7 +114,11 @@ public class Util {
         return ((int)(input * precision)) / (float)precision;
     }
 
-    public static String weightString(float input) {
+    public static String weightStringSpaced(float input) {
         return String.format("%5.1fkg", input);
+    }
+
+    public static String weightString(float input) {
+        return String.format("%1.1fkg", input);
     }
 }

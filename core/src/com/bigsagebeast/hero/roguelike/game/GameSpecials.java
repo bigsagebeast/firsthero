@@ -2,6 +2,7 @@ package com.bigsagebeast.hero.roguelike.game;
 
 import com.bigsagebeast.hero.GameLoop;
 import com.bigsagebeast.hero.dialogue.TextEntryBox;
+import com.bigsagebeast.hero.enums.Stat;
 import com.bigsagebeast.hero.roguelike.world.*;
 import com.bigsagebeast.hero.util.Point;
 import com.bigsagebeast.hero.util.Util;
@@ -107,5 +108,26 @@ public class GameSpecials {
         Game.announce("You summon " + entity.getVisibleNameIndefiniteOrSpecific() + ".");
     }
 
-
+    public static void announceStatChange(Stat stat, int delta) {
+        if (stat == null) {
+            GameLoop.error("Changed unknown stat");
+            return;
+        }
+        switch (stat) {
+            case STRENGTH:
+                if (delta > 0) {
+                    Game.announceGood("You feel stronger.");
+                } else if (delta < 0) {
+                    Game.announceBad("You feel weaker.");
+                }
+                break;
+            case DEXTERITY:
+                if (delta > 0) {
+                    Game.announceGood("You feel more dexterous.");
+                } else if (delta < 0) {
+                    Game.announceBad("You feel more clumsy.");
+                }
+                break;
+        }
+    }
 }

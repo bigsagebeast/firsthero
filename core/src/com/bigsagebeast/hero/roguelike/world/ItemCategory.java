@@ -11,6 +11,8 @@ public class ItemCategory {
     public static ItemCategory CATEGORY_RANGED = new ItemCategory("Ranged Weapons", "rangedweapon");
     public static ItemCategory CATEGORY_HELMETS = new ItemCategory("Helmets", "head");
     public static ItemCategory CATEGORY_BODY = new ItemCategory("Body Armor", "body");
+    public static ItemCategory CATEGORY_GLOVES = new ItemCategory("Gloves", "gloves");
+    public static ItemCategory CATEGORY_BOOTS = new ItemCategory("Boots", "boots");
     public static ItemCategory CATEGORY_RINGS = new ItemCategory("Rings", "ring");
     public static ItemCategory CATEGORY_AMMO = new ItemCategory("Ammunition", "ammunition");
     public static ItemCategory CATEGORY_POTION = new ItemCategory("Potions", "potion");
@@ -27,6 +29,8 @@ public class ItemCategory {
         categories.add(CATEGORY_SHIELDS);
         categories.add(CATEGORY_HELMETS);
         categories.add(CATEGORY_BODY);
+        categories.add(CATEGORY_GLOVES);
+        categories.add(CATEGORY_BOOTS);
         categories.add(CATEGORY_RINGS);
         categories.add(CATEGORY_RANGED);
         categories.add(CATEGORY_AMMO);

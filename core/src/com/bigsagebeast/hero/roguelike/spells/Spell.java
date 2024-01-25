@@ -148,7 +148,7 @@ public abstract class Spell {
         Map<Element, Integer> elementCost = getElementCost(Game.getPlayerEntity());
         for (Element element : elementCost.keySet()) {
             if (Game.getPlayer().currentElementCharges.get(element) < elementCost.get(element)) {
-                Game.announce("You don't have enough " + element.name + " charges for that.");
+                Game.announce("You don't have enough " + element.description + " charges for that.");
                 return;
             }
         }
