@@ -134,6 +134,7 @@ public class CharacterBuilder {
                 entity.glyphNames = Collections.singletonList("player.archer").toArray(new String[0]);
                 entity.palette = new PaletteEntry(Palette.COLOR_WHITE, Palette.COLOR_DARKGREEN, Palette.COLOR_YELLOW);
                 EntityGlyph.updateEntity(entity);
+                LoadingTips.nextIndex = 10;
                 break;
             case "wizard":
                 entity.statblock.change(Stat.STRENGTH, -2, true);

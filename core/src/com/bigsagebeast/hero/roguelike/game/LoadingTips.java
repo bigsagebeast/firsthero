@@ -26,16 +26,16 @@ public class LoadingTips {
 
         ArrayList<ChatLink> links = new ArrayList<>();
 
-        ChatLink linkClose = new ChatLink();
-        linkClose.text = "Close";
-        linkClose.terminal = true;
-        links.add(linkClose);
-
         ChatLink linkNext = new ChatLink();
         linkNext.text = "Next tip";
         linkNext.runnable = LoadingTips::showNextTip;
         linkNext.terminal = true;
         links.add(linkNext);
+
+        ChatLink linkClose = new ChatLink();
+        linkClose.text = "Close";
+        linkClose.terminal = true;
+        links.add(linkClose);
 
         ChatLink linkNoMore = new ChatLink();
         linkNoMore.text = "Don't show any more tips";

@@ -903,7 +903,7 @@ public class Game {
 			Compass dir = Compass.randomDirection();
 			dx = dir.getX();
 			dy = dir.getY();
-			Game.announceBad("You are confused!");
+			Game.announceLoud("You are confused!");
 		}
 		int tx = getPlayerEntity().pos.x + dx;
 		int ty = getPlayerEntity().pos.y + dy;

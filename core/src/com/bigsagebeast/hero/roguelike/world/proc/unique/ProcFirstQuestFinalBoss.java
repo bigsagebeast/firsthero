@@ -63,7 +63,7 @@ public class ProcFirstQuestFinalBoss extends Proc {
         ChatBox chatBox = new ChatBox()
                 .withMargins(60, 60)
                 .withTitle("An Enemy Falls", null)
-                .withText("As G'Chakk hits the ground, you feel a sense of divine empowerment fill your body and soul. Your mission is accomplished, and you have regained some of your lost essence.");
+                .withText("As G'Chakk hits the ground, you feel a sense of divine empowerment fill your body and soul. Your mission is accomplished, and you have regained some of your lost essence.\n\nYou have completed the demo.");
 
         ArrayList<ChatLink> links = new ArrayList<>();
         ChatLink linkOk = new ChatLink();

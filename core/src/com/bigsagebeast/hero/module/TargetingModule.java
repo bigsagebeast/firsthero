@@ -128,7 +128,7 @@ public class TargetingModule extends Module {
             instructions = new TextBlock("Tab to cycle targets, space to finish looking around", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
                     0, 0, 20, 0, Color.WHITE);
         } else {
-            instructions = new TextBlock("'t' to select target, tab to cycle targets, space to cancel", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
+            instructions = new TextBlock("'f' to select target, tab to cycle targets, space to cancel", UIManager.NAME_MAIN_WINDOW, RoguelikeModule.FONT_SIZE,
                     0, 0, 20, 0, Color.WHITE);
         }
         instructions.compile();
@@ -343,6 +343,7 @@ public class TargetingModule extends Module {
                 break;
             case Input.Keys.ENTER:
             case Input.Keys.NUMPAD_ENTER:
+            case Input.Keys.F:
             case Input.Keys.T:
                 select(targetTile);
                 break;

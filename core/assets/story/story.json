@@ -31,7 +31,7 @@
       ]
     },
     "intro.father.page2": {
-      "text": "Your father's eyes well up with tears. \"You're a brave boy, but I can't let you go off to fight for us empty-handed. Yet if you're truly set on it, at least take the pitchfork. It's better than nothing.\"",
+      "text": "Your father's eyes well up with tears. \"You're a brave boy, but I can't let you go off to fight for us empty-handed. Yet if you're truly set on it, at least take the pitchfork outside. It's better than nothing.\"",
       "links": [
         {
           "nextPage": "intro.father.page1",

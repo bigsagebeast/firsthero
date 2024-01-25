@@ -259,20 +259,20 @@ public class RoguelikeModule extends Module {
 				case Keys.E:
 					Game.cmdEat();
 					break;
+				case Keys.F:
+					Game.cmdTarget();
+					break;
 				case Keys.G:
 					Game.cmdPickup();
+					break;
+				case Keys.I:
+					Game.cmdInventory();
 					break;
 				case Keys.L:
 					Game.cmdLook();
 					break;
 				case Keys.M:
 					toggleMusic();
-					break;
-				case Keys.Z:
-					Game.cmdMagic();
-					break;
-				case Keys.I:
-					Game.cmdInventory();
 					break;
 				case Keys.O:
 					Game.cmdOpen();
@@ -287,10 +287,13 @@ public class RoguelikeModule extends Module {
 					Game.cmdRead();
 					break;
 				case Keys.T:
-					Game.cmdTarget();
+					Game.cmdThrow();
 					break;
 				case Keys.W:
 					Game.cmdWield();
+					break;
+				case Keys.Z:
+					Game.cmdMagic();
 					break;
 				case Keys.ENTER:
 				case Keys.NUMPAD_ENTER:
@@ -349,15 +352,16 @@ public class RoguelikeModule extends Module {
 				case Keys.S:
 					//Game.cmdSave();
 					break;
-				case Keys.T:
-					Game.cmdThrow();
-					break;
 				case Keys.PERIOD:
 					Game.cmdStairsDown();
 					break;
 				case Keys.COMMA:
 					Game.cmdStairsUp();
 					break;
+				case Keys.SLASH:
+					popupCommands();
+					break;
+
 				case Keys.BACKSLASH:
 					if (cheats) {
 						Game.getPlayerEntity().acquireWithStacking(Itempedia.create("scroll.magic.map", 100));
@@ -553,6 +557,7 @@ public class RoguelikeModule extends Module {
 		box.addItem("c            Chat to an NPC", "c");
 		box.addItem("d            Drop an item", "d");
 		box.addItem("e            Eat something (including off the ground)", "e");
+		box.addItem("f            Fire ranged attack", "f");
 		box.addItem("g            Pick up an item", "g");
 		box.addItem("i            Check inventory", "i");
 		box.addItem("l            Look around", "l");
@@ -561,8 +566,7 @@ public class RoguelikeModule extends Module {
 		box.addItem("p            Pray", "p");
 		box.addItem("q            Quaff a potion", "q");
 		box.addItem("r            Read a scroll or book", "r");
-		box.addItem("t            Target ranged attack", "t");
-		box.addItem("T            Throw a potion or non-ranged item", "T");
+		box.addItem("t            Throw a potion or non-ranged item", "t");
 		box.addItem("w            Wear or wield", "w");
 		box.addItem("z            Cast a magic spell", "z");
 		box.addItem("<            Go up stairs", "<");
@@ -592,6 +596,9 @@ public class RoguelikeModule extends Module {
 			case "e":
 				Game.cmdEat();
 				break;
+			case "f":
+				Game.cmdTarget();
+				break;
 			case "g":
 				Game.cmdPickup();
 				break;
@@ -617,9 +624,6 @@ public class RoguelikeModule extends Module {
 				Game.cmdRead();
 				break;
 			case "t":
-				Game.cmdTarget();
-				break;
-			case "T":
 				Game.cmdThrow();
 				break;
 			case "w":

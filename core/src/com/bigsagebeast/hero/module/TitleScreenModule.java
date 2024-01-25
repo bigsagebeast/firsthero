@@ -38,7 +38,8 @@ public class TitleScreenModule extends Module {
 
 		//textEngine.addBlock(new TextBlock("@", null, 332f, 2.5f, 0.4f, Color.DARK_GRAY, 0f, 0f, null, null));
 
-		textEngine.addBlock(new TextBlock("Music credit: WolfMeryX", null, 14, 2, 52, Color.WHITE, -1f, -1f));
+		textEngine.addBlock(new TextBlock("Game credits: Timothy Cook (BigSageBeast studios)", null, 14, 20, 50, Color.WHITE, -1f, -1f));
+		textEngine.addBlock(new TextBlock("Music credit: WolfMeryX", null, 14, 20, 52, Color.WHITE, -1f, -1f));
 		
 		options[0] = new TextBlock("  Continue", null, 14, 18, 29, Color.WHITE, 0f, 0f);
 		options[1] = new TextBlock("> New Game", null, 14, 18, 30, Color.YELLOW, 0f, 0f);

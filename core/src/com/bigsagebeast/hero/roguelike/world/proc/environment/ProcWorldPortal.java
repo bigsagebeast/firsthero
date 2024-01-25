@@ -30,7 +30,7 @@ public class ProcWorldPortal extends Proc {
 
             ArrayList<ChatLink> links = new ArrayList<>();
             ChatLink linkOk = new ChatLink();
-            linkOk.text = "OK";
+            linkOk.text = "I will enter this portal when I am ready.";
             linkOk.terminal = true;
             links.add(linkOk);
 
