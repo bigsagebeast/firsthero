@@ -24,7 +24,7 @@ public class MusicPlayer {
         bossMusic = Gdx.audio.newMusic(Gdx.files.internal("music/forgotten facility sketch v3.mp3"));
         aurexMusic = Gdx.audio.newMusic(Gdx.files.internal("music/01 Vignette Dreams.mp3"));
         loopTracks.add(Gdx.audio.newMusic(Gdx.files.internal("music/not a perfect rainstorm.mp3")));
-        loopTracks.add(Gdx.audio.newMusic(Gdx.files.internal("music/empty streets v3.mp3")));
+        loopTracks.add(Gdx.audio.newMusic(Gdx.files.internal("music/empty streets v4.mp3")));
         loopTracks.add(Gdx.audio.newMusic(Gdx.files.internal("music/flooded citadel sketch2.mp3")));
         loopTracks.add(Gdx.audio.newMusic(Gdx.files.internal("music/Sewers of Hope v2.mp3")));
         loopTracks.add(Gdx.audio.newMusic(Gdx.files.internal("music/11 Drowned City.mp3")));

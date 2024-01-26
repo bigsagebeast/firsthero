@@ -326,7 +326,7 @@ public class Entity {
             if (hitPoints <= threshold && preHitPoints > threshold) {
                 if (Game.lastHpWarning + 10000 < Game.time) {
                     Game.interruptAndBreak("HP warning!  HP under " + Game.hpWarningThreshold + "%.");
-                    Game.lastHpWarning = Game.lastHpWarning;
+                    Game.lastHpWarning = Game.time;
                 }
             }
         }
@@ -821,7 +821,7 @@ public class Entity {
             p.postBeQuaffed(quaffedPotion, this);
         }
         quaffedPotion.destroy();
-        getMover().setDelay(this, Game.ONE_TURN);
+        Game.passTime(Game.ONE_TURN);
     }
 
     public void eatItem(Entity target) {
