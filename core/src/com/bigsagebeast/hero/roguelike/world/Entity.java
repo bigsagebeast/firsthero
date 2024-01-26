@@ -724,6 +724,7 @@ public class Entity {
     public Entity acquireWithStacking(Entity target) {
         target.containingLevel = null;
         target.containingEntity = this.entityId;
+        target.roomId = -1;
         Entity stackedInto = null;
         for (int mergeTargetId : inventoryIds) {
             Entity mergeTarget = EntityTracker.get(mergeTargetId);
@@ -1157,6 +1158,7 @@ public class Entity {
         inventoryIds.add(e.entityId);
         e.containingEntity = this.entityId;
         e.containingLevel = null;
+        e.roomId = -1;
     }
 
     // TODO call this whenever things die or permanently leave the world
@@ -1239,6 +1241,8 @@ public class Entity {
         other.name = name;
 
         other.containingEntity = containingEntity;
+        other.containingLevel = containingLevel;
+        other.roomId = roomId;
         other.pluralName = pluralName;
         other.itemTypeKey = itemTypeKey;
         other.glyphNames = glyphNames;

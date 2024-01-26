@@ -333,7 +333,7 @@ public class DefinitionLoader {
         spawner.isMover = getAsString(node, "type", "item").equals("mover");
         spawner.key = getAsString(node, "key", null);
         spawner.rule = getAsString(node, "rule", null);
-        spawner.threatModifier = getAsInt(node, "level", 0);
+        spawner.threatModifier = getAsInt(node, "threatModifier", 0);
         spawner.percentChance = getAsInt(node, "chance", 100);
         spawner.quantity = getAsInt(node, "quantity", 1);
         spawner.quantityMax = getAsInt(node, "quantityMax", -1);

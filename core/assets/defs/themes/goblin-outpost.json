@@ -18,6 +18,7 @@
             },
             {
               "type": "item",
+              "threatModifier": 1,
               "tags": [
                 "gloves"
               ]
