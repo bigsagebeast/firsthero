@@ -60,12 +60,12 @@ public class RoomType {
 
         SpecialSpawner copperSpawner = SpecialSpawner.newRegen();
         copperSpawner.summoned = false;
-        copperSpawner.spawnMTTH = 200;
+        copperSpawner.spawnMTTH = 150;
         copperSpawner.tags = Arrays.asList("tech");
         copperSpawner.spawnNearPlayer = true;
         HashMap<String, String> paradoxWispLoadProcMap = new HashMap<>();
         paradoxWispLoadProcMap.put("spawnMTTH", "3");
-        paradoxWispLoadProcMap.put("quantity", "2");
+        paradoxWispLoadProcMap.put("quantity", "4");
         paradoxWispLoadProcMap.put("minionKey", "paradox.wisp");
         LoadProc paradoxWispLoadProc = new LoadProc("ProcSummonMinions", paradoxWispLoadProcMap);
         copperSpawner.loadProcs.add(paradoxWispLoadProc);

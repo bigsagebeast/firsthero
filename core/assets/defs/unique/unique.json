@@ -23,7 +23,7 @@
           "text": "Press 'w' to wield it."
         },
         "item.ProcWeaponMelee": {
-          "damage": 5,
+          "damage": 4,
           "toHit": 20
         }
       }
