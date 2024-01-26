@@ -669,7 +669,7 @@ public class Entity {
         it.identified = true;
         String postIdentified = getVisibleNameIndefiniteOrSpecific();
         Game.announceLoud("You identify " + preIdentified + " as " + postIdentified + ".");
-        if (containingEntity >= 0) {
+        if (!destroyed && containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
         }
     }
@@ -694,7 +694,7 @@ public class Entity {
         if (!silent) {
             Game.announceLoud("You identify " + preIdentified + " as " + postIdentified + ".");
         }
-        if (containingEntity >= 0) {
+        if (!destroyed && containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
         }
     }
@@ -710,7 +710,7 @@ public class Entity {
         }
         it.identified = true;
         pi.identifiedBeatitude = true;
-        if (containingEntity >= 0) {
+        if (!destroyed && containingEntity >= 0) {
             EntityTracker.get(containingEntity).restack(this);
         }
     }
@@ -815,13 +815,13 @@ public class Entity {
                 null,
                 this.getVisibleNameDefinite() + " quaffs " + quaffedPotion.getVisibleNameIndefiniteOrSpecific() + ".",
                 null);
+        quaffedPotion.destroy();
         for (Proc p : this.procs) {
             p.postDoQuaff(this, quaffedPotion);
         }
         for (Proc p : target.procs) {
             p.postBeQuaffed(quaffedPotion, this);
         }
-        quaffedPotion.destroy();
         Game.passTime(Game.ONE_TURN);
     }
 
@@ -842,10 +842,10 @@ public class Entity {
         }
         Game.announce("You eat " + eatenEntity.getVisibleNameDefinite() + ".");
 
+        eatenEntity.destroy();
         for (Proc p : eatenEntity.procs) {
             p.postBeEaten(eatenEntity, Game.getPlayerEntity());
         }
-        eatenEntity.destroy();
         getMover().setDelay(this, Game.ONE_TURN);
     }
 
@@ -870,10 +870,10 @@ public class Entity {
                 null,
                 this.getVisibleNameDefinite() + " reads " + readScroll.getVisibleNameIndefiniteOrSpecific() + ".",
                 null);
+        readScroll.destroy();
         for (Proc p : this.procs) {
             p.postDoRead(this, readScroll);
         }
-        readScroll.destroy();
         // can still reference readScroll in the method because the object still exists,
         // but don't do anything to keep it
         for (Proc p : target.procs) {

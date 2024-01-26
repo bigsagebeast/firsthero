@@ -28,6 +28,8 @@ public class UnidMapping {
     }
 
     public void scan() {
+        groupIden.clear();
+        groupUnid.clear();
         for (ItemType it : Itempedia.map.values()) {
             if (it.idenGroup != null) {
                 registerIden(it.idenGroup, it.keyName);
